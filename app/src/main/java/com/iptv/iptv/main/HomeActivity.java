@@ -2,6 +2,7 @@ package com.iptv.iptv.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -44,11 +45,11 @@ public class HomeActivity extends LeanbackActivity {
         mMovieButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(HomeActivity.this, VerticalGridActivity.class);
-//                Bundle bundle =
-//                        ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this)
-//                                .toBundle();
-//                startActivity(intent, bundle);
+                Intent intent = new Intent(HomeActivity.this, MovieGridActivity.class);
+                Bundle bundle =
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this)
+                                .toBundle();
+                startActivity(intent, bundle);
             }
         });
 

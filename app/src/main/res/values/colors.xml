@@ -17,6 +17,8 @@
     <color name="black">#000000</color>
     <color name="black_60">#99000000</color>
     <color name="dark_blue">#031e54</color>
+    <color name="text_default">#E0E0E0</color>
+    <color name="text_selected">#0088B5</color>
 
     <color name="detail_background">#0096a6</color>
     <color name="soft_opaque">#30000000</color>

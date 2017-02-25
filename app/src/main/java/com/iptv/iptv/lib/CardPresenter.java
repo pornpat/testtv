@@ -30,8 +30,6 @@ import com.iptv.iptv.R;
 public class CardPresenter extends Presenter {
     private static final String TAG = "CardPresenter";
 
-    private static final int CARD_WIDTH = 313;
-    private static final int CARD_HEIGHT = 176;
     private static int sSelectedBackgroundColor;
     private static int sDefaultBackgroundColor;
     private Drawable mDefaultCardImage;
@@ -75,7 +73,10 @@ public class CardPresenter extends Presenter {
         if (movie.getCardImageUrl() != null) {
             cardView.setTitleText(movie.getTitle());
             cardView.setContentText(movie.getStudio());
-            cardView.setMainImageDimensions(CARD_WIDTH, CARD_HEIGHT);
+
+            int width = cardView.getResources().getDimensionPixelSize(R.dimen.card_width);
+            int height = cardView.getResources().getDimensionPixelSize(R.dimen.card_height);
+            cardView.setMainImageDimensions(width, height);
             Glide.with(viewHolder.view.getContext())
                     .load(movie.getCardImageUrl())
                     .centerCrop()

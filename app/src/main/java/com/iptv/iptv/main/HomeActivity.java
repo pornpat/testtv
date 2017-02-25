@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.iptv.iptv.R;
+import com.iptv.iptv.lib.MainActivity;
 
 public class HomeActivity extends LeanbackActivity {
 
@@ -50,6 +51,14 @@ public class HomeActivity extends LeanbackActivity {
                         ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this)
                                 .toBundle();
                 startActivity(intent, bundle);
+            }
+        });
+
+        mSeriesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
 

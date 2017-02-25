@@ -2,9 +2,9 @@
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_browse_fragment"
-    android:name="com.iptv.iptv.MainFragment"
+    android:name="com.iptv.iptv.lib.MainFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".lib.MainActivity"
     tools:deviceIds="tv"
     tools:ignore="MergeRootFrame" />

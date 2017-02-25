@@ -1,6 +1,19 @@
 <resources>
-    <string name="app_name">IPTV</string>
-    <string name="browse_title"><![CDATA[Videos by Your Company]]></string>
+    <string name="app_name">IPTV APP</string>
+
+    <string name="menu_live">LIVE</string>
+    <string name="menu_recommend">HIT MOVIE POSTER</string>
+    <string name="menu_sport">SPORTS\nRE-RUN</string>
+    <string name="menu_favorite">FAVORITE</string>
+    <string name="menu_movie">MOVIE</string>
+    <string name="menu_series">SERIES</string>
+    <string name="menu_advertise">ADVERTISE</string>
+    <string name="menu_setting">SETTING</string>
+
+    <string name="mobile_welcome_title">Welcome to IPTV APP</string>
+    <string name="mobile_welcome_description">Try opening this application on an Android TV for a great movie experience.</string>
+
+    <string name="browse_title"><![CDATA[IPTV APP]]></string>
     <string name="related_movies">Related Videos</string>
     <string name="vertical_grid_title"><![CDATA[Vertical Video Grid]]></string>
     <string name="error">Error</string>

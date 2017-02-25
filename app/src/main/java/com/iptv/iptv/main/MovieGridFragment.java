@@ -8,40 +8,40 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.iptv.iptv.main.event.SelectCategoryEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MovieGridFragment extends Fragment {
 
-    private static final String ARG_PARAM1 = "param1";
-
-    private String mParam1;
-
-    public MovieGridFragment() {
-
-    }
-
-    public static MovieGridFragment newInstance(String param1) {
-        MovieGridFragment fragment = new MovieGridFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-        }
-    }
+    TextView mTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        TextView textView = new TextView(getActivity());
-        textView.setText(mParam1);
-        return textView;
+        mTextView = new TextView(getActivity());
+        mTextView.setText("Test");
+        return mTextView;
+    }
+
+    @Subscribe
+    public void onSelectCategory(SelectCategoryEvent event) {
+        mTextView.setText(event.message);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 }

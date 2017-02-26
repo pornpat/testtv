@@ -90,8 +90,8 @@ public class PlaybackOverlayActivity extends Activity implements
      * Implementation of OnPlayPauseClickedListener
      */
     public void onFragmentPlayPause(Movie movie, int position, Boolean playPause) {
-        mVideoView.setVideoPath("https://r4---sn-5np5po4v-jome.googlevideo.com/videoplayback?id=d11b14f039be8782&itag=37&source=webdrive&requiressl=yes&ttl=transient&pl=24&mime=video/mp4&lmt=1480104345044858&ip=171.100.76.145&ipbits=128&expire=1487525225&sparams=expire,id,ip,ipbits,itag,lmt,mime,mm,mn,ms,mv,pl,requiressl,source,ttl&signature=1C11AC9F231EC5B15FE559DBD453D5B8A14581A3.84C5C1AEB08AB52C9B4E5935793E0B0B3897E11A&key=cms1&app=explorer&cms_redirect=yes&mm=31&mn=sn-5np5po4v-jome&ms=au&mt=1487517451&mv=m");
-//        mVideoView.setVideoPath(movie.getVideoUrl());
+//        mVideoView.setVideoPath("https://r4---sn-5np5po4v-jome.googlevideo.com/videoplayback?id=d11b14f039be8782&itag=37&source=webdrive&requiressl=yes&ttl=transient&pl=24&mime=video/mp4&lmt=1480104345044858&ip=171.100.76.145&ipbits=128&expire=1487525225&sparams=expire,id,ip,ipbits,itag,lmt,mime,mm,mn,ms,mv,pl,requiressl,source,ttl&signature=1C11AC9F231EC5B15FE559DBD453D5B8A14581A3.84C5C1AEB08AB52C9B4E5935793E0B0B3897E11A&key=cms1&app=explorer&cms_redirect=yes&mm=31&mn=sn-5np5po4v-jome&ms=au&mt=1487517451&mv=m");
+        mVideoView.setVideoPath(movie.getVideoUrl());
 
         if (position == 0 || mPlaybackState == LeanbackPlaybackState.IDLE) {
             setupCallbacks();

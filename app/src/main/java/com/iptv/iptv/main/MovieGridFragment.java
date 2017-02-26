@@ -1,19 +1,23 @@
 package com.iptv.iptv.main;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v17.leanback.app.VerticalGridFragment;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
+import android.support.v17.leanback.widget.ImageCardView;
 import android.support.v17.leanback.widget.OnItemViewClickedListener;
 import android.support.v17.leanback.widget.OnItemViewSelectedListener;
 import android.support.v17.leanback.widget.Presenter;
 import android.support.v17.leanback.widget.Row;
 import android.support.v17.leanback.widget.RowPresenter;
 import android.support.v17.leanback.widget.VerticalGridPresenter;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 
 import com.iptv.iptv.lib.CardPresenter;
+import com.iptv.iptv.lib.MovieDetailsActivity;
 import com.iptv.iptv.lib.Movie;
 import com.iptv.iptv.lib.MovieList;
 import com.iptv.iptv.main.event.SelectCategoryEvent;
@@ -71,19 +75,15 @@ public class MovieGridFragment extends VerticalGridFragment {
         @Override
         public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
                                   RowPresenter.ViewHolder rowViewHolder, Row row) {
+            Movie movie = (Movie) item;
+            Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
+            intent.putExtra(MovieDetailsActivity.MOVIE, movie);
 
-//            if (item instanceof Video) {
-//                Video video = (Video) item;
-//
-//                Intent intent = new Intent(getActivity(), VideoDetailsActivity.class);
-//                intent.putExtra(VideoDetailsActivity.VIDEO, video);
-//
-//                Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-//                        getActivity(),
-//                        ((ImageCardView) itemViewHolder.view).getMainImageView(),
-//                        VideoDetailsActivity.SHARED_ELEMENT_NAME).toBundle();
-//                getActivity().startActivity(intent, bundle);
-//            }
+            Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    getActivity(),
+                    ((ImageCardView) itemViewHolder.view).getMainImageView(),
+                    MovieDetailsActivity.SHARED_ELEMENT_NAME).toBundle();
+            getActivity().startActivity(intent, bundle);
         }
     }
 

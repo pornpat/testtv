@@ -51,8 +51,8 @@ import java.util.List;
  * LeanbackDetailsFragment extends DetailsFragment, a Wrapper fragment for leanback details screens.
  * It shows a detailed view of video and its meta plus related videos.
  */
-public class VideoDetailsFragment extends DetailsFragment {
-    private static final String TAG = "VideoDetailsFragment";
+public class MovieDetailsFragment extends DetailsFragment {
+    private static final String TAG = "MovieDetailsFragment";
 
     private static final int ACTION_WATCH_TRAILER = 1;
     private static final int ACTION_RENT = 2;
@@ -80,7 +80,7 @@ public class VideoDetailsFragment extends DetailsFragment {
         prepareBackgroundManager();
 
         mSelectedMovie = (Movie) getActivity().getIntent()
-                .getSerializableExtra(DetailsActivity.MOVIE);
+                .getSerializableExtra(MovieDetailsActivity.MOVIE);
         if (mSelectedMovie != null) {
             setupAdapter();
             setupDetailsOverviewRow();
@@ -170,14 +170,14 @@ public class VideoDetailsFragment extends DetailsFragment {
 
         // Hook up transition element.
         detailsPresenter.setSharedElementEnterTransition(getActivity(),
-                DetailsActivity.SHARED_ELEMENT_NAME);
+                MovieDetailsActivity.SHARED_ELEMENT_NAME);
 
         detailsPresenter.setOnActionClickedListener(new OnActionClickedListener() {
             @Override
             public void onActionClicked(Action action) {
                 if (action.getId() == ACTION_WATCH_TRAILER) {
                     Intent intent = new Intent(getActivity(), PlaybackOverlayActivity.class);
-                    intent.putExtra(DetailsActivity.MOVIE, mSelectedMovie);
+                    intent.putExtra(MovieDetailsActivity.MOVIE, mSelectedMovie);
                     startActivity(intent);
                 } else {
                     Toast.makeText(getActivity(), action.toString(), Toast.LENGTH_SHORT).show();
@@ -213,7 +213,7 @@ public class VideoDetailsFragment extends DetailsFragment {
             if (item instanceof Movie) {
                 Movie movie = (Movie) item;
                 Log.d(TAG, "Item: " + item.toString());
-                Intent intent = new Intent(getActivity(), DetailsActivity.class);
+                Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
                 intent.putExtra(getResources().getString(R.string.movie), mSelectedMovie);
                 intent.putExtra(getResources().getString(R.string.should_start), true);
                 startActivity(intent);
@@ -222,7 +222,7 @@ public class VideoDetailsFragment extends DetailsFragment {
                 Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
                         getActivity(),
                         ((ImageCardView) itemViewHolder.view).getMainImageView(),
-                        DetailsActivity.SHARED_ELEMENT_NAME).toBundle();
+                        MovieDetailsActivity.SHARED_ELEMENT_NAME).toBundle();
                 getActivity().startActivity(intent, bundle);
             }
         }

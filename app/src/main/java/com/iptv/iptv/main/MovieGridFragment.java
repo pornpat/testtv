@@ -12,10 +12,7 @@ import android.support.v17.leanback.widget.Row;
 import android.support.v17.leanback.widget.RowPresenter;
 import android.support.v17.leanback.widget.VerticalGridPresenter;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.view.View;
 
-import com.iptv.iptv.R;
 import com.iptv.iptv.lib.CardPresenter;
 import com.iptv.iptv.lib.Movie;
 import com.iptv.iptv.lib.MovieList;
@@ -42,10 +39,12 @@ public class MovieGridFragment extends VerticalGridFragment {
         for (int i = 0; i < list.size(); i++) {
             mVideoObjectAdapter.add(list.get(i));
         }
+        for (int i = 0; i < list.size(); i++) {
+            mVideoObjectAdapter.add(list.get(i));
+        }
         setAdapter(mVideoObjectAdapter);
-
-        setTitle(getString(R.string.vertical_grid_title));
-        setSearchAffordanceColor(ContextCompat.getColor(getActivity(), R.color.search_opaque));
+        
+        showTitle(false);
 
         if (savedInstanceState == null) {
             prepareEntranceTransition();
@@ -64,14 +63,6 @@ public class MovieGridFragment extends VerticalGridFragment {
                 startEntranceTransition();
             }
         }, 500);
-
-        setOnSearchClickedListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), SearchActivity.class);
-//                startActivity(intent);
-            }
-        });
 
         setOnItemViewClickedListener(new ItemViewClickedListener());
         setOnItemViewSelectedListener(new ItemViewSelectedListener());

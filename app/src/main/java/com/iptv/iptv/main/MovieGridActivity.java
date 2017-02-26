@@ -16,6 +16,8 @@ public class MovieGridActivity extends LeanbackActivity {
         setContentView(R.layout.activity_movie_grid);
         getWindow().setBackgroundDrawableResource(R.drawable.custom_background);
 
+        findViewById(R.id.movie).requestFocus();
+
         findViewById(R.id.movie).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

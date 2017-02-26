@@ -16,7 +16,7 @@ import android.support.v17.leanback.widget.VerticalGridPresenter;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 
-import com.iptv.iptv.lib.CardPresenter;
+import com.iptv.iptv.main.presenter.CardPresenter;
 import com.iptv.iptv.lib.MovieDetailsActivity;
 import com.iptv.iptv.lib.Movie;
 import com.iptv.iptv.lib.MovieList;

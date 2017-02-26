@@ -12,7 +12,7 @@
  * the License.
  */
 
-package com.iptv.iptv.lib;
+package com.iptv.iptv.main.presenter;
 
 import android.graphics.drawable.Drawable;
 import android.support.v17.leanback.widget.ImageCardView;
@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.iptv.iptv.R;
+import com.iptv.iptv.lib.Movie;
 
 /*
  * A CardPresenter is used to generate Views and bind Objects to them on demand.

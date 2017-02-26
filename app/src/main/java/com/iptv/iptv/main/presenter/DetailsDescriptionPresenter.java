@@ -12,9 +12,11 @@
  * the License.
  */
 
-package com.iptv.iptv.lib;
+package com.iptv.iptv.main.presenter;
 
 import android.support.v17.leanback.widget.AbstractDetailsDescriptionPresenter;
+
+import com.iptv.iptv.lib.Movie;
 
 public class DetailsDescriptionPresenter extends AbstractDetailsDescriptionPresenter {
 
@@ -24,7 +26,8 @@ public class DetailsDescriptionPresenter extends AbstractDetailsDescriptionPrese
 
         if (movie != null) {
             viewHolder.getTitle().setText(movie.getTitle());
-            viewHolder.getSubtitle().setText("ความยาว: 135 min " + " ประเภท: Action & Adventure");
+//            viewHolder.getSubtitle().setText("ความยาว: 135 min " + " ประเภท: Action & Adventure");
+            viewHolder.getSubtitle().setText("ความยาว: 135 min " + " ประเภท: Action");
             viewHolder.getBody().setText(movie.getDescription());
         }
     }

@@ -43,6 +43,8 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.presenter.CardPresenter;
+import com.iptv.iptv.main.presenter.DetailsDescriptionPresenter;
 
 import java.util.Collections;
 import java.util.List;

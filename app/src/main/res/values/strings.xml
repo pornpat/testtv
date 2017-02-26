@@ -13,6 +13,11 @@
     <string name="mobile_welcome_title">Welcome to IPTV APP</string>
     <string name="mobile_welcome_description">Try opening this application on an Android TV for a great movie experience.</string>
 
+    <string name="watch">รับชม</string>
+    <string name="sound_en">เสียง: EN</string>
+    <string name="sound_th">เสียง: TH</string>
+    <string name="add_fav">เพิ่มรายการโปรด</string>
+
     <string name="browse_title"><![CDATA[IPTV APP]]></string>
     <string name="related_movies">Related Videos</string>
     <string name="vertical_grid_title"><![CDATA[Vertical Video Grid]]></string>

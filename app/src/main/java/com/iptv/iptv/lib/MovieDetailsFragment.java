@@ -15,9 +15,7 @@
 package com.iptv.iptv.lib;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v17.leanback.app.BackgroundManager;
 import android.support.v17.leanback.app.DetailsFragment;
 import android.support.v17.leanback.widget.Action;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
@@ -33,8 +31,8 @@ import android.support.v17.leanback.widget.OnItemViewClickedListener;
 import android.support.v17.leanback.widget.Presenter;
 import android.support.v17.leanback.widget.Row;
 import android.support.v17.leanback.widget.RowPresenter;
+import android.support.v17.leanback.widget.SparseArrayObjectAdapter;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -56,11 +54,11 @@ import java.util.List;
 public class MovieDetailsFragment extends DetailsFragment {
     private static final String TAG = "MovieDetailsFragment";
 
-    private static final int ACTION_WATCH_TRAILER = 1;
-    private static final int ACTION_RENT = 2;
-    private static final int ACTION_BUY = 3;
+    private static final int ACTION_WATCH_EN = 1;
+    private static final int ACTION_WATCH_TH = 2;
+    private static final int ACTION_ADD_FAV = 3;
 
-    private static final int DETAIL_THUMB_WIDTH = 274;
+    private static final int DETAIL_THUMB_WIDTH = 200;
     private static final int DETAIL_THUMB_HEIGHT = 274;
 
     private static final int NUM_COLS = 10;
@@ -69,10 +67,6 @@ public class MovieDetailsFragment extends DetailsFragment {
 
     private ArrayObjectAdapter mAdapter;
     private ClassPresenterSelector mPresenterSelector;
-
-    private BackgroundManager mBackgroundManager;
-    private Drawable mDefaultBackground;
-    private DisplayMetrics mMetrics;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -123,12 +117,15 @@ public class MovieDetailsFragment extends DetailsFragment {
                     }
                 });
 
-        row.addAction(new Action(ACTION_WATCH_TRAILER, getResources().getString(
-                R.string.watch_trailer_1), getResources().getString(R.string.watch_trailer_2)));
-        row.addAction(new Action(ACTION_RENT, getResources().getString(R.string.rent_1),
-                getResources().getString(R.string.rent_2)));
-        row.addAction(new Action(ACTION_BUY, getResources().getString(R.string.buy_1),
-                getResources().getString(R.string.buy_2)));
+        SparseArrayObjectAdapter adapter = new SparseArrayObjectAdapter();
+        adapter.set(ACTION_WATCH_EN, new Action(ACTION_WATCH_EN, getResources()
+                .getString(R.string.watch),
+                getResources().getString(R.string.sound_en)));
+        adapter.set(ACTION_WATCH_TH, new Action(ACTION_WATCH_TH, getResources().getString(R.string.watch),
+                getResources().getString(R.string.sound_th)));
+        adapter.set(ACTION_ADD_FAV, new Action(ACTION_ADD_FAV, getResources().getString(R.string.add_fav)));
+
+        row.setActionsAdapter(adapter);
 
         mAdapter.add(row);
     }
@@ -147,7 +144,7 @@ public class MovieDetailsFragment extends DetailsFragment {
         detailsPresenter.setOnActionClickedListener(new OnActionClickedListener() {
             @Override
             public void onActionClicked(Action action) {
-                if (action.getId() == ACTION_WATCH_TRAILER) {
+                if (action.getId() == ACTION_WATCH_EN || action.getId() == ACTION_WATCH_TH) {
                     Intent intent = new Intent(getActivity(), PlaybackOverlayActivity.class);
                     intent.putExtra(MovieDetailsActivity.MOVIE, mSelectedMovie);
                     startActivity(intent);

@@ -77,8 +77,6 @@ public class MovieDetailsFragment extends DetailsFragment {
         Log.d(TAG, "onCreate DetailsFragment");
         super.onCreate(savedInstanceState);
 
-        prepareBackgroundManager();
-
         mSelectedMovie = (Movie) getActivity().getIntent()
                 .getSerializableExtra(MovieDetailsActivity.MOVIE);
         if (mSelectedMovie != null) {
@@ -87,39 +85,11 @@ public class MovieDetailsFragment extends DetailsFragment {
             setupDetailsOverviewRowPresenter();
             setupMovieListRow();
             setupMovieListRowPresenter();
-            updateBackground(mSelectedMovie.getBackgroundImageUrl());
             setOnItemViewClickedListener(new ItemViewClickedListener());
         } else {
             Intent intent = new Intent(getActivity(), MainActivity.class);
             startActivity(intent);
         }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    private void prepareBackgroundManager() {
-        mBackgroundManager = BackgroundManager.getInstance(getActivity());
-        mBackgroundManager.attach(getActivity().getWindow());
-        mDefaultBackground = getResources().getDrawable(R.drawable.default_background);
-        mMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(mMetrics);
-    }
-
-    protected void updateBackground(String uri) {
-        Glide.with(getActivity())
-                .load(uri)
-                .centerCrop()
-                .error(mDefaultBackground)
-                .into(new SimpleTarget<GlideDrawable>(mMetrics.widthPixels, mMetrics.heightPixels) {
-                    @Override
-                    public void onResourceReady(GlideDrawable resource,
-                                                GlideAnimation<? super GlideDrawable> glideAnimation) {
-                        mBackgroundManager.setDrawable(resource);
-                    }
-                });
     }
 
     private void setupAdapter() {
@@ -214,10 +184,8 @@ public class MovieDetailsFragment extends DetailsFragment {
                 Movie movie = (Movie) item;
                 Log.d(TAG, "Item: " + item.toString());
                 Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
-                intent.putExtra(getResources().getString(R.string.movie), mSelectedMovie);
+                intent.putExtra(getResources().getString(R.string.movie), movie);
                 intent.putExtra(getResources().getString(R.string.should_start), true);
-                startActivity(intent);
-
 
                 Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
                         getActivity(),

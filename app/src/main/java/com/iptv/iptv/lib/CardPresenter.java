@@ -72,7 +72,7 @@ public class CardPresenter extends Presenter {
         Log.d(TAG, "onBindViewHolder");
         if (movie.getCardImageUrl() != null) {
             cardView.setTitleText(movie.getTitle());
-            cardView.setContentText(movie.getStudio());
+            cardView.setContentText("เสียง: EN/TH");
 
             int width = cardView.getResources().getDimensionPixelSize(R.dimen.card_width);
             int height = cardView.getResources().getDimensionPixelSize(R.dimen.card_height);

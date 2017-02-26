@@ -33,6 +33,7 @@ public class MovieDetailsActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
+        getWindow().setBackgroundDrawableResource(R.drawable.custom_background);
     }
 
 }

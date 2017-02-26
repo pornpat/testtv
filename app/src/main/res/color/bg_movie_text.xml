@@ -6,5 +6,7 @@
         android:color="@color/text_selected" /> <!-- focused -->
     <item android:state_hovered="true"
         android:color="@color/text_selected" /> <!-- hovered -->
+    <item android:state_selected="true"
+        android:color="@color/text_selected" /> <!-- selected -->
     <item android:color="@color/text_default" /> <!-- default -->
 </selector>

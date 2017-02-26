@@ -36,14 +36,13 @@ public class MovieGridFragment extends VerticalGridFragment {
         super.onCreate(savedInstanceState);
 
         List<Movie> list = MovieList.setupMovies();
-        for (int i = 0; i < list.size(); i++) {
-            mVideoObjectAdapter.add(list.get(i));
-        }
-        for (int i = 0; i < list.size(); i++) {
-            mVideoObjectAdapter.add(list.get(i));
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < list.size(); j++) {
+                mVideoObjectAdapter.add(list.get(j));
+            }
         }
         setAdapter(mVideoObjectAdapter);
-        
+
         showTitle(false);
 
         if (savedInstanceState == null) {

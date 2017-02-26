@@ -15,13 +15,16 @@
 package com.iptv.iptv.lib;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaMetadata;
 import android.media.MediaPlayer;
+import android.media.session.MediaController;
 import android.media.session.MediaSession;
 import android.media.session.PlaybackState;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.VideoView;
 
@@ -33,13 +36,44 @@ import com.iptv.iptv.R;
 /**
  * PlaybackOverlayActivity for video playback that loads PlaybackOverlayFragment
  */
-public class PlaybackOverlayActivity extends Activity implements
-        PlaybackOverlayFragment.OnPlayPauseClickedListener {
-    private static final String TAG = "PlaybackOverlayActivity";
+public class PlaybackOverlayActivity extends Activity {
+    private static final String AUTO_PLAY = "auto_play";
+    private static final String TAG = PlaybackOverlayActivity.class.getSimpleName();
+    private VideoView mVideoView; // VideoView is used to play the video (media) in a view.
+    private MediaSession mSession; // MediaSession is used to hold the state of our media playback.
+    private int mPosition = 0;
+    private long mStartTimeMillis;
+    private long mDuration = -1;
+    private Movie mSelectedMovie;
 
-    private VideoView mVideoView;
-    private LeanbackPlaybackState mPlaybackState = LeanbackPlaybackState.IDLE;
-    private MediaSession mSession;
+    private int getPlaybackState() {
+        PlaybackState state = getMediaController().getPlaybackState();
+        if (state != null) {
+            return state.getState();
+        } else {
+            return PlaybackState.STATE_NONE;
+        }
+    }
+
+    private void setPlaybackState(int state) {
+        PlaybackState.Builder stateBuilder = new PlaybackState.Builder()
+                .setActions(getAvailableActions(state));
+        stateBuilder.setState(state, mPosition, 1.0f);
+        mSession.setPlaybackState(stateBuilder.build());
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BUTTON_R1) {
+            getMediaController().getTransportControls().skipToNext();
+            return true;
+        } else if (keyCode == KeyEvent.KEYCODE_BUTTON_L1) {
+            getMediaController().getTransportControls().skipToPrevious();
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
 
     /**
      * Called when the activity is first created.
@@ -47,88 +81,83 @@ public class PlaybackOverlayActivity extends Activity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        createMediaSession();
+
         setContentView(R.layout.playback_controls);
         loadViews();
-        setupCallbacks();
-        mSession = new MediaSession(this, "LeanbackSampleApp");
-        mSession.setCallback(new MediaSessionCallback());
-        mSession.setFlags(MediaSession.FLAG_HANDLES_MEDIA_BUTTONS |
-                MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS);
 
-        mSession.setActive(true);
+        playPause(true);
+        //Example for handling resizing view for overscan
+        //Utils.overScan(this, mVideoView);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        stopPlayback();
         mVideoView.suspend();
+        mVideoView.setVideoURI(null);
+        mSession.release();
     }
 
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        PlaybackOverlayFragment playbackOverlayFragment = (PlaybackOverlayFragment) getFragmentManager().findFragmentById(R.id.playback_controls_fragment);
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_MEDIA_PLAY:
-                playbackOverlayFragment.togglePlayback(false);
-                return true;
-            case KeyEvent.KEYCODE_MEDIA_PAUSE:
-                playbackOverlayFragment.togglePlayback(false);
-                return true;
-            case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
-                if (mPlaybackState == LeanbackPlaybackState.PLAYING) {
-                    playbackOverlayFragment.togglePlayback(false);
-                } else {
-                    playbackOverlayFragment.togglePlayback(true);
-                }
-                return true;
-            default:
-                return super.onKeyUp(keyCode, event);
-        }
-    }
-
-    /**
-     * Implementation of OnPlayPauseClickedListener
-     */
-    public void onFragmentPlayPause(Movie movie, int position, Boolean playPause) {
-//        mVideoView.setVideoPath("https://r4---sn-5np5po4v-jome.googlevideo.com/videoplayback?id=d11b14f039be8782&itag=37&source=webdrive&requiressl=yes&ttl=transient&pl=24&mime=video/mp4&lmt=1480104345044858&ip=171.100.76.145&ipbits=128&expire=1487525225&sparams=expire,id,ip,ipbits,itag,lmt,mime,mm,mn,ms,mv,pl,requiressl,source,ttl&signature=1C11AC9F231EC5B15FE559DBD453D5B8A14581A3.84C5C1AEB08AB52C9B4E5935793E0B0B3897E11A&key=cms1&app=explorer&cms_redirect=yes&mm=31&mn=sn-5np5po4v-jome&ms=au&mt=1487517451&mv=m");
-        mVideoView.setVideoPath(movie.getVideoUrl());
-
-        if (position == 0 || mPlaybackState == LeanbackPlaybackState.IDLE) {
-            setupCallbacks();
-            mPlaybackState = LeanbackPlaybackState.IDLE;
-        }
-
-        if (playPause && mPlaybackState != LeanbackPlaybackState.PLAYING) {
-            mPlaybackState = LeanbackPlaybackState.PLAYING;
-            if (position > 0) {
-                mVideoView.seekTo(position);
-                mVideoView.start();
-            }
+    private void setPosition(int position) {
+        if (position > mDuration) {
+            mPosition = (int) mDuration;
+        } else if (position < 0) {
+            mPosition = 0;
+            mStartTimeMillis = System.currentTimeMillis();
         } else {
-            mPlaybackState = LeanbackPlaybackState.PAUSED;
+            mPosition = position;
+        }
+        mStartTimeMillis = System.currentTimeMillis();
+        Log.d(TAG, "position set to " + mPosition);
+    }
+
+    private void createMediaSession() {
+        if (mSession == null) {
+            mSession = new MediaSession(this, "LeanbackSampleApp");
+            mSession.setCallback(new MediaSessionCallback());
+            mSession.setFlags(MediaSession.FLAG_HANDLES_MEDIA_BUTTONS |
+                    MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS);
+
+            mSession.setActive(true);
+
+            // Set the Activity's MediaController used to invoke transport controls / adjust volume.
+            setMediaController(new MediaController(this, mSession.getSessionToken()));
+            setPlaybackState(PlaybackState.STATE_NONE);
+        }
+    }
+
+    private void playPause(boolean doPlay) {
+        if (getPlaybackState() == PlaybackState.STATE_NONE) {
+            setupCallbacks();
+        }
+
+        if (doPlay && getPlaybackState() != PlaybackState.STATE_PLAYING) {
+            if (mPosition > 0) {
+                mVideoView.seekTo(mPosition);
+            }
+            mVideoView.start();
+            mStartTimeMillis = System.currentTimeMillis();
+            setPlaybackState(PlaybackState.STATE_PLAYING);
+        } else {
+            int timeElapsedSinceStart = (int) (System.currentTimeMillis() - mStartTimeMillis);
+            setPosition(mPosition + timeElapsedSinceStart);
             mVideoView.pause();
+            setPlaybackState(PlaybackState.STATE_PAUSED);
         }
-        updatePlaybackState(position);
-        updateMetadata(movie);
     }
 
-    private void updatePlaybackState(int position) {
-        PlaybackState.Builder stateBuilder = new PlaybackState.Builder()
-                .setActions(getAvailableActions());
-        int state = PlaybackState.STATE_PLAYING;
-        if (mPlaybackState == LeanbackPlaybackState.PAUSED) {
-            state = PlaybackState.STATE_PAUSED;
-        }
-        stateBuilder.setState(state, position, 1.0f);
-        mSession.setPlaybackState(stateBuilder.build());
-    }
-
-    private long getAvailableActions() {
+    private long getAvailableActions(int nextState) {
         long actions = PlaybackState.ACTION_PLAY |
                 PlaybackState.ACTION_PLAY_FROM_MEDIA_ID |
-                PlaybackState.ACTION_PLAY_FROM_SEARCH;
+                PlaybackState.ACTION_PLAY_FROM_SEARCH |
+                PlaybackState.ACTION_SKIP_TO_NEXT |
+                PlaybackState.ACTION_SKIP_TO_PREVIOUS |
+                PlaybackState.ACTION_PAUSE;
 
-        if (mPlaybackState == LeanbackPlaybackState.PLAYING) {
+        if (nextState == PlaybackState.STATE_PLAYING) {
             actions |= PlaybackState.ACTION_PAUSE;
         }
 
@@ -138,16 +167,18 @@ public class PlaybackOverlayActivity extends Activity implements
     private void updateMetadata(final Movie movie) {
         final MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
 
-        String title = movie.getTitle().replace("_", " -");
-
-        metadataBuilder.putString(MediaMetadata.METADATA_KEY_DISPLAY_TITLE, title);
+        metadataBuilder.putString(MediaMetadata.METADATA_KEY_MEDIA_ID, movie.getId());
+        metadataBuilder.putString(MediaMetadata.METADATA_KEY_DISPLAY_TITLE, movie.getTitle());
         metadataBuilder.putString(MediaMetadata.METADATA_KEY_DISPLAY_SUBTITLE,
+                movie.getStudio());
+        metadataBuilder.putString(MediaMetadata.METADATA_KEY_DISPLAY_DESCRIPTION,
                 movie.getDescription());
         metadataBuilder.putString(MediaMetadata.METADATA_KEY_DISPLAY_ICON_URI,
                 movie.getCardImageUrl());
+        metadataBuilder.putLong(MediaMetadata.METADATA_KEY_DURATION, mDuration);
 
         // And at minimum the title and artist for legacy support
-        metadataBuilder.putString(MediaMetadata.METADATA_KEY_TITLE, title);
+        metadataBuilder.putString(MediaMetadata.METADATA_KEY_TITLE, movie.getTitle());
         metadataBuilder.putString(MediaMetadata.METADATA_KEY_ARTIST, movie.getStudio());
 
         Glide.with(this)
@@ -164,8 +195,18 @@ public class PlaybackOverlayActivity extends Activity implements
 
     private void loadViews() {
         mVideoView = (VideoView) findViewById(R.id.videoView);
-        mVideoView.setFocusable(false);
-        mVideoView.setFocusableInTouchMode(false);
+        // For fixing an issue which VideoView get focus by default, making control fragment lost focus on activity starts
+        mVideoView.post(new Runnable() {
+            @Override
+            public void run() {
+                mVideoView.setFocusable(false);
+                mVideoView.setFocusableInTouchMode(false);
+            }
+        });
+        mSelectedMovie = getIntent().getParcelableExtra(MovieDetailsActivity.MOVIE);
+
+        setVideoPath(mSelectedMovie.getVideoUrl());
+        updateMetadata(mSelectedMovie);
     }
 
     private void setupCallbacks() {
@@ -174,16 +215,8 @@ public class PlaybackOverlayActivity extends Activity implements
 
             @Override
             public boolean onError(MediaPlayer mp, int what, int extra) {
-                String msg = "";
-                if (extra == MediaPlayer.MEDIA_ERROR_TIMED_OUT) {
-                    msg = getString(R.string.video_error_media_load_timeout);
-                } else if (what == MediaPlayer.MEDIA_ERROR_SERVER_DIED) {
-                    msg = getString(R.string.video_error_server_inaccessible);
-                } else {
-                    msg = getString(R.string.video_error_unknown_error);
-                }
                 mVideoView.stopPlayback();
-                mPlaybackState = LeanbackPlaybackState.IDLE;
+                setPlaybackState(PlaybackState.STATE_STOPPED);
                 return false;
             }
         });
@@ -191,7 +224,7 @@ public class PlaybackOverlayActivity extends Activity implements
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                if (mPlaybackState == LeanbackPlaybackState.PLAYING) {
+                if (getPlaybackState() == PlaybackState.STATE_PLAYING) {
                     mVideoView.start();
                 }
             }
@@ -200,16 +233,10 @@ public class PlaybackOverlayActivity extends Activity implements
         mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                mPlaybackState = LeanbackPlaybackState.IDLE;
+                setPlaybackState(PlaybackState.STATE_STOPPED);
             }
         });
 
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mSession.setActive(true);
     }
 
     @Override
@@ -218,7 +245,7 @@ public class PlaybackOverlayActivity extends Activity implements
         if (mVideoView.isPlaying()) {
             if (!requestVisibleBehind(true)) {
                 // Try to play behind launcher, but if it fails, stop playback.
-                stopPlayback();
+                playPause(false);
             }
         } else {
             requestVisibleBehind(false);
@@ -228,12 +255,12 @@ public class PlaybackOverlayActivity extends Activity implements
     @Override
     protected void onStop() {
         super.onStop();
-        mSession.release();
+        playPause(false);
     }
-
 
     @Override
     public void onVisibleBehindCanceled() {
+        playPause(false);
         super.onVisibleBehindCanceled();
     }
 
@@ -243,13 +270,59 @@ public class PlaybackOverlayActivity extends Activity implements
         }
     }
 
-    /*
-     * List of various states that we can be in
-     */
-    public enum LeanbackPlaybackState {
-        PLAYING, PAUSED, BUFFERING, IDLE
+    @Override
+    public boolean onSearchRequested() {
+//        startActivity(new Intent(this, SearchActivity.class));
+        return true;
     }
 
+    // An event was triggered by MediaController.TransportControls and must be handled here.
+    // Here we update the media itself to act on the event that was triggered.
     private class MediaSessionCallback extends MediaSession.Callback {
+
+        @Override
+        public void onPlay() {
+            playPause(true);
+        }
+
+        @Override
+        public void onPause() {
+            playPause(false);
+        }
+
+        @Override
+        public void onSeekTo(long pos) {
+            setPosition((int) pos);
+            mVideoView.seekTo(mPosition);
+        }
+
+        @Override
+        public void onFastForward() {
+            if (mDuration != -1) {
+                // Fast forward 10 seconds.
+                int prevState = getPlaybackState();
+                setPlaybackState(PlaybackState.STATE_FAST_FORWARDING);
+                setPosition(mVideoView.getCurrentPosition() + (10 * 1000));
+                mVideoView.seekTo(mPosition);
+                setPlaybackState(prevState);
+            }
+        }
+
+        @Override
+        public void onRewind() {
+            // Rewind 10 seconds.
+            int prevState = getPlaybackState();
+            setPlaybackState(PlaybackState.STATE_REWINDING);
+            setPosition(mVideoView.getCurrentPosition() - (10 * 1000));
+            mVideoView.seekTo(mPosition);
+            setPlaybackState(prevState);
+        }
+    }
+
+    private void setVideoPath(String videoUrl) {
+        setPosition(0);
+        mVideoView.setVideoPath(videoUrl);
+        mStartTimeMillis = 0;
+        mDuration = Utils.getDuration(videoUrl);
     }
 }

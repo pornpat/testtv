@@ -73,8 +73,9 @@ public class MovieDetailsFragment extends DetailsFragment {
         Log.d(TAG, "onCreate DetailsFragment");
         super.onCreate(savedInstanceState);
 
-        mSelectedMovie = (Movie) getActivity().getIntent()
-                .getSerializableExtra(MovieDetailsActivity.MOVIE);
+        mSelectedMovie = getActivity().getIntent()
+                .getParcelableExtra(MovieDetailsActivity.MOVIE);
+
         if (mSelectedMovie != null) {
             setupAdapter();
             setupDetailsOverviewRow();

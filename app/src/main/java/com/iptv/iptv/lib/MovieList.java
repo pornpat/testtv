@@ -72,8 +72,7 @@ public final class MovieList {
                                         String description, String studio, String videoUrl, String cardImageUrl,
                                         String bgImageUrl) {
         Movie movie = new Movie();
-        movie.setId(Movie.getCount());
-        Movie.incCount();
+        movie.setId("");
         movie.setTitle(title);
         movie.setDescription(description);
         movie.setStudio(studio);

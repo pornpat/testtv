@@ -16,16 +16,20 @@ import android.support.v17.leanback.widget.VerticalGridPresenter;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 
-import com.iptv.iptv.main.presenter.CardPresenter;
 import com.iptv.iptv.lib.MovieDetailsActivity;
-import com.iptv.iptv.lib.Movie;
-import com.iptv.iptv.lib.MovieList;
+import com.iptv.iptv.main.data.VideoProvider;
 import com.iptv.iptv.main.event.SelectCategoryEvent;
+import com.iptv.iptv.main.model.Movie;
+import com.iptv.iptv.main.presenter.CardPresenter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,12 +43,21 @@ public class MovieGridFragment extends VerticalGridFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        List<Movie> list = MovieList.setupMovies();
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < list.size(); j++) {
-                mVideoObjectAdapter.add(list.get(j));
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                long seed = System.nanoTime();
+                HashMap<String, List<Movie>> movies = VideoProvider.getMovieList();
+                for (Map.Entry<String, List<Movie>> entry : movies.entrySet()) {
+                    List<Movie> list = entry.getValue();
+                    Collections.shuffle(list, new Random(seed));
+                    for (Movie movie : list) {
+                        mVideoObjectAdapter.add(movie);
+                    }
+                }
+                startEntranceTransition();
             }
-        }
+        }, 500);
+
         setAdapter(mVideoObjectAdapter);
 
         showTitle(false);

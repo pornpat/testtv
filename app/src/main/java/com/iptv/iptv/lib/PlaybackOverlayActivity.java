@@ -15,7 +15,6 @@
 package com.iptv.iptv.lib;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaMetadata;
 import android.media.MediaPlayer;
@@ -32,6 +31,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.model.Movie;
 
 /**
  * PlaybackOverlayActivity for video playback that loads PlaybackOverlayFragment

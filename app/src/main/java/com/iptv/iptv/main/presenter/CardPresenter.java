@@ -22,7 +22,7 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.iptv.iptv.R;
-import com.iptv.iptv.lib.Movie;
+import com.iptv.iptv.main.model.Movie;
 
 /*
  * A CardPresenter is used to generate Views and bind Objects to them on demand.

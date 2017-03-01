@@ -41,11 +41,14 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.data.VideoProvider;
+import com.iptv.iptv.main.model.Movie;
 import com.iptv.iptv.main.presenter.CardPresenter;
 import com.iptv.iptv.main.presenter.DetailsDescriptionPresenter;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /*
  * LeanbackDetailsFragment extends DetailsFragment, a Wrapper fragment for leanback details screens.
@@ -159,12 +162,17 @@ public class MovieDetailsFragment extends DetailsFragment {
 
     private void setupMovieListRow() {
         String subcategories[] = {getString(R.string.related_movies)};
-        List<Movie> list = MovieList.list;
+        HashMap<String, List<Movie>> movies = VideoProvider.getMovieList();
 
-        Collections.shuffle(list);
+        // Generating related video list.
         ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter());
-        for (int j = 0; j < NUM_COLS; j++) {
-            listRowAdapter.add(list.get(j % 5));
+        for (Map.Entry<String, List<Movie>> entry : movies.entrySet()) {
+            if (mSelectedMovie.getCategory().contains(entry.getKey())) {
+                List<Movie> list = entry.getValue();
+                for (int j = 0; j < list.size(); j++) {
+                    listRowAdapter.add(list.get(j));
+                }
+            }
         }
 
         HeaderItem header = new HeaderItem(0, subcategories[0]);

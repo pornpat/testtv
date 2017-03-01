@@ -15,6 +15,7 @@
 package com.iptv.iptv.lib;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaMetadata;
 import android.media.MediaPlayer;
@@ -31,6 +32,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.data.VideoProvider;
 import com.iptv.iptv.main.model.Movie;
 
 /**
@@ -86,6 +88,8 @@ public class PlaybackOverlayActivity extends Activity {
 
         setContentView(R.layout.playback_controls);
         loadViews();
+
+        VideoProvider.setQueue(mSelectedMovie);
 
         playPause(true);
         //Example for handling resizing view for overscan
@@ -288,6 +292,43 @@ public class PlaybackOverlayActivity extends Activity {
         @Override
         public void onPause() {
             playPause(false);
+        }
+
+        @Override
+        public void onPlayFromMediaId(String mediaId, Bundle extras) {
+            Movie movie = VideoProvider.getMovieById(mediaId);
+            if (movie != null) {
+                setVideoPath(movie.getVideoUrl());
+                setPlaybackState(PlaybackState.STATE_PAUSED);
+                updateMetadata(movie);
+                playPause(extras.getBoolean(AUTO_PLAY));
+            }
+        }
+
+        @Override
+        public void onSkipToNext() {
+            // Update the media to skip to the next video.
+            mPosition = 0;
+            setPlaybackState(PlaybackState.STATE_SKIPPING_TO_NEXT);
+
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(PlaybackOverlayActivity.AUTO_PLAY, true);
+
+            String nextId = VideoProvider.nextVideoId();
+            getMediaController().getTransportControls().playFromMediaId(nextId, bundle);
+        }
+
+        @Override
+        public void onSkipToPrevious() {
+            // Update the media to skip to the previous video.
+            mPosition = 0;
+            setPlaybackState(PlaybackState.STATE_SKIPPING_TO_PREVIOUS);
+
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(PlaybackOverlayActivity.AUTO_PLAY, true);
+
+            String prevId = VideoProvider.prevVideoId();
+            getMediaController().getTransportControls().playFromMediaId(prevId, bundle);
         }
 
         @Override

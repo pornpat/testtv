@@ -51,6 +51,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.data.VideoProvider;
 import com.iptv.iptv.main.model.Movie;
 import com.iptv.iptv.main.presenter.CardPresenter;
 
@@ -107,6 +108,8 @@ public class PlaybackOverlayFragment extends android.support.v17.leanback.app.Pl
 
         mSelectedMovie = getActivity()
                 .getIntent().getParcelableExtra(MovieDetailsActivity.MOVIE);
+
+        VideoProvider.setQueue(mSelectedMovie);
 
         mHandler = new Handler();
 
@@ -280,9 +283,9 @@ public class PlaybackOverlayFragment extends android.support.v17.leanback.app.Pl
 
     private void addOtherRows() {
         ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter());
-//        for (Movie movie : VideoProvider.getCurrentQueue()) {
-//            listRowAdapter.add(movie);
-//        }
+        for (Movie movie : VideoProvider.getCurrentQueue()) {
+            listRowAdapter.add(movie);
+        }
         HeaderItem header = new HeaderItem(0, getString(R.string.related_movies));
         mRowsAdapter.add(new ListRow(header, listRowAdapter));
 

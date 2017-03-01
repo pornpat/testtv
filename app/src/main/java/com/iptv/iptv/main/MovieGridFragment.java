@@ -1,9 +1,10 @@
 package com.iptv.iptv.main;
 
 
+import android.app.LoaderManager;
 import android.content.Intent;
+import android.content.Loader;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v17.leanback.app.VerticalGridFragment;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
 import android.support.v17.leanback.widget.ImageCardView;
@@ -15,8 +16,11 @@ import android.support.v17.leanback.widget.RowPresenter;
 import android.support.v17.leanback.widget.VerticalGridPresenter;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.widget.Toast;
 
+import com.iptv.iptv.R;
 import com.iptv.iptv.lib.MovieDetailsActivity;
+import com.iptv.iptv.main.data.VideoItemLoader;
 import com.iptv.iptv.main.data.VideoProvider;
 import com.iptv.iptv.main.event.SelectCategoryEvent;
 import com.iptv.iptv.main.model.Movie;
@@ -25,47 +29,36 @@ import com.iptv.iptv.main.presenter.CardPresenter;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MovieGridFragment extends VerticalGridFragment {
+public class MovieGridFragment extends VerticalGridFragment implements LoaderManager.LoaderCallbacks<HashMap<String, List<Movie>>> {
 
     private static final int NUM_COLUMNS = 4;
     private final ArrayObjectAdapter mVideoObjectAdapter = new ArrayObjectAdapter(new CardPresenter());
+
+    private static String mVideosUrl;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-                long seed = System.nanoTime();
-                HashMap<String, List<Movie>> movies = VideoProvider.getMovieList();
-                for (Map.Entry<String, List<Movie>> entry : movies.entrySet()) {
-                    List<Movie> list = entry.getValue();
-                    Collections.shuffle(list, new Random(seed));
-                    for (Movie movie : list) {
-                        mVideoObjectAdapter.add(movie);
-                    }
-                }
-                startEntranceTransition();
-            }
-        }, 500);
-
-        setAdapter(mVideoObjectAdapter);
+        loadVideoData();
 
         showTitle(false);
 
-        if (savedInstanceState == null) {
-            prepareEntranceTransition();
-        }
+        prepareEntranceTransition();
         setupFragment();
+    }
+
+    private void loadVideoData() {
+        VideoProvider.setContext(getActivity());
+        mVideosUrl = getActivity().getResources().getString(R.string.catalog_url);
+        getLoaderManager().initLoader(0, null, this);
     }
 
     private void setupFragment() {
@@ -73,15 +66,37 @@ public class MovieGridFragment extends VerticalGridFragment {
         gridPresenter.setNumberOfColumns(NUM_COLUMNS);
         setGridPresenter(gridPresenter);
 
-        // After 500ms, start the animation to transition the cards into view.
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-                startEntranceTransition();
-            }
-        }, 500);
-
         setOnItemViewClickedListener(new ItemViewClickedListener());
         setOnItemViewSelectedListener(new ItemViewSelectedListener());
+    }
+
+    @Override
+    public Loader<HashMap<String, List<Movie>>> onCreateLoader(int i, Bundle bundle) {
+        return new VideoItemLoader(getActivity(), mVideosUrl);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<HashMap<String, List<Movie>>> loader, HashMap<String, List<Movie>> data) {
+        if (null != data && !data.isEmpty()) {
+            for (Map.Entry<String, List<Movie>> entry : data.entrySet()) {
+                List<Movie> list = entry.getValue();
+
+                for (int j = 0; j < list.size(); j++) {
+                    mVideoObjectAdapter.add(list.get(j));
+                }
+            }
+        } else {
+            Toast.makeText(getActivity(), "Failed to load videos.", Toast.LENGTH_LONG).show();
+        }
+
+        setAdapter(mVideoObjectAdapter);
+
+        startEntranceTransition();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<HashMap<String, List<Movie>>> loader) {
+        mVideoObjectAdapter.clear();
     }
 
     private final class ItemViewClickedListener implements OnItemViewClickedListener {

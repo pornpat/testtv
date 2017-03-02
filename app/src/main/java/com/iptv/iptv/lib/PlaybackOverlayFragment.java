@@ -292,7 +292,7 @@ public class PlaybackOverlayFragment extends android.support.v17.leanback.app.Pl
     }
 
     private int getUpdatePeriod() {
-        if (getView() == null || mPlaybackControlsRow.getTotalTime() <= 0) {
+        if (getView() == null || mPlaybackControlsRow.getTotalTime() <= 0 || getView().getWidth() == 0) {
             return DEFAULT_UPDATE_PERIOD;
         }
         return Math.max(UPDATE_PERIOD, mPlaybackControlsRow.getTotalTime() / getView().getWidth());
@@ -458,14 +458,19 @@ public class PlaybackOverlayFragment extends android.support.v17.leanback.app.Pl
         }
 
         @Override
-        public void onMetadataChanged(MediaMetadata metadata) {
+        public void onMetadataChanged(final MediaMetadata metadata) {
             Log.d(TAG, "received update of media metadata");
-            updateMovieView(
-                    metadata.getString(MediaMetadata.METADATA_KEY_DISPLAY_TITLE),
-                    metadata.getString(MediaMetadata.METADATA_KEY_DISPLAY_SUBTITLE),
-                    metadata.getString(MediaMetadata.METADATA_KEY_DISPLAY_ICON_URI),
-                    metadata.getLong(MediaMetadata.METADATA_KEY_DURATION)
-            );
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    updateMovieView(
+                            metadata.getString(MediaMetadata.METADATA_KEY_DISPLAY_TITLE),
+                            metadata.getString(MediaMetadata.METADATA_KEY_DISPLAY_SUBTITLE),
+                            metadata.getString(MediaMetadata.METADATA_KEY_DISPLAY_ICON_URI),
+                            metadata.getLong(MediaMetadata.METADATA_KEY_DURATION)
+                    );
+                }
+            }, 1000);
         }
     }
 }

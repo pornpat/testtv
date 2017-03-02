@@ -184,6 +184,8 @@ public class PlaybackOverlayFragment extends android.support.v17.leanback.app.Pl
             }
         });
         playbackControlsRowPresenter.setSecondaryActionsHidden(HIDE_MORE_ACTIONS);
+        playbackControlsRowPresenter.setBackgroundColor(getResources().getColor(R.color.selected_background));
+        playbackControlsRowPresenter.setProgressColor(getResources().getColor(R.color.fastlane_background));
 
         ps.addClassPresenter(PlaybackControlsRow.class, playbackControlsRowPresenter);
         ps.addClassPresenter(ListRow.class, new ListRowPresenter());

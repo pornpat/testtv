@@ -64,19 +64,6 @@ public class PlaybackOverlayActivity extends Activity {
         mSession.setPlaybackState(stateBuilder.build());
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BUTTON_R1) {
-            getMediaController().getTransportControls().skipToNext();
-            return true;
-        } else if (keyCode == KeyEvent.KEYCODE_BUTTON_L1) {
-            getMediaController().getTransportControls().skipToPrevious();
-            return true;
-        }
-
-        return super.onKeyDown(keyCode, event);
-    }
-
     /**
      * Called when the activity is first created.
      */
@@ -303,32 +290,6 @@ public class PlaybackOverlayActivity extends Activity {
                 updateMetadata(movie);
                 playPause(extras.getBoolean(AUTO_PLAY));
             }
-        }
-
-        @Override
-        public void onSkipToNext() {
-            // Update the media to skip to the next video.
-            mPosition = 0;
-            setPlaybackState(PlaybackState.STATE_SKIPPING_TO_NEXT);
-
-            Bundle bundle = new Bundle();
-            bundle.putBoolean(PlaybackOverlayActivity.AUTO_PLAY, true);
-
-            String nextId = VideoProvider.nextVideoId();
-            getMediaController().getTransportControls().playFromMediaId(nextId, bundle);
-        }
-
-        @Override
-        public void onSkipToPrevious() {
-            // Update the media to skip to the previous video.
-            mPosition = 0;
-            setPlaybackState(PlaybackState.STATE_SKIPPING_TO_PREVIOUS);
-
-            Bundle bundle = new Bundle();
-            bundle.putBoolean(PlaybackOverlayActivity.AUTO_PLAY, true);
-
-            String prevId = VideoProvider.prevVideoId();
-            getMediaController().getTransportControls().playFromMediaId(prevId, bundle);
         }
 
         @Override

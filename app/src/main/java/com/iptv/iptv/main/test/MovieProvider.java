@@ -79,7 +79,7 @@ public class MovieProvider {
 
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject movieObj = jsonArray.getJSONObject(i);
-            id = movieObj.getInt(TAG_AUDIO_ID);
+            id = movieObj.getInt(TAG_ID);
 
             JSONObject detailObj = movieObj.getJSONObject(TAG_DETAIL);
             name = detailObj.getString(TAG_NAME);
@@ -94,11 +94,16 @@ public class MovieProvider {
             List<TrackItem> tracks = new ArrayList<>();
             for (int j = 0; j < trackArray.length(); j++) {
                 JSONObject trackObj = trackArray.getJSONObject(j);
-                trackId = trackObj.getInt(TAG_ID);
-                JSONObject subtitleObj = trackObj.getJSONObject(TAG_SUBTlTLE);
-                subtitle = subtitleObj.getString(TAG_LANGUAGE);
+                trackId = trackObj.getInt(TAG_AUDIO_ID);
+                if (trackObj.isNull(TAG_SUBTlTLE)) {
+                    subtitle = "-";
+                } else {
+                    JSONObject subtitleObj = trackObj.getJSONObject(TAG_SUBTlTLE);
+                    subtitle = subtitleObj.getString(TAG_LANGUAGE);
+                }
+
                 JSONObject audioObj = trackObj.getJSONObject(TAG_AUDIO);
-                audio = audioObj.getString(TAG_AUDIO);
+                audio = audioObj.getString(TAG_LANGUAGE);
 
                 int discId;
                 String videoUrl;

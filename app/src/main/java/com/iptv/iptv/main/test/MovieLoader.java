@@ -13,7 +13,7 @@ import java.util.List;
 
 public class MovieLoader extends AsyncTaskLoader<HashMap<String, List<MovieItem>>> {
 
-    private static final String TAG = "VideoItemLoader";
+    private static final String TAG = "MovieLoader";
     private final String mUrl;
 
     public MovieLoader(Context context, String url) {

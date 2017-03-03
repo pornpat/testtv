@@ -16,15 +16,16 @@ import android.support.v17.leanback.widget.RowPresenter;
 import android.support.v17.leanback.widget.VerticalGridPresenter;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.widget.Toast;
 
-import com.iptv.iptv.R;
 import com.iptv.iptv.lib.MovieDetailsActivity;
-import com.iptv.iptv.main.data.VideoItemLoader;
-import com.iptv.iptv.main.data.VideoProvider;
 import com.iptv.iptv.main.event.SelectCategoryEvent;
 import com.iptv.iptv.main.model.Movie;
 import com.iptv.iptv.main.presenter.CardPresenter;
+import com.iptv.iptv.main.test.MovieItem;
+import com.iptv.iptv.main.test.MovieLoader;
+import com.iptv.iptv.main.test.MovieProvider;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -36,7 +37,7 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MovieGridFragment extends VerticalGridFragment implements LoaderManager.LoaderCallbacks<HashMap<String, List<Movie>>> {
+public class MovieGridFragment extends VerticalGridFragment implements LoaderManager.LoaderCallbacks<HashMap<String, List<MovieItem>>> {
 
     private static final int NUM_COLUMNS = 4;
     private final ArrayObjectAdapter mVideoObjectAdapter = new ArrayObjectAdapter(new CardPresenter());
@@ -56,8 +57,9 @@ public class MovieGridFragment extends VerticalGridFragment implements LoaderMan
     }
 
     private void loadVideoData() {
-        VideoProvider.setContext(getActivity());
-        mVideosUrl = getActivity().getResources().getString(R.string.catalog_url);
+        MovieProvider.setContext(getActivity());
+//        mVideosUrl = getActivity().getResources().getString(R.string.catalog_url);
+        mVideosUrl = "http://139.59.231.135/uplay/public/api/v1/movies";
         getLoaderManager().initLoader(0, null, this);
     }
 
@@ -71,19 +73,20 @@ public class MovieGridFragment extends VerticalGridFragment implements LoaderMan
     }
 
     @Override
-    public Loader<HashMap<String, List<Movie>>> onCreateLoader(int i, Bundle bundle) {
-        return new VideoItemLoader(getActivity(), mVideosUrl);
+    public Loader<HashMap<String, List<MovieItem>>> onCreateLoader(int i, Bundle bundle) {
+        return new MovieLoader(getActivity(), mVideosUrl);
     }
 
     @Override
-    public void onLoadFinished(Loader<HashMap<String, List<Movie>>> loader, HashMap<String, List<Movie>> data) {
+    public void onLoadFinished(Loader<HashMap<String, List<MovieItem>>> loader, HashMap<String, List<MovieItem>> data) {
         if (null != data && !data.isEmpty()) {
-            for (Map.Entry<String, List<Movie>> entry : data.entrySet()) {
-                List<Movie> list = entry.getValue();
+            for (Map.Entry<String, List<MovieItem>> entry : data.entrySet()) {
+                List<MovieItem> list = entry.getValue();
 
-                for (int j = 0; j < list.size(); j++) {
-                    mVideoObjectAdapter.add(list.get(j));
-                }
+                Log.v("testkn", list.size() + "");
+//                for (int j = 0; j < list.size(); j++) {
+//                    mVideoObjectAdapter.add(list.get(j));
+//                }
             }
         } else {
             Toast.makeText(getActivity(), "Failed to load videos.", Toast.LENGTH_LONG).show();
@@ -95,7 +98,7 @@ public class MovieGridFragment extends VerticalGridFragment implements LoaderMan
     }
 
     @Override
-    public void onLoaderReset(Loader<HashMap<String, List<Movie>>> loader) {
+    public void onLoaderReset(Loader<HashMap<String, List<MovieItem>>> loader) {
         mVideoObjectAdapter.clear();
     }
 

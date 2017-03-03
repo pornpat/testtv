@@ -76,8 +76,6 @@ public class PlaybackOverlayActivity extends Activity {
         setContentView(R.layout.playback_controls);
         loadViews();
 
-        VideoProvider.setQueue(mSelectedMovie);
-
         playPause(true);
         //Example for handling resizing view for overscan
         //Utils.overScan(this, mVideoView);

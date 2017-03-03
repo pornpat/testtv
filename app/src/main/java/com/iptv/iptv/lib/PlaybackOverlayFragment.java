@@ -50,7 +50,6 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.iptv.iptv.R;
-import com.iptv.iptv.main.data.VideoProvider;
 import com.iptv.iptv.main.model.Movie;
 
 /*
@@ -86,8 +85,6 @@ public class PlaybackOverlayFragment extends android.support.v17.leanback.app.Pl
 
         mSelectedMovie = getActivity()
                 .getIntent().getParcelableExtra(MovieDetailsActivity.MOVIE);
-
-        VideoProvider.setQueue(mSelectedMovie);
 
         mHandler = new Handler();
 

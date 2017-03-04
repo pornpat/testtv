@@ -16,6 +16,7 @@ package com.iptv.iptv.lib;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v17.leanback.app.DetailsFragment;
 import android.support.v17.leanback.widget.Action;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
@@ -104,24 +105,30 @@ public class MovieDetailsFragment extends DetailsFragment {
         Log.d(TAG, "doInBackground: " + mSelectedMovie.toString());
         final DetailsOverviewRow row = new DetailsOverviewRow(mSelectedMovie);
         row.setImageDrawable(getResources().getDrawable(R.drawable.default_background));
-        int width = Utils.convertDpToPixel(getActivity()
+        final int width = Utils.convertDpToPixel(getActivity()
                 .getApplicationContext(), DETAIL_THUMB_WIDTH);
-        int height = Utils.convertDpToPixel(getActivity()
+        final int height = Utils.convertDpToPixel(getActivity()
                 .getApplicationContext(), DETAIL_THUMB_HEIGHT);
-        Glide.with(getActivity())
-                .load(mSelectedMovie.getImageUrl())
-                .centerCrop()
-                .error(R.drawable.default_background)
-                .into(new SimpleTarget<GlideDrawable>(width, height) {
-                    @Override
-                    public void onResourceReady(GlideDrawable resource,
-                                                GlideAnimation<? super GlideDrawable>
-                                                        glideAnimation) {
-                        Log.d(TAG, "details overview card image url ready: " + resource);
-                        row.setImageDrawable(resource);
-                        mAdapter.notifyArrayItemRangeChanged(0, mAdapter.size());
-                    }
-                });
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Glide.with(getActivity())
+                        .load(mSelectedMovie.getImageUrl())
+                        .centerCrop()
+                        .error(R.drawable.default_background)
+                        .into(new SimpleTarget<GlideDrawable>(width, height) {
+                            @Override
+                            public void onResourceReady(GlideDrawable resource,
+                                                        GlideAnimation<? super GlideDrawable>
+                                                                glideAnimation) {
+                                Log.d(TAG, "details overview card image url ready: " + resource);
+                                row.setImageDrawable(resource);
+                                mAdapter.notifyArrayItemRangeChanged(0, mAdapter.size());
+                            }
+                        });
+            }
+        }, 500);
 
         SparseArrayObjectAdapter adapter = new SparseArrayObjectAdapter();
         adapter.set(ACTION_WATCH_EN, new Action(ACTION_WATCH_EN, getResources()

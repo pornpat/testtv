@@ -41,10 +41,12 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.iptv.iptv.R;
-import com.iptv.iptv.main.data.VideoProvider;
-import com.iptv.iptv.main.model.Movie;
 import com.iptv.iptv.main.presenter.CardPresenter;
 import com.iptv.iptv.main.presenter.DetailsDescriptionPresenter;
+import com.iptv.iptv.main.test.MovieItem;
+import com.iptv.iptv.main.test.MovieProvider;
+
+import org.parceler.Parcels;
 
 import java.util.HashMap;
 import java.util.List;
@@ -66,7 +68,7 @@ public class MovieDetailsFragment extends DetailsFragment {
 
     private static final int NUM_COLS = 10;
 
-    private Movie mSelectedMovie;
+    private MovieItem mSelectedMovie;
 
     private ArrayObjectAdapter mAdapter;
     private ClassPresenterSelector mPresenterSelector;
@@ -76,8 +78,8 @@ public class MovieDetailsFragment extends DetailsFragment {
         Log.d(TAG, "onCreate DetailsFragment");
         super.onCreate(savedInstanceState);
 
-        mSelectedMovie = getActivity().getIntent()
-                .getParcelableExtra(MovieDetailsActivity.MOVIE);
+        mSelectedMovie = Parcels.unwrap(getActivity().getIntent()
+                .getParcelableExtra(MovieDetailsActivity.MOVIE));
 
         if (mSelectedMovie != null) {
             setupAdapter();
@@ -107,7 +109,7 @@ public class MovieDetailsFragment extends DetailsFragment {
         int height = Utils.convertDpToPixel(getActivity()
                 .getApplicationContext(), DETAIL_THUMB_HEIGHT);
         Glide.with(getActivity())
-                .load(mSelectedMovie.getCardImageUrl())
+                .load(mSelectedMovie.getImageUrl())
                 .centerCrop()
                 .error(R.drawable.default_background)
                 .into(new SimpleTarget<GlideDrawable>(width, height) {
@@ -150,7 +152,7 @@ public class MovieDetailsFragment extends DetailsFragment {
             public void onActionClicked(Action action) {
                 if (action.getId() == ACTION_WATCH_EN || action.getId() == ACTION_WATCH_TH) {
                     Intent intent = new Intent(getActivity(), PlaybackOverlayActivity.class);
-                    intent.putExtra(MovieDetailsActivity.MOVIE, mSelectedMovie);
+                    intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(mSelectedMovie));
                     startActivity(intent);
                 } else {
                     Toast.makeText(getActivity(), action.toString(), Toast.LENGTH_SHORT).show();
@@ -162,16 +164,14 @@ public class MovieDetailsFragment extends DetailsFragment {
 
     private void setupMovieListRow() {
         String subcategories[] = {getString(R.string.related_movies)};
-        HashMap<String, List<Movie>> movies = VideoProvider.getMovieList();
+        HashMap<String, List<MovieItem>> movies = MovieProvider.getMovieList();
 
         // Generating related video list.
         ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter());
-        for (Map.Entry<String, List<Movie>> entry : movies.entrySet()) {
-            if (mSelectedMovie.getCategory().contains(entry.getKey())) {
-                List<Movie> list = entry.getValue();
-                for (int j = 0; j < list.size(); j++) {
-                    listRowAdapter.add(list.get(j));
-                }
+        for (Map.Entry<String, List<MovieItem>> entry : movies.entrySet()) {
+            List<MovieItem> list = entry.getValue();
+            for (int j = 0; j < list.size(); j++) {
+                listRowAdapter.add(list.get(j));
             }
         }
 
@@ -188,11 +188,11 @@ public class MovieDetailsFragment extends DetailsFragment {
         public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
                                   RowPresenter.ViewHolder rowViewHolder, Row row) {
 
-            if (item instanceof Movie) {
-                Movie movie = (Movie) item;
+            if (item instanceof MovieItem) {
+                MovieItem movie = (MovieItem) item;
                 Log.d(TAG, "Item: " + item.toString());
                 Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
-                intent.putExtra(getResources().getString(R.string.movie), movie);
+                intent.putExtra(getResources().getString(R.string.movie), Parcels.wrap(movie));
                 intent.putExtra(getResources().getString(R.string.should_start), true);
 
                 Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(

@@ -16,12 +16,10 @@ import android.support.v17.leanback.widget.RowPresenter;
 import android.support.v17.leanback.widget.VerticalGridPresenter;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.iptv.iptv.lib.MovieDetailsActivity;
 import com.iptv.iptv.main.event.SelectCategoryEvent;
-import com.iptv.iptv.main.model.Movie;
 import com.iptv.iptv.main.presenter.CardPresenter;
 import com.iptv.iptv.main.test.MovieItem;
 import com.iptv.iptv.main.test.MovieLoader;
@@ -29,6 +27,7 @@ import com.iptv.iptv.main.test.MovieProvider;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.parceler.Parcels;
 
 import java.util.HashMap;
 import java.util.List;
@@ -83,10 +82,9 @@ public class MovieGridFragment extends VerticalGridFragment implements LoaderMan
             for (Map.Entry<String, List<MovieItem>> entry : data.entrySet()) {
                 List<MovieItem> list = entry.getValue();
 
-                Log.v("testkn", list.size() + "");
-//                for (int j = 0; j < list.size(); j++) {
-//                    mVideoObjectAdapter.add(list.get(j));
-//                }
+                for (int j = 0; j < list.size(); j++) {
+                    mVideoObjectAdapter.add(list.get(j));
+                }
             }
         } else {
             Toast.makeText(getActivity(), "Failed to load videos.", Toast.LENGTH_LONG).show();
@@ -106,9 +104,9 @@ public class MovieGridFragment extends VerticalGridFragment implements LoaderMan
         @Override
         public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
                                   RowPresenter.ViewHolder rowViewHolder, Row row) {
-            Movie movie = (Movie) item;
+            MovieItem movie = (MovieItem) item;
             Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
-            intent.putExtra(MovieDetailsActivity.MOVIE, movie);
+            intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(movie));
 
             Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
                     getActivity(),

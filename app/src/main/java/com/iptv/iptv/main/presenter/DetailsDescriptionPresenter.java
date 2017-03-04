@@ -16,18 +16,18 @@ package com.iptv.iptv.main.presenter;
 
 import android.support.v17.leanback.widget.AbstractDetailsDescriptionPresenter;
 
-import com.iptv.iptv.main.model.Movie;
+import com.iptv.iptv.main.test.MovieItem;
 
 public class DetailsDescriptionPresenter extends AbstractDetailsDescriptionPresenter {
 
     @Override
     protected void onBindDescription(ViewHolder viewHolder, Object item) {
-        Movie movie = (Movie) item;
+        MovieItem movie = (MovieItem) item;
 
         if (movie != null) {
-            viewHolder.getTitle().setText(movie.getTitle());
+            viewHolder.getTitle().setText(movie.getName());
 //            viewHolder.getSubtitle().setText("ความยาว: 135 min " + " ประเภท: Action & Adventure");
-            viewHolder.getSubtitle().setText("ความยาว: 135 min " + " ประเภท: Action");
+            viewHolder.getSubtitle().setText("ประเภท: Action");
             viewHolder.getBody().setText(movie.getDescription());
         }
     }

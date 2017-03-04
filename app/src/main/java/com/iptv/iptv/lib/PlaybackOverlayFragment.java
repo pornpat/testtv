@@ -51,6 +51,9 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.iptv.iptv.R;
 import com.iptv.iptv.main.model.Movie;
+import com.iptv.iptv.main.test.MovieItem;
+
+import org.parceler.Parcels;
 
 /*
  * Class for video playback with media control
@@ -73,7 +76,7 @@ public class PlaybackOverlayFragment extends android.support.v17.leanback.app.Pl
     private PlaybackControlsRow mPlaybackControlsRow;
     private Handler mHandler;
     private Runnable mRunnable;
-    private Movie mSelectedMovie;
+    private MovieItem mSelectedMovie;
 
     private MediaController mMediaController;
     private final MediaController.Callback mMediaControllerCallback = new MediaControllerCallback();
@@ -83,8 +86,8 @@ public class PlaybackOverlayFragment extends android.support.v17.leanback.app.Pl
         Log.i(TAG, "onCreate");
         super.onCreate(savedInstanceState);
 
-        mSelectedMovie = getActivity()
-                .getIntent().getParcelableExtra(MovieDetailsActivity.MOVIE);
+        mSelectedMovie = Parcels.unwrap(getActivity()
+                .getIntent().getParcelableExtra(MovieDetailsActivity.MOVIE));
 
         mHandler = new Handler();
 
@@ -211,11 +214,10 @@ public class PlaybackOverlayFragment extends android.support.v17.leanback.app.Pl
         mRowsAdapter.notifyArrayItemRangeChanged(0, 1);
     }
 
-    private void updateMovieView(String title, String studio, String cardImageUrl, long duration) {
+    private void updateMovieView(String title, String cardImageUrl, long duration) {
         if (mPlaybackControlsRow.getItem() != null) {
-            Movie item = (Movie) mPlaybackControlsRow.getItem();
-            item.setTitle(title);
-            item.setStudio(studio);
+            MovieItem item = (MovieItem) mPlaybackControlsRow.getItem();
+            item.setName(title);
         }
         mPlaybackControlsRow.setTotalTime((int) duration);
 
@@ -285,8 +287,8 @@ public class PlaybackOverlayFragment extends android.support.v17.leanback.app.Pl
     private static class DescriptionPresenter extends AbstractDetailsDescriptionPresenter {
         @Override
         protected void onBindDescription(ViewHolder viewHolder, Object item) {
-            viewHolder.getTitle().setText(((Movie) item).getTitle());
-            viewHolder.getSubtitle().setText(((Movie) item).getStudio());
+            viewHolder.getTitle().setText(((MovieItem) item).getName());
+//            viewHolder.getSubtitle().setText(((Movie) item).getStudio());
         }
     }
 
@@ -347,7 +349,6 @@ public class PlaybackOverlayFragment extends android.support.v17.leanback.app.Pl
                 public void run() {
                     updateMovieView(
                             metadata.getString(MediaMetadata.METADATA_KEY_DISPLAY_TITLE),
-                            metadata.getString(MediaMetadata.METADATA_KEY_DISPLAY_SUBTITLE),
                             metadata.getString(MediaMetadata.METADATA_KEY_DISPLAY_ICON_URI),
                             metadata.getLong(MediaMetadata.METADATA_KEY_DURATION)
                     );

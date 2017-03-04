@@ -15,7 +15,6 @@
 package com.iptv.iptv.lib;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaMetadata;
 import android.media.MediaPlayer;
@@ -25,7 +24,6 @@ import android.media.session.PlaybackState;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
@@ -34,6 +32,10 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.iptv.iptv.R;
 import com.iptv.iptv.main.data.VideoProvider;
 import com.iptv.iptv.main.model.Movie;
+import com.iptv.iptv.main.test.MovieItem;
+import com.iptv.iptv.main.test.MovieProvider;
+
+import org.parceler.Parcels;
 
 /**
  * PlaybackOverlayActivity for video playback that loads PlaybackOverlayFragment
@@ -46,7 +48,7 @@ public class PlaybackOverlayActivity extends Activity {
     private int mPosition = 0;
     private long mStartTimeMillis;
     private long mDuration = -1;
-    private Movie mSelectedMovie;
+    private MovieItem mSelectedMovie;
 
     private int getPlaybackState() {
         PlaybackState state = getMediaController().getPlaybackState();
@@ -153,25 +155,25 @@ public class PlaybackOverlayActivity extends Activity {
         return actions;
     }
 
-    private void updateMetadata(final Movie movie) {
+    private void updateMetadata(final MovieItem movie) {
         final MediaMetadata.Builder metadataBuilder = new MediaMetadata.Builder();
 
-        metadataBuilder.putString(MediaMetadata.METADATA_KEY_MEDIA_ID, movie.getId());
-        metadataBuilder.putString(MediaMetadata.METADATA_KEY_DISPLAY_TITLE, movie.getTitle());
-        metadataBuilder.putString(MediaMetadata.METADATA_KEY_DISPLAY_SUBTITLE,
-                movie.getStudio());
+        metadataBuilder.putString(MediaMetadata.METADATA_KEY_MEDIA_ID, String.valueOf(movie.getId()));
+        metadataBuilder.putString(MediaMetadata.METADATA_KEY_DISPLAY_TITLE, movie.getName());
+//        metadataBuilder.putString(MediaMetadata.METADATA_KEY_DISPLAY_SUBTITLE,
+//                movie.getStudio());
         metadataBuilder.putString(MediaMetadata.METADATA_KEY_DISPLAY_DESCRIPTION,
                 movie.getDescription());
         metadataBuilder.putString(MediaMetadata.METADATA_KEY_DISPLAY_ICON_URI,
-                movie.getCardImageUrl());
+                movie.getImageUrl());
         metadataBuilder.putLong(MediaMetadata.METADATA_KEY_DURATION, mDuration);
 
         // And at minimum the title and artist for legacy support
-        metadataBuilder.putString(MediaMetadata.METADATA_KEY_TITLE, movie.getTitle());
-        metadataBuilder.putString(MediaMetadata.METADATA_KEY_ARTIST, movie.getStudio());
+        metadataBuilder.putString(MediaMetadata.METADATA_KEY_TITLE, movie.getName());
+//        metadataBuilder.putString(MediaMetadata.METADATA_KEY_ARTIST, movie.getStudio());
 
         Glide.with(this)
-                .load(Uri.parse(movie.getCardImageUrl()))
+                .load(Uri.parse(movie.getImageUrl()))
                 .asBitmap()
                 .into(new SimpleTarget<Bitmap>(500, 500) {
                     @Override
@@ -192,9 +194,9 @@ public class PlaybackOverlayActivity extends Activity {
                 mVideoView.setFocusableInTouchMode(false);
             }
         });
-        mSelectedMovie = getIntent().getParcelableExtra(MovieDetailsActivity.MOVIE);
+        mSelectedMovie = Parcels.unwrap(getIntent().getParcelableExtra(MovieDetailsActivity.MOVIE));
 
-        setVideoPath(mSelectedMovie.getVideoUrl());
+        setVideoPath(mSelectedMovie.getTracks().get(0).getDiscs().get(0).getVideoUrl());
         updateMetadata(mSelectedMovie);
     }
 
@@ -281,9 +283,9 @@ public class PlaybackOverlayActivity extends Activity {
 
         @Override
         public void onPlayFromMediaId(String mediaId, Bundle extras) {
-            Movie movie = VideoProvider.getMovieById(mediaId);
+            MovieItem movie = MovieProvider.getMovieById(mediaId);
             if (movie != null) {
-                setVideoPath(movie.getVideoUrl());
+                setVideoPath(movie.getTracks().get(0).getDiscs().get(0).getVideoUrl());
                 setPlaybackState(PlaybackState.STATE_PAUSED);
                 updateMetadata(movie);
                 playPause(extras.getBoolean(AUTO_PLAY));

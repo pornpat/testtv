@@ -9,10 +9,10 @@ import org.parceler.Parcel;
 @Parcel
 public class DiscItem {
 
-    public DiscItem() {}
-
     private int id;
     private String videoUrl;
+
+    public DiscItem() {}
 
     public int getId() {
         return id;

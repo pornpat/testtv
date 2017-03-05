@@ -10,6 +10,7 @@ import android.support.v17.leanback.widget.GuidedAction;
 
 import com.iptv.iptv.R;
 import com.iptv.iptv.lib.SeriesDetailsActivity;
+import com.iptv.iptv.lib.SeriesPlayerActivity;
 import com.iptv.iptv.main.model.SeriesItem;
 
 import org.parceler.Parcels;
@@ -64,7 +65,7 @@ public class SeriesEpisodeActivity extends LeanbackActivity {
 
         @Override
         public void onGuidedActionClicked(GuidedAction action) {
-            Intent intent = new Intent();
+            Intent intent = new Intent(getActivity(), SeriesPlayerActivity.class);
             intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(mSelectSeries));
             intent.putExtra("url", mSelectSeries.getTracks().get(track).getEpisodes().get((int) action.getId()).getUrl());
             startActivity(intent);

@@ -60,8 +60,8 @@ import java.util.Map;
 public class MovieDetailsFragment extends DetailsFragment {
     private static final String TAG = "MovieDetailsFragment";
 
-    private static final int ACTION_WATCH_EN = 1;
-    private static final int ACTION_WATCH_TH = 2;
+    private static final int ACTION_WATCH_TH = 1;
+    private static final int ACTION_WATCH_EN = 2;
     private static final int ACTION_ADD_FAV = 3;
 
     private static final int DETAIL_THUMB_WIDTH = 200;
@@ -131,11 +131,11 @@ public class MovieDetailsFragment extends DetailsFragment {
         }, 500);
 
         SparseArrayObjectAdapter adapter = new SparseArrayObjectAdapter();
-        adapter.set(ACTION_WATCH_EN, new Action(ACTION_WATCH_EN, getResources()
+        adapter.set(ACTION_WATCH_TH, new Action(ACTION_WATCH_TH, getResources()
                 .getString(R.string.watch),
-                getResources().getString(R.string.sound_en)));
-        adapter.set(ACTION_WATCH_TH, new Action(ACTION_WATCH_TH, getResources().getString(R.string.watch),
                 getResources().getString(R.string.sound_th)));
+        adapter.set(ACTION_WATCH_EN, new Action(ACTION_WATCH_EN, getResources().getString(R.string.watch),
+                getResources().getString(R.string.sound_en)));
         adapter.set(ACTION_ADD_FAV, new Action(ACTION_ADD_FAV, getResources().getString(R.string.add_fav)));
 
         row.setActionsAdapter(adapter);

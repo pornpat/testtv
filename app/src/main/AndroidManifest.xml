@@ -62,6 +62,7 @@
             android:theme="@style/Theme.Leanback.VerticalGrid" />
         <activity android:name=".lib.SeriesDetailsActivity" />
         <activity android:name=".main.SeriesEpisodeActivity" />
+        <activity android:name=".lib.SeriesPlayerActivity"></activity>
     </application>
 
 </manifest>

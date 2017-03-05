@@ -52,7 +52,11 @@
         <activity
             android:name=".main.LiveActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".main.MovieGridActivity"
+        <activity
+            android:name=".main.MovieGridActivity"
+            android:parentActivityName=".main.HomeActivity"
+            android:theme="@style/Theme.Leanback.VerticalGrid" />
+        <activity android:name=".main.SeriesGridActivity"
             android:parentActivityName=".main.HomeActivity"
             android:theme="@style/Theme.Leanback.VerticalGrid" />
     </application>

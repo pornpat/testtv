@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.iptv.iptv.R;
 import com.iptv.iptv.main.model.MovieItem;
+import com.iptv.iptv.main.model.SeriesItem;
 
 /*
  * A CardPresenter is used to generate Views and bind Objects to them on demand.
@@ -67,22 +68,42 @@ public class CardPresenter extends Presenter {
 
     @Override
     public void onBindViewHolder(Presenter.ViewHolder viewHolder, Object item) {
-        MovieItem movie = (MovieItem) item;
-        ImageCardView cardView = (ImageCardView) viewHolder.view;
+        if (item instanceof MovieItem) {
+            MovieItem movie = (MovieItem) item;
+            ImageCardView cardView = (ImageCardView) viewHolder.view;
 
-        Log.d(TAG, "onBindViewHolder");
-        if (movie.getImageUrl() != null) {
-            cardView.setTitleText(movie.getName());
-            cardView.setContentText("เสียง: EN/TH");
+            Log.d(TAG, "onBindViewHolder");
+            if (movie.getImageUrl() != null) {
+                cardView.setTitleText(movie.getName());
+                cardView.setContentText("เสียง: EN/TH");
 
-            int width = cardView.getResources().getDimensionPixelSize(R.dimen.card_width);
-            int height = cardView.getResources().getDimensionPixelSize(R.dimen.card_height);
-            cardView.setMainImageDimensions(width, height);
-            Glide.with(viewHolder.view.getContext())
-                    .load(movie.getImageUrl())
-                    .centerCrop()
-                    .error(mDefaultCardImage)
-                    .into(cardView.getMainImageView());
+                int width = cardView.getResources().getDimensionPixelSize(R.dimen.card_width);
+                int height = cardView.getResources().getDimensionPixelSize(R.dimen.card_height);
+                cardView.setMainImageDimensions(width, height);
+                Glide.with(viewHolder.view.getContext())
+                        .load(movie.getImageUrl())
+                        .centerCrop()
+                        .error(mDefaultCardImage)
+                        .into(cardView.getMainImageView());
+            }
+        } else if (item instanceof SeriesItem) {
+            SeriesItem series = (SeriesItem) item;
+            ImageCardView cardView = (ImageCardView) viewHolder.view;
+
+            Log.d(TAG, "onBindViewHolder");
+            if (series.getImageUrl() != null) {
+                cardView.setTitleText(series.getName());
+                cardView.setContentText("เสียง: EN/TH");
+
+                int width = cardView.getResources().getDimensionPixelSize(R.dimen.card_width);
+                int height = cardView.getResources().getDimensionPixelSize(R.dimen.card_height);
+                cardView.setMainImageDimensions(width, height);
+                Glide.with(viewHolder.view.getContext())
+                        .load(series.getImageUrl())
+                        .centerCrop()
+                        .error(mDefaultCardImage)
+                        .into(cardView.getMainImageView());
+            }
         }
     }
 

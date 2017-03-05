@@ -16,7 +16,7 @@ package com.iptv.iptv.main.presenter;
 
 import android.support.v17.leanback.widget.AbstractDetailsDescriptionPresenter;
 
-import com.iptv.iptv.main.test.MovieItem;
+import com.iptv.iptv.main.model.MovieItem;
 
 public class DetailsDescriptionPresenter extends AbstractDetailsDescriptionPresenter {
 

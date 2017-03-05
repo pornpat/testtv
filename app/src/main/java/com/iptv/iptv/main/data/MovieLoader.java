@@ -1,8 +1,10 @@
-package com.iptv.iptv.main.test;
+package com.iptv.iptv.main.data;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.util.Log;
+
+import com.iptv.iptv.main.model.MovieItem;
 
 import java.util.HashMap;
 import java.util.List;

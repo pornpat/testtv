@@ -21,9 +21,9 @@ import android.widget.Toast;
 import com.iptv.iptv.lib.MovieDetailsActivity;
 import com.iptv.iptv.main.event.SelectCategoryEvent;
 import com.iptv.iptv.main.presenter.CardPresenter;
-import com.iptv.iptv.main.test.MovieItem;
-import com.iptv.iptv.main.test.MovieLoader;
-import com.iptv.iptv.main.test.MovieProvider;
+import com.iptv.iptv.main.model.MovieItem;
+import com.iptv.iptv.main.data.MovieLoader;
+import com.iptv.iptv.main.data.MovieProvider;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

@@ -1,4 +1,4 @@
-package com.iptv.iptv.main.test;
+package com.iptv.iptv.main.model;
 
 import org.parceler.Parcel;
 

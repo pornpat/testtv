@@ -50,8 +50,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.iptv.iptv.R;
-import com.iptv.iptv.main.model.Movie;
-import com.iptv.iptv.main.test.MovieItem;
+import com.iptv.iptv.main.model.MovieItem;
 
 import org.parceler.Parcels;
 
@@ -297,11 +296,11 @@ public class PlaybackOverlayFragment extends android.support.v17.leanback.app.Pl
         public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
                                   RowPresenter.ViewHolder rowViewHolder, Row row) {
 
-            if (item instanceof Movie) {
-                Movie movie = (Movie) item;
+            if (item instanceof MovieItem) {
+                MovieItem movie = (MovieItem) item;
                 Log.d(TAG, "Item: " + item.toString());
                 Intent intent = new Intent(getActivity(), PlaybackOverlayActivity.class);
-                intent.putExtra(MovieDetailsActivity.MOVIE, movie);
+                intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(movie));
 
                 Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
                         getActivity(),

@@ -44,8 +44,8 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.iptv.iptv.R;
 import com.iptv.iptv.main.presenter.CardPresenter;
 import com.iptv.iptv.main.presenter.DetailsDescriptionPresenter;
-import com.iptv.iptv.main.test.MovieItem;
-import com.iptv.iptv.main.test.MovieProvider;
+import com.iptv.iptv.main.model.MovieItem;
+import com.iptv.iptv.main.data.MovieProvider;
 
 import org.parceler.Parcels;
 

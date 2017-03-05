@@ -1,7 +1,11 @@
-package com.iptv.iptv.main.test;
+package com.iptv.iptv.main.data;
 
 import android.content.Context;
 import android.content.res.Resources;
+
+import com.iptv.iptv.main.model.DiscItem;
+import com.iptv.iptv.main.model.MovieItem;
+import com.iptv.iptv.main.model.TrackItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;

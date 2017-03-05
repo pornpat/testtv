@@ -28,6 +28,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.SeriesEpisodeActivity;
 import com.iptv.iptv.main.data.SeriesProvider;
 import com.iptv.iptv.main.model.SeriesItem;
 import com.iptv.iptv.main.presenter.CardPresenter;
@@ -42,8 +43,8 @@ import java.util.Map;
 public class SeriesDetailsFragment extends DetailsFragment {
     private static final String TAG = "SeriesDetailsFragment";
 
-    private static final int ACTION_WATCH_EN = 1;
-    private static final int ACTION_WATCH_TH = 2;
+    private static final int ACTION_WATCH_TH = 1;
+    private static final int ACTION_WATCH_EN = 2;
     private static final int ACTION_ADD_FAV = 3;
 
     private static final int DETAIL_THUMB_WIDTH = 200;
@@ -111,11 +112,11 @@ public class SeriesDetailsFragment extends DetailsFragment {
         }, 500);
 
         SparseArrayObjectAdapter adapter = new SparseArrayObjectAdapter();
-        adapter.set(ACTION_WATCH_EN, new Action(ACTION_WATCH_EN, getResources()
+        adapter.set(ACTION_WATCH_TH, new Action(ACTION_WATCH_TH, getResources()
                 .getString(R.string.watch),
-                getResources().getString(R.string.sound_en)));
-        adapter.set(ACTION_WATCH_TH, new Action(ACTION_WATCH_TH, getResources().getString(R.string.watch),
                 getResources().getString(R.string.sound_th)));
+        adapter.set(ACTION_WATCH_EN, new Action(ACTION_WATCH_EN, getResources().getString(R.string.watch),
+                getResources().getString(R.string.sound_en)));
         adapter.set(ACTION_ADD_FAV, new Action(ACTION_ADD_FAV, getResources().getString(R.string.add_fav)));
 
         row.setActionsAdapter(adapter);
@@ -137,9 +138,18 @@ public class SeriesDetailsFragment extends DetailsFragment {
         detailsPresenter.setOnActionClickedListener(new OnActionClickedListener() {
             @Override
             public void onActionClicked(Action action) {
-                if (action.getId() == ACTION_WATCH_EN || action.getId() == ACTION_WATCH_TH) {
-                    Intent intent = new Intent(getActivity(), PlaybackOverlayActivity.class);
+                if (action.getId() == ACTION_WATCH_TH) {
+//                    Intent intent = new Intent(getActivity(), PlaybackOverlayActivity.class);
+//                    intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(mSelectedMovie));
+//                    startActivity(intent);
+                    Intent intent = new Intent(getActivity(), SeriesEpisodeActivity.class);
                     intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(mSelectedMovie));
+                    intent.putExtra("track", 0);
+                    startActivity(intent);
+                } else if (action.getId() == ACTION_WATCH_EN) {
+                    Intent intent = new Intent(getActivity(), SeriesEpisodeActivity.class);
+                    intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(mSelectedMovie));
+                    intent.putExtra("track", 1);
                     startActivity(intent);
                 } else {
                     Toast.makeText(getActivity(), action.toString(), Toast.LENGTH_SHORT).show();

@@ -60,7 +60,8 @@
             android:name=".main.SeriesGridActivity"
             android:parentActivityName=".main.HomeActivity"
             android:theme="@style/Theme.Leanback.VerticalGrid" />
-        <activity android:name=".lib.SeriesDetailsActivity"></activity>
+        <activity android:name=".lib.SeriesDetailsActivity" />
+        <activity android:name=".main.SeriesEpisodeActivity" />
     </application>
 
 </manifest>

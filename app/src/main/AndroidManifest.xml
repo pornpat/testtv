@@ -56,9 +56,11 @@
             android:name=".main.MovieGridActivity"
             android:parentActivityName=".main.HomeActivity"
             android:theme="@style/Theme.Leanback.VerticalGrid" />
-        <activity android:name=".main.SeriesGridActivity"
+        <activity
+            android:name=".main.SeriesGridActivity"
             android:parentActivityName=".main.HomeActivity"
             android:theme="@style/Theme.Leanback.VerticalGrid" />
+        <activity android:name=".lib.SeriesDetailsActivity"></activity>
     </application>
 
 </manifest>

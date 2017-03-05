@@ -1,17 +1,3 @@
-/*
- * Copyright (C) 2014 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- */
-
 package com.iptv.iptv.lib;
 
 import android.content.Intent;
@@ -42,10 +28,10 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.data.SeriesProvider;
+import com.iptv.iptv.main.model.SeriesItem;
 import com.iptv.iptv.main.presenter.CardPresenter;
 import com.iptv.iptv.main.presenter.DetailsDescriptionPresenter;
-import com.iptv.iptv.main.model.MovieItem;
-import com.iptv.iptv.main.data.MovieProvider;
 
 import org.parceler.Parcels;
 
@@ -53,12 +39,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/*
- * LeanbackDetailsFragment extends DetailsFragment, a Wrapper fragment for leanback details screens.
- * It shows a detailed view of video and its meta plus related videos.
- */
-public class MovieDetailsFragment extends DetailsFragment {
-    private static final String TAG = "MovieDetailsFragment";
+public class SeriesDetailsFragment extends DetailsFragment {
+    private static final String TAG = "SeriesDetailsFragment";
 
     private static final int ACTION_WATCH_EN = 1;
     private static final int ACTION_WATCH_TH = 2;
@@ -67,9 +49,7 @@ public class MovieDetailsFragment extends DetailsFragment {
     private static final int DETAIL_THUMB_WIDTH = 200;
     private static final int DETAIL_THUMB_HEIGHT = 274;
 
-    private static final int NUM_COLS = 10;
-
-    private MovieItem mSelectedMovie;
+    private SeriesItem mSelectedMovie;
 
     private ArrayObjectAdapter mAdapter;
     private ClassPresenterSelector mPresenterSelector;
@@ -80,7 +60,7 @@ public class MovieDetailsFragment extends DetailsFragment {
         super.onCreate(savedInstanceState);
 
         mSelectedMovie = Parcels.unwrap(getActivity().getIntent()
-                .getParcelableExtra(MovieDetailsActivity.MOVIE));
+                .getParcelableExtra(SeriesDetailsActivity.SERIES));
 
         if (mSelectedMovie != null) {
             setupAdapter();
@@ -152,14 +132,14 @@ public class MovieDetailsFragment extends DetailsFragment {
 
         // Hook up transition element.
         detailsPresenter.setSharedElementEnterTransition(getActivity(),
-                MovieDetailsActivity.SHARED_ELEMENT_NAME);
+                SeriesDetailsActivity.SHARED_ELEMENT_NAME);
 
         detailsPresenter.setOnActionClickedListener(new OnActionClickedListener() {
             @Override
             public void onActionClicked(Action action) {
                 if (action.getId() == ACTION_WATCH_EN || action.getId() == ACTION_WATCH_TH) {
                     Intent intent = new Intent(getActivity(), PlaybackOverlayActivity.class);
-                    intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(mSelectedMovie));
+                    intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(mSelectedMovie));
                     startActivity(intent);
                 } else {
                     Toast.makeText(getActivity(), action.toString(), Toast.LENGTH_SHORT).show();
@@ -171,12 +151,12 @@ public class MovieDetailsFragment extends DetailsFragment {
 
     private void setupMovieListRow() {
         String subcategories[] = {getString(R.string.related_movies)};
-        HashMap<String, List<MovieItem>> movies = MovieProvider.getMovieList();
+        HashMap<String, List<SeriesItem>> series = SeriesProvider.getMovieList();
 
         // Generating related video list.
         ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter());
-        for (Map.Entry<String, List<MovieItem>> entry : movies.entrySet()) {
-            List<MovieItem> list = entry.getValue();
+        for (Map.Entry<String, List<SeriesItem>> entry : series.entrySet()) {
+            List<SeriesItem> list = entry.getValue();
             for (int j = 0; j < list.size(); j++) {
                 listRowAdapter.add(list.get(j));
             }
@@ -195,17 +175,17 @@ public class MovieDetailsFragment extends DetailsFragment {
         public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
                                   RowPresenter.ViewHolder rowViewHolder, Row row) {
 
-            if (item instanceof MovieItem) {
-                MovieItem movie = (MovieItem) item;
+            if (item instanceof SeriesItem) {
+                SeriesItem series = (SeriesItem) item;
                 Log.d(TAG, "Item: " + item.toString());
-                Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
-                intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(movie));
+                Intent intent = new Intent(getActivity(), SeriesDetailsActivity.class);
+                intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(series));
                 intent.putExtra(getResources().getString(R.string.should_start), true);
 
                 Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
                         getActivity(),
                         ((ImageCardView) itemViewHolder.view).getMainImageView(),
-                        MovieDetailsActivity.SHARED_ELEMENT_NAME).toBundle();
+                        SeriesDetailsActivity.SHARED_ELEMENT_NAME).toBundle();
                 getActivity().startActivity(intent, bundle);
             }
         }

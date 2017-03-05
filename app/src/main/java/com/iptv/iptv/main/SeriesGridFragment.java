@@ -18,7 +18,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
-import com.iptv.iptv.lib.MovieDetailsActivity;
+import com.iptv.iptv.lib.SeriesDetailsActivity;
 import com.iptv.iptv.main.data.SeriesLoader;
 import com.iptv.iptv.main.data.SeriesProvider;
 import com.iptv.iptv.main.event.SelectCategoryEvent;
@@ -104,13 +104,13 @@ public class SeriesGridFragment extends VerticalGridFragment implements LoaderMa
         public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
                                   RowPresenter.ViewHolder rowViewHolder, Row row) {
             SeriesItem series = (SeriesItem) item;
-            Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
-            intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(series));
+            Intent intent = new Intent(getActivity(), SeriesDetailsActivity.class);
+            intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(series));
 
             Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
                     getActivity(),
                     ((ImageCardView) itemViewHolder.view).getMainImageView(),
-                    MovieDetailsActivity.SHARED_ELEMENT_NAME).toBundle();
+                    SeriesDetailsActivity.SHARED_ELEMENT_NAME).toBundle();
             getActivity().startActivity(intent, bundle);
         }
     }

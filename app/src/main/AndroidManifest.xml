@@ -18,6 +18,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        android:banner="@drawable/app_icon"
         android:label="@string/app_name"
         android:theme="@style/Theme.Leanback">
         <activity
@@ -27,9 +28,12 @@
             android:label="@string/app_name"
             android:logo="@drawable/app_icon"
             android:screenOrientation="landscape" />
-        <activity android:name=".lib.MovieDetailsActivity" />
-        <activity android:name=".lib.PlaybackOverlayActivity" />
-        <activity android:name=".lib.BrowseErrorActivity" />
+        <activity android:name=".lib.MovieDetailsActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".lib.PlaybackOverlayActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".lib.BrowseErrorActivity"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".main.HomeActivity"
             android:icon="@drawable/app_icon"
@@ -42,27 +46,25 @@
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".main.MobileWelcomeActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".main.LiveActivity"
             android:screenOrientation="landscape" />
         <activity
             android:name=".main.MovieGridActivity"
             android:parentActivityName=".main.HomeActivity"
-            android:theme="@style/Theme.Leanback.VerticalGrid" />
+            android:theme="@style/Theme.Leanback.VerticalGrid"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".main.SeriesGridActivity"
             android:parentActivityName=".main.HomeActivity"
-            android:theme="@style/Theme.Leanback.VerticalGrid" />
-        <activity android:name=".lib.SeriesDetailsActivity" />
-        <activity android:name=".main.SeriesEpisodeActivity" />
-        <activity android:name=".lib.SeriesPlayerActivity"></activity>
+            android:theme="@style/Theme.Leanback.VerticalGrid"
+            android:screenOrientation="landscape" />
+        <activity android:name=".lib.SeriesDetailsActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".main.SeriesEpisodeActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".lib.SeriesPlayerActivity"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

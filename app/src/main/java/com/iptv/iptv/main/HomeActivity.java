@@ -57,7 +57,10 @@ public class HomeActivity extends LeanbackActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, SeriesGridActivity.class);
-                startActivity(intent);
+                Bundle bundle =
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this)
+                                .toBundle();
+                startActivity(intent, bundle);
             }
         });
 

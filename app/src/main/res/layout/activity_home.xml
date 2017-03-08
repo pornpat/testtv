@@ -5,10 +5,10 @@
     android:id="@+id/activity_home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/margin_padding_small"
+    android:paddingBottom="@dimen/margin_padding_large"
     android:paddingLeft="@dimen/margin_padding_normal"
     android:paddingRight="@dimen/margin_padding_normal"
-    android:paddingTop="@dimen/margin_padding_large"
+    android:paddingTop="@dimen/margin_padding_xlarge"
     android:orientation="vertical">
 
     <LinearLayout
@@ -19,7 +19,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="26sp"
+            android:textSize="28sp"
             android:textStyle="bold"
             android:text="@string/app_name"
             android:textColor="@color/white"/>
@@ -30,287 +30,293 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="@dimen/margin_padding_large"
-        android:orientation="horizontal">
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/btn_live"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_home_button"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:nextFocusDown="@+id/btn_movie"
-            android:nextFocusRight="@+id/btn_recommend"
-            android:padding="@dimen/margin_padding_xxsmall">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/btn_live"
+                android:layout_width="230dp"
                 android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:src="@drawable/icon_live"
-                app:riv_corner_radius="@dimen/margin_padding_small"/>
+                android:background="@drawable/bg_home_button"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:nextFocusDown="@+id/btn_movie"
+                android:nextFocusRight="@+id/btn_recommend"
+                android:padding="@dimen/margin_padding_xxsmall">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:paddingBottom="@dimen/margin_padding_normal"
-                android:text="@string/menu_live"
-                android:textSize="23sp"
-                android:textStyle="bold"
-                android:textColor="@color/white" />
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/icon_live"
+                    app:riv_corner_radius="@dimen/margin_padding_small"/>
 
-        </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:paddingBottom="@dimen/margin_padding_normal"
+                    android:text="@string/menu_live"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white" />
 
-        <RelativeLayout
-            android:id="@+id/btn_recommend"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/bg_home_button"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:nextFocusLeft="@+id/btn_live"
-            android:nextFocusDown="@+id/btn_series"
-            android:nextFocusRight="@+id/btn_sport"
-            android:padding="@dimen/margin_padding_xxsmall">
+            </RelativeLayout>
 
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:layout_width="match_parent"
+            <RelativeLayout
+                android:id="@+id/btn_recommend"
+                android:layout_width="460dp"
                 android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/test_recommend"
-                app:riv_corner_radius="@dimen/margin_padding_small" />
+                android:background="@drawable/bg_home_button"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:nextFocusLeft="@+id/btn_live"
+                android:nextFocusDown="@+id/btn_series"
+                android:nextFocusRight="@+id/btn_sport"
+                android:padding="@dimen/margin_padding_xxsmall">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:padding="@dimen/margin_padding_xsmall"
-                android:text="@string/menu_recommend"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@color/white"/>
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/test_recommend"
+                    app:riv_corner_radius="@dimen/margin_padding_small" />
 
-        </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:padding="@dimen/margin_padding_xsmall"
+                    android:text="@string/menu_recommend"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"/>
 
-        <RelativeLayout
-            android:id="@+id/btn_sport"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_home_button"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:nextFocusLeft="@+id/btn_recommend"
-            android:nextFocusDown="@+id/btn_advertise"
-            android:nextFocusRight="@+id/btn_favourite"
-            android:padding="@dimen/margin_padding_xxsmall">
+            </RelativeLayout>
 
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/btn_sport"
+                android:layout_width="230dp"
                 android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:src="@drawable/icon_sport"
-                app:riv_corner_radius="@dimen/margin_padding_small"/>
+                android:background="@drawable/bg_home_button"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:nextFocusLeft="@+id/btn_recommend"
+                android:nextFocusDown="@+id/btn_advertise"
+                android:nextFocusRight="@+id/btn_favourite"
+                android:padding="@dimen/margin_padding_xxsmall">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:paddingBottom="@dimen/margin_padding_small"
-                android:text="@string/menu_sport"
-                android:textSize="23sp"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:lineSpacingExtra="-5dp"
-                android:gravity="center_horizontal"/>
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/icon_sport"
+                    app:riv_corner_radius="@dimen/margin_padding_small"/>
 
-        </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:paddingBottom="@dimen/margin_padding_small"
+                    android:text="@string/menu_sport"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:lineSpacingExtra="-5dp"
+                    android:gravity="center_horizontal"/>
 
-        <RelativeLayout
-            android:id="@+id/btn_favorite"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_home_button"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:nextFocusLeft="@+id/btn_sport"
-            android:nextFocusDown="@+id/btn_setting"
-            android:padding="@dimen/margin_padding_xxsmall">
+            </RelativeLayout>
 
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/btn_favorite"
+                android:layout_width="230dp"
                 android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:src="@drawable/icon_favorite"
-                app:riv_corner_radius="@dimen/margin_padding_small"/>
+                android:background="@drawable/bg_home_button"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:nextFocusLeft="@+id/btn_sport"
+                android:nextFocusDown="@+id/btn_setting"
+                android:padding="@dimen/margin_padding_xxsmall">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:paddingBottom="@dimen/margin_padding_normal"
-                android:text="@string/menu_favorite"
-                android:textSize="23sp"
-                android:textStyle="bold"
-                android:textColor="@color/white"/>
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/icon_favorite"
+                    app:riv_corner_radius="@dimen/margin_padding_small"/>
 
-        </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:paddingBottom="@dimen/margin_padding_normal"
+                    android:text="@string/menu_favorite"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"/>
 
-    </LinearLayout>
+            </RelativeLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/btn_movie"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_home_button"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:nextFocusUp="@+id/btn_live"
-            android:nextFocusRight="@+id/btn_series"
-            android:padding="@dimen/margin_padding_xxsmall">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/btn_movie"
+                android:layout_width="230dp"
                 android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:src="@drawable/icon_movie"
-                app:riv_corner_radius="@dimen/margin_padding_small"/>
+                android:background="@drawable/bg_home_button"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:nextFocusUp="@+id/btn_live"
+                android:nextFocusRight="@+id/btn_series"
+                android:padding="@dimen/margin_padding_xxsmall">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:paddingBottom="@dimen/margin_padding_normal"
-                android:text="@string/menu_movie"
-                android:textSize="23sp"
-                android:textStyle="bold"
-                android:textColor="@color/white"/>
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/icon_movie"
+                    app:riv_corner_radius="@dimen/margin_padding_small"/>
 
-        </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/margin_padding_normal"
+                    android:text="@string/menu_movie"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true" />
 
-        <RelativeLayout
-            android:id="@+id/btn_series"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_home_button"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:nextFocusLeft="@+id/btn_movie"
-            android:nextFocusUp="@+id/btn_recommend"
-            android:nextFocusRight="@+id/btn_advertise"
-            android:padding="@dimen/margin_padding_xxsmall">
+            </RelativeLayout>
 
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/btn_series"
+                android:layout_width="230dp"
                 android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:src="@drawable/icon_series"
-                app:riv_corner_radius="@dimen/margin_padding_small"/>
+                android:background="@drawable/bg_home_button"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:nextFocusLeft="@+id/btn_movie"
+                android:nextFocusUp="@+id/btn_recommend"
+                android:nextFocusRight="@+id/btn_advertise"
+                android:padding="@dimen/margin_padding_xxsmall">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:paddingBottom="@dimen/margin_padding_normal"
-                android:text="@string/menu_series"
-                android:textSize="23sp"
-                android:textStyle="bold"
-                android:textColor="@color/white"/>
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/icon_series"
+                    app:riv_corner_radius="@dimen/margin_padding_small"/>
 
-        </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:paddingBottom="@dimen/margin_padding_normal"
+                    android:text="@string/menu_series"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"/>
 
-        <RelativeLayout
-            android:id="@+id/btn_advertise"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/bg_home_button"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:nextFocusLeft="@+id/btn_series"
-            android:nextFocusUp="@+id/btn_sport"
-            android:nextFocusRight="@+id/btn_setting"
-            android:padding="@dimen/margin_padding_xxsmall">
+            </RelativeLayout>
 
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:layout_width="match_parent"
+            <RelativeLayout
+                android:id="@+id/btn_advertise"
+                android:layout_width="460dp"
                 android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/test_advertise"
-                app:riv_corner_radius="@dimen/margin_padding_small"/>
+                android:background="@drawable/bg_home_button"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:nextFocusLeft="@+id/btn_series"
+                android:nextFocusUp="@+id/btn_sport"
+                android:nextFocusRight="@+id/btn_setting"
+                android:padding="@dimen/margin_padding_xxsmall">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/margin_padding_xsmall"
-                android:text="@string/menu_advertise"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true" />
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/test_advertise"
+                    app:riv_corner_radius="@dimen/margin_padding_small"/>
 
-        </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/margin_padding_xsmall"
+                    android:text="@string/menu_advertise"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true" />
 
-        <RelativeLayout
-            android:id="@+id/btn_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_home_button"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:nextFocusLeft="@+id/btn_advertise"
-            android:nextFocusUp="@+id/btn_favourite"
-            android:padding="@dimen/margin_padding_xxsmall">
+            </RelativeLayout>
 
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/btn_setting"
+                android:layout_width="230dp"
                 android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:src="@drawable/icon_setting"
-                app:riv_corner_radius="@dimen/margin_padding_small"/>
+                android:background="@drawable/bg_home_button"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:nextFocusLeft="@+id/btn_advertise"
+                android:nextFocusUp="@+id/btn_favourite"
+                android:padding="@dimen/margin_padding_xxsmall">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:paddingBottom="@dimen/margin_padding_normal"
-                android:text="@string/menu_setting"
-                android:textSize="23sp"
-                android:textStyle="bold"
-                android:textColor="@color/white"/>
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/icon_setting"
+                    app:riv_corner_radius="@dimen/margin_padding_small"/>
 
-        </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:paddingBottom="@dimen/margin_padding_normal"
+                    android:text="@string/menu_setting"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_padding_small">
+        android:layout_marginRight="@dimen/margin_padding_large">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:text="Date 1/1/2017 12:00"/>

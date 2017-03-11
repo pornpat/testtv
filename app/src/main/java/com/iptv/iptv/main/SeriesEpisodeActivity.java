@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v17.leanback.app.GuidedStepFragment;
 import android.support.v17.leanback.widget.GuidanceStylist;
 import android.support.v17.leanback.widget.GuidedAction;
+import android.support.v4.content.ContextCompat;
 
 import com.iptv.iptv.R;
 import com.iptv.iptv.lib.SeriesDetailsActivity;
@@ -19,7 +20,6 @@ import java.util.List;
 
 public class SeriesEpisodeActivity extends LeanbackActivity {
 
-    private static final int SELECT = 0;
     private static SeriesItem mSelectSeries;
     private static int track;
 
@@ -51,7 +51,7 @@ public class SeriesEpisodeActivity extends LeanbackActivity {
             final String title = mSelectSeries.getName();
             final String breadcrumb = "Select episode";
             final String description = "Soundtrack: " + mSelectSeries.getTracks().get(track).getAudio() + " / Subtitle: " + mSelectSeries.getTracks().get(track).getSubtitle();
-            final Drawable icon = getActivity().getDrawable(R.drawable.icon_series);
+            final Drawable icon = ContextCompat.getDrawable(getActivity(), R.drawable.icon_series);
 
             return new GuidanceStylist.Guidance(title, description, breadcrumb, icon);
         }

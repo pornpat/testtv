@@ -38,7 +38,7 @@ import java.util.Map;
  */
 public class SeriesGridFragment extends VerticalGridFragment implements LoaderManager.LoaderCallbacks<HashMap<String, List<SeriesItem>>> {
 
-    private static final int NUM_COLUMNS = 4;
+    private static final int NUM_COLUMNS = 5;
     private final ArrayObjectAdapter mVideoObjectAdapter = new ArrayObjectAdapter(new CardPresenter());
 
     private static String mVideosUrl;

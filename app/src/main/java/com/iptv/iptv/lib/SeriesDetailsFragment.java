@@ -47,8 +47,8 @@ public class SeriesDetailsFragment extends DetailsFragment {
     private static final int ACTION_WATCH_EN = 2;
     private static final int ACTION_ADD_FAV = 3;
 
-    private static final int DETAIL_THUMB_WIDTH = 200;
-    private static final int DETAIL_THUMB_HEIGHT = 274;
+    private static final int DETAIL_THUMB_WIDTH = 225;
+    private static final int DETAIL_THUMB_HEIGHT = 300;
 
     private SeriesItem mSelectedMovie;
 
@@ -85,7 +85,7 @@ public class SeriesDetailsFragment extends DetailsFragment {
     private void setupDetailsOverviewRow() {
         Log.d(TAG, "doInBackground: " + mSelectedMovie.toString());
         final DetailsOverviewRow row = new DetailsOverviewRow(mSelectedMovie);
-        row.setImageDrawable(getResources().getDrawable(R.drawable.default_background));
+        row.setImageDrawable(getResources().getDrawable(R.drawable.movie_placeholder));
         final int width = Utils.convertDpToPixel(getActivity()
                 .getApplicationContext(), DETAIL_THUMB_WIDTH);
         final int height = Utils.convertDpToPixel(getActivity()
@@ -97,7 +97,7 @@ public class SeriesDetailsFragment extends DetailsFragment {
                 Glide.with(getActivity())
                         .load(mSelectedMovie.getImageUrl())
                         .centerCrop()
-                        .error(R.drawable.default_background)
+                        .error(R.drawable.movie_placeholder)
                         .into(new SimpleTarget<GlideDrawable>(width, height) {
                             @Override
                             public void onResourceReady(GlideDrawable resource,

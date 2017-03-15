@@ -7,7 +7,7 @@
     tools:context="com.iptv.iptv.main.MoviePlayerActivity"
     android:background="@color/black">
 
-    <VideoView
+    <com.afollestad.easyvideoplayer.EasyVideoPlayer
         android:id="@+id/video"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

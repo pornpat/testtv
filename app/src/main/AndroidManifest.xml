@@ -72,7 +72,9 @@
             android:name=".lib.SeriesPlayerActivity"
             android:screenOrientation="landscape" />
         <activity android:name=".main.MoviePlayerActivity"
-            android:screenOrientation="landscape" />
+            android:theme="@style/PlayerTheme"
+            android:screenOrientation="landscape"
+            android:configChanges="orientation|keyboardHidden|screenLayout|screenSize" />
     </application>
 
 </manifest>

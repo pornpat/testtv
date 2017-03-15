@@ -3,6 +3,7 @@ package com.iptv.iptv.main;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.afollestad.easyvideoplayer.EasyVideoCallback;
 import com.afollestad.easyvideoplayer.EasyVideoPlayer;
@@ -11,6 +12,8 @@ import com.iptv.iptv.lib.MovieDetailsActivity;
 import com.iptv.iptv.main.model.MovieItem;
 
 import org.parceler.Parcels;
+
+import java.util.List;
 
 public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoCallback{
 
@@ -30,7 +33,8 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
 
         player = (EasyVideoPlayer) findViewById(R.id.video);
         player.setCallback(this);
-        player.setSource(Uri.parse(mSelectedMovie.getTracks().get(0).getDiscs().get(0).getVideoUrl()));
+//        player.setSource(Uri.parse(mSelectedMovie.getTracks().get(0).getDiscs().get(0).getVideoUrl()));
+        player.setSource(Uri.parse("http://45.64.185.101:8081/atomvod/bluray2016/10-Cloverfield-Lane-2016-th-en-1080p.mp4"));
         player.setAutoPlay(true);
 
 //        mVideoView = (VideoView) findViewById(R.id.video);
@@ -81,6 +85,15 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
     }
 
     @Override
+    public void onInfo(EasyVideoPlayer player) {
+        List<String> tracks = player.getTracks();
+        for (int i = 0; i < tracks.size(); i++) {
+            Log.v("testkn", tracks.get(i));
+        }
+//        player.setTrack(2);
+    }
+
+    @Override
     public void onBuffering(int percent) {
 
     }
@@ -102,6 +115,11 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
 
     @Override
     public void onSubmit(EasyVideoPlayer player, Uri source) {
+
+    }
+
+    @Override
+    public void onClickVideoFrame(EasyVideoPlayer player) {
 
     }
 }

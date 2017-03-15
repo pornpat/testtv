@@ -27,7 +27,6 @@ dependencies {
     compile 'com.android.support:support-v4:25.2.0'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'org.parceler:parceler-api:1.1.6'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.afollestad:easyvideoplayer:0.3.0'
     annotationProcessor 'org.parceler:parceler:1.1.6'
+    compile project(':easyvideo')
 }

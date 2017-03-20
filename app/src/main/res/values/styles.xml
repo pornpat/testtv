@@ -4,8 +4,8 @@
     <style name="AppTheme" parent="@style/Theme.Leanback"/>
 
     <style name="PlayerTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">@color/fastlane_background</item>
-        <item name="colorPrimaryDark">@color/fastlane_background</item>
+        <item name="colorPrimary">@color/dark_blue</item>
+        <item name="colorPrimaryDark">@color/custom_gradient_end</item>
         <item name="colorAccent">@color/selected_background</item>
     </style>
 

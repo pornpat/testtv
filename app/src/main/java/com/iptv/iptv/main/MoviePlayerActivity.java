@@ -2,6 +2,7 @@ package com.iptv.iptv.main;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,15 +17,21 @@ import com.iptv.iptv.main.model.MovieItem;
 import org.parceler.Parcels;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoCallback{
 
-    // language select, set show/hide control, color theme
+    // language select
 
 //    private VideoView mVideoView;
     private EasyVideoPlayer player;
 
     private MovieItem mSelectedMovie;
+
+    private static final int BACKGROUND_UPDATE_DELAY = 2500;
+    private final Handler mHandler = new Handler();
+    private Timer mBackgroundTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +76,36 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
 
     }
 
+    private void startBackgroundTimer() {
+        if (null != mBackgroundTimer) {
+            mBackgroundTimer.cancel();
+        }
+        mBackgroundTimer = new Timer();
+        mBackgroundTimer.schedule(new MoviePlayerActivity.hideDetailTask(), BACKGROUND_UPDATE_DELAY);
+    }
+
+    private class hideDetailTask extends TimerTask {
+
+        @Override
+        public void run() {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    player.hideControls();
+                    mBackgroundTimer.cancel();
+                }
+            });
+        }
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER || keyCode == KeyEvent.KEYCODE_DPAD_RIGHT || keyCode == KeyEvent.KEYCODE_DPAD_DOWN || keyCode == KeyEvent.KEYCODE_DPAD_UP || keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
             if (player.isControlsShown()) {
-                
+                startBackgroundTimer();
             } else {
                 player.showControls();
+                startBackgroundTimer();
             }
         }
         return super.onKeyDown(keyCode, event);
@@ -85,6 +115,15 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
     protected void onPause() {
         super.onPause();
         player.pause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (null != mBackgroundTimer) {
+            mBackgroundTimer.cancel();
+            mBackgroundTimer = null;
+        }
+        super.onDestroy();
     }
 
     @Override
@@ -114,6 +153,8 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
             Log.v("testkn", tracks.get(i));
         }
 //        player.setTrack(2);
+
+        startBackgroundTimer();
     }
 
     @Override

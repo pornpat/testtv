@@ -2,8 +2,10 @@ package com.iptv.iptv.main;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 
 import com.afollestad.easyvideoplayer.EasyVideoCallback;
 import com.afollestad.easyvideoplayer.EasyVideoPlayer;
@@ -17,7 +19,7 @@ import java.util.List;
 
 public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoCallback{
 
-    // new movie url, change icon, language select, set show/hide control, set movie name on right action
+    // language select, set show/hide control, color theme
 
 //    private VideoView mVideoView;
     private EasyVideoPlayer player;
@@ -32,9 +34,18 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
         mSelectedMovie = Parcels.unwrap(getIntent().getParcelableExtra(MovieDetailsActivity.MOVIE));
 
         player = (EasyVideoPlayer) findViewById(R.id.video);
+        player.setRestartDrawable(ContextCompat.getDrawable(this, R.drawable.icon_restart));
+        player.setRightAction(EasyVideoPlayer.RIGHT_ACTION_CUSTOM_LABEL);
+
+        String movieName = mSelectedMovie.getName();
+        if (movieName.length() > 50) {
+            movieName = movieName.substring(0, 50);
+        }
+
+        player.setCustomLabelText(movieName);
         player.setCallback(this);
-//        player.setSource(Uri.parse(mSelectedMovie.getTracks().get(0).getDiscs().get(0).getVideoUrl()));
-        player.setSource(Uri.parse("http://45.64.185.101:8081/atomvod/bluray2016/10-Cloverfield-Lane-2016-th-en-1080p.mp4"));
+        player.setSource(Uri.parse(mSelectedMovie.getTracks().get(0).getDiscs().get(0).getVideoUrl()));
+//        player.setSource(Uri.parse("http://45.64.185.101:8081/atomvod/bluray2016/10-Cloverfield-Lane-2016-th-en-1080p.mp4"));
         player.setAutoPlay(true);
 
 //        mVideoView = (VideoView) findViewById(R.id.video);
@@ -56,6 +67,18 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
 //            }
 //        });
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER || keyCode == KeyEvent.KEYCODE_DPAD_RIGHT || keyCode == KeyEvent.KEYCODE_DPAD_DOWN || keyCode == KeyEvent.KEYCODE_DPAD_UP || keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+            if (player.isControlsShown()) {
+                
+            } else {
+                player.showControls();
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override

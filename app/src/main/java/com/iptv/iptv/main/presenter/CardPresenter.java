@@ -75,7 +75,14 @@ public class CardPresenter extends Presenter {
             Log.d(TAG, "onBindViewHolder");
             if (movie.getImageUrl() != null) {
                 cardView.setTitleText(movie.getName());
-                cardView.setContentText("เสียง: EN/TH");
+
+                StringBuilder content = new StringBuilder();
+                content.append("เสียง: ");
+                for (int i = 0; i < movie.getTracks().size(); i++) {
+                    content.append(movie.getTracks().get(i).getAudio() + "/");
+                }
+                content.deleteCharAt(content.length() - 1);
+                cardView.setContentText(content.toString());
 
                 int width = cardView.getResources().getDimensionPixelSize(R.dimen.card_width);
                 int height = cardView.getResources().getDimensionPixelSize(R.dimen.card_height);
@@ -93,7 +100,14 @@ public class CardPresenter extends Presenter {
             Log.d(TAG, "onBindViewHolder");
             if (series.getImageUrl() != null) {
                 cardView.setTitleText(series.getName());
-                cardView.setContentText("เสียง: EN/TH");
+
+                StringBuilder content = new StringBuilder();
+                content.append("เสียง: ");
+                for (int i = 0; i < series.getTracks().size(); i++) {
+                    content.append(series.getTracks().get(i).getAudio() + "/");
+                }
+                content.deleteCharAt(content.length() - 1);
+                cardView.setContentText(content.toString());
 
                 int width = cardView.getResources().getDimensionPixelSize(R.dimen.card_width);
                 int height = cardView.getResources().getDimensionPixelSize(R.dimen.card_height);

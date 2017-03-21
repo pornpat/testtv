@@ -17,12 +17,14 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="28sp"
-            android:textStyle="bold"
+            android:layout_marginLeft="@dimen/margin_padding_large"
             android:text="@string/app_name"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:textSize="44sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
@@ -316,7 +318,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:textSize="18sp"
+            android:textSize="26sp"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:text="Date 1/1/2017 12:00"/>

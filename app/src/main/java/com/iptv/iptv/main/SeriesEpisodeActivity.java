@@ -65,7 +65,7 @@ public class SeriesEpisodeActivity extends LeanbackActivity {
 
         @Override
         public void onGuidedActionClicked(GuidedAction action) {
-            Intent intent = new Intent(getActivity(), SeriesPlayerActivity.class);
+            Intent intent = new Intent(getActivity(), MoviePlayerActivity.class);
             intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(mSelectSeries));
             intent.putExtra("url", mSelectSeries.getTracks().get(track).getEpisodes().get((int) action.getId()).getUrl());
             startActivity(intent);

@@ -157,7 +157,7 @@ public class MovieDetailsFragment extends DetailsFragment {
                 if (action.getId() == ACTION_ADD_FAV) {
                     Toast.makeText(getActivity(), action.toString(), Toast.LENGTH_SHORT).show();
                 } else {
-                    if (mSelectedMovie.getTracks().get((int)action.getId()).getDiscs().size() < 1) {
+                    if (mSelectedMovie.getTracks().get((int)action.getId()).getDiscs().size() < 2) {
                         Intent intent = new Intent(getActivity(), MoviePlayerActivity.class);
                         intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(mSelectedMovie));
                         intent.putExtra("url", mSelectedMovie.getTracks().get((int)action.getId()).getDiscs().get(0).getVideoUrl());

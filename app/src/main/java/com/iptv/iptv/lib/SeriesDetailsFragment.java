@@ -43,9 +43,7 @@ import java.util.Map;
 public class SeriesDetailsFragment extends DetailsFragment {
     private static final String TAG = "SeriesDetailsFragment";
 
-    private static final int ACTION_WATCH_TH = 1;
-    private static final int ACTION_WATCH_EN = 2;
-    private static final int ACTION_ADD_FAV = 3;
+    private static final int ACTION_ADD_FAV = 99;
 
     private static final int DETAIL_THUMB_WIDTH = 225;
     private static final int DETAIL_THUMB_HEIGHT = 300;
@@ -112,11 +110,10 @@ public class SeriesDetailsFragment extends DetailsFragment {
         }, 500);
 
         SparseArrayObjectAdapter adapter = new SparseArrayObjectAdapter();
-        adapter.set(ACTION_WATCH_TH, new Action(ACTION_WATCH_TH, getResources()
-                .getString(R.string.watch),
-                getResources().getString(R.string.sound_th)));
-        adapter.set(ACTION_WATCH_EN, new Action(ACTION_WATCH_EN, getResources().getString(R.string.watch),
-                getResources().getString(R.string.sound_en)));
+        for (int i = 0; i < mSelectedMovie.getTracks().size(); i++) {
+            adapter.set(i, new Action(i, "เสียง: " + mSelectedMovie.getTracks().get(i).getAudio()
+                    , "บรรยาย: " + mSelectedMovie.getTracks().get(i).getSubtitle()));
+        }
         adapter.set(ACTION_ADD_FAV, new Action(ACTION_ADD_FAV, getResources().getString(R.string.add_fav)));
 
         row.setActionsAdapter(adapter);
@@ -138,21 +135,13 @@ public class SeriesDetailsFragment extends DetailsFragment {
         detailsPresenter.setOnActionClickedListener(new OnActionClickedListener() {
             @Override
             public void onActionClicked(Action action) {
-                if (action.getId() == ACTION_WATCH_TH) {
-//                    Intent intent = new Intent(getActivity(), PlaybackOverlayActivity.class);
-//                    intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(mSelectedMovie));
-//                    startActivity(intent);
-                    Intent intent = new Intent(getActivity(), SeriesEpisodeActivity.class);
-                    intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(mSelectedMovie));
-                    intent.putExtra("track", 0);
-                    startActivity(intent);
-                } else if (action.getId() == ACTION_WATCH_EN) {
-                    Intent intent = new Intent(getActivity(), SeriesEpisodeActivity.class);
-                    intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(mSelectedMovie));
-                    intent.putExtra("track", 1);
-                    startActivity(intent);
-                } else {
+                if (action.getId() == ACTION_ADD_FAV) {
                     Toast.makeText(getActivity(), action.toString(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(getActivity(), SeriesEpisodeActivity.class);
+                    intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(mSelectedMovie));
+                    intent.putExtra("track", (int)action.getId());
+                    startActivity(intent);
                 }
             }
         });

@@ -12,7 +12,9 @@ import com.afollestad.easyvideoplayer.EasyVideoCallback;
 import com.afollestad.easyvideoplayer.EasyVideoPlayer;
 import com.iptv.iptv.R;
 import com.iptv.iptv.lib.MovieDetailsActivity;
+import com.iptv.iptv.lib.SeriesDetailsActivity;
 import com.iptv.iptv.main.model.MovieItem;
+import com.iptv.iptv.main.model.SeriesItem;
 
 import org.parceler.Parcels;
 
@@ -28,6 +30,7 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
     private EasyVideoPlayer player;
 
     private MovieItem mSelectedMovie;
+    private SeriesItem mSelectedSeries;
     private String mUrl;
 
     private static final int BACKGROUND_UPDATE_DELAY = 2500;
@@ -39,14 +42,23 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_player);
 
-        mSelectedMovie = Parcels.unwrap(getIntent().getParcelableExtra(MovieDetailsActivity.MOVIE));
+        if (getIntent().hasExtra(MovieDetailsActivity.MOVIE)) {
+            mSelectedMovie = Parcels.unwrap(getIntent().getParcelableExtra(MovieDetailsActivity.MOVIE));
+        } else if (getIntent().hasExtra(SeriesDetailsActivity.SERIES)) {
+            mSelectedSeries = Parcels.unwrap(getIntent().getParcelableExtra(SeriesDetailsActivity.SERIES));
+        }
         mUrl = getIntent().getExtras().getString("url");
 
         player = (EasyVideoPlayer) findViewById(R.id.video);
         player.setRestartDrawable(ContextCompat.getDrawable(this, R.drawable.icon_restart));
         player.setRightAction(EasyVideoPlayer.RIGHT_ACTION_CUSTOM_LABEL);
 
-        String movieName = mSelectedMovie.getName();
+        String movieName = "";
+        if (mSelectedMovie != null) {
+            movieName = mSelectedMovie.getName();
+        } else if (mSelectedSeries != null) {
+            movieName = mSelectedSeries.getName();
+        }
         if (movieName.length() > 50) {
             movieName = movieName.substring(0, 50);
         }

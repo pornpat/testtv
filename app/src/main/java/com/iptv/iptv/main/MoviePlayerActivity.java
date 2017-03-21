@@ -28,8 +28,7 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
     private EasyVideoPlayer player;
 
     private MovieItem mSelectedMovie;
-    private int mTrack;
-    private int mDisc;
+    private String mUrl;
 
     private static final int BACKGROUND_UPDATE_DELAY = 2500;
     private final Handler mHandler = new Handler();
@@ -41,8 +40,7 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
         setContentView(R.layout.activity_movie_player);
 
         mSelectedMovie = Parcels.unwrap(getIntent().getParcelableExtra(MovieDetailsActivity.MOVIE));
-        mTrack = getIntent().getExtras().getInt("track");
-        mDisc = getIntent().getExtras().getInt("disc");
+        mUrl = getIntent().getExtras().getString("url");
 
         player = (EasyVideoPlayer) findViewById(R.id.video);
         player.setRestartDrawable(ContextCompat.getDrawable(this, R.drawable.icon_restart));
@@ -55,7 +53,7 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
 
         player.setCustomLabelText(movieName);
         player.setCallback(this);
-        player.setSource(Uri.parse(mSelectedMovie.getTracks().get(mTrack).getDiscs().get(mDisc).getVideoUrl()));
+        player.setSource(Uri.parse(mUrl));
 //        player.setSource(Uri.parse("http://45.64.185.101:8081/atomvod/bluray2016/10-Cloverfield-Lane-2016-th-en-1080p.mp4"));
         player.setAutoPlay(true);
 

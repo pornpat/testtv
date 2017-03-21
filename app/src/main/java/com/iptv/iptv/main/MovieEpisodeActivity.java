@@ -10,24 +10,23 @@ import android.support.v17.leanback.widget.GuidedAction;
 import android.support.v4.content.ContextCompat;
 
 import com.iptv.iptv.R;
-import com.iptv.iptv.lib.SeriesDetailsActivity;
-import com.iptv.iptv.lib.SeriesPlayerActivity;
-import com.iptv.iptv.main.model.SeriesItem;
+import com.iptv.iptv.lib.MovieDetailsActivity;
+import com.iptv.iptv.main.model.MovieItem;
 
 import org.parceler.Parcels;
 
 import java.util.List;
 
-public class SeriesEpisodeActivity extends LeanbackActivity {
+public class MovieEpisodeActivity extends LeanbackActivity {
 
-    private static SeriesItem mSelectSeries;
+    private static MovieItem mSelectMovie;
     private static int track;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mSelectSeries = Parcels.unwrap(getIntent().getParcelableExtra(SeriesDetailsActivity.SERIES));
+        mSelectMovie = Parcels.unwrap(getIntent().getParcelableExtra(MovieDetailsActivity.MOVIE));
         track = getIntent().getExtras().getInt("track");
 
         if (null == savedInstanceState) {
@@ -48,26 +47,26 @@ public class SeriesEpisodeActivity extends LeanbackActivity {
         @Override
         @NonNull
         public GuidanceStylist.Guidance onCreateGuidance(@NonNull Bundle savedInstanceState) {
-            final String title = mSelectSeries.getName();
+            final String title = mSelectMovie.getName();
             final String breadcrumb = "Select episode";
-            final String description = "Audio: " + mSelectSeries.getTracks().get(track).getAudio() + " / Subtitle: " + mSelectSeries.getTracks().get(track).getSubtitle();
-            final Drawable icon = ContextCompat.getDrawable(getActivity(), R.drawable.icon_series);
+            final String description = "Audio: " + mSelectMovie.getTracks().get(track).getAudio() + " / Subtitle: " + mSelectMovie.getTracks().get(track).getSubtitle();
+            final Drawable icon = ContextCompat.getDrawable(getActivity(), R.drawable.icon_movie);
 
             return new GuidanceStylist.Guidance(title, description, breadcrumb, icon);
         }
 
         @Override
         public void onCreateActions(@NonNull List<GuidedAction> actions, Bundle savedInstanceState) {
-            for (int i = 0; i < mSelectSeries.getTracks().get(track).getEpisodes().size(); i++) {
+            for (int i = 0; i < mSelectMovie.getTracks().get(track).getDiscs().size(); i++) {
                 addAction(actions, i, "Episode " + (i + 1));
             }
         }
 
         @Override
         public void onGuidedActionClicked(GuidedAction action) {
-            Intent intent = new Intent(getActivity(), SeriesPlayerActivity.class);
-            intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(mSelectSeries));
-            intent.putExtra("url", mSelectSeries.getTracks().get(track).getEpisodes().get((int) action.getId()).getUrl());
+            Intent intent = new Intent(getActivity(), MoviePlayerActivity.class);
+            intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(mSelectMovie));
+            intent.putExtra("url", mSelectMovie.getTracks().get(track).getDiscs().get((int) action.getId()).getVideoUrl());
             startActivity(intent);
         }
     }

@@ -65,10 +65,13 @@
         <activity
             android:name=".lib.SeriesPlayerActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".main.MoviePlayerActivity"
-            android:theme="@style/PlayerTheme"
+        <activity
+            android:name=".main.MoviePlayerActivity"
+            android:configChanges="orientation|keyboardHidden|screenLayout|screenSize"
             android:screenOrientation="landscape"
-            android:configChanges="orientation|keyboardHidden|screenLayout|screenSize" />
+            android:theme="@style/PlayerTheme" />
+        <activity android:name=".main.MovieEpisodeActivity"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

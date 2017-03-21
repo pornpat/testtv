@@ -42,6 +42,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.MovieEpisodeActivity;
 import com.iptv.iptv.main.MoviePlayerActivity;
 import com.iptv.iptv.main.presenter.CardPresenter;
 import com.iptv.iptv.main.presenter.DetailsDescriptionPresenter;
@@ -156,14 +157,16 @@ public class MovieDetailsFragment extends DetailsFragment {
                 if (action.getId() == ACTION_ADD_FAV) {
                     Toast.makeText(getActivity(), action.toString(), Toast.LENGTH_SHORT).show();
                 } else {
-                    if (mSelectedMovie.getTracks().get((int)action.getId()).getDiscs().size() < 2) {
+                    if (mSelectedMovie.getTracks().get((int)action.getId()).getDiscs().size() < 1) {
                         Intent intent = new Intent(getActivity(), MoviePlayerActivity.class);
                         intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(mSelectedMovie));
-                        intent.putExtra("track", (int)action.getId());
-                        intent.putExtra("disc", 0);
+                        intent.putExtra("url", mSelectedMovie.getTracks().get((int)action.getId()).getDiscs().get(0).getVideoUrl());
                         startActivity(intent);
                     } else {
-                        // episode select
+                        Intent intent = new Intent(getActivity(), MovieEpisodeActivity.class);
+                        intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(mSelectedMovie));
+                        intent.putExtra("track", (int)action.getId());
+                        startActivity(intent);
                     }
                 }
             }

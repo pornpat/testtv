@@ -3,13 +3,9 @@
     package="com.iptv.iptv">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <uses-feature
         android:name="android.hardware.touchscreen"
-        android:required="false" />
-    <uses-feature
-        android:name="android.hardware.microphone"
         android:required="false" />
     <uses-feature
         android:name="android.software.leanback"
@@ -70,7 +66,10 @@
             android:configChanges="orientation|keyboardHidden|screenLayout|screenSize"
             android:screenOrientation="landscape"
             android:theme="@style/PlayerTheme" />
-        <activity android:name=".main.MovieEpisodeActivity"
+        <activity
+            android:name=".main.MovieEpisodeActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".main.SearchActivity"
             android:screenOrientation="landscape" />
     </application>
 

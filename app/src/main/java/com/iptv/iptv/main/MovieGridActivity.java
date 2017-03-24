@@ -2,11 +2,13 @@ package com.iptv.iptv.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.event.LoadDataEvent;
 import com.iptv.iptv.main.event.SelectCategoryEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -29,6 +31,13 @@ public class MovieGridActivity extends LeanbackActivity {
         mRecentText = (TextView) findViewById(R.id.recent);
         mFavoriteText = (TextView) findViewById(R.id.favorite);
 
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                EventBus.getDefault().post(new LoadDataEvent("http://139.59.231.135/uplay/public/api/v1/movies"));
+            }
+        }, 500);
+
         mMovieText.requestFocus();
         mMovieText.setSelected(true);
 
@@ -36,6 +45,7 @@ public class MovieGridActivity extends LeanbackActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MovieGridActivity.this, SearchActivity.class);
+                intent.putExtra("origin", "movie");
                 startActivity(intent);
             }
         });

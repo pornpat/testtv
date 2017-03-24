@@ -19,11 +19,12 @@ import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
 import com.iptv.iptv.lib.MovieDetailsActivity;
-import com.iptv.iptv.main.event.SelectCategoryEvent;
-import com.iptv.iptv.main.presenter.CardPresenter;
-import com.iptv.iptv.main.model.MovieItem;
 import com.iptv.iptv.main.data.MovieLoader;
 import com.iptv.iptv.main.data.MovieProvider;
+import com.iptv.iptv.main.event.LoadDataEvent;
+import com.iptv.iptv.main.event.SelectCategoryEvent;
+import com.iptv.iptv.main.model.MovieItem;
+import com.iptv.iptv.main.presenter.CardPresenter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -47,18 +48,16 @@ public class MovieGridFragment extends VerticalGridFragment implements LoaderMan
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        loadVideoData();
-
         showTitle(false);
 
         prepareEntranceTransition();
         setupFragment();
     }
 
-    private void loadVideoData() {
+    private void loadVideoData(String url) {
         MovieProvider.setContext(getActivity());
 //        mVideosUrl = getActivity().getResources().getString(R.string.catalog_url);
-        mVideosUrl = "http://139.59.231.135/uplay/public/api/v1/movies";
+        mVideosUrl = url;
         getLoaderManager().initLoader(0, null, this);
     }
 
@@ -121,6 +120,11 @@ public class MovieGridFragment extends VerticalGridFragment implements LoaderMan
         public void onItemSelected(Presenter.ViewHolder itemViewHolder, Object item,
                                    RowPresenter.ViewHolder rowViewHolder, Row row) {
         }
+    }
+
+    @Subscribe
+    public void onLoadData(LoadDataEvent event) {
+        loadVideoData(event.url);
     }
 
     @Subscribe

@@ -2,6 +2,7 @@ package com.iptv.iptv.main;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -10,6 +11,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.event.LoadDataEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class SearchActivity extends LeanbackActivity {
 
@@ -18,11 +22,15 @@ public class SearchActivity extends LeanbackActivity {
     TextView mSeriesText;
     TextView mLiveText;
 
+    String mOrigin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         getWindow().setBackgroundDrawableResource(R.drawable.custom_background);
+
+        mOrigin = getIntent().getExtras().getString("origin");
 
         mSearchText = (EditText) findViewById(R.id.search);
         mMovieText = (TextView) findViewById(R.id.movie);
@@ -43,6 +51,13 @@ public class SearchActivity extends LeanbackActivity {
     }
 
     private void performSearch() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                EventBus.getDefault().post(new LoadDataEvent("http://139.59.231.135/uplay/public/api/v1/movies"));
+                findViewById(R.id.movie_container).setVisibility(View.VISIBLE);
+            }
+        }, 500);
 
         initialSelect();
     }
@@ -56,7 +71,19 @@ public class SearchActivity extends LeanbackActivity {
         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         mSearchText.clearFocus();
 
-        mMovieText.requestFocus();
+        if (mOrigin.equals("movie")) {
+            mMovieText.requestFocus();
+            mMovieText.setSelected(true);
+        } else if (mOrigin.equals("series")) {
+            mSeriesText.requestFocus();
+            mSearchText.setSelected(true);
+        } else if (mOrigin.equals("live")) {
+            mLiveText.requestFocus();
+            mLiveText.setSelected(true);
+        } else {
+            mMovieText.requestFocus();
+            mMovieText.setSelected(true);
+        }
     }
 
 }

@@ -50,6 +50,30 @@ public class SearchActivity extends LeanbackActivity {
                 return false;
             }
         });
+
+        mMovieText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setTextSelected(mMovieText);
+                setContainerSelected(findViewById(R.id.movie_container));
+            }
+        });
+
+        mSeriesText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setTextSelected(mSeriesText);
+                setContainerSelected(findViewById(R.id.series_container));
+            }
+        });
+
+        mLiveText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setTextSelected(mLiveText);
+                setContainerSelected(findViewById(R.id.live_container));
+            }
+        });
     }
 
     private void performSearch() {
@@ -67,11 +91,14 @@ public class SearchActivity extends LeanbackActivity {
     }
 
     private void initialSelect() {
-        manageViewContainer();
+        initViewContainer();
 
         mMovieText.setVisibility(View.VISIBLE);
+        mMovieText.setSelected(false);
         mSeriesText.setVisibility(View.VISIBLE);
+        mSearchText.setSelected(false);
         mLiveText.setVisibility(View.VISIBLE);
+        mLiveText.setSelected(false);
 
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
@@ -92,7 +119,7 @@ public class SearchActivity extends LeanbackActivity {
         }
     }
 
-    private void manageViewContainer() {
+    private void initViewContainer() {
         findViewById(R.id.movie_container).setVisibility(View.GONE);
         findViewById(R.id.series_container).setVisibility(View.GONE);
         findViewById(R.id.live_container).setVisibility(View.GONE);
@@ -106,6 +133,22 @@ public class SearchActivity extends LeanbackActivity {
         } else {
             findViewById(R.id.movie_container).setVisibility(View.VISIBLE);
         }
+    }
+
+    private void setTextSelected(TextView currentText) {
+        mMovieText.setSelected(false);
+        mSeriesText.setSelected(false);
+        mLiveText.setSelected(false);
+
+        currentText.setSelected(true);
+    }
+
+    private void setContainerSelected(View view) {
+        findViewById(R.id.movie_container).setVisibility(View.GONE);
+        findViewById(R.id.series_container).setVisibility(View.GONE);
+        findViewById(R.id.live_container).setVisibility(View.GONE);
+
+        view.setVisibility(View.VISIBLE);
     }
 
 }

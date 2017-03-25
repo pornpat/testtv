@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.iptv.iptv.lib.MovieDetailsActivity;
 import com.iptv.iptv.main.data.MovieLoader;
 import com.iptv.iptv.main.data.MovieProvider;
-import com.iptv.iptv.main.event.LoadDataEvent;
+import com.iptv.iptv.main.event.LoadMovieEvent;
 import com.iptv.iptv.main.event.SelectCategoryEvent;
 import com.iptv.iptv.main.model.MovieItem;
 import com.iptv.iptv.main.presenter.CardPresenter;
@@ -78,6 +78,7 @@ public class MovieGridFragment extends VerticalGridFragment implements LoaderMan
     @Override
     public void onLoadFinished(Loader<HashMap<String, List<MovieItem>>> loader, HashMap<String, List<MovieItem>> data) {
         if (null != data && !data.isEmpty()) {
+            mVideoObjectAdapter.clear();
             for (Map.Entry<String, List<MovieItem>> entry : data.entrySet()) {
                 List<MovieItem> list = entry.getValue();
 
@@ -123,7 +124,7 @@ public class MovieGridFragment extends VerticalGridFragment implements LoaderMan
     }
 
     @Subscribe
-    public void onLoadData(LoadDataEvent event) {
+    public void onLoadMovieData(LoadMovieEvent event) {
         loadVideoData(event.url);
     }
 

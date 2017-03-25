@@ -1,10 +1,12 @@
 package com.iptv.iptv.main;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.event.LoadSeriesEvent;
 import com.iptv.iptv.main.event.SelectCategoryEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -24,6 +26,13 @@ public class SeriesGridActivity extends LeanbackActivity {
         mSeriesText = (TextView) findViewById(R.id.series);
         mRecentText = (TextView) findViewById(R.id.recent);
         mFavoriteText = (TextView) findViewById(R.id.favorite);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                EventBus.getDefault().post(new LoadSeriesEvent("http://139.59.231.135/uplay/public/api/v1/series"));
+            }
+        }, 500);
 
         mSeriesText.requestFocus();
         mSeriesText.setSelected(true);

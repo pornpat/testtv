@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.iptv.iptv.lib.SeriesDetailsActivity;
 import com.iptv.iptv.main.data.SeriesLoader;
 import com.iptv.iptv.main.data.SeriesProvider;
+import com.iptv.iptv.main.event.LoadSeriesEvent;
 import com.iptv.iptv.main.event.SelectCategoryEvent;
 import com.iptv.iptv.main.model.SeriesItem;
 import com.iptv.iptv.main.presenter.CardPresenter;
@@ -47,17 +48,16 @@ public class SeriesGridFragment extends VerticalGridFragment implements LoaderMa
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        loadSeriesData();
-
         showTitle(false);
 
         prepareEntranceTransition();
         setupFragment();
     }
 
-    private void loadSeriesData() {
+    private void loadSeriesData(String url) {
         SeriesProvider.setContext(getActivity());
-        mVideosUrl = "http://139.59.231.135/uplay/public/api/v1/series";
+//        mVideosUrl = "http://139.59.231.135/uplay/public/api/v1/series";
+        mVideosUrl = url;
         getLoaderManager().initLoader(0, null, this);
     }
 
@@ -78,6 +78,7 @@ public class SeriesGridFragment extends VerticalGridFragment implements LoaderMa
     @Override
     public void onLoadFinished(Loader<HashMap<String, List<SeriesItem>>> loader, HashMap<String, List<SeriesItem>> data) {
         if (null != data && !data.isEmpty()) {
+            mVideoObjectAdapter.clear();
             for (Map.Entry<String, List<SeriesItem>> entry : data.entrySet()) {
                 List<SeriesItem> list = entry.getValue();
 
@@ -120,6 +121,11 @@ public class SeriesGridFragment extends VerticalGridFragment implements LoaderMa
         public void onItemSelected(Presenter.ViewHolder itemViewHolder, Object item,
                                    RowPresenter.ViewHolder rowViewHolder, Row row) {
         }
+    }
+
+    @Subscribe
+    public void onLoadSeriesData(LoadSeriesEvent event) {
+        loadSeriesData(event.url);
     }
 
     @Subscribe

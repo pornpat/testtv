@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.iptv.iptv.R;
-import com.iptv.iptv.main.event.LoadDataEvent;
+import com.iptv.iptv.main.event.LoadMovieEvent;
 import com.iptv.iptv.main.event.SelectCategoryEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -34,7 +34,7 @@ public class MovieGridActivity extends LeanbackActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                EventBus.getDefault().post(new LoadDataEvent("http://139.59.231.135/uplay/public/api/v1/movies"));
+                EventBus.getDefault().post(new LoadMovieEvent("http://139.59.231.135/uplay/public/api/v1/movies"));
             }
         }, 500);
 

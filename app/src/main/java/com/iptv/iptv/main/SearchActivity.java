@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.iptv.iptv.R;
-import com.iptv.iptv.main.event.LoadDataEvent;
+import com.iptv.iptv.main.event.LoadMovieEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -51,11 +51,11 @@ public class SearchActivity extends LeanbackActivity {
     }
 
     private void performSearch() {
+        findViewById(R.id.movie_container).setVisibility(View.VISIBLE);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                EventBus.getDefault().post(new LoadDataEvent("http://139.59.231.135/uplay/public/api/v1/movies"));
-                findViewById(R.id.movie_container).setVisibility(View.VISIBLE);
+                EventBus.getDefault().post(new LoadMovieEvent("http://139.59.231.135/uplay/public/api/v1/movies"));
             }
         }, 500);
 

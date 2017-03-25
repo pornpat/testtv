@@ -37,8 +37,11 @@ public class HomeActivity extends LeanbackActivity {
         mLiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, LiveActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent(HomeActivity.this, LiveGridActivity.class);
+                Bundle bundle =
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this)
+                                .toBundle();
+                startActivity(intent, bundle);
             }
         });
 

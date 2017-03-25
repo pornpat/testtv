@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.model.LiveItem;
 import com.iptv.iptv.main.model.MovieItem;
 import com.iptv.iptv.main.model.SeriesItem;
 
@@ -114,6 +115,24 @@ public class CardPresenter extends Presenter {
                 cardView.setMainImageDimensions(width, height);
                 Glide.with(viewHolder.view.getContext())
                         .load(series.getImageUrl())
+                        .centerCrop()
+                        .error(mDefaultCardImage)
+                        .into(cardView.getMainImageView());
+            }
+        } else if (item instanceof LiveItem) {
+            LiveItem live = (LiveItem) item;
+            ImageCardView cardView = (ImageCardView) viewHolder.view;
+
+            Log.d(TAG, "onBindViewHolder");
+            if (live.getLogoUrl() != null) {
+                cardView.setTitleText(live.getName());
+                cardView.setContentText("Live");
+
+                int width = cardView.getResources().getDimensionPixelSize(R.dimen.card_width);
+                int height = cardView.getResources().getDimensionPixelSize(R.dimen.card_height);
+                cardView.setMainImageDimensions(width, height);
+                Glide.with(viewHolder.view.getContext())
+                        .load(live.getLogoUrl())
                         .centerCrop()
                         .error(mDefaultCardImage)
                         .into(cardView.getMainImageView());

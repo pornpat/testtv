@@ -69,7 +69,10 @@
         <activity
             android:name=".main.MovieEpisodeActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".main.SearchActivity"
+        <activity
+            android:name=".main.SearchActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".main.LiveGridActivity"
             android:screenOrientation="landscape" />
     </application>
 

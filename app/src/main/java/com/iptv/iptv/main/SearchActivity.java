@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.event.LoadLiveEvent;
 import com.iptv.iptv.main.event.LoadMovieEvent;
 import com.iptv.iptv.main.event.LoadSeriesEvent;
 
@@ -58,6 +59,7 @@ public class SearchActivity extends LeanbackActivity {
             public void run() {
                 EventBus.getDefault().post(new LoadMovieEvent("http://139.59.231.135/uplay/public/api/v1/movies"));
                 EventBus.getDefault().post(new LoadSeriesEvent("http://139.59.231.135/uplay/public/api/v1/series"));
+                EventBus.getDefault().post(new LoadLiveEvent("http://139.59.231.135/uplay/public/api/v1/lives"));
             }
         }, 500);
 
@@ -93,13 +95,14 @@ public class SearchActivity extends LeanbackActivity {
     private void manageViewContainer() {
         findViewById(R.id.movie_container).setVisibility(View.GONE);
         findViewById(R.id.series_container).setVisibility(View.GONE);
+        findViewById(R.id.live_container).setVisibility(View.GONE);
 
         if (mOrigin.equals("movie")) {
             findViewById(R.id.movie_container).setVisibility(View.VISIBLE);
         } else if (mOrigin.equals("series")) {
             findViewById(R.id.series_container).setVisibility(View.VISIBLE);
         } else if (mOrigin.equals("live")) {
-            findViewById(R.id.movie_container).setVisibility(View.VISIBLE);
+            findViewById(R.id.live_container).setVisibility(View.VISIBLE);
         } else {
             findViewById(R.id.movie_container).setVisibility(View.VISIBLE);
         }

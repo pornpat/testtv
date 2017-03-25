@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.iptv.iptv.R;
@@ -15,7 +14,6 @@ import org.greenrobot.eventbus.EventBus;
 
 public class MovieGridActivity extends LeanbackActivity {
 
-    ImageView mSearchImage;
     TextView mMovieText;
     TextView mRecentText;
     TextView mFavoriteText;
@@ -26,7 +24,6 @@ public class MovieGridActivity extends LeanbackActivity {
         setContentView(R.layout.activity_movie_grid);
         getWindow().setBackgroundDrawableResource(R.drawable.custom_background);
 
-        mSearchImage = (ImageView) findViewById(R.id.search);
         mMovieText = (TextView) findViewById(R.id.movie);
         mRecentText = (TextView) findViewById(R.id.recent);
         mFavoriteText = (TextView) findViewById(R.id.favorite);
@@ -41,7 +38,7 @@ public class MovieGridActivity extends LeanbackActivity {
         mMovieText.requestFocus();
         mMovieText.setSelected(true);
 
-        mSearchImage.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.search).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MovieGridActivity.this, SearchActivity.class);

@@ -1,5 +1,6 @@
 package com.iptv.iptv.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -36,6 +37,15 @@ public class SeriesGridActivity extends LeanbackActivity {
 
         mSeriesText.requestFocus();
         mSeriesText.setSelected(true);
+
+        findViewById(R.id.search).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SeriesGridActivity.this, SearchActivity.class);
+                intent.putExtra("origin", "series");
+                startActivity(intent);
+            }
+        });
 
         mSeriesText.setOnClickListener(new View.OnClickListener() {
             @Override

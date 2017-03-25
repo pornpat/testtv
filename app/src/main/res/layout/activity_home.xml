@@ -315,13 +315,14 @@
         android:layout_marginRight="@dimen/margin_padding_large">
 
         <TextView
+            android:id="@+id/datetime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:textSize="26sp"
             android:textStyle="bold"
             android:textColor="@color/white"
-            android:text="Date 1/1/2017 12:00"/>
+            android:text="1/1/2017 12:00"/>
 
     </RelativeLayout>
 

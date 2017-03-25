@@ -8,9 +8,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.iptv.iptv.R;
-import com.iptv.iptv.main.dummy.DummyContent;
 import com.iptv.iptv.main.event.LoadMovieEvent;
 import com.iptv.iptv.main.event.SelectCategoryEvent;
+import com.iptv.iptv.main.model.CategoryItem;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -52,7 +52,7 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
         findViewById(R.id.filter).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.layout_filter, new FilterFragment()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.layout_filter, new FilterFragment()).commit();
                 findViewById(R.id.layout_filter).setVisibility(View.VISIBLE);
 
 //                getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.layout_filter)).commit();
@@ -94,7 +94,7 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
-        Log.v("testkn", item.content);
+    public void onListFragmentInteraction(CategoryItem item) {
+        Log.v("testkn", item.getName());
     }
 }

@@ -10,20 +10,17 @@ import android.widget.TextView;
 import com.iptv.iptv.R;
 import com.iptv.iptv.main.FilterFragment.OnListFragmentInteractionListener;
 import com.iptv.iptv.main.dummy.DummyContent.DummyItem;
+import com.iptv.iptv.main.model.CategoryItem;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
+
 public class FilterCategoryAdapter extends RecyclerView.Adapter<FilterCategoryAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<CategoryItem> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public FilterCategoryAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public FilterCategoryAdapter(List<CategoryItem> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -38,7 +35,7 @@ public class FilterCategoryAdapter extends RecyclerView.Adapter<FilterCategoryAd
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mContentView.setText(mValues.get(position).getName());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +66,7 @@ public class FilterCategoryAdapter extends RecyclerView.Adapter<FilterCategoryAd
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mContentView;
-        public DummyItem mItem;
+        public CategoryItem mItem;
 
         public ViewHolder(View view) {
             super(view);

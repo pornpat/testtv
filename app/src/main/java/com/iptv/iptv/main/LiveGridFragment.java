@@ -101,7 +101,7 @@ public class LiveGridFragment extends VerticalGridFragment implements LoaderMana
                                   RowPresenter.ViewHolder rowViewHolder, Row row) {
             LiveItem live = (LiveItem) item;
             Intent intent = new Intent(getActivity(), LiveActivity.class);
-//            intent.putExtra("position", row.getId());
+            intent.putExtra("id", live.getId());
             startActivity(intent);
         }
     }

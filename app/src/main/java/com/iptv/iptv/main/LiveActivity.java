@@ -97,6 +97,9 @@ public class LiveActivity extends LeanbackActivity implements LoaderManager.Load
                 List<LiveItem> list = entry.getValue();
 
                 for (int j = 0; j < list.size(); j++) {
+                    if (list.get(j).getId() == getIntent().getExtras().getInt("id")) {
+                        currentChannel = j;
+                    }
                     mLiveList.add(list.get(j));
                 }
             }
@@ -104,7 +107,6 @@ public class LiveActivity extends LeanbackActivity implements LoaderManager.Load
             Toast.makeText(this, "Failed to load live.", Toast.LENGTH_LONG).show();
         }
 
-        currentChannel = 0;
         startLive(currentChannel);
     }
 

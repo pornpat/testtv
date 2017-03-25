@@ -110,7 +110,7 @@
     <FrameLayout
         android:id="@+id/layout_filter"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="@color/selected_background"
         android:visibility="gone" />

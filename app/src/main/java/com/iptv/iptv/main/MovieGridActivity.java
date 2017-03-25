@@ -3,16 +3,18 @@ package com.iptv.iptv.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.dummy.DummyContent;
 import com.iptv.iptv.main.event.LoadMovieEvent;
 import com.iptv.iptv.main.event.SelectCategoryEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
-public class MovieGridActivity extends LeanbackActivity {
+public class MovieGridActivity extends LeanbackActivity implements FilterFragment.OnListFragmentInteractionListener {
 
     TextView mMovieText;
     TextView mRecentText;
@@ -50,8 +52,11 @@ public class MovieGridActivity extends LeanbackActivity {
         findViewById(R.id.filter).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.layout_filter, new FilterFragment()).commit();
                 findViewById(R.id.layout_filter).setVisibility(View.VISIBLE);
-                findViewById(R.id.layout_filter).requestFocus();
+
+//                getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.layout_filter)).commit();
+//                findViewById(R.id.layout_filter).setVisibility(View.GONE);
             }
         });
 
@@ -86,5 +91,10 @@ public class MovieGridActivity extends LeanbackActivity {
         mFavoriteText.setSelected(false);
 
         currentText.setSelected(true);
+    }
+
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+        Log.v("testkn", item.content);
     }
 }

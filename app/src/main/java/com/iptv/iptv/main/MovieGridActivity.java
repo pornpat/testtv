@@ -47,6 +47,14 @@ public class MovieGridActivity extends LeanbackActivity {
             }
         });
 
+        findViewById(R.id.filter).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                findViewById(R.id.layout_filter).setVisibility(View.VISIBLE);
+                findViewById(R.id.layout_filter).requestFocus();
+            }
+        });
+
         mMovieText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

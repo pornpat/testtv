@@ -100,7 +100,7 @@ public class LiveGridFragment extends VerticalGridFragment implements LoaderMana
         public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
                                   RowPresenter.ViewHolder rowViewHolder, Row row) {
             LiveItem live = (LiveItem) item;
-            Intent intent = new Intent(getActivity(), LiveActivity.class);
+            Intent intent = new Intent(getActivity(), LivePlayerActivity.class);
             intent.putExtra("id", live.getId());
             startActivity(intent);
         }

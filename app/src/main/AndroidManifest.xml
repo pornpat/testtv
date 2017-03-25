@@ -40,7 +40,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".main.LiveActivity"
+            android:name=".main.LivePlayerActivity"
             android:screenOrientation="landscape" />
         <activity
             android:name=".main.MovieGridActivity"

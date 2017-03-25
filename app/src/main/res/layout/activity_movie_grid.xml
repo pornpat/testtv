@@ -19,7 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
-            android:layout_marginTop="@dimen/activity_margin_reverse"/>
+            android:layout_marginTop="@dimen/activity_margin_reverse" />
 
     </LinearLayout>
 
@@ -37,13 +37,29 @@
             android:orientation="vertical"
             android:background="@color/black_60">
 
-            <ImageView
-                android:id="@+id/search"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/search_selected"
-                android:focusable="true"
-                android:focusableInTouchMode="true"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/search"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/search_selected"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"/>
+
+                <ImageView
+                    android:id="@+id/filter"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="@dimen/margin_padding_normal"
+                    android:src="@drawable/filter_selected"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"/>
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/movie"
@@ -55,7 +71,8 @@
                 android:textStyle="bold"
                 android:textColor="@color/bg_movie_text"
                 android:focusable="true"
-                android:focusableInTouchMode="true"/>
+                android:focusableInTouchMode="true"
+                android:nextFocusUp="@+id/search"/>
 
             <TextView
                 android:id="@+id/recent"
@@ -89,5 +106,13 @@
             android:layout_weight="4"/>
 
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/layout_filter"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_gravity="bottom"
+        android:background="@color/selected_background"
+        android:visibility="gone" />
 
 </FrameLayout>

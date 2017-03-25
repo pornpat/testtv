@@ -88,6 +88,9 @@ public class MovieGridFragment extends VerticalGridFragment implements LoaderMan
                 for (int j = 0; j < list.size(); j++) {
                     mVideoObjectAdapter.add(list.get(j));
                 }
+                for (int j = 0; j < list.size(); j++) {
+                    mVideoObjectAdapter.add(list.get(j));
+                }
             }
         } else {
             Toast.makeText(getActivity(), "Failed to load videos.", Toast.LENGTH_LONG).show();

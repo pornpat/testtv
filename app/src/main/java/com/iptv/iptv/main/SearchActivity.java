@@ -77,7 +77,6 @@ public class SearchActivity extends LeanbackActivity {
     }
 
     private void performSearch() {
-        findViewById(R.id.movie_container).setVisibility(View.VISIBLE);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -96,7 +95,7 @@ public class SearchActivity extends LeanbackActivity {
         mMovieText.setVisibility(View.VISIBLE);
         mMovieText.setSelected(false);
         mSeriesText.setVisibility(View.VISIBLE);
-        mSearchText.setSelected(false);
+        mSeriesText.setSelected(false);
         mLiveText.setVisibility(View.VISIBLE);
         mLiveText.setSelected(false);
 

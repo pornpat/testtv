@@ -61,9 +61,9 @@ public class SeriesProvider {
     }
 
     public static HashMap<String, List<SeriesItem>> buildMedia(String url) throws JSONException {
-        if (null != sSeriesList) {
-            return sSeriesList;
-        }
+//        if (null != sSeriesList) {
+//            return sSeriesList;
+//        }
         sSeriesList = new HashMap<>();
         sSeriesListById = new HashMap<>();
 

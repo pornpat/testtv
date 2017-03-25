@@ -49,9 +49,9 @@ public class LiveProvider {
     }
 
     public static HashMap<String, List<LiveItem>> buildMedia(String url) throws JSONException {
-        if (null != sLiveList) {
-            return sLiveList;
-        }
+//        if (null != sLiveList) {
+//            return sLiveList;
+//        }
         sLiveList = new HashMap<>();
         sLiveListById = new HashMap<>();
 

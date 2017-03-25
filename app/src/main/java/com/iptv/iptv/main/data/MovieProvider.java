@@ -61,9 +61,9 @@ public class MovieProvider {
     }
 
     public static HashMap<String, List<MovieItem>> buildMedia(String url) throws JSONException {
-        if (null != sMovieList) {
-            return sMovieList;
-        }
+//        if (null != sMovieList) {
+//            return sMovieList;
+//        }
         sMovieList = new HashMap<>();
         sMovieListById = new HashMap<>();
 

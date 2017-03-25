@@ -44,6 +44,8 @@ public class SeriesGridFragment extends VerticalGridFragment implements LoaderMa
 
     private static String mVideosUrl;
 
+    private int loaderId = 0;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +60,8 @@ public class SeriesGridFragment extends VerticalGridFragment implements LoaderMa
         SeriesProvider.setContext(getActivity());
 //        mVideosUrl = "http://139.59.231.135/uplay/public/api/v1/series";
         mVideosUrl = url;
-        getLoaderManager().initLoader(0, null, this);
+        getLoaderManager().initLoader(loaderId, null, this);
+        loaderId++;
     }
 
     private void setupFragment() {

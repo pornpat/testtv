@@ -81,9 +81,9 @@ public class SearchActivity extends LeanbackActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                EventBus.getDefault().post(new LoadMovieEvent("http://139.59.231.135/uplay/public/api/v1/movies"));
-                EventBus.getDefault().post(new LoadSeriesEvent("http://139.59.231.135/uplay/public/api/v1/series"));
-                EventBus.getDefault().post(new LoadLiveEvent("http://139.59.231.135/uplay/public/api/v1/lives"));
+                EventBus.getDefault().post(new LoadMovieEvent("http://139.59.231.135/uplay/public/api/v1/movies?keyword=" + mSearchText.getText().toString()));
+                EventBus.getDefault().post(new LoadSeriesEvent("http://139.59.231.135/uplay/public/api/v1/series?keyword=" + mSearchText.getText().toString()));
+                EventBus.getDefault().post(new LoadLiveEvent("http://139.59.231.135/uplay/public/api/v1/lives?keyword=" + mSearchText.getText().toString()));
             }
         }, 500);
 

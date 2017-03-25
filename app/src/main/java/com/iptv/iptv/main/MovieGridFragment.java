@@ -44,6 +44,8 @@ public class MovieGridFragment extends VerticalGridFragment implements LoaderMan
 
     private static String mVideosUrl;
 
+    private int loaderId = 0;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +60,8 @@ public class MovieGridFragment extends VerticalGridFragment implements LoaderMan
         MovieProvider.setContext(getActivity());
 //        mVideosUrl = getActivity().getResources().getString(R.string.catalog_url);
         mVideosUrl = url;
-        getLoaderManager().initLoader(0, null, this);
+        getLoaderManager().initLoader(loaderId, null, this);
+        loaderId++;
     }
 
     private void setupFragment() {

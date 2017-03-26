@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.iptv.iptv.R;
 import com.iptv.iptv.main.FilterFragment.OnListFragmentInteractionListener;
-import com.iptv.iptv.main.dummy.DummyContent.DummyItem;
 import com.iptv.iptv.main.model.CategoryItem;
 
 import java.util.List;
@@ -19,6 +18,9 @@ public class FilterCategoryAdapter extends RecyclerView.Adapter<FilterCategoryAd
 
     private final List<CategoryItem> mValues;
     private final OnListFragmentInteractionListener mListener;
+
+    private View lastCheckedView = null;
+    private int lastCheckedPosition = -1;
 
     public FilterCategoryAdapter(List<CategoryItem> items, OnListFragmentInteractionListener listener) {
         mValues = items;
@@ -33,7 +35,7 @@ public class FilterCategoryAdapter extends RecyclerView.Adapter<FilterCategoryAd
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mItem = mValues.get(position);
         holder.mContentView.setText(mValues.get(position).getName());
 
@@ -42,14 +44,24 @@ public class FilterCategoryAdapter extends RecyclerView.Adapter<FilterCategoryAd
             public void onClick(View v) {
                 if (null != mListener) {
                     mListener.onListFragmentInteraction(holder.mItem);
+
+                    if (lastCheckedPosition != position) {
+                        holder.mView.setBackgroundColor(ContextCompat.getColor(holder.mView.getContext(), R.color.selected_background));
+                        if (lastCheckedView != null) {
+                            lastCheckedView.setBackgroundColor(ContextCompat.getColor(lastCheckedView.getContext(), R.color.black));
+                        }
+
+                        lastCheckedView = holder.mView;
+                        lastCheckedPosition = position;
+                    }
                 }
             }
         });
 
         holder.mView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b) {
+            public void onFocusChange(View view, boolean isFocused) {
+                if (isFocused) {
                     holder.mContentView.setTextColor(ContextCompat.getColor(holder.mView.getContext(), R.color.fastlane_background));
                 } else {
                     holder.mContentView.setTextColor(ContextCompat.getColor(holder.mView.getContext(), R.color.text_default));

@@ -13,18 +13,34 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_padding_mid"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:src="@drawable/okay_selected"/>
+            android:text="Apply"
+            android:textColor="@color/text_default"
+            android:textSize="20sp"/>
 
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_marginTop="@dimen/margin_padding_xxsmall"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:src="@drawable/okay_selected"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_padding_mid"
+            android:text="Clear"
+            android:textColor="@color/text_default"
+            android:textSize="20sp"/>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="@dimen/margin_padding_xxsmall"
             android:layout_marginBottom="@dimen/margin_padding_mid"
             android:focusable="true"
             android:focusableInTouchMode="true"

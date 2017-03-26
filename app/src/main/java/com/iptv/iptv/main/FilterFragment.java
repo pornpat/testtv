@@ -16,7 +16,10 @@ import android.widget.Toast;
 import com.iptv.iptv.R;
 import com.iptv.iptv.main.data.CategoryLoader;
 import com.iptv.iptv.main.data.MovieProvider;
+import com.iptv.iptv.main.event.ApplyFilterEvent;
 import com.iptv.iptv.main.model.CategoryItem;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,13 +34,26 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
     private FilterCategoryAdapter mAdapter;
     private List<CategoryItem> mList;
 
+    private int currentId = -1;
+
     private OnListFragmentInteractionListener mListener;
+
+    public static FilterFragment newInstance(int currentPosition) {
+        FilterFragment fragment = new FilterFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("position", currentPosition);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     public FilterFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            currentId = getArguments().getInt("position");
+        }
     }
 
     @Override
@@ -54,9 +70,23 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        mAdapter = new FilterCategoryAdapter(mList, mListener);
+        mAdapter = new FilterCategoryAdapter(mList, currentId, mListener);
         recyclerView.setAdapter(mAdapter);
         recyclerView.requestFocus();
+
+        view.findViewById(R.id.btn_apply).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EventBus.getDefault().post(new ApplyFilterEvent(true));
+            }
+        });
+
+        view.findViewById(R.id.btn_clear).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EventBus.getDefault().post(new ApplyFilterEvent(false));
+            }
+        });
 
         loadCategoryData();
     }

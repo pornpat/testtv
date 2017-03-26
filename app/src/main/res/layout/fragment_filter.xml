@@ -22,6 +22,7 @@
             android:textSize="20sp"/>
 
         <ImageView
+            android:id="@+id/btn_apply"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="@dimen/margin_padding_xxsmall"
@@ -38,6 +39,7 @@
             android:textSize="20sp"/>
 
         <ImageView
+            android:id="@+id/btn_clear"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="@dimen/margin_padding_xxsmall"

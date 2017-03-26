@@ -7,11 +7,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.event.ApplyFilterEvent;
 import com.iptv.iptv.main.event.LoadMovieEvent;
 import com.iptv.iptv.main.event.SelectCategoryEvent;
 import com.iptv.iptv.main.model.CategoryItem;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 public class MovieGridActivity extends LeanbackActivity implements FilterFragment.OnListFragmentInteractionListener {
 
@@ -53,7 +55,7 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
         findViewById(R.id.filter).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFragmentManager().beginTransaction().replace(R.id.layout_filter, new FilterFragment()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.layout_filter, FilterFragment.newInstance(mCurrentCategory)).commit();
                 findViewById(R.id.layout_filter).setVisibility(View.VISIBLE);
             }
         });
@@ -94,9 +96,31 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
     @Override
     public void onListFragmentInteraction(CategoryItem item) {
         mCurrentCategory = item.getId();
+    }
 
-//        EventBus.getDefault().post(new LoadMovieEvent("http://139.59.231.135/uplay/public/api/v1/movies?categories_id=" + mCurrentCategory));
-//        getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.layout_filter)).commit();
-//        findViewById(R.id.layout_filter).setVisibility(View.GONE);
+    @Subscribe
+    public void onFilterEvent(ApplyFilterEvent event) {
+        if (event.isApplied) {
+            if (mCurrentCategory != -1) {
+                EventBus.getDefault().post(new LoadMovieEvent("http://139.59.231.135/uplay/public/api/v1/movies?categories_id=" + mCurrentCategory));
+            }
+        } else {
+            EventBus.getDefault().post(new LoadMovieEvent("http://139.59.231.135/uplay/public/api/v1/movies"));
+            mCurrentCategory = -1;
+        }
+        getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.layout_filter)).commit();
+        findViewById(R.id.layout_filter).setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 }

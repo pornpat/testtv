@@ -19,11 +19,13 @@ public class FilterCategoryAdapter extends RecyclerView.Adapter<FilterCategoryAd
     private final List<CategoryItem> mValues;
     private final OnListFragmentInteractionListener mListener;
 
+    private int currentId = -1;
     private View lastCheckedView = null;
     private int lastCheckedPosition = -1;
 
-    public FilterCategoryAdapter(List<CategoryItem> items, OnListFragmentInteractionListener listener) {
+    public FilterCategoryAdapter(List<CategoryItem> items, int currentId, OnListFragmentInteractionListener listener) {
         mValues = items;
+        this.currentId = currentId;
         mListener = listener;
     }
 
@@ -38,6 +40,14 @@ public class FilterCategoryAdapter extends RecyclerView.Adapter<FilterCategoryAd
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mItem = mValues.get(position);
         holder.mContentView.setText(mValues.get(position).getName());
+
+        if (mValues.get(position).getId() == currentId) {
+            holder.mView.setBackgroundColor(ContextCompat.getColor(holder.mView.getContext(), R.color.selected_background));
+            lastCheckedView = holder.mView;
+            lastCheckedPosition = position;
+        } else {
+            holder.mView.setBackgroundColor(ContextCompat.getColor(holder.mView.getContext(), R.color.black));
+        }
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

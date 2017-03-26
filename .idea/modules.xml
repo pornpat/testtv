@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/IPTV.iml" filepath="$PROJECT_DIR$/IPTV.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/easyvideo/easyvideo.iml" filepath="$PROJECT_DIR$/easyvideo/easyvideo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/easyvideo/easyvideo.iml" filepath="$PROJECT_DIR$/easyvideo/easyvideo.iml" />
     </modules>
   </component>
 </project>

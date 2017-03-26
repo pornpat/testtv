@@ -3,7 +3,6 @@ package com.iptv.iptv.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -19,6 +18,8 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
     TextView mMovieText;
     TextView mRecentText;
     TextView mFavoriteText;
+
+    private int mCurrentCategory = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +55,6 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
             public void onClick(View view) {
                 getFragmentManager().beginTransaction().replace(R.id.layout_filter, new FilterFragment()).commit();
                 findViewById(R.id.layout_filter).setVisibility(View.VISIBLE);
-
-//                getSupportFragmentManager().beginTransaction().remove(getSupportFragmentManager().findFragmentById(R.id.layout_filter)).commit();
-//                findViewById(R.id.layout_filter).setVisibility(View.GONE);
             }
         });
 
@@ -95,6 +93,10 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
 
     @Override
     public void onListFragmentInteraction(CategoryItem item) {
-        Log.v("testkn", item.getName());
+        mCurrentCategory = item.getId();
+
+//        EventBus.getDefault().post(new LoadMovieEvent("http://139.59.231.135/uplay/public/api/v1/movies?categories_id=" + mCurrentCategory));
+//        getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.layout_filter)).commit();
+//        findViewById(R.id.layout_filter).setVisibility(View.GONE);
     }
 }

@@ -17,6 +17,7 @@ import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.iptv.iptv.R;
+import com.iptv.iptv.lib.Utils;
 import com.iptv.iptv.main.data.LiveLoader;
 import com.iptv.iptv.main.data.LiveProvider;
 import com.iptv.iptv.main.model.LiveItem;
@@ -51,7 +52,12 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live);
 
-        loadLiveData();
+        if (Utils.isInternetConnectionAvailable(LivePlayerActivity.this)) {
+            loadLiveData();
+        } else {
+            Toast.makeText(this, "Please check your internet..", Toast.LENGTH_SHORT).show();
+            finish();
+        }
 
         mDetailView = findViewById(R.id.layout_detail);
         mLoadingView = findViewById(R.id.loading);
@@ -78,10 +84,18 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
     }
 
     private void startLive(int position) {
-        if (mLiveList.size() > 0) {
-            mNameText.setText(mLiveList.get(position).getName());
-            Glide.with(this).load(mLiveList.get(position).getLogoUrl()).override(150, 150).into(mLogo);
-            mVideoView.setVideoURI(Uri.parse(mLiveList.get(position).getUrl()));
+        if (Utils.isInternetConnectionAvailable(LivePlayerActivity.this)) {
+            if (mLiveList.size() > 0) {
+                mNameText.setText(mLiveList.get(position).getName());
+                Glide.with(this).load(mLiveList.get(position).getLogoUrl()).override(150, 150).into(mLogo);
+                mVideoView.setVideoURI(Uri.parse(mLiveList.get(position).getUrl()));
+            } else {
+                Toast.makeText(LivePlayerActivity.this, "No live data available..", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        } else {
+            Toast.makeText(LivePlayerActivity.this, "Please check your internet..", Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 
@@ -103,11 +117,12 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
                     mLiveList.add(list.get(j));
                 }
             }
-        } else {
-            Toast.makeText(this, "Failed to load live.", Toast.LENGTH_LONG).show();
-        }
 
-        startLive(currentChannel);
+            startLive(currentChannel);
+        } else {
+            Toast.makeText(this, "No live data available..", Toast.LENGTH_LONG).show();
+            finish();
+        }
     }
 
     @Override
@@ -124,7 +139,6 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
     }
 
     private class displayDetailTask extends TimerTask {
-
         @Override
         public void run() {
             mHandler.post(new Runnable() {

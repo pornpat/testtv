@@ -7,12 +7,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.Toast;
 
 import com.afollestad.easyvideoplayer.EasyVideoCallback;
 import com.afollestad.easyvideoplayer.EasyVideoPlayer;
 import com.iptv.iptv.R;
 import com.iptv.iptv.lib.MovieDetailsActivity;
 import com.iptv.iptv.lib.SeriesDetailsActivity;
+import com.iptv.iptv.lib.Utils;
 import com.iptv.iptv.main.model.MovieItem;
 import com.iptv.iptv.main.model.SeriesItem;
 
@@ -41,6 +43,11 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_player);
+
+        if (!Utils.isInternetConnectionAvailable(this)) {
+            Toast.makeText(this, "Please check your internet..", Toast.LENGTH_SHORT).show();
+            finish();
+        }
 
         if (getIntent().hasExtra(MovieDetailsActivity.MOVIE)) {
             mSelectedMovie = Parcels.unwrap(getIntent().getParcelableExtra(MovieDetailsActivity.MOVIE));

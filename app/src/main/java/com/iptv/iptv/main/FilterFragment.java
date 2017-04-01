@@ -67,12 +67,20 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
         super.onViewCreated(view, savedInstanceState);
 
         mList = new ArrayList<>();
-
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         mAdapter = new FilterCategoryAdapter(mList, currentId, mListener);
-        recyclerView.setAdapter(mAdapter);
-        recyclerView.requestFocus();
+
+        RecyclerView categoryList = (RecyclerView) view.findViewById(R.id.list_category);
+        categoryList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        categoryList.setAdapter(mAdapter);
+        categoryList.requestFocus();
+
+        RecyclerView countryList = (RecyclerView) view.findViewById(R.id.list_country);
+        countryList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        countryList.setAdapter(mAdapter);
+
+        RecyclerView yearList = (RecyclerView) view.findViewById(R.id.list_year);
+        yearList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        yearList.setAdapter(mAdapter);
 
         view.findViewById(R.id.btn_apply).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,6 +117,8 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
                 List<CategoryItem> list = entry.getValue();
 
                 for (int j = 0; j < list.size(); j++) {
+                    mList.add(list.get(j));
+                    mList.add(list.get(j));
                     mList.add(list.get(j));
                 }
             }

@@ -174,8 +174,6 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
             Log.v("testkn", tracks.get(i));
         }
 //        player.setTrack(2);
-
-        startBackgroundTimer();
     }
 
     @Override
@@ -191,6 +189,16 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
     @Override
     public void onCompletion(EasyVideoPlayer player) {
         player.showControls();
+    }
+
+    @Override
+    public void onSeek(EasyVideoPlayer player) {
+        if (player.isControlsShown()) {
+            startBackgroundTimer();
+        } else {
+            player.showControls();
+            startBackgroundTimer();
+        }
     }
 
     @Override

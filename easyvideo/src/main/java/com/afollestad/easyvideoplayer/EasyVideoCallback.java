@@ -28,4 +28,6 @@ public interface EasyVideoCallback {
     void onSubmit(EasyVideoPlayer player, Uri source);
 
     void onClickVideoFrame(EasyVideoPlayer player);
+
+    void onSeek(EasyVideoPlayer player);
 }

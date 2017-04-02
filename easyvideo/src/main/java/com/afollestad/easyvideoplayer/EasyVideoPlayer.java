@@ -965,16 +965,19 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
                 mLabelPosition.setText(Util.getDurationString(getCurrentPosition(), false));
                 mLabelDuration.setText(Util.getDurationString(getDuration() - getCurrentPosition(), true));
             }
+            if (mCallback != null) {
+                mCallback.onSeek(this);
+            }
         } else if (view.getId() == R.id.btnPrev) {
             setPosition(getCurrentPosition() - (10 * 1000));
             seekTo(mPosition);
-            mSeeker.setProgress(getCurrentPosition());
-            mLabelPosition.setText(Util.getDurationString(getCurrentPosition(), false));
-            mLabelDuration.setText(Util.getDurationString(getDuration() - getCurrentPosition(), true));
             if (!isPlaying()) {
                 mSeeker.setProgress(getCurrentPosition());
                 mLabelPosition.setText(Util.getDurationString(getCurrentPosition(), false));
                 mLabelDuration.setText(Util.getDurationString(getDuration() - getCurrentPosition(), true));
+            }
+            if (mCallback != null) {
+                mCallback.onSeek(this);
             }
         }
     }

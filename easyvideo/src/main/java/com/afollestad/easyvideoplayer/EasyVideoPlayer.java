@@ -107,6 +107,8 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
     private ImageButton mBtnRestart;
     private TextView mBtnRetry;
     private ImageButton mBtnPlayPause;
+    private ImageButton mBtnPrev;
+    private ImageButton mBtnForw;
     private TextView mBtnSubmit;
     private TextView mLabelCustom;
     private TextView mLabelBottom;
@@ -141,6 +143,7 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
     private int mThemeColor = 0;
     private boolean mAutoFullscreen = false;
     private boolean mLoop = false;
+    private int mPosition = 0;
 
     private MediaPlayer mMediaPlayer;
     private List<String> mTrackList = new ArrayList<>();
@@ -451,12 +454,16 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
         mBtnPlayPause.setEnabled(enabled);
         mBtnSubmit.setEnabled(enabled);
         mBtnRestart.setEnabled(enabled);
+        mBtnPrev.setEnabled(enabled);
+        mBtnForw.setEnabled(enabled);
         mBtnRetry.setEnabled(enabled);
 
         final float disabledAlpha = .4f;
         mBtnPlayPause.setAlpha(enabled ? 1f : disabledAlpha);
         mBtnSubmit.setAlpha(enabled ? 1f : disabledAlpha);
         mBtnRestart.setAlpha(enabled ? 1f : disabledAlpha);
+        mBtnPrev.setAlpha(enabled ? 1f : disabledAlpha);
+        mBtnForw.setAlpha(enabled ? 1f : disabledAlpha);
 
         mClickFrame.setEnabled(enabled);
     }
@@ -483,6 +490,8 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
                             setFullscreen(false);
                     }
                 }).start();
+
+        mBtnPlayPause.requestFocus();
     }
 
     @Override
@@ -750,13 +759,15 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
         LOG("onCompletion()");
-        if (mLoop) {
-            mBtnPlayPause.setImageDrawable(mPlayDrawable);
-            if (mHandler != null)
-                mHandler.removeCallbacks(mUpdateCounters);
-            mSeeker.setProgress(mSeeker.getMax());
-            showControls();
-        }
+//        if (mLoop) {
+//            mBtnPlayPause.setImageDrawable(mPlayDrawable);
+//            if (mHandler != null)
+//                mHandler.removeCallbacks(mUpdateCounters);
+//            mSeeker.setProgress(mSeeker.getMax());
+//            showControls();
+//        }
+        mBtnPlayPause.setImageDrawable(mPlayDrawable);
+
         if (mCallback != null) {
             mCallback.onCompletion(this);
             if (mLoop)
@@ -885,6 +896,12 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
         mBtnRestart.setOnClickListener(this);
         mBtnRestart.setImageDrawable(mRestartDrawable);
 
+        mBtnPrev = (ImageButton) mControlsFrame.findViewById(R.id.btnPrev);
+        mBtnPrev.setOnClickListener(this);
+
+        mBtnForw = (ImageButton) mControlsFrame.findViewById(R.id.btnForw);
+        mBtnForw.setOnClickListener(this);
+
         mBtnRetry = (TextView) mControlsFrame.findViewById(R.id.btnRetry);
         mBtnRetry.setOnClickListener(this);
         mBtnRetry.setText(mRetryText);
@@ -892,6 +909,7 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
         mBtnPlayPause = (ImageButton) mControlsFrame.findViewById(R.id.btnPlayPause);
         mBtnPlayPause.setOnClickListener(this);
         mBtnPlayPause.setImageDrawable(mPlayDrawable);
+        mBtnPlayPause.requestFocus();
 
         mBtnSubmit = (TextView) mControlsFrame.findViewById(R.id.btnSubmit);
         mBtnSubmit.setOnClickListener(this);
@@ -908,6 +926,16 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
         setControlsEnabled(false);
         invalidateActions();
         prepare();
+    }
+
+    private void setPosition(int position) {
+        if (position > getDuration()) {
+            mPosition = getDuration();
+        } else if (position < 0) {
+            mPosition = 0;
+        } else {
+            mPosition = position;
+        }
     }
 
     @Override
@@ -929,6 +957,25 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
         } else if (view.getId() == R.id.btnSubmit) {
             if (mCallback != null)
                 mCallback.onSubmit(this, mSource);
+        } else if (view.getId() == R.id.btnForw) {
+            setPosition(getCurrentPosition() + (10 * 1000));
+            seekTo(mPosition);
+            if (!isPlaying()) {
+                mSeeker.setProgress(getCurrentPosition());
+                mLabelPosition.setText(Util.getDurationString(getCurrentPosition(), false));
+                mLabelDuration.setText(Util.getDurationString(getDuration() - getCurrentPosition(), true));
+            }
+        } else if (view.getId() == R.id.btnPrev) {
+            setPosition(getCurrentPosition() - (10 * 1000));
+            seekTo(mPosition);
+            mSeeker.setProgress(getCurrentPosition());
+            mLabelPosition.setText(Util.getDurationString(getCurrentPosition(), false));
+            mLabelDuration.setText(Util.getDurationString(getDuration() - getCurrentPosition(), true));
+            if (!isPlaying()) {
+                mSeeker.setProgress(getCurrentPosition());
+                mLabelPosition.setText(Util.getDurationString(getCurrentPosition(), false));
+                mLabelDuration.setText(Util.getDurationString(getDuration() - getCurrentPosition(), true));
+            }
         }
     }
 
@@ -960,6 +1007,8 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
         mBtnPlayPause = null;
         mBtnRestart = null;
         mBtnSubmit = null;
+        mBtnPrev = null;
+        mBtnForw = null;
 
         mControlsFrame = null;
         mClickFrame = null;

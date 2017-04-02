@@ -190,7 +190,7 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
 
     @Override
     public void onCompletion(EasyVideoPlayer player) {
-
+        player.showControls();
     }
 
     @Override

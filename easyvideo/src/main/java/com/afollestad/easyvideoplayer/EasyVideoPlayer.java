@@ -1136,7 +1136,7 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
         tintSelector(mBtnPlayPause, labelColor);
         mLabelDuration.setTextColor(labelColor);
         mLabelPosition.setTextColor(labelColor);
-        setTint(mSeeker, labelColor);
+//        setTint(mSeeker, labelColor);
         mBtnRetry.setTextColor(labelColor);
         tintSelector(mBtnRetry, labelColor);
         mBtnSubmit.setTextColor(labelColor);

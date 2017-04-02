@@ -44,6 +44,7 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -100,7 +101,7 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
     private View mProgressFrame;
     private View mClickFrame;
 
-    private SeekBar mSeeker;
+    private ProgressBar mSeeker;
     private TextView mLabelPosition;
     private TextView mLabelDuration;
     private ImageButton mBtnRestart;
@@ -872,8 +873,7 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
 
 
         // Retrieve controls
-        mSeeker = (SeekBar) mControlsFrame.findViewById(R.id.seeker);
-        mSeeker.setOnSeekBarChangeListener(this);
+        mSeeker = (ProgressBar) mControlsFrame.findViewById(R.id.seeker);
 
         mLabelPosition = (TextView) mControlsFrame.findViewById(R.id.position);
         mLabelPosition.setText(Util.getDurationString(0, false));
@@ -1043,21 +1043,15 @@ public class EasyVideoPlayer extends FrameLayout implements IUserMethods, Textur
         else throw new RuntimeException(e);
     }
 
-    private static void setTint(@NonNull SeekBar seekBar, @ColorInt int color) {
+    private static void setTint(@NonNull ProgressBar seekBar, @ColorInt int color) {
         ColorStateList s1 = ColorStateList.valueOf(color);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            seekBar.setThumbTintList(s1);
             seekBar.setProgressTintList(s1);
             seekBar.setSecondaryProgressTintList(s1);
         } else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
             Drawable progressDrawable = DrawableCompat.wrap(seekBar.getProgressDrawable());
             seekBar.setProgressDrawable(progressDrawable);
             DrawableCompat.setTintList(progressDrawable, s1);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                Drawable thumbDrawable = DrawableCompat.wrap(seekBar.getThumb());
-                DrawableCompat.setTintList(thumbDrawable, s1);
-                seekBar.setThumb(thumbDrawable);
-            }
         } else {
             PorterDuff.Mode mode = PorterDuff.Mode.SRC_IN;
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {

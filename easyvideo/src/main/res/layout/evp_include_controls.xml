@@ -9,12 +9,13 @@
     android:paddingBottom="@dimen/evp_content_inset_half"
     android:paddingTop="@dimen/evp_content_inset">
 
-    <SeekBar
+    <ProgressBar
         android:id="@+id/seeker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/evp_content_inset_less"
-        android:layout_marginRight="@dimen/evp_content_inset_less" />
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_marginLeft="@dimen/evp_content_inset"
+        android:layout_marginRight="@dimen/evp_content_inset" />
 
     <TextView
         android:id="@+id/position"
@@ -23,6 +24,7 @@
         android:layout_below="@+id/seeker"
         android:layout_marginLeft="@dimen/evp_content_inset"
         android:layout_marginStart="@dimen/evp_content_inset"
+        android:layout_marginTop="8dp"
         android:fontFamily="sans-serif"
         android:textColor="#fff"
         android:textSize="@dimen/evp_text_size_small"
@@ -36,6 +38,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/seeker"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="@dimen/evp_content_inset"
         android:layout_marginRight="@dimen/evp_content_inset"
         android:fontFamily="sans-serif"
@@ -49,8 +52,8 @@
         android:layout_width="@dimen/evp_button_size"
         android:layout_height="@dimen/evp_button_size"
         android:layout_below="@+id/position"
-        android:layout_marginLeft="@dimen/evp_content_inset_iconbuttons"
-        android:layout_marginStart="@dimen/evp_content_inset_iconbuttons"
+        android:layout_marginLeft="@dimen/evp_content_inset"
+        android:layout_marginStart="@dimen/evp_content_inset"
         android:background="?selectableItemBackground"
         android:paddingLeft="@dimen/evp_button_size"
         android:paddingRight="@dimen/evp_button_size"
@@ -83,6 +86,29 @@
         android:layout_centerHorizontal="true"
         android:background="?selectableItemBackground"
         app:srcCompat="@drawable/evp_action_play"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/btnPrev"
+        android:layout_width="@dimen/evp_button_size"
+        android:layout_height="@dimen/evp_button_size"
+        android:scaleType="centerInside"
+        android:layout_below="@+id/position"
+        android:layout_toLeftOf="@+id/btnPlayPause"
+        android:layout_marginRight="@dimen/evp_content_inset"
+        android:background="?selectableItemBackground"
+        app:srcCompat="@drawable/icon_prev"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/btnForw"
+        android:layout_width="@dimen/evp_button_size"
+        android:layout_height="@dimen/evp_button_size"
+        android:layout_below="@+id/position"
+        android:layout_toRightOf="@+id/btnPlayPause"
+        android:layout_marginLeft="@dimen/evp_content_inset"
+        android:background="?selectableItemBackground"
+        app:srcCompat="@drawable/icon_forw"
         tools:ignore="ContentDescription" />
 
     <TextView

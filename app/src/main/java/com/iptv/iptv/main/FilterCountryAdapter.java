@@ -8,21 +8,21 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.iptv.iptv.R;
-import com.iptv.iptv.main.model.CategoryItem;
+import com.iptv.iptv.main.model.CountryItem;
 
 import java.util.List;
 
 
-public class FilterCategoryAdapter extends RecyclerView.Adapter<FilterCategoryAdapter.ViewHolder> {
+public class FilterCountryAdapter extends RecyclerView.Adapter<FilterCountryAdapter.ViewHolder> {
 
-    private final List<CategoryItem> mValues;
-    private final FilterFragment.OnCategoryInteractionListener mListener;
+    private final List<CountryItem> mValues;
+    private final FilterFragment.OnCountryInteractionListener mListener;
 
     private int currentId = -1;
     private View lastCheckedView = null;
     private int lastCheckedPosition = -1;
 
-    public FilterCategoryAdapter(List<CategoryItem> items, int currentId, FilterFragment.OnCategoryInteractionListener listener) {
+    public FilterCountryAdapter(List<CountryItem> items, int currentId, FilterFragment.OnCountryInteractionListener listener) {
         mValues = items;
         this.currentId = currentId;
         mListener = listener;
@@ -52,7 +52,7 @@ public class FilterCategoryAdapter extends RecyclerView.Adapter<FilterCategoryAd
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    mListener.onCategoryInteraction(holder.mItem);
+                    mListener.onCountryInteraction(holder.mItem);
 
                     if (lastCheckedPosition != position) {
                         holder.mView.setBackgroundColor(ContextCompat.getColor(holder.mView.getContext(), R.color.selected_background));
@@ -87,7 +87,7 @@ public class FilterCategoryAdapter extends RecyclerView.Adapter<FilterCategoryAd
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mContentView;
-        public CategoryItem mItem;
+        public CountryItem mItem;
 
         public ViewHolder(View view) {
             super(view);

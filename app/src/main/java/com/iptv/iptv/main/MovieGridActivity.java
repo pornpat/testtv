@@ -11,11 +11,12 @@ import com.iptv.iptv.main.event.ApplyFilterEvent;
 import com.iptv.iptv.main.event.LoadMovieEvent;
 import com.iptv.iptv.main.event.SelectCategoryEvent;
 import com.iptv.iptv.main.model.CategoryItem;
+import com.iptv.iptv.main.model.CountryItem;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-public class MovieGridActivity extends LeanbackActivity implements FilterFragment.OnListFragmentInteractionListener {
+public class MovieGridActivity extends LeanbackActivity implements FilterFragment.OnCategoryInteractionListener, FilterFragment.OnCountryInteractionListener {
 
     TextView mMovieText;
     TextView mRecentText;
@@ -94,8 +95,13 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
     }
 
     @Override
-    public void onListFragmentInteraction(CategoryItem item) {
+    public void onCategoryInteraction(CategoryItem item) {
         mCurrentCategory = item.getId();
+    }
+
+    @Override
+    public void onCountryInteraction(CountryItem item) {
+
     }
 
     @Subscribe

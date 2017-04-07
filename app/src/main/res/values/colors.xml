@@ -4,6 +4,7 @@
     <color name="fastlane_background">#0096a6</color>
     <color name="search_opaque">#ffaa3f</color>
     <color name="selected_background">#ffaa3f</color>
+    <color name="default_button_bg">#585759</color>
 
     <color name="default_background">#0096a6</color>
     <color name="icon_background">#4A4F51</color>

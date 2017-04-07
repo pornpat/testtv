@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.iptv.iptv.R;
-import com.iptv.iptv.main.data.CategoryLoader;
+import com.iptv.iptv.main.data.FilterLoader;
 import com.iptv.iptv.main.data.MovieProvider;
 import com.iptv.iptv.main.event.ApplyFilterEvent;
 import com.iptv.iptv.main.model.CategoryItem;
@@ -32,19 +32,23 @@ import java.util.Map;
 
 public class FilterFragment extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, List<CategoryItem>>> {
 
-    private String mCategoryUrl = "http://139.59.231.135/uplay/public/api/v1/categories";
-    private String mCountryUrl = "http://139.59.231.135/uplay/public/api/v1/countries";
-    private String mYearUrl = "http://139.59.231.135/uplay/public/api/v1/years";
+    private String mFilterUrl = "http://139.59.231.135/uplay/public/api/v1/categories";
+//    private String mCategoryUrl = "http://139.59.231.135/uplay/public/api/v1/categories";
+//    private String mCountryUrl = "http://139.59.231.135/uplay/public/api/v1/countries";
+//    private String mYearUrl = "http://139.59.231.135/uplay/public/api/v1/years";
 
     private FilterCategoryAdapter mCategoryAdapter;
     private List<CategoryItem> mCategoryList;
     private FilterCountryAdapter mCountryAdapter;
     private List<CountryItem> mCountryList;
+    private FilterYearAdapter mYearAdapter;
+    private List<Integer> mYearList;
 
     private int currentId = -1;
 
     private OnCategoryInteractionListener mCategoryListener;
     private OnCountryInteractionListener mCountryListener;
+    private OnYearInteractionListener mYearListener;
 
     public static FilterFragment newInstance(int currentPosition) {
         FilterFragment fragment = new FilterFragment();
@@ -80,6 +84,9 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
         mCountryList = new ArrayList<>();
         mCountryAdapter = new FilterCountryAdapter(mCountryList, currentId, mCountryListener);
 
+        mYearList = new ArrayList<>();
+        mYearAdapter = new FilterYearAdapter(mYearList, currentId, mYearListener);
+
         RecyclerView categoryList = (RecyclerView) view.findViewById(R.id.list_category);
         categoryList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         categoryList.setAdapter(mCategoryAdapter);
@@ -91,7 +98,7 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
 
         RecyclerView yearList = (RecyclerView) view.findViewById(R.id.list_year);
         yearList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        yearList.setAdapter(mCategoryAdapter);
+        yearList.setAdapter(mYearAdapter);
 
         view.findViewById(R.id.btn_apply).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,17 +114,17 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
             }
         });
 
-        loadCategoryData();
+        loadFilterData();
     }
 
-    private void loadCategoryData() {
+    private void loadFilterData() {
         MovieProvider.setContext(getActivity());
         getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
     public Loader<HashMap<String, List<CategoryItem>>> onCreateLoader(int i, Bundle bundle) {
-        return new CategoryLoader(getActivity(), mCategoryUrl);
+        return new FilterLoader(getActivity(), mFilterUrl);
     }
 
     @Override
@@ -158,6 +165,7 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
         if (activity instanceof OnCategoryInteractionListener && activity instanceof OnCountryInteractionListener) {
             mCategoryListener = (OnCategoryInteractionListener) activity;
             mCountryListener = (OnCountryInteractionListener) activity;
+            mYearListener = (OnYearInteractionListener) activity;
         } else {
             throw new RuntimeException(activity.toString()
                     + " must implement OnListFragmentInteractionListener");
@@ -169,6 +177,7 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
         super.onDetach();
         mCategoryListener = null;
         mCountryListener = null;
+        mYearListener = null;
     }
 
     public interface OnCategoryInteractionListener {
@@ -177,5 +186,9 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
 
     public interface OnCountryInteractionListener {
         void onCountryInteraction(CountryItem item);
+    }
+
+    public interface OnYearInteractionListener {
+        void onYearInteraction(int year);
     }
 }

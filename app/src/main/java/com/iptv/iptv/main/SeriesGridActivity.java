@@ -11,11 +11,13 @@ import com.iptv.iptv.main.event.ApplyFilterEvent;
 import com.iptv.iptv.main.event.LoadSeriesEvent;
 import com.iptv.iptv.main.event.SelectCategoryEvent;
 import com.iptv.iptv.main.model.CategoryItem;
+import com.iptv.iptv.main.model.CountryItem;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-public class SeriesGridActivity extends LeanbackActivity implements FilterFragment.OnListFragmentInteractionListener {
+public class SeriesGridActivity extends LeanbackActivity implements FilterFragment.OnCategoryInteractionListener,
+        FilterFragment.OnCountryInteractionListener, FilterFragment.OnYearInteractionListener {
 
     TextView mSeriesText;
     TextView mRecentText;
@@ -94,8 +96,18 @@ public class SeriesGridActivity extends LeanbackActivity implements FilterFragme
     }
 
     @Override
-    public void onListFragmentInteraction(CategoryItem item) {
+    public void onCategoryInteraction(CategoryItem item) {
         mCurrentCategory = item.getId();
+    }
+
+    @Override
+    public void onCountryInteraction(CountryItem item) {
+
+    }
+
+    @Override
+    public void onYearInteraction(int year) {
+
     }
 
     @Subscribe
@@ -123,5 +135,4 @@ public class SeriesGridActivity extends LeanbackActivity implements FilterFragme
         EventBus.getDefault().unregister(this);
         super.onStop();
     }
-
 }

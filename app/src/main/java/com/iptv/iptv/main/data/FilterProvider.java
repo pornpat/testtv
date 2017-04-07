@@ -21,7 +21,7 @@ import java.util.List;
  * Created by Asus N46V on 26/3/2017.
  */
 
-public class CategoryProvider {
+public class FilterProvider {
 
     private static final String TAG_ID = "id";
     private static final String TAG_NAME = "name";
@@ -44,7 +44,7 @@ public class CategoryProvider {
     public static HashMap<String, List<CategoryItem>> buildMedia(String url) throws JSONException {
         sCategoryList = new HashMap<>();
 
-        JSONArray jsonArray = new CategoryProvider().fetchJSON(url);
+        JSONArray jsonArray = new FilterProvider().fetchJSON(url);
 
         if (null == jsonArray) {
             return sCategoryList;

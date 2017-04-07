@@ -16,7 +16,8 @@ import com.iptv.iptv.main.model.CountryItem;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-public class MovieGridActivity extends LeanbackActivity implements FilterFragment.OnCategoryInteractionListener, FilterFragment.OnCountryInteractionListener {
+public class MovieGridActivity extends LeanbackActivity implements FilterFragment.OnCategoryInteractionListener,
+        FilterFragment.OnCountryInteractionListener, FilterFragment.OnYearInteractionListener {
 
     TextView mMovieText;
     TextView mRecentText;
@@ -101,6 +102,11 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
 
     @Override
     public void onCountryInteraction(CountryItem item) {
+
+    }
+
+    @Override
+    public void onYearInteraction(int year) {
 
     }
 

@@ -13,12 +13,12 @@ import java.util.List;
  * Created by Asus N46V on 26/3/2017.
  */
 
-public class CategoryLoader extends AsyncTaskLoader<HashMap<String, List<CategoryItem>>> {
+public class FilterLoader extends AsyncTaskLoader<HashMap<String, List<CategoryItem>>> {
 
-    private static final String TAG = "CategoryLoader";
+    private static final String TAG = "FilterLoader";
     private final String mUrl;
 
-    public CategoryLoader(Context context, String url) {
+    public FilterLoader(Context context, String url) {
         super(context);
         mUrl = url;
     }
@@ -26,7 +26,7 @@ public class CategoryLoader extends AsyncTaskLoader<HashMap<String, List<Categor
     @Override
     public HashMap<String, List<CategoryItem>> loadInBackground() {
         try {
-            return CategoryProvider.buildMedia(mUrl);
+            return FilterProvider.buildMedia(mUrl);
         } catch (Exception e) {
             Log.e(TAG, "Failed to fetch media data", e);
             return null;

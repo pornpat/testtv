@@ -42,7 +42,7 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
             @Override
             public void run() {
                 EventBus.getDefault().post(new LoadMovieEvent(
-                        Utils.appendUri("http://139.59.231.135/uplay/public/api/v1/movies",  "token=" + PrefUtil.getStringProperty(R.string.pref_token))));
+                        UrlUtil.appendUri(UrlUtil.MOVIE_URL, UrlUtil.addToken())));
             }
         }, 500);
 
@@ -117,22 +117,22 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
     @Subscribe
     public void onFilterEvent(ApplyFilterEvent event) {
         if (event.isApplied) {
-            String url = "http://139.59.231.135/uplay/public/api/v1/movies";
+            String url = UrlUtil.MOVIE_URL;
             if (mCurrentCategory != -1) {
-                url = Utils.appendUri(url, "categories_id=" + mCurrentCategory);
+                url = UrlUtil.appendUri(url, "categories_id=" + mCurrentCategory);
             }
             if (mCurrentCountry != -1) {
-                url = Utils.appendUri(url, "countries_id=" + mCurrentCountry);
+                url = UrlUtil.appendUri(url, "countries_id=" + mCurrentCountry);
             }
             if (mCurrentYear != -1) {
-                url = Utils.appendUri(url, "year=" + mCurrentYear);
+                url = UrlUtil.appendUri(url, "year=" + mCurrentYear);
             }
-            url = Utils.appendUri(url, "token=" + PrefUtil.getStringProperty(R.string.pref_token));
+            url = UrlUtil.appendUri(url, UrlUtil.addToken());
 
             EventBus.getDefault().post(new LoadMovieEvent(url));
         } else {
             EventBus.getDefault().post(new LoadMovieEvent(
-                    Utils.appendUri("http://139.59.231.135/uplay/public/api/v1/movies",  "token=" + PrefUtil.getStringProperty(R.string.pref_token))));
+                    UrlUtil.appendUri(UrlUtil.MOVIE_URL, UrlUtil.addToken())));
             mCurrentCategory = -1;
             mCurrentCountry = -1;
             mCurrentYear = -1;

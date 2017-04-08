@@ -32,7 +32,8 @@ public class LiveGridActivity extends LeanbackActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                EventBus.getDefault().post(new LoadLiveEvent(Utils.appendUri("http://139.59.231.135/uplay/public/api/v1/lives", "token=" + PrefUtil.getStringProperty(R.string.pref_token))));
+                EventBus.getDefault().post(new LoadLiveEvent(
+                        UrlUtil.appendUri(UrlUtil.LIVE_URL, UrlUtil.addToken())));
             }
         }, 500);
 

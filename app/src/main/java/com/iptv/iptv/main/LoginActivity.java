@@ -40,7 +40,7 @@ public class LoginActivity extends LeanbackActivity {
         params.put("password", mPasswordText.getText().toString());
 
         AsyncHttpClient client = new AsyncHttpClient();
-        client.post("http://139.59.231.135/uplay/public/api/v1/auth", params, new TextHttpResponseHandler() {
+        client.post(UrlUtil.AUTH_URL, params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();

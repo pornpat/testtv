@@ -81,21 +81,21 @@ public class SearchActivity extends LeanbackActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                String movieUrl = "http://139.59.231.135/uplay/public/api/v1/movies";
-                movieUrl = Utils.appendUri(movieUrl, "keyword=" + mSearchText.getText().toString());
-                movieUrl = Utils.appendUri(movieUrl, "token=" + PrefUtil.getStringProperty(R.string.pref_token));
+                String movieUrl = UrlUtil.MOVIE_URL;
+                movieUrl = UrlUtil.appendUri(movieUrl, "keyword=" + mSearchText.getText().toString());
+                movieUrl = UrlUtil.appendUri(movieUrl, UrlUtil.addToken());
 
                 EventBus.getDefault().post(new LoadMovieEvent(movieUrl));
 
-                String seriesUrl = "http://139.59.231.135/uplay/public/api/v1/series";
-                seriesUrl = Utils.appendUri(seriesUrl, "keyword=" + mSearchText.getText().toString());
-                seriesUrl = Utils.appendUri(seriesUrl, "token=" + PrefUtil.getStringProperty(R.string.pref_token));
+                String seriesUrl = UrlUtil.SERIES_URL;
+                seriesUrl = UrlUtil.appendUri(seriesUrl, "keyword=" + mSearchText.getText().toString());
+                seriesUrl = UrlUtil.appendUri(seriesUrl, UrlUtil.addToken());
 
                 EventBus.getDefault().post(new LoadSeriesEvent(seriesUrl));
 
-                String liveUrl = "http://139.59.231.135/uplay/public/api/v1/lives";
-                liveUrl = Utils.appendUri(liveUrl, "keyword=" + mSearchText.getText().toString());
-                liveUrl = Utils.appendUri(liveUrl, "token=" + PrefUtil.getStringProperty(R.string.pref_token));
+                String liveUrl = UrlUtil.LIVE_URL;
+                liveUrl = UrlUtil.appendUri(liveUrl, "keyword=" + mSearchText.getText().toString());
+                liveUrl = UrlUtil.appendUri(liveUrl, UrlUtil.addToken());
 
                 EventBus.getDefault().post(new LoadLiveEvent(liveUrl));
             }

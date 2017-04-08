@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.iptv.iptv.R;
-import com.iptv.iptv.lib.Utils;
 import com.iptv.iptv.main.data.FilterLoader;
 import com.iptv.iptv.main.data.MovieProvider;
 import com.iptv.iptv.main.event.ApplyFilterEvent;
@@ -30,7 +29,7 @@ import java.util.List;
 
 public class FilterFragment extends Fragment implements LoaderManager.LoaderCallbacks<FilterItem> {
 
-    private String mFilterUrl = Utils.appendUri("http://139.59.231.135/uplay/public/api/v1/filters", "token=" + PrefUtil.getStringProperty(R.string.pref_token));
+    private String mFilterUrl = UrlUtil.appendUri(UrlUtil.FILTER_URL, UrlUtil.addToken());
 
     private FilterCategoryAdapter mCategoryAdapter;
     private List<CategoryItem> mCategoryList;

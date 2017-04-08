@@ -24,8 +24,6 @@ import android.view.Display;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 
 /**
@@ -111,26 +109,6 @@ public class Utils {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
-    }
-
-    public static String appendUri(String uri, String appendQuery) {
-        try {
-            URI oldUri = new URI(uri);
-
-            String newQuery = oldUri.getQuery();
-            if (newQuery == null) {
-                newQuery = appendQuery;
-            } else {
-                newQuery += "&" + appendQuery;
-            }
-
-            URI newUri = new URI(oldUri.getScheme(), oldUri.getAuthority(),
-                    oldUri.getPath(), newQuery, oldUri.getFragment());
-
-            return newUri.toString();
-        } catch (URISyntaxException e) {
-            return uri;
-        }
     }
 
 }

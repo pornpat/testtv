@@ -25,6 +25,8 @@ public class SeriesGridActivity extends LeanbackActivity implements FilterFragme
     TextView mFavoriteText;
 
     private int mCurrentCategory = -1;
+    private int mCurrentCountry = -1;
+    private int mCurrentYear = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +61,7 @@ public class SeriesGridActivity extends LeanbackActivity implements FilterFragme
         findViewById(R.id.filter).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFragmentManager().beginTransaction().replace(R.id.layout_filter, FilterFragment.newInstance(mCurrentCategory)).commit();
+                getFragmentManager().beginTransaction().replace(R.id.layout_filter, FilterFragment.newInstance(mCurrentCategory, mCurrentCountry, mCurrentYear)).commit();
                 findViewById(R.id.layout_filter).setVisibility(View.VISIBLE);
             }
         });
@@ -104,28 +106,36 @@ public class SeriesGridActivity extends LeanbackActivity implements FilterFragme
 
     @Override
     public void onCountryInteraction(CountryItem item) {
-
+        mCurrentCountry = item.getId();
     }
 
     @Override
     public void onYearInteraction(int year) {
-
+        mCurrentYear = year;
     }
 
     @Subscribe
     public void onFilterEvent(ApplyFilterEvent event) {
         if (event.isApplied) {
+            String url = "http://139.59.231.135/uplay/public/api/v1/series";
             if (mCurrentCategory != -1) {
-                String url = "http://139.59.231.135/uplay/public/api/v1/series";
                 url = Utils.appendUri(url, "categories_id=" + mCurrentCategory);
-                url = Utils.appendUri(url, "token=" + PrefUtil.getStringProperty(R.string.pref_token));
-
-                EventBus.getDefault().post(new LoadSeriesEvent(url));
             }
+            if (mCurrentCountry != -1) {
+                url = Utils.appendUri(url, "countries_id=" + mCurrentCountry);
+            }
+            if (mCurrentYear != -1) {
+                url = Utils.appendUri(url, "year=" + mCurrentYear);
+            }
+            url = Utils.appendUri(url, "token=" + PrefUtil.getStringProperty(R.string.pref_token));
+
+            EventBus.getDefault().post(new LoadSeriesEvent(url));
         } else {
             EventBus.getDefault().post(new LoadSeriesEvent(
                     Utils.appendUri("http://139.59.231.135/uplay/public/api/v1/series",  "token=" + PrefUtil.getStringProperty(R.string.pref_token))));
             mCurrentCategory = -1;
+            mCurrentCountry = -1;
+            mCurrentYear = -1;
         }
         getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.layout_filter)).commit();
         findViewById(R.id.layout_filter).setVisibility(View.GONE);

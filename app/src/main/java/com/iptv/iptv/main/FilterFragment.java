@@ -39,16 +39,20 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
     private FilterYearAdapter mYearAdapter;
     private List<Integer> mYearList;
 
-    private int currentId = -1;
+    private int currentCategory = -1;
+    private int currentCountry = -1;
+    private int currentYear = -1;
 
     private OnCategoryInteractionListener mCategoryListener;
     private OnCountryInteractionListener mCountryListener;
     private OnYearInteractionListener mYearListener;
 
-    public static FilterFragment newInstance(int currentPosition) {
+    public static FilterFragment newInstance(int currentCategory, int currentCountry, int currentYear) {
         FilterFragment fragment = new FilterFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("position", currentPosition);
+        bundle.putInt("currentCategory", currentCategory);
+        bundle.putInt("currentCountry", currentCountry);
+        bundle.putInt("currentYear", currentYear);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -59,7 +63,9 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            currentId = getArguments().getInt("position");
+            currentCategory = getArguments().getInt("currentCategory");
+            currentCountry = getArguments().getInt("currentCountry");
+            currentYear = getArguments().getInt("currentYear");
         }
     }
 
@@ -74,13 +80,13 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
         super.onViewCreated(view, savedInstanceState);
 
         mCategoryList = new ArrayList<>();
-        mCategoryAdapter = new FilterCategoryAdapter(mCategoryList, currentId, mCategoryListener);
+        mCategoryAdapter = new FilterCategoryAdapter(mCategoryList, currentCategory, mCategoryListener);
 
         mCountryList = new ArrayList<>();
-        mCountryAdapter = new FilterCountryAdapter(mCountryList, currentId, mCountryListener);
+        mCountryAdapter = new FilterCountryAdapter(mCountryList, currentCountry, mCountryListener);
 
         mYearList = new ArrayList<>();
-        mYearAdapter = new FilterYearAdapter(mYearList, currentId, mYearListener);
+        mYearAdapter = new FilterYearAdapter(mYearList, currentYear, mYearListener);
 
         RecyclerView categoryList = (RecyclerView) view.findViewById(R.id.list_category);
         categoryList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.iptv.iptv.R;
+import com.iptv.iptv.lib.Utils;
 import com.iptv.iptv.main.event.LoadLiveEvent;
 import com.iptv.iptv.main.event.SelectCategoryEvent;
 
@@ -31,7 +32,7 @@ public class LiveGridActivity extends LeanbackActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                EventBus.getDefault().post(new LoadLiveEvent("http://139.59.231.135/uplay/public/api/v1/lives"));
+                EventBus.getDefault().post(new LoadLiveEvent(Utils.appendUri("http://139.59.231.135/uplay/public/api/v1/lives", "token=" + PrefUtil.getStringProperty(R.string.pref_token))));
             }
         }, 500);
 

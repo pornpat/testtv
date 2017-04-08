@@ -79,7 +79,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
 
     private void loadLiveData() {
         LiveProvider.setContext(this);
-        mLiveUrl = "http://139.59.231.135/uplay/public/api/v1/lives";
+        mLiveUrl = Utils.appendUri("http://139.59.231.135/uplay/public/api/v1/lives", "token=" + PrefUtil.getStringProperty(R.string.pref_token));
         getLoaderManager().initLoader(0, null, this);
     }
 

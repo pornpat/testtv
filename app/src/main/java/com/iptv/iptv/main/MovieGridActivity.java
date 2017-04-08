@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.iptv.iptv.R;
+import com.iptv.iptv.lib.Utils;
 import com.iptv.iptv.main.event.ApplyFilterEvent;
 import com.iptv.iptv.main.event.LoadMovieEvent;
 import com.iptv.iptv.main.event.SelectCategoryEvent;
@@ -38,7 +39,8 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                EventBus.getDefault().post(new LoadMovieEvent("http://139.59.231.135/uplay/public/api/v1/movies"));
+                EventBus.getDefault().post(new LoadMovieEvent(
+                        Utils.appendUri("http://139.59.231.135/uplay/public/api/v1/movies",  "token=" + PrefUtil.getStringProperty(R.string.pref_token))));
             }
         }, 500);
 
@@ -114,10 +116,15 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
     public void onFilterEvent(ApplyFilterEvent event) {
         if (event.isApplied) {
             if (mCurrentCategory != -1) {
-                EventBus.getDefault().post(new LoadMovieEvent("http://139.59.231.135/uplay/public/api/v1/movies?categories_id=" + mCurrentCategory));
+                String url = "http://139.59.231.135/uplay/public/api/v1/movies";
+                url = Utils.appendUri(url, "categories_id=" + mCurrentCategory);
+                url = Utils.appendUri(url, "token=" + PrefUtil.getStringProperty(R.string.pref_token));
+
+                EventBus.getDefault().post(new LoadMovieEvent(url));
             }
         } else {
-            EventBus.getDefault().post(new LoadMovieEvent("http://139.59.231.135/uplay/public/api/v1/movies"));
+            EventBus.getDefault().post(new LoadMovieEvent(
+                    Utils.appendUri("http://139.59.231.135/uplay/public/api/v1/movies",  "token=" + PrefUtil.getStringProperty(R.string.pref_token))));
             mCurrentCategory = -1;
         }
         getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.layout_filter)).commit();

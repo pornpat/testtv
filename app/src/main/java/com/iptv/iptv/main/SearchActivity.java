@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.iptv.iptv.R;
+import com.iptv.iptv.lib.Utils;
 import com.iptv.iptv.main.event.LoadLiveEvent;
 import com.iptv.iptv.main.event.LoadMovieEvent;
 import com.iptv.iptv.main.event.LoadSeriesEvent;
@@ -80,9 +81,23 @@ public class SearchActivity extends LeanbackActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                EventBus.getDefault().post(new LoadMovieEvent("http://139.59.231.135/uplay/public/api/v1/movies?keyword=" + mSearchText.getText().toString()));
-                EventBus.getDefault().post(new LoadSeriesEvent("http://139.59.231.135/uplay/public/api/v1/series?keyword=" + mSearchText.getText().toString()));
-                EventBus.getDefault().post(new LoadLiveEvent("http://139.59.231.135/uplay/public/api/v1/lives?keyword=" + mSearchText.getText().toString()));
+                String movieUrl = "http://139.59.231.135/uplay/public/api/v1/movies";
+                movieUrl = Utils.appendUri(movieUrl, "keyword=" + mSearchText.getText().toString());
+                movieUrl = Utils.appendUri(movieUrl, "token=" + PrefUtil.getStringProperty(R.string.pref_token));
+
+                EventBus.getDefault().post(new LoadMovieEvent(movieUrl));
+
+                String seriesUrl = "http://139.59.231.135/uplay/public/api/v1/series";
+                seriesUrl = Utils.appendUri(seriesUrl, "keyword=" + mSearchText.getText().toString());
+                seriesUrl = Utils.appendUri(seriesUrl, "token=" + PrefUtil.getStringProperty(R.string.pref_token));
+
+                EventBus.getDefault().post(new LoadSeriesEvent(seriesUrl));
+
+                String liveUrl = "http://139.59.231.135/uplay/public/api/v1/lives";
+                liveUrl = Utils.appendUri(liveUrl, "keyword=" + mSearchText.getText().toString());
+                liveUrl = Utils.appendUri(liveUrl, "token=" + PrefUtil.getStringProperty(R.string.pref_token));
+
+                EventBus.getDefault().post(new LoadLiveEvent(liveUrl));
             }
         }, 500);
 

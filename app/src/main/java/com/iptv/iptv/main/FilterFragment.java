@@ -14,28 +14,23 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.iptv.iptv.R;
+import com.iptv.iptv.lib.Utils;
 import com.iptv.iptv.main.data.FilterLoader;
 import com.iptv.iptv.main.data.MovieProvider;
 import com.iptv.iptv.main.event.ApplyFilterEvent;
 import com.iptv.iptv.main.model.CategoryItem;
 import com.iptv.iptv.main.model.CountryItem;
+import com.iptv.iptv.main.model.FilterItem;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
-public class FilterFragment extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, List<CategoryItem>>> {
+public class FilterFragment extends Fragment implements LoaderManager.LoaderCallbacks<FilterItem> {
 
-    private String mFilterUrl = "http://139.59.231.135/uplay/public/api/v1/categories";
-//    private String mCategoryUrl = "http://139.59.231.135/uplay/public/api/v1/categories";
-//    private String mCountryUrl = "http://139.59.231.135/uplay/public/api/v1/countries";
-//    private String mYearUrl = "http://139.59.231.135/uplay/public/api/v1/years";
+    private String mFilterUrl = Utils.appendUri("http://139.59.231.135/uplay/public/api/v1/filters", "token=" + PrefUtil.getStringProperty(R.string.pref_token));
 
     private FilterCategoryAdapter mCategoryAdapter;
     private List<CategoryItem> mCategoryList;
@@ -123,40 +118,43 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
     @Override
-    public Loader<HashMap<String, List<CategoryItem>>> onCreateLoader(int i, Bundle bundle) {
+    public Loader<FilterItem> onCreateLoader(int i, Bundle bundle) {
         return new FilterLoader(getActivity(), mFilterUrl);
     }
 
     @Override
-    public void onLoadFinished(Loader<HashMap<String, List<CategoryItem>>> loader, HashMap<String, List<CategoryItem>> data) {
-        if (null != data && !data.isEmpty()) {
+    public void onLoadFinished(Loader<FilterItem> loader, FilterItem data) {
+        if (data.getCategoryList().size() > 0 && data.getCountryList().size() > 0 && data.getYearList().size() > 0) {
             mCategoryList.clear();
-            for (Map.Entry<String, List<CategoryItem>> entry : data.entrySet()) {
-                List<CategoryItem> list = entry.getValue();
-                if (list.size() > 0) {
-                    Collections.sort(list, new Comparator<CategoryItem>() {
-                        @Override
-                        public int compare(CategoryItem obj1, CategoryItem obj2) {
-                            return obj1.getOrder() - obj2.getOrder();
-                        }
-                    });
-                }
-
-                for (int j = 0; j < list.size(); j++) {
-                    mCategoryList.add(list.get(j));
-                }
+            mCountryList.clear();
+            mYearList.clear();
+            for (int i = 0; i < data.getCategoryList().size(); i++) {
+                mCategoryList.add(data.getCategoryList().get(i));
+            }
+            for (int i = 0; i < data.getCountryList().size(); i++) {
+                mCountryList.add(data.getCountryList().get(i));
+            }
+            for (int i = 0; i < data.getYearList().size(); i++) {
+                mYearList.add(data.getYearList().get(i));
             }
         } else {
             Toast.makeText(getActivity(), "Failed to load videos.", Toast.LENGTH_LONG).show();
         }
 
         mCategoryAdapter.notifyDataSetChanged();
+        mCountryAdapter.notifyDataSetChanged();
+        mYearAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onLoaderReset(Loader<HashMap<String, List<CategoryItem>>> loader) {
+    public void onLoaderReset(Loader<FilterItem> loader) {
         mCategoryList.clear();
+        mCountryList.clear();
+        mYearList.clear();
+
         mCategoryAdapter.notifyDataSetChanged();
+        mCountryAdapter.notifyDataSetChanged();
+        mYearAdapter.notifyDataSetChanged();
     }
 
     @Override

@@ -36,7 +36,7 @@ public class FilterYearAdapter extends RecyclerView.Adapter<FilterYearAdapter.Vi
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.mContentView.setText(mValues.get(position));
+        holder.mContentView.setText(String.valueOf(mValues.get(position)));
 
         if (mValues.get(position) == currentYear) {
             holder.mView.setBackgroundColor(ContextCompat.getColor(holder.mView.getContext(), R.color.selected_background));

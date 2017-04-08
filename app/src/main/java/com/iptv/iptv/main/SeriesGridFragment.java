@@ -58,7 +58,6 @@ public class SeriesGridFragment extends VerticalGridFragment implements LoaderMa
 
     private void loadSeriesData(String url) {
         SeriesProvider.setContext(getActivity());
-//        mVideosUrl = "http://139.59.231.135/uplay/public/api/v1/series";
         mVideosUrl = url;
         getLoaderManager().initLoader(loaderId, null, this);
         loaderId++;

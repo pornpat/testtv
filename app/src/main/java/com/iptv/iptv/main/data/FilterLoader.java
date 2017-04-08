@@ -4,16 +4,13 @@ import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.util.Log;
 
-import com.iptv.iptv.main.model.CategoryItem;
-
-import java.util.HashMap;
-import java.util.List;
+import com.iptv.iptv.main.model.FilterItem;
 
 /**
  * Created by Asus N46V on 26/3/2017.
  */
 
-public class FilterLoader extends AsyncTaskLoader<HashMap<String, List<CategoryItem>>> {
+public class FilterLoader extends AsyncTaskLoader<FilterItem> {
 
     private static final String TAG = "FilterLoader";
     private final String mUrl;
@@ -24,7 +21,7 @@ public class FilterLoader extends AsyncTaskLoader<HashMap<String, List<CategoryI
     }
 
     @Override
-    public HashMap<String, List<CategoryItem>> loadInBackground() {
+    public FilterItem loadInBackground() {
         try {
             return FilterProvider.buildMedia(mUrl);
         } catch (Exception e) {

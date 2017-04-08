@@ -3,6 +3,8 @@ package com.iptv.iptv.main.data;
 import android.content.Context;
 import android.content.res.Resources;
 
+import com.iptv.iptv.R;
+import com.iptv.iptv.main.PrefUtil;
 import com.iptv.iptv.main.model.CategoryItem;
 
 import org.json.JSONArray;
@@ -83,7 +85,7 @@ public class FilterProvider {
         BufferedReader reader = null;
 
         try {
-            java.net.URL url = new java.net.URL(urlString);
+            java.net.URL url = new java.net.URL(urlString + "?token=" + PrefUtil.getStringProperty(R.string.pref_token));
             URLConnection urlConnection = url.openConnection();
             reader = new BufferedReader(new InputStreamReader(
                     urlConnection.getInputStream(), "iso-8859-1"));

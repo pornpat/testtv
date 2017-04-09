@@ -70,33 +70,18 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:paddingLeft="@dimen/margin_padding_mid"
-            android:paddingRight="@dimen/margin_padding_mid"
             android:paddingTop="@dimen/activity_margin"
             android:orientation="vertical"
             android:background="@color/black_60">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/search_selected"/>
-
-                <EditText
-                    android:id="@+id/search"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_padding_xsmall"
-                    android:imeOptions="actionSearch"
-                    android:inputType="text"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true" />
-
-            </LinearLayout>
+                android:layout_marginBottom="@dimen/margin_padding_small"
+                android:text="รายการโปรด"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_default"/>
 
             <TextView
                 android:id="@+id/movie"
@@ -109,7 +94,7 @@
                 android:textColor="@color/bg_movie_text"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:visibility="gone"/>
+                android:nextFocusUp="@+id/search"/>
 
             <TextView
                 android:id="@+id/series"
@@ -121,8 +106,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/bg_movie_text"
                 android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:visibility="gone"/>
+                android:focusableInTouchMode="true"/>
 
             <TextView
                 android:id="@+id/live"
@@ -134,8 +118,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/bg_movie_text"
                 android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:visibility="gone"/>
+                android:focusableInTouchMode="true"/>
 
         </LinearLayout>
 

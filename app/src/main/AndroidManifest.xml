@@ -86,6 +86,9 @@
         <activity
             android:name=".main.LiveGridActivity"
             android:screenOrientation="landscape" />
+        <activity
+            android:name=".main.FavoriteGridActivity"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

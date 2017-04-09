@@ -18,7 +18,7 @@ public class HomeActivity extends LeanbackActivity {
     RelativeLayout mLiveButton;
     RelativeLayout mRecommendButton;
     RelativeLayout mSportButton;
-    RelativeLayout mFavouriteButton;
+    RelativeLayout mFavoriteButton;
     RelativeLayout mMovieButton;
     RelativeLayout mSeriesButton;
     RelativeLayout mAdvertiseButton;
@@ -35,7 +35,7 @@ public class HomeActivity extends LeanbackActivity {
         mLiveButton = (RelativeLayout) findViewById(R.id.btn_live);
         mRecommendButton = (RelativeLayout) findViewById(R.id.btn_recommend);
         mSportButton = (RelativeLayout) findViewById(R.id.btn_sport);
-        mFavouriteButton = (RelativeLayout) findViewById(R.id.btn_favourite);
+        mFavoriteButton = (RelativeLayout) findViewById(R.id.btn_favorite);
         mMovieButton = (RelativeLayout) findViewById(R.id.btn_movie);
         mSeriesButton = (RelativeLayout) findViewById(R.id.btn_series);
         mAdvertiseButton = (RelativeLayout) findViewById(R.id.btn_advertise);
@@ -76,6 +76,17 @@ public class HomeActivity extends LeanbackActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, SeriesGridActivity.class);
+                Bundle bundle =
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this)
+                                .toBundle();
+                startActivity(intent, bundle);
+            }
+        });
+
+        mFavoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, FavoriteGridActivity.class);
                 Bundle bundle =
                         ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this)
                                 .toBundle();

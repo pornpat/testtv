@@ -85,8 +85,8 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
         mFavoriteText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
+                EventBus.getDefault().post(new LoadMovieEvent(
+                        UrlUtil.appendUri(UrlUtil.FAVORITE_URL, UrlUtil.addToken())));
                 setTextSelected(mFavoriteText);
             }
         });

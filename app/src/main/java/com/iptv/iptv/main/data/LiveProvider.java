@@ -65,34 +65,7 @@ public class LiveProvider {
             return sLiveList;
         }
 
-        if (!url.contains("histories")) {
-
-            List<LiveItem> liveList = new ArrayList<>();
-
-            int id;
-            String name;
-            String logoUrl;
-            String streamUrl;
-
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObj = jsonArray.getJSONObject(i);
-
-                id = jsonObj.getInt(TAG_ID);
-                JSONObject liveObj = jsonObj.getJSONObject(TAG_LIVE);
-                name = liveObj.getString(TAG_NAME);
-                logoUrl = liveObj.getString(TAG_LOGOURL);
-                streamUrl = liveObj.getString(TAG_URL);
-
-                sLiveListById.put(id, buildLiveInfo(id, name, logoUrl, streamUrl));
-                liveList.add(buildLiveInfo(id, name, logoUrl, streamUrl));
-            }
-
-            sLiveList.put("", liveList);
-
-            return sLiveList;
-
-        } else {
-
+        if (url.contains("histories") || url.contains("favorites")) {
             List<LiveItem> liveList = new ArrayList<>();
 
             int id;
@@ -122,7 +95,30 @@ public class LiveProvider {
             sLiveList.put("", liveList);
 
             return sLiveList;
+        } else {
+            List<LiveItem> liveList = new ArrayList<>();
 
+            int id;
+            String name;
+            String logoUrl;
+            String streamUrl;
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObj = jsonArray.getJSONObject(i);
+
+                id = jsonObj.getInt(TAG_ID);
+                JSONObject liveObj = jsonObj.getJSONObject(TAG_LIVE);
+                name = liveObj.getString(TAG_NAME);
+                logoUrl = liveObj.getString(TAG_LOGOURL);
+                streamUrl = liveObj.getString(TAG_URL);
+
+                sLiveListById.put(id, buildLiveInfo(id, name, logoUrl, streamUrl));
+                liveList.add(buildLiveInfo(id, name, logoUrl, streamUrl));
+            }
+
+            sLiveList.put("", liveList);
+
+            return sLiveList;
         }
     }
 

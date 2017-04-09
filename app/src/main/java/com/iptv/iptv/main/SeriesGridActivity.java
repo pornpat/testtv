@@ -85,8 +85,8 @@ public class SeriesGridActivity extends LeanbackActivity implements FilterFragme
         mFavoriteText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
+                EventBus.getDefault().post(new LoadSeriesEvent(
+                        UrlUtil.appendUri(UrlUtil.FAVORITE_URL, UrlUtil.addToken())));
                 setTextSelected(mFavoriteText);
             }
         });

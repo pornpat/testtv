@@ -78,69 +78,7 @@ public class SeriesProvider {
             return sSeriesList;
         }
 
-        if (!url.contains("histories")) {
-
-            List<SeriesItem> seriesList = new ArrayList<>();
-
-            int id;
-            String name;
-            String description;
-            String imageUrl;
-            String released;
-
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject seriesObj = jsonArray.getJSONObject(i);
-
-                JSONObject detailObj = seriesObj.getJSONObject(TAG_DETAIL);
-                id = detailObj.getInt(TAG_ID);
-                name = detailObj.getString(TAG_NAME);
-                description = detailObj.getString(TAG_DESCRIPTION);
-                imageUrl = detailObj.getString(TAG_IMAGEURL);
-                released = detailObj.getString(TAG_RELEASED);
-
-                JSONArray trackArray = seriesObj.getJSONArray(TAG_SOUNDTRACK);
-                int trackId;
-                String subtitle;
-                String audio;
-                List<SeriesTrackItem> tracks = new ArrayList<>();
-                for (int j = 0; j < trackArray.length(); j++) {
-                    JSONObject trackObj = trackArray.getJSONObject(j);
-                    trackId = trackObj.getInt(TAG_AUDIO_ID);
-                    if (trackObj.isNull(TAG_SUBTlTLE)) {
-                        subtitle = "-";
-                    } else {
-                        JSONObject subtitleObj = trackObj.getJSONObject(TAG_SUBTlTLE);
-                        subtitle = subtitleObj.getString(TAG_LANGUAGE);
-                    }
-
-                    JSONObject audioObj = trackObj.getJSONObject(TAG_AUDIO);
-                    audio = audioObj.getString(TAG_LANGUAGE);
-
-                    int episodeId;
-                    String videoUrl;
-                    List<SeriesEpisodeItem> episodes = new ArrayList<>();
-                    JSONArray episodeArray = trackObj.getJSONArray(TAG_EPISODES);
-                    for (int k = 0; k < episodeArray.length(); k++) {
-                        JSONObject episodeObj = episodeArray.getJSONObject(k);
-                        episodeId = episodeObj.getInt(TAG_ORDER);
-                        JSONArray linkArray = episodeObj.getJSONArray(TAG_LINKS);
-                        JSONObject linkObj = linkArray.getJSONObject(0);
-                        videoUrl = linkObj.getString(TAG_URL);
-
-                        episodes.add(buildEpisodeInfo(episodeId, videoUrl));
-                    }
-
-                    tracks.add(buildTrackInfo(trackId, audio, subtitle, episodes));
-                }
-
-                sSeriesListById.put(id, buildSeriesInfo(id, name, description, imageUrl, released, tracks));
-                seriesList.add(buildSeriesInfo(id, name, description, imageUrl, released, tracks));
-            }
-
-            sSeriesList.put("", seriesList);
-
-            return sSeriesList;
-        } else {
+        if (url.contains("histories") || url.contains("favorites")) {
             List<SeriesItem> seriesList = new ArrayList<>();
 
             int id;
@@ -203,6 +141,67 @@ public class SeriesProvider {
                     sSeriesListById.put(id, buildSeriesInfo(id, name, description, imageUrl, released, tracks));
                     seriesList.add(buildSeriesInfo(id, name, description, imageUrl, released, tracks));
                 }
+            }
+
+            sSeriesList.put("", seriesList);
+
+            return sSeriesList;
+        } else {
+            List<SeriesItem> seriesList = new ArrayList<>();
+
+            int id;
+            String name;
+            String description;
+            String imageUrl;
+            String released;
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject seriesObj = jsonArray.getJSONObject(i);
+
+                JSONObject detailObj = seriesObj.getJSONObject(TAG_DETAIL);
+                id = detailObj.getInt(TAG_ID);
+                name = detailObj.getString(TAG_NAME);
+                description = detailObj.getString(TAG_DESCRIPTION);
+                imageUrl = detailObj.getString(TAG_IMAGEURL);
+                released = detailObj.getString(TAG_RELEASED);
+
+                JSONArray trackArray = seriesObj.getJSONArray(TAG_SOUNDTRACK);
+                int trackId;
+                String subtitle;
+                String audio;
+                List<SeriesTrackItem> tracks = new ArrayList<>();
+                for (int j = 0; j < trackArray.length(); j++) {
+                    JSONObject trackObj = trackArray.getJSONObject(j);
+                    trackId = trackObj.getInt(TAG_AUDIO_ID);
+                    if (trackObj.isNull(TAG_SUBTlTLE)) {
+                        subtitle = "-";
+                    } else {
+                        JSONObject subtitleObj = trackObj.getJSONObject(TAG_SUBTlTLE);
+                        subtitle = subtitleObj.getString(TAG_LANGUAGE);
+                    }
+
+                    JSONObject audioObj = trackObj.getJSONObject(TAG_AUDIO);
+                    audio = audioObj.getString(TAG_LANGUAGE);
+
+                    int episodeId;
+                    String videoUrl;
+                    List<SeriesEpisodeItem> episodes = new ArrayList<>();
+                    JSONArray episodeArray = trackObj.getJSONArray(TAG_EPISODES);
+                    for (int k = 0; k < episodeArray.length(); k++) {
+                        JSONObject episodeObj = episodeArray.getJSONObject(k);
+                        episodeId = episodeObj.getInt(TAG_ORDER);
+                        JSONArray linkArray = episodeObj.getJSONArray(TAG_LINKS);
+                        JSONObject linkObj = linkArray.getJSONObject(0);
+                        videoUrl = linkObj.getString(TAG_URL);
+
+                        episodes.add(buildEpisodeInfo(episodeId, videoUrl));
+                    }
+
+                    tracks.add(buildTrackInfo(trackId, audio, subtitle, episodes));
+                }
+
+                sSeriesListById.put(id, buildSeriesInfo(id, name, description, imageUrl, released, tracks));
+                seriesList.add(buildSeriesInfo(id, name, description, imageUrl, released, tracks));
             }
 
             sSeriesList.put("", seriesList);

@@ -2,6 +2,7 @@ package com.iptv.iptv.main.data;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.Log;
 
 import com.iptv.iptv.main.model.DiscItem;
 import com.iptv.iptv.main.model.MovieItem;
@@ -78,69 +79,8 @@ public class MovieProvider {
             return sMovieList;
         }
 
-        if (!url.contains("histories")) {
-
-            List<MovieItem> movieList = new ArrayList<>();
-
-            int id;
-            String name;
-            String description;
-            String imageUrl;
-            String released;
-
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject movieObj = jsonArray.getJSONObject(i);
-
-                JSONObject detailObj = movieObj.getJSONObject(TAG_DETAIL);
-                id = detailObj.getInt(TAG_ID);
-                name = detailObj.getString(TAG_NAME);
-                description = detailObj.getString(TAG_DESCRIPTION);
-                imageUrl = detailObj.getString(TAG_IMAGEURL);
-                released = detailObj.getString(TAG_RELEASED);
-
-                JSONArray trackArray = movieObj.getJSONArray(TAG_SOUNDTRACK);
-                int trackId;
-                String subtitle;
-                String audio;
-                List<TrackItem> tracks = new ArrayList<>();
-                for (int j = 0; j < trackArray.length(); j++) {
-                    JSONObject trackObj = trackArray.getJSONObject(j);
-                    trackId = trackObj.getInt(TAG_AUDIO_ID);
-                    if (trackObj.isNull(TAG_SUBTlTLE)) {
-                        subtitle = "-";
-                    } else {
-                        JSONObject subtitleObj = trackObj.getJSONObject(TAG_SUBTlTLE);
-                        subtitle = subtitleObj.getString(TAG_LANGUAGE);
-                    }
-
-                    JSONObject audioObj = trackObj.getJSONObject(TAG_AUDIO);
-                    audio = audioObj.getString(TAG_LANGUAGE);
-
-                    int discId;
-                    String videoUrl;
-                    List<DiscItem> discs = new ArrayList<>();
-                    JSONArray discArray = trackObj.getJSONArray(TAG_DISCS);
-                    for (int k = 0; k < discArray.length(); k++) {
-                        JSONObject discObj = discArray.getJSONObject(k);
-                        discId = discObj.getInt(TAG_ORDER);
-                        JSONArray linkArray = discObj.getJSONArray(TAG_LINKS);
-                        JSONObject linkObj = linkArray.getJSONObject(0);
-                        videoUrl = linkObj.getString(TAG_URL);
-
-                        discs.add(buildDiscInfo(discId, videoUrl));
-                    }
-
-                    tracks.add(buildTrackInfo(trackId, audio, subtitle, discs));
-                }
-
-                sMovieListById.put(id, buildMovieInfo(id, name, description, imageUrl, released, tracks));
-                movieList.add(buildMovieInfo(id, name, description, imageUrl, released, tracks));
-            }
-
-            sMovieList.put("", movieList);
-
-            return sMovieList;
-        } else {
+        if (url.contains("histories") || url.contains("favorites")) {
+            Log.v("testkn", "fav or his");
             List<MovieItem> movieList = new ArrayList<>();
 
             int id;
@@ -202,6 +142,67 @@ public class MovieProvider {
                     sMovieListById.put(id, buildMovieInfo(id, name, description, imageUrl, released, tracks));
                     movieList.add(buildMovieInfo(id, name, description, imageUrl, released, tracks));
                 }
+            }
+
+            sMovieList.put("", movieList);
+
+            return sMovieList;
+        } else {
+            List<MovieItem> movieList = new ArrayList<>();
+
+            int id;
+            String name;
+            String description;
+            String imageUrl;
+            String released;
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject movieObj = jsonArray.getJSONObject(i);
+
+                JSONObject detailObj = movieObj.getJSONObject(TAG_DETAIL);
+                id = detailObj.getInt(TAG_ID);
+                name = detailObj.getString(TAG_NAME);
+                description = detailObj.getString(TAG_DESCRIPTION);
+                imageUrl = detailObj.getString(TAG_IMAGEURL);
+                released = detailObj.getString(TAG_RELEASED);
+
+                JSONArray trackArray = movieObj.getJSONArray(TAG_SOUNDTRACK);
+                int trackId;
+                String subtitle;
+                String audio;
+                List<TrackItem> tracks = new ArrayList<>();
+                for (int j = 0; j < trackArray.length(); j++) {
+                    JSONObject trackObj = trackArray.getJSONObject(j);
+                    trackId = trackObj.getInt(TAG_AUDIO_ID);
+                    if (trackObj.isNull(TAG_SUBTlTLE)) {
+                        subtitle = "-";
+                    } else {
+                        JSONObject subtitleObj = trackObj.getJSONObject(TAG_SUBTlTLE);
+                        subtitle = subtitleObj.getString(TAG_LANGUAGE);
+                    }
+
+                    JSONObject audioObj = trackObj.getJSONObject(TAG_AUDIO);
+                    audio = audioObj.getString(TAG_LANGUAGE);
+
+                    int discId;
+                    String videoUrl;
+                    List<DiscItem> discs = new ArrayList<>();
+                    JSONArray discArray = trackObj.getJSONArray(TAG_DISCS);
+                    for (int k = 0; k < discArray.length(); k++) {
+                        JSONObject discObj = discArray.getJSONObject(k);
+                        discId = discObj.getInt(TAG_ORDER);
+                        JSONArray linkArray = discObj.getJSONArray(TAG_LINKS);
+                        JSONObject linkObj = linkArray.getJSONObject(0);
+                        videoUrl = linkObj.getString(TAG_URL);
+
+                        discs.add(buildDiscInfo(discId, videoUrl));
+                    }
+
+                    tracks.add(buildTrackInfo(trackId, audio, subtitle, discs));
+                }
+
+                sMovieListById.put(id, buildMovieInfo(id, name, description, imageUrl, released, tracks));
+                movieList.add(buildMovieInfo(id, name, description, imageUrl, released, tracks));
             }
 
             sMovieList.put("", movieList);

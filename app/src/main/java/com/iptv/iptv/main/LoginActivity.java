@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.iptv.iptv.R;
+import com.iptv.iptv.lib.Utils;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -41,37 +42,43 @@ public class LoginActivity extends LeanbackActivity {
     }
 
     public void signIn(View view) {
-        mProgressDialog.show();
+        if (mUsernameText.getText().toString().trim().length() == 0 || mPasswordText.getText().toString().trim().length() == 0) {
+            Toast.makeText(this, "Please input username and password", Toast.LENGTH_SHORT).show();
+        } else if (!Utils.isInternetConnectionAvailable(this)) {
+            Toast.makeText(this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+        } else {
+            mProgressDialog.show();
 
-        RequestParams params = new RequestParams();
-        params.put("name", mUsernameText.getText().toString());
-        params.put("password", mPasswordText.getText().toString());
+            RequestParams params = new RequestParams();
+            params.put("name", mUsernameText.getText().toString());
+            params.put("password", mPasswordText.getText().toString());
 
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.post(UrlUtil.AUTH_URL, params, new TextHttpResponseHandler() {
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                mProgressDialog.dismiss();
-                Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                mProgressDialog.dismiss();
-                try {
-                    JSONObject jsonObject = new JSONObject(responseString);
-                    String token = jsonObject.getString("token");
-                    PrefUtil.setStringProperty(R.string.pref_token, token);
-                    PrefUtil.setStringProperty(R.string.pref_username, mUsernameText.getText().toString());
-
-                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    startActivity(intent);
-                    finish();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.post(UrlUtil.AUTH_URL, params, new TextHttpResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    mProgressDialog.dismiss();
+                    Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                    mProgressDialog.dismiss();
+                    try {
+                        JSONObject jsonObject = new JSONObject(responseString);
+                        String token = jsonObject.getString("token");
+                        PrefUtil.setStringProperty(R.string.pref_token, token);
+                        PrefUtil.setStringProperty(R.string.pref_username, mUsernameText.getText().toString());
+
+                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
     }
 
     private void test() {

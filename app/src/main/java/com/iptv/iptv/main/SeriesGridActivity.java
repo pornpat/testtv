@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.iptv.iptv.R;
 import com.iptv.iptv.main.event.ApplyFilterEvent;
 import com.iptv.iptv.main.event.LoadSeriesEvent;
-import com.iptv.iptv.main.event.SelectCategoryEvent;
 import com.iptv.iptv.main.model.CategoryItem;
 import com.iptv.iptv.main.model.CountryItem;
 
@@ -68,7 +67,8 @@ public class SeriesGridActivity extends LeanbackActivity implements FilterFragme
         mSeriesText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(new SelectCategoryEvent("Series"));
+                EventBus.getDefault().post(new LoadSeriesEvent(
+                        UrlUtil.appendUri(UrlUtil.SERIES_URL, UrlUtil.addToken())));
                 setTextSelected(mSeriesText);
             }
         });
@@ -76,7 +76,8 @@ public class SeriesGridActivity extends LeanbackActivity implements FilterFragme
         mRecentText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(new SelectCategoryEvent("Recent"));
+                EventBus.getDefault().post(new LoadSeriesEvent(
+                        UrlUtil.appendUri(UrlUtil.HISTORY_URL, UrlUtil.addToken())));
                 setTextSelected(mRecentText);
             }
         });
@@ -84,7 +85,8 @@ public class SeriesGridActivity extends LeanbackActivity implements FilterFragme
         mFavoriteText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(new SelectCategoryEvent("Favorite"));
+
+
                 setTextSelected(mFavoriteText);
             }
         });

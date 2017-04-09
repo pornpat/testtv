@@ -22,7 +22,6 @@ import com.iptv.iptv.lib.SeriesDetailsActivity;
 import com.iptv.iptv.main.data.SeriesLoader;
 import com.iptv.iptv.main.data.SeriesProvider;
 import com.iptv.iptv.main.event.LoadSeriesEvent;
-import com.iptv.iptv.main.event.SelectCategoryEvent;
 import com.iptv.iptv.main.model.SeriesItem;
 import com.iptv.iptv.main.presenter.CardPresenter;
 
@@ -87,12 +86,6 @@ public class SeriesGridFragment extends VerticalGridFragment implements LoaderMa
                 for (int j = 0; j < list.size(); j++) {
                     mVideoObjectAdapter.add(list.get(j));
                 }
-                for (int j = 0; j < list.size(); j++) {
-                    mVideoObjectAdapter.add(list.get(j));
-                }
-                for (int j = 0; j < list.size(); j++) {
-                    mVideoObjectAdapter.add(list.get(j));
-                }
             }
         } else {
             Toast.makeText(getActivity(), "Failed to load videos.", Toast.LENGTH_LONG).show();
@@ -134,11 +127,6 @@ public class SeriesGridFragment extends VerticalGridFragment implements LoaderMa
     @Subscribe
     public void onLoadSeriesData(LoadSeriesEvent event) {
         loadSeriesData(event.url);
-    }
-
-    @Subscribe
-    public void onSelectCategory(SelectCategoryEvent event) {
-
     }
 
     @Override

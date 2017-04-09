@@ -40,6 +40,11 @@ public class SeriesProvider {
     private static final String TAG_ORDER = "order";
     private static final String TAG_LINKS = "links";
     private static final String TAG_URL = "url";
+    // for history
+    private static final String TAG_MEDIA = "media";
+    private static final String TAG_MEDIA_TYPE = "media_type";
+    private static final String TAG_TYPE_NAME = "type_name";
+    private static final String TAG_SERIES = "series";
 
     private static HashMap<String, List<SeriesItem>> sSeriesList;
     private static HashMap<Integer, SeriesItem> sSeriesListById;
@@ -73,66 +78,137 @@ public class SeriesProvider {
             return sSeriesList;
         }
 
-        List<SeriesItem> seriesList = new ArrayList<>();
+        if (!url.contains("histories")) {
 
-        int id;
-        String name;
-        String description;
-        String imageUrl;
-        String released;
+            List<SeriesItem> seriesList = new ArrayList<>();
 
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject seriesObj = jsonArray.getJSONObject(i);
-            id = seriesObj.getInt(TAG_ID);
+            int id;
+            String name;
+            String description;
+            String imageUrl;
+            String released;
 
-            JSONObject detailObj = seriesObj.getJSONObject(TAG_DETAIL);
-            name = detailObj.getString(TAG_NAME);
-            description = detailObj.getString(TAG_DESCRIPTION);
-            imageUrl = detailObj.getString(TAG_IMAGEURL);
-            released = detailObj.getString(TAG_RELEASED);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject seriesObj = jsonArray.getJSONObject(i);
 
-            JSONArray trackArray = seriesObj.getJSONArray(TAG_SOUNDTRACK);
-            int trackId;
-            String subtitle;
-            String audio;
-            List<SeriesTrackItem> tracks = new ArrayList<>();
-            for (int j = 0; j < trackArray.length(); j++) {
-                JSONObject trackObj = trackArray.getJSONObject(j);
-                trackId = trackObj.getInt(TAG_AUDIO_ID);
-                if (trackObj.isNull(TAG_SUBTlTLE)) {
-                    subtitle = "-";
-                } else {
-                    JSONObject subtitleObj = trackObj.getJSONObject(TAG_SUBTlTLE);
-                    subtitle = subtitleObj.getString(TAG_LANGUAGE);
+                JSONObject detailObj = seriesObj.getJSONObject(TAG_DETAIL);
+                id = detailObj.getInt(TAG_ID);
+                name = detailObj.getString(TAG_NAME);
+                description = detailObj.getString(TAG_DESCRIPTION);
+                imageUrl = detailObj.getString(TAG_IMAGEURL);
+                released = detailObj.getString(TAG_RELEASED);
+
+                JSONArray trackArray = seriesObj.getJSONArray(TAG_SOUNDTRACK);
+                int trackId;
+                String subtitle;
+                String audio;
+                List<SeriesTrackItem> tracks = new ArrayList<>();
+                for (int j = 0; j < trackArray.length(); j++) {
+                    JSONObject trackObj = trackArray.getJSONObject(j);
+                    trackId = trackObj.getInt(TAG_AUDIO_ID);
+                    if (trackObj.isNull(TAG_SUBTlTLE)) {
+                        subtitle = "-";
+                    } else {
+                        JSONObject subtitleObj = trackObj.getJSONObject(TAG_SUBTlTLE);
+                        subtitle = subtitleObj.getString(TAG_LANGUAGE);
+                    }
+
+                    JSONObject audioObj = trackObj.getJSONObject(TAG_AUDIO);
+                    audio = audioObj.getString(TAG_LANGUAGE);
+
+                    int episodeId;
+                    String videoUrl;
+                    List<SeriesEpisodeItem> episodes = new ArrayList<>();
+                    JSONArray episodeArray = trackObj.getJSONArray(TAG_EPISODES);
+                    for (int k = 0; k < episodeArray.length(); k++) {
+                        JSONObject episodeObj = episodeArray.getJSONObject(k);
+                        episodeId = episodeObj.getInt(TAG_ORDER);
+                        JSONArray linkArray = episodeObj.getJSONArray(TAG_LINKS);
+                        JSONObject linkObj = linkArray.getJSONObject(0);
+                        videoUrl = linkObj.getString(TAG_URL);
+
+                        episodes.add(buildEpisodeInfo(episodeId, videoUrl));
+                    }
+
+                    tracks.add(buildTrackInfo(trackId, audio, subtitle, episodes));
                 }
 
-                JSONObject audioObj = trackObj.getJSONObject(TAG_AUDIO);
-                audio = audioObj.getString(TAG_LANGUAGE);
-
-                int episodeId;
-                String videoUrl;
-                List<SeriesEpisodeItem> episodes = new ArrayList<>();
-                JSONArray episodeArray = trackObj.getJSONArray(TAG_EPISODES);
-                for (int k = 0; k < episodeArray.length(); k++) {
-                    JSONObject episodeObj = episodeArray.getJSONObject(k);
-                    episodeId = episodeObj.getInt(TAG_ORDER);
-                    JSONArray linkArray = episodeObj.getJSONArray(TAG_LINKS);
-                    JSONObject linkObj = linkArray.getJSONObject(0);
-                    videoUrl = linkObj.getString(TAG_URL);
-
-                    episodes.add(buildEpisodeInfo(episodeId, videoUrl));
-                }
-
-                tracks.add(buildTrackInfo(trackId, audio, subtitle, episodes));
+                sSeriesListById.put(id, buildSeriesInfo(id, name, description, imageUrl, released, tracks));
+                seriesList.add(buildSeriesInfo(id, name, description, imageUrl, released, tracks));
             }
 
-            sSeriesListById.put(id, buildSeriesInfo(id, name, description, imageUrl, released, tracks));
-            seriesList.add(buildSeriesInfo(id, name, description, imageUrl, released, tracks));
+            sSeriesList.put("", seriesList);
+
+            return sSeriesList;
+        } else {
+            List<SeriesItem> seriesList = new ArrayList<>();
+
+            int id;
+            String name;
+            String description;
+            String imageUrl;
+            String released;
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject seriesObj = jsonArray.getJSONObject(i);
+
+                JSONObject media = seriesObj.getJSONObject(TAG_MEDIA);
+                JSONObject mediaType = media.getJSONObject(TAG_MEDIA_TYPE);
+                String type = mediaType.getString(TAG_TYPE_NAME);
+
+                if (type.equals(TAG_SERIES)) {
+
+                    JSONObject detailObj = media.getJSONObject(TAG_DETAIL);
+                    id = detailObj.getInt(TAG_ID);
+                    name = detailObj.getString(TAG_NAME);
+                    description = detailObj.getString(TAG_DESCRIPTION);
+                    imageUrl = detailObj.getString(TAG_IMAGEURL);
+                    released = detailObj.getString(TAG_RELEASED);
+
+                    JSONArray trackArray = media.getJSONArray(TAG_SOUNDTRACK);
+                    int trackId;
+                    String subtitle;
+                    String audio;
+                    List<SeriesTrackItem> tracks = new ArrayList<>();
+                    for (int j = 0; j < trackArray.length(); j++) {
+                        JSONObject trackObj = trackArray.getJSONObject(j);
+                        trackId = trackObj.getInt(TAG_AUDIO_ID);
+                        if (trackObj.isNull(TAG_SUBTlTLE)) {
+                            subtitle = "-";
+                        } else {
+                            JSONObject subtitleObj = trackObj.getJSONObject(TAG_SUBTlTLE);
+                            subtitle = subtitleObj.getString(TAG_LANGUAGE);
+                        }
+
+                        JSONObject audioObj = trackObj.getJSONObject(TAG_AUDIO);
+                        audio = audioObj.getString(TAG_LANGUAGE);
+
+                        int episodeId;
+                        String videoUrl;
+                        List<SeriesEpisodeItem> episodes = new ArrayList<>();
+                        JSONArray episodeArray = trackObj.getJSONArray(TAG_EPISODES);
+                        for (int k = 0; k < episodeArray.length(); k++) {
+                            JSONObject episodeObj = episodeArray.getJSONObject(k);
+                            episodeId = episodeObj.getInt(TAG_ORDER);
+                            JSONArray linkArray = episodeObj.getJSONArray(TAG_LINKS);
+                            JSONObject linkObj = linkArray.getJSONObject(0);
+                            videoUrl = linkObj.getString(TAG_URL);
+
+                            episodes.add(buildEpisodeInfo(episodeId, videoUrl));
+                        }
+
+                        tracks.add(buildTrackInfo(trackId, audio, subtitle, episodes));
+                    }
+
+                    sSeriesListById.put(id, buildSeriesInfo(id, name, description, imageUrl, released, tracks));
+                    seriesList.add(buildSeriesInfo(id, name, description, imageUrl, released, tracks));
+                }
+            }
+
+            sSeriesList.put("", seriesList);
+
+            return sSeriesList;
         }
-
-        sSeriesList.put("", seriesList);
-
-        return sSeriesList;
     }
 
     private static SeriesItem buildSeriesInfo(int id, String name, String description, String imageUrl, String released, List<SeriesTrackItem> tracks) {

@@ -7,9 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.iptv.iptv.R;
-import com.iptv.iptv.lib.Utils;
 import com.iptv.iptv.main.event.LoadLiveEvent;
-import com.iptv.iptv.main.event.SelectCategoryEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -52,7 +50,8 @@ public class LiveGridActivity extends LeanbackActivity {
         mLiveText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(new SelectCategoryEvent("Live"));
+                EventBus.getDefault().post(new LoadLiveEvent(
+                        UrlUtil.appendUri(UrlUtil.LIVE_URL, UrlUtil.addToken())));
                 setTextSelected(mLiveText);
             }
         });
@@ -60,7 +59,8 @@ public class LiveGridActivity extends LeanbackActivity {
         mRecentText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(new SelectCategoryEvent("Recent"));
+                EventBus.getDefault().post(new LoadLiveEvent(
+                        UrlUtil.appendUri(UrlUtil.HISTORY_URL, UrlUtil.addToken())));
                 setTextSelected(mRecentText);
             }
         });
@@ -68,7 +68,9 @@ public class LiveGridActivity extends LeanbackActivity {
         mFavoriteText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(new SelectCategoryEvent("Favorite"));
+
+
+
                 setTextSelected(mFavoriteText);
             }
         });

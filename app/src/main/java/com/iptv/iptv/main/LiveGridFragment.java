@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.iptv.iptv.main.data.LiveLoader;
 import com.iptv.iptv.main.data.LiveProvider;
 import com.iptv.iptv.main.event.LoadLiveEvent;
-import com.iptv.iptv.main.event.SelectCategoryEvent;
 import com.iptv.iptv.main.model.LiveItem;
 import com.iptv.iptv.main.presenter.CardPresenter;
 
@@ -83,9 +82,6 @@ public class LiveGridFragment extends VerticalGridFragment implements LoaderMana
                 for (int j = 0; j < list.size(); j++) {
                     mVideoObjectAdapter.add(list.get(j));
                 }
-                for (int j = 0; j < list.size(); j++) {
-                    mVideoObjectAdapter.add(list.get(j));
-                }
             }
         } else {
             Toast.makeText(getActivity(), "Failed to load videos.", Toast.LENGTH_LONG).show();
@@ -122,11 +118,6 @@ public class LiveGridFragment extends VerticalGridFragment implements LoaderMana
     @Subscribe
     public void onLoadLiveData(LoadLiveEvent event) {
         loadVideoData(event.url);
-    }
-
-    @Subscribe
-    public void onSelectCategory(SelectCategoryEvent event) {
-
     }
 
     @Override

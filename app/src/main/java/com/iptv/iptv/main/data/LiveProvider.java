@@ -28,6 +28,10 @@ public class LiveProvider {
     private static final String TAG_NAME = "name";
     private static final String TAG_LOGOURL = "logo_url";
     private static final String TAG_URL = "url";
+    // for history
+    private static final String TAG_MEDIA = "media";
+    private static final String TAG_MEDIA_TYPE = "media_type";
+    private static final String TAG_TYPE_NAME = "type_name";
 
     private static HashMap<String, List<LiveItem>> sLiveList;
     private static HashMap<Integer, LiveItem> sLiveListById;
@@ -61,29 +65,65 @@ public class LiveProvider {
             return sLiveList;
         }
 
-        List<LiveItem> liveList = new ArrayList<>();
+        if (!url.contains("histories")) {
 
-        int id;
-        String name;
-        String logoUrl;
-        String streamUrl;
+            List<LiveItem> liveList = new ArrayList<>();
 
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject jsonObj = jsonArray.getJSONObject(i);
+            int id;
+            String name;
+            String logoUrl;
+            String streamUrl;
 
-            JSONObject liveObj = jsonObj.getJSONObject(TAG_LIVE);
-            id = liveObj.getInt(TAG_ID);
-            name = liveObj.getString(TAG_NAME);
-            logoUrl = liveObj.getString(TAG_LOGOURL);
-            streamUrl = liveObj.getString(TAG_URL);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObj = jsonArray.getJSONObject(i);
 
-            sLiveListById.put(id, buildLiveInfo(id, name, logoUrl, streamUrl));
-            liveList.add(buildLiveInfo(id, name, logoUrl, streamUrl));
+                id = jsonObj.getInt(TAG_ID);
+                JSONObject liveObj = jsonObj.getJSONObject(TAG_LIVE);
+                name = liveObj.getString(TAG_NAME);
+                logoUrl = liveObj.getString(TAG_LOGOURL);
+                streamUrl = liveObj.getString(TAG_URL);
+
+                sLiveListById.put(id, buildLiveInfo(id, name, logoUrl, streamUrl));
+                liveList.add(buildLiveInfo(id, name, logoUrl, streamUrl));
+            }
+
+            sLiveList.put("", liveList);
+
+            return sLiveList;
+
+        } else {
+
+            List<LiveItem> liveList = new ArrayList<>();
+
+            int id;
+            String name;
+            String logoUrl;
+            String streamUrl;
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObj = jsonArray.getJSONObject(i);
+
+                JSONObject media = jsonObj.getJSONObject(TAG_MEDIA);
+                JSONObject mediaType = media.getJSONObject(TAG_MEDIA_TYPE);
+                String type = mediaType.getString(TAG_TYPE_NAME);
+
+                if (type.equals(TAG_LIVE)) {
+                    id = jsonObj.getInt(TAG_ID);
+                    JSONObject liveObj = media.getJSONObject(TAG_LIVE);
+                    name = liveObj.getString(TAG_NAME);
+                    logoUrl = liveObj.getString(TAG_LOGOURL);
+                    streamUrl = liveObj.getString(TAG_URL);
+
+                    sLiveListById.put(id, buildLiveInfo(id, name, logoUrl, streamUrl));
+                    liveList.add(buildLiveInfo(id, name, logoUrl, streamUrl));
+                }
+            }
+
+            sLiveList.put("", liveList);
+
+            return sLiveList;
+
         }
-
-        sLiveList.put("", liveList);
-
-        return sLiveList;
     }
 
     private static LiveItem buildLiveInfo(int id, String name, String logoUrl, String url) {

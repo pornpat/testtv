@@ -43,4 +43,8 @@ public class UrlUtil {
             return uri;
         }
     }
+
+    public static String addMediaId(String url, int id) {
+        return url + "/" + id;
+    }
 }

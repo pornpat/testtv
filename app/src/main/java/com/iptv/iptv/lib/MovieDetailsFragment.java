@@ -35,7 +35,6 @@ import android.support.v17.leanback.widget.RowPresenter;
 import android.support.v17.leanback.widget.SparseArrayObjectAdapter;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
@@ -44,16 +43,24 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.iptv.iptv.R;
 import com.iptv.iptv.main.MovieEpisodeActivity;
 import com.iptv.iptv.main.MoviePlayerActivity;
+import com.iptv.iptv.main.UrlUtil;
+import com.iptv.iptv.main.data.MovieProvider;
+import com.iptv.iptv.main.model.MovieItem;
 import com.iptv.iptv.main.presenter.CardPresenter;
 import com.iptv.iptv.main.presenter.DetailsDescriptionPresenter;
-import com.iptv.iptv.main.model.MovieItem;
-import com.iptv.iptv.main.data.MovieProvider;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.TextHttpResponseHandler;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import cz.msebera.android.httpclient.Header;
 
 /*
  * LeanbackDetailsFragment extends DetailsFragment, a Wrapper fragment for leanback details screens.
@@ -72,6 +79,8 @@ public class MovieDetailsFragment extends DetailsFragment {
     private ArrayObjectAdapter mAdapter;
     private ClassPresenterSelector mPresenterSelector;
 
+    private boolean isFav = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate DetailsFragment");
@@ -80,17 +89,48 @@ public class MovieDetailsFragment extends DetailsFragment {
         mSelectedMovie = Parcels.unwrap(getActivity().getIntent()
                 .getParcelableExtra(MovieDetailsActivity.MOVIE));
 
-        if (mSelectedMovie != null) {
-            setupAdapter();
-            setupDetailsOverviewRow();
-            setupDetailsOverviewRowPresenter();
-            setupMovieListRow();
-            setupMovieListRowPresenter();
-            setOnItemViewClickedListener(new ItemViewClickedListener());
-        } else {
-            Intent intent = new Intent(getActivity(), MainActivity.class);
-            startActivity(intent);
-        }
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(UrlUtil.appendUri(UrlUtil.FAVORITE_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                try {
+                    JSONArray jsonArray = new JSONArray(responseString);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject movieObj = jsonArray.getJSONObject(i);
+
+                        JSONObject media = movieObj.getJSONObject("media");
+                        JSONObject mediaType = media.getJSONObject("media_type");
+                        String type = mediaType.getString("type_name");
+
+                        if (type.equals("movie")) {
+                            int id = media.getInt("id");
+                            if (id == mSelectedMovie.getId()) {
+                                isFav = true;
+                            }
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                if (mSelectedMovie != null) {
+                    setupAdapter();
+                    setupDetailsOverviewRow();
+                    setupDetailsOverviewRowPresenter();
+                    setupMovieListRow();
+                    setupMovieListRowPresenter();
+                    setOnItemViewClickedListener(new ItemViewClickedListener());
+                } else {
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
+
     }
 
     private void setupAdapter() {
@@ -133,7 +173,7 @@ public class MovieDetailsFragment extends DetailsFragment {
             adapter.set(i, new Action(i, "เสียง: " + mSelectedMovie.getTracks().get(i).getAudio()
                     , "บรรยาย: " + mSelectedMovie.getTracks().get(i).getSubtitle()));
         }
-        adapter.set(ACTION_ADD_FAV, new Action(ACTION_ADD_FAV, getResources().getString(R.string.add_fav)));
+        adapter.set(ACTION_ADD_FAV, new Action(ACTION_ADD_FAV, isFav ? getResources().getString(R.string.remove_fav) : getResources().getString(R.string.add_fav)));
 
         row.setActionsAdapter(adapter);
 
@@ -155,7 +195,37 @@ public class MovieDetailsFragment extends DetailsFragment {
             @Override
             public void onActionClicked(Action action) {
                 if (action.getId() == ACTION_ADD_FAV) {
-                    Toast.makeText(getActivity(), action.toString(), Toast.LENGTH_SHORT).show();
+                    if (!isFav) {
+                        AsyncHttpClient client = new AsyncHttpClient();
+                        client.post(UrlUtil.appendUri(UrlUtil.addMediaId(UrlUtil.FAVORITE_URL, mSelectedMovie.getId()), UrlUtil.addToken()), new TextHttpResponseHandler() {
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+
+                            }
+
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+
+                            }
+                        });
+                        isFav = true;
+                        updateDetailsOverviewRow();
+                    } else {
+                        AsyncHttpClient client = new AsyncHttpClient();
+                        client.delete(UrlUtil.appendUri(UrlUtil.addMediaId(UrlUtil.FAVORITE_URL, mSelectedMovie.getId()), UrlUtil.addToken()), new TextHttpResponseHandler() {
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+
+                            }
+
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+
+                            }
+                        });
+                        isFav = false;
+                        updateDetailsOverviewRow();
+                    }
                 } else {
                     if (mSelectedMovie.getTracks().get((int)action.getId()).getDiscs().size() < 2) {
                         Intent intent = new Intent(getActivity(), MoviePlayerActivity.class);
@@ -193,6 +263,47 @@ public class MovieDetailsFragment extends DetailsFragment {
 
     private void setupMovieListRowPresenter() {
         mPresenterSelector.addClassPresenter(ListRow.class, new ListRowPresenter());
+    }
+
+    private void updateDetailsOverviewRow() {
+        Log.d(TAG, "doInBackground: " + mSelectedMovie.toString());
+        final DetailsOverviewRow row = new DetailsOverviewRow(mSelectedMovie);
+        row.setImageDrawable(getResources().getDrawable(R.drawable.movie_placeholder));
+        final int width = Utils.convertDpToPixel(getActivity()
+                .getApplicationContext(), DETAIL_THUMB_WIDTH);
+        final int height = Utils.convertDpToPixel(getActivity()
+                .getApplicationContext(), DETAIL_THUMB_HEIGHT);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Glide.with(getActivity())
+                        .load(mSelectedMovie.getImageUrl())
+                        .centerCrop()
+                        .error(R.drawable.movie_placeholder)
+                        .into(new SimpleTarget<GlideDrawable>(width, height) {
+                            @Override
+                            public void onResourceReady(GlideDrawable resource,
+                                                        GlideAnimation<? super GlideDrawable>
+                                                                glideAnimation) {
+                                Log.d(TAG, "details overview card image url ready: " + resource);
+                                row.setImageDrawable(resource);
+                                mAdapter.notifyArrayItemRangeChanged(0, mAdapter.size());
+                            }
+                        });
+            }
+        }, 500);
+
+        SparseArrayObjectAdapter adapter = new SparseArrayObjectAdapter();
+        for (int i = 0; i < mSelectedMovie.getTracks().size(); i++) {
+            adapter.set(i, new Action(i, "เสียง: " + mSelectedMovie.getTracks().get(i).getAudio()
+                    , "บรรยาย: " + mSelectedMovie.getTracks().get(i).getSubtitle()));
+        }
+        adapter.set(ACTION_ADD_FAV, new Action(ACTION_ADD_FAV, isFav ? getResources().getString(R.string.remove_fav) : getResources().getString(R.string.add_fav)));
+
+        row.setActionsAdapter(adapter);
+
+        mAdapter.replace(0, row);
     }
 
     private final class ItemViewClickedListener implements OnItemViewClickedListener {

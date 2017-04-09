@@ -21,6 +21,9 @@ import com.iptv.iptv.lib.Utils;
 import com.iptv.iptv.main.data.LiveLoader;
 import com.iptv.iptv.main.data.LiveProvider;
 import com.iptv.iptv.main.model.LiveItem;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import cz.msebera.android.httpclient.Header;
 
 public class LivePlayerActivity extends LeanbackActivity implements LoaderManager.LoaderCallbacks<HashMap<String, List<LiveItem>>> {
 
@@ -89,6 +94,8 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
                 mNameText.setText(mLiveList.get(position).getName());
                 Glide.with(this).load(mLiveList.get(position).getLogoUrl()).override(150, 150).into(mLogo);
                 mVideoView.setVideoURI(Uri.parse(mLiveList.get(position).getUrl()));
+
+                addRecentWatch(mLiveList.get(position).getId());
             } else {
                 Toast.makeText(LivePlayerActivity.this, "No live data available..", Toast.LENGTH_SHORT).show();
                 finish();
@@ -128,6 +135,23 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
     @Override
     public void onLoaderReset(Loader<HashMap<String, List<LiveItem>>> loader) {
         mLiveList.clear();
+    }
+
+    private void addRecentWatch(int id) {
+        RequestParams params = new RequestParams("media_id", id);
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.post(UrlUtil.appendUri(UrlUtil.HISTORY_URL, UrlUtil.addToken()), params, new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+
+            }
+        });
     }
 
     private void startBackgroundTimer() {

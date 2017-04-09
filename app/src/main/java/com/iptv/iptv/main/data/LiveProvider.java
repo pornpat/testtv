@@ -108,8 +108,8 @@ public class LiveProvider {
                 String type = mediaType.getString(TAG_TYPE_NAME);
 
                 if (type.equals(TAG_LIVE)) {
-                    id = jsonObj.getInt(TAG_ID);
                     JSONObject liveObj = media.getJSONObject(TAG_LIVE);
+                    id = media.getInt(TAG_ID);
                     name = liveObj.getString(TAG_NAME);
                     logoUrl = liveObj.getString(TAG_LOGOURL);
                     streamUrl = liveObj.getString(TAG_URL);

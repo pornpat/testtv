@@ -17,12 +17,17 @@ import com.iptv.iptv.lib.SeriesDetailsActivity;
 import com.iptv.iptv.lib.Utils;
 import com.iptv.iptv.main.model.MovieItem;
 import com.iptv.iptv.main.model.SeriesItem;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.parceler.Parcels;
 
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import cz.msebera.android.httpclient.Header;
 
 public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoCallback{
 
@@ -34,6 +39,7 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
     private MovieItem mSelectedMovie;
     private SeriesItem mSelectedSeries;
     private String mUrl;
+    private int mMediaId;
 
     private static final int BACKGROUND_UPDATE_DELAY = 2500;
     private final Handler mHandler = new Handler();
@@ -63,8 +69,10 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
         String movieName = "";
         if (mSelectedMovie != null) {
             movieName = mSelectedMovie.getName();
+            mMediaId = mSelectedMovie.getId();
         } else if (mSelectedSeries != null) {
             movieName = mSelectedSeries.getName();
+            mMediaId = mSelectedSeries.getId();
         }
         if (movieName.length() > 50) {
             movieName = movieName.substring(0, 50);
@@ -75,6 +83,8 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
         player.setSource(Uri.parse(mUrl));
 //        player.setSource(Uri.parse("http://45.64.185.101:8081/atomvod/bluray2016/10-Cloverfield-Lane-2016-th-en-1080p.mp4"));
         player.setAutoPlay(true);
+
+        addRecentWatch();
 
 //        mVideoView = (VideoView) findViewById(R.id.video);
 //        mVideoView.post(new Runnable() {
@@ -95,6 +105,23 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
 //            }
 //        });
 
+    }
+
+    private void addRecentWatch() {
+        RequestParams params = new RequestParams("media_id", mMediaId);
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.post(UrlUtil.appendUri(UrlUtil.HISTORY_URL, UrlUtil.addToken()), params, new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+
+            }
+        });
     }
 
     private void startBackgroundTimer() {

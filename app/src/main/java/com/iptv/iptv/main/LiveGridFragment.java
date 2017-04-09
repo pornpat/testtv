@@ -54,8 +54,10 @@ public class LiveGridFragment extends VerticalGridFragment implements LoaderMana
         LiveProvider.setContext(getActivity());
 //        mVideosUrl = getActivity().getResources().getString(R.string.catalog_url);
         mVideosUrl = url;
+        if (getLoaderManager().getLoader(loaderId) != null) {
+            getLoaderManager().destroyLoader(loaderId);
+        }
         getLoaderManager().initLoader(loaderId, null, this);
-        loaderId++;
     }
 
     private void setupFragment() {

@@ -58,8 +58,10 @@ public class SeriesGridFragment extends VerticalGridFragment implements LoaderMa
     private void loadSeriesData(String url) {
         SeriesProvider.setContext(getActivity());
         mVideosUrl = url;
+        if (getLoaderManager().getLoader(loaderId) != null) {
+            getLoaderManager().destroyLoader(loaderId);
+        }
         getLoaderManager().initLoader(loaderId, null, this);
-        loaderId++;
     }
 
     private void setupFragment() {

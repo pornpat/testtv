@@ -43,6 +43,7 @@ public class HomeActivity extends LeanbackActivity {
 
         mDateTimeText = (TextView) findViewById(R.id.datetime);
 
+        ((TextView) findViewById(R.id.txt_username)).setText(PrefUtil.getStringProperty(R.string.pref_username));
         Log.v("testkn", PrefUtil.getStringProperty(R.string.pref_token));
 
         Thread myThread;

@@ -3,6 +3,7 @@ package com.iptv.iptv.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -41,6 +42,8 @@ public class HomeActivity extends LeanbackActivity {
         mSettingButton = (RelativeLayout) findViewById(R.id.btn_setting);
 
         mDateTimeText = (TextView) findViewById(R.id.datetime);
+
+        Log.v("testkn", PrefUtil.getStringProperty(R.string.pref_token));
 
         Thread myThread;
         Runnable runnable = new CountDownRunner();

@@ -22,7 +22,6 @@ import com.iptv.iptv.lib.MovieDetailsActivity;
 import com.iptv.iptv.main.data.MovieLoader;
 import com.iptv.iptv.main.data.MovieProvider;
 import com.iptv.iptv.main.event.LoadMovieEvent;
-import com.iptv.iptv.main.event.SelectCategoryEvent;
 import com.iptv.iptv.main.model.MovieItem;
 import com.iptv.iptv.main.presenter.CardPresenter;
 
@@ -132,11 +131,6 @@ public class MovieGridFragment extends VerticalGridFragment implements LoaderMan
     @Subscribe
     public void onLoadMovieData(LoadMovieEvent event) {
         loadVideoData(event.url);
-    }
-
-    @Subscribe
-    public void onSelectCategory(SelectCategoryEvent event) {
-
     }
 
     @Override

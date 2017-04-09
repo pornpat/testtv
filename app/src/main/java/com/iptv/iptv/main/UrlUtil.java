@@ -17,6 +17,7 @@ public class UrlUtil {
     public static final String SERIES_URL = BASE_URL + "/series";
     public static final String LIVE_URL = BASE_URL + "/lives";
     public static final String FILTER_URL = BASE_URL + "/filters";
+    public static final String HISTORY_URL = BASE_URL + "/users/histories";
 
     public static String addToken() {
         return "token=" + PrefUtil.getStringProperty(R.string.pref_token);

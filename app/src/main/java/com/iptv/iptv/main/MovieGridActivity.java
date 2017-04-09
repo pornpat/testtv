@@ -7,10 +7,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.iptv.iptv.R;
-import com.iptv.iptv.lib.Utils;
 import com.iptv.iptv.main.event.ApplyFilterEvent;
 import com.iptv.iptv.main.event.LoadMovieEvent;
-import com.iptv.iptv.main.event.SelectCategoryEvent;
 import com.iptv.iptv.main.model.CategoryItem;
 import com.iptv.iptv.main.model.CountryItem;
 
@@ -69,7 +67,8 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
         mMovieText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(new SelectCategoryEvent("Movie"));
+                EventBus.getDefault().post(new LoadMovieEvent(
+                        UrlUtil.appendUri(UrlUtil.MOVIE_URL, UrlUtil.addToken())));
                 setTextSelected(mMovieText);
             }
         });
@@ -77,7 +76,8 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
         mRecentText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(new SelectCategoryEvent("Recent"));
+                EventBus.getDefault().post(new LoadMovieEvent(
+                        UrlUtil.appendUri(UrlUtil.HISTORY_URL, UrlUtil.addToken())));
                 setTextSelected(mRecentText);
             }
         });
@@ -85,7 +85,8 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
         mFavoriteText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(new SelectCategoryEvent("Favorite"));
+
+
                 setTextSelected(mFavoriteText);
             }
         });

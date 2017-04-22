@@ -24,7 +24,7 @@ import java.util.List;
 public class LiveProvider {
 
     private static final String TAG_LIVE = "live";
-    private static final String TAG_ID = "id";
+    private static final String TAG_MEDIA_ID = "media_id";
     private static final String TAG_NAME = "name";
     private static final String TAG_LOGOURL = "logo_url";
     private static final String TAG_URL = "url";
@@ -82,7 +82,7 @@ public class LiveProvider {
 
                 if (type.equals(TAG_LIVE)) {
                     JSONObject liveObj = media.getJSONObject(TAG_LIVE);
-                    id = media.getInt(TAG_ID);
+                    id = liveObj.getInt(TAG_MEDIA_ID);
                     name = liveObj.getString(TAG_NAME);
                     logoUrl = liveObj.getString(TAG_LOGOURL);
                     streamUrl = liveObj.getString(TAG_URL);
@@ -106,8 +106,8 @@ public class LiveProvider {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObj = jsonArray.getJSONObject(i);
 
-                id = jsonObj.getInt(TAG_ID);
                 JSONObject liveObj = jsonObj.getJSONObject(TAG_LIVE);
+                id = liveObj.getInt(TAG_MEDIA_ID);
                 name = liveObj.getString(TAG_NAME);
                 logoUrl = liveObj.getString(TAG_LOGOURL);
                 streamUrl = liveObj.getString(TAG_URL);

@@ -2,7 +2,6 @@ package com.iptv.iptv.main.data;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.util.Log;
 
 import com.iptv.iptv.main.model.DiscItem;
 import com.iptv.iptv.main.model.MovieItem;
@@ -26,7 +25,7 @@ import java.util.List;
 
 public class MovieProvider {
 
-    private static final String TAG_ID = "id";
+    private static final String TAG_MEDIA_ID = "media_id";
     private static final String TAG_DETAIL = "detail";
     private static final String TAG_NAME = "name";
     private static final String TAG_DESCRIPTION = "description";
@@ -80,7 +79,6 @@ public class MovieProvider {
         }
 
         if (url.contains("histories") || url.contains("favorites")) {
-            Log.v("testkn", "fav or his");
             List<MovieItem> movieList = new ArrayList<>();
 
             int id;
@@ -98,7 +96,7 @@ public class MovieProvider {
 
                 if (type.equals(TAG_MOVIE)) {
                     JSONObject detailObj = media.getJSONObject(TAG_DETAIL);
-                    id = detailObj.getInt(TAG_ID);
+                    id = detailObj.getInt(TAG_MEDIA_ID);
                     name = detailObj.getString(TAG_NAME);
                     description = detailObj.getString(TAG_DESCRIPTION);
                     imageUrl = detailObj.getString(TAG_IMAGEURL);
@@ -160,7 +158,7 @@ public class MovieProvider {
                 JSONObject movieObj = jsonArray.getJSONObject(i);
 
                 JSONObject detailObj = movieObj.getJSONObject(TAG_DETAIL);
-                id = detailObj.getInt(TAG_ID);
+                id = detailObj.getInt(TAG_MEDIA_ID);
                 name = detailObj.getString(TAG_NAME);
                 description = detailObj.getString(TAG_DESCRIPTION);
                 imageUrl = detailObj.getString(TAG_IMAGEURL);

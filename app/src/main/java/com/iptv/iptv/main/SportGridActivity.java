@@ -138,6 +138,7 @@ public class SportGridActivity extends LeanbackActivity implements FilterFragmen
             mCurrentCountry = -1;
             mCurrentYear = -1;
         }
+        setTextSelected(mSportText);
         getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.layout_filter)).commit();
         findViewById(R.id.layout_filter).setVisibility(View.GONE);
     }

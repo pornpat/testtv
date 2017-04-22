@@ -138,6 +138,7 @@ public class SeriesGridActivity extends LeanbackActivity implements FilterFragme
             mCurrentCountry = -1;
             mCurrentYear = -1;
         }
+        setTextSelected(mSeriesText);
         getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.layout_filter)).commit();
         findViewById(R.id.layout_filter).setVisibility(View.GONE);
     }

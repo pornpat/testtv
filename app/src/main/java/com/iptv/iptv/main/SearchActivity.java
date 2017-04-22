@@ -14,6 +14,7 @@ import com.iptv.iptv.R;
 import com.iptv.iptv.main.event.LoadLiveEvent;
 import com.iptv.iptv.main.event.LoadMovieEvent;
 import com.iptv.iptv.main.event.LoadSeriesEvent;
+import com.iptv.iptv.main.event.LoadSportEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -110,6 +111,12 @@ public class SearchActivity extends LeanbackActivity {
                 liveUrl = UrlUtil.appendUri(liveUrl, UrlUtil.addToken());
 
                 EventBus.getDefault().post(new LoadLiveEvent(liveUrl));
+
+                String sportUrl = UrlUtil.SPORT_URL;
+                sportUrl = UrlUtil.appendUri(sportUrl, "keyword=" + mSearchText.getText().toString());
+                sportUrl = UrlUtil.appendUri(sportUrl, UrlUtil.addToken());
+
+                EventBus.getDefault().post(new LoadSportEvent(sportUrl));
             }
         }, 500);
 

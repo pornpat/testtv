@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.iptv.iptv.R;
 import com.iptv.iptv.main.event.ApplyFilterEvent;
-import com.iptv.iptv.main.event.LoadMovieEvent;
+import com.iptv.iptv.main.event.LoadSportEvent;
 import com.iptv.iptv.main.model.CategoryItem;
 import com.iptv.iptv.main.model.CountryItem;
 
@@ -39,8 +39,8 @@ public class SportGridActivity extends LeanbackActivity implements FilterFragmen
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                EventBus.getDefault().post(new LoadMovieEvent(
-                        UrlUtil.appendUri(UrlUtil.MOVIE_URL, UrlUtil.addToken())));
+                EventBus.getDefault().post(new LoadSportEvent(
+                        UrlUtil.appendUri(UrlUtil.SPORT_URL, UrlUtil.addToken())));
             }
         }, 500);
 
@@ -67,8 +67,8 @@ public class SportGridActivity extends LeanbackActivity implements FilterFragmen
         mSportText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(new LoadMovieEvent(
-                        UrlUtil.appendUri(UrlUtil.MOVIE_URL, UrlUtil.addToken())));
+                EventBus.getDefault().post(new LoadSportEvent(
+                        UrlUtil.appendUri(UrlUtil.SPORT_URL, UrlUtil.addToken())));
                 setTextSelected(mSportText);
             }
         });
@@ -76,7 +76,7 @@ public class SportGridActivity extends LeanbackActivity implements FilterFragmen
         mRecentText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(new LoadMovieEvent(
+                EventBus.getDefault().post(new LoadSportEvent(
                         UrlUtil.appendUri(UrlUtil.HISTORY_URL, UrlUtil.addToken())));
                 setTextSelected(mRecentText);
             }
@@ -85,7 +85,7 @@ public class SportGridActivity extends LeanbackActivity implements FilterFragmen
         mFavoriteText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(new LoadMovieEvent(
+                EventBus.getDefault().post(new LoadSportEvent(
                         UrlUtil.appendUri(UrlUtil.FAVORITE_URL, UrlUtil.addToken())));
                 setTextSelected(mFavoriteText);
             }
@@ -118,7 +118,7 @@ public class SportGridActivity extends LeanbackActivity implements FilterFragmen
     @Subscribe
     public void onFilterEvent(ApplyFilterEvent event) {
         if (event.isApplied) {
-            String url = UrlUtil.MOVIE_URL;
+            String url = UrlUtil.SPORT_URL;
             if (mCurrentCategory != -1) {
                 url = UrlUtil.appendUri(url, "categories_id=" + mCurrentCategory);
             }
@@ -130,10 +130,10 @@ public class SportGridActivity extends LeanbackActivity implements FilterFragmen
             }
             url = UrlUtil.appendUri(url, UrlUtil.addToken());
 
-            EventBus.getDefault().post(new LoadMovieEvent(url));
+            EventBus.getDefault().post(new LoadSportEvent(url));
         } else {
-            EventBus.getDefault().post(new LoadMovieEvent(
-                    UrlUtil.appendUri(UrlUtil.MOVIE_URL, UrlUtil.addToken())));
+            EventBus.getDefault().post(new LoadSportEvent(
+                    UrlUtil.appendUri(UrlUtil.SPORT_URL, UrlUtil.addToken())));
             mCurrentCategory = -1;
             mCurrentCountry = -1;
             mCurrentYear = -1;

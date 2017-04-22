@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.iptv.iptv.lib.MovieDetailsActivity;
 import com.iptv.iptv.main.data.MovieLoader;
 import com.iptv.iptv.main.data.MovieProvider;
-import com.iptv.iptv.main.event.LoadMovieEvent;
+import com.iptv.iptv.main.event.LoadSportEvent;
 import com.iptv.iptv.main.model.MovieItem;
 import com.iptv.iptv.main.presenter.CardPresenter;
 
@@ -130,7 +130,7 @@ public class SportGridFragment extends VerticalGridFragment implements LoaderMan
     }
 
     @Subscribe
-    public void onLoadMovieData(LoadMovieEvent event) {
+    public void onLoadSportData(LoadSportEvent event) {
         loadVideoData(event.url);
     }
 

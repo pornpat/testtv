@@ -59,7 +59,9 @@ public class SeriesGridActivity extends LeanbackActivity implements FilterFragme
         findViewById(R.id.filter).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFragmentManager().beginTransaction().replace(R.id.layout_filter, FilterFragment.newInstance(mCurrentCategory, mCurrentCountry, mCurrentYear)).commit();
+                getFragmentManager().beginTransaction().replace(R.id.layout_filter,
+                        FilterFragment.newInstance(UrlUtil.appendUri(UrlUtil.SERIES_FILTER_URL, UrlUtil.addToken()),
+                                mCurrentCategory, mCurrentCountry, mCurrentYear)).commit();
                 findViewById(R.id.layout_filter).setVisibility(View.VISIBLE);
             }
         });

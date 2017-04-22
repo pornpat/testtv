@@ -29,7 +29,7 @@ import java.util.List;
 
 public class FilterFragment extends Fragment implements LoaderManager.LoaderCallbacks<FilterItem> {
 
-    private String mFilterUrl = UrlUtil.appendUri(UrlUtil.FILTER_URL, UrlUtil.addToken());
+    private String mFilterUrl;
 
     private FilterCategoryAdapter mCategoryAdapter;
     private List<CategoryItem> mCategoryList;
@@ -46,9 +46,10 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
     private OnCountryInteractionListener mCountryListener;
     private OnYearInteractionListener mYearListener;
 
-    public static FilterFragment newInstance(int currentCategory, int currentCountry, int currentYear) {
+    public static FilterFragment newInstance(String url, int currentCategory, int currentCountry, int currentYear) {
         FilterFragment fragment = new FilterFragment();
         Bundle bundle = new Bundle();
+        bundle.putString("url", url);
         bundle.putInt("currentCategory", currentCategory);
         bundle.putInt("currentCountry", currentCountry);
         bundle.putInt("currentYear", currentYear);
@@ -62,6 +63,7 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            mFilterUrl = getArguments().getString("url");
             currentCategory = getArguments().getInt("currentCategory");
             currentCountry = getArguments().getInt("currentCountry");
             currentYear = getArguments().getInt("currentYear");

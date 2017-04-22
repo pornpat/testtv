@@ -17,8 +17,8 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.widget.Toast;
 
 import com.iptv.iptv.lib.MovieDetailsActivity;
-import com.iptv.iptv.main.data.MovieLoader;
-import com.iptv.iptv.main.data.MovieProvider;
+import com.iptv.iptv.main.data.SportLoader;
+import com.iptv.iptv.main.data.SportProvider;
 import com.iptv.iptv.main.event.LoadSportEvent;
 import com.iptv.iptv.main.model.MovieItem;
 import com.iptv.iptv.main.presenter.CardPresenter;
@@ -55,7 +55,7 @@ public class SportGridFragment extends VerticalGridFragment implements LoaderMan
     }
 
     private void loadVideoData(String url) {
-        MovieProvider.setContext(getActivity());
+        SportProvider.setContext(getActivity());
 //        mVideosUrl = getActivity().getResources().getString(R.string.catalog_url);
         mVideosUrl = url;
         if (getLoaderManager().getLoader(loaderId) != null) {
@@ -75,7 +75,7 @@ public class SportGridFragment extends VerticalGridFragment implements LoaderMan
 
     @Override
     public Loader<HashMap<String, List<MovieItem>>> onCreateLoader(int i, Bundle bundle) {
-        return new MovieLoader(getActivity(), mVideosUrl);
+        return new SportLoader(getActivity(), mVideosUrl);
     }
 
     @Override

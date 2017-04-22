@@ -45,6 +45,7 @@ import com.iptv.iptv.main.MovieEpisodeActivity;
 import com.iptv.iptv.main.MoviePlayerActivity;
 import com.iptv.iptv.main.UrlUtil;
 import com.iptv.iptv.main.data.MovieProvider;
+import com.iptv.iptv.main.data.SportProvider;
 import com.iptv.iptv.main.model.MovieItem;
 import com.iptv.iptv.main.presenter.CardPresenter;
 import com.iptv.iptv.main.presenter.DetailsDescriptionPresenter;
@@ -106,12 +107,17 @@ public class MovieDetailsFragment extends DetailsFragment {
                         JSONObject mediaType = media.getJSONObject("media_type");
                         String type = mediaType.getString("type_name");
 
-                        if (type.equals("movie")) {
-                            int id = media.getInt("id");
-                            if (id == mSelectedMovie.getId()) {
-                                isFav = true;
-                            }
+                        int id = media.getInt("id");
+                        if (id == mSelectedMovie.getId()) {
+                            isFav = true;
                         }
+
+//                        if (type.equals("movie")) {
+//                            int id = media.getInt("id");
+//                            if (id == mSelectedMovie.getId()) {
+//                                isFav = true;
+//                            }
+//                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -250,10 +256,20 @@ public class MovieDetailsFragment extends DetailsFragment {
 
         // Generating related video list.
         ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter());
-        for (Map.Entry<String, List<MovieItem>> entry : movies.entrySet()) {
-            List<MovieItem> list = entry.getValue();
-            for (int j = 0; j < list.size(); j++) {
-                listRowAdapter.add(list.get(j));
+        if (movies != null) {
+            for (Map.Entry<String, List<MovieItem>> entry : movies.entrySet()) {
+                List<MovieItem> list = entry.getValue();
+                for (int j = 0; j < list.size(); j++) {
+                    listRowAdapter.add(list.get(j));
+                }
+            }
+        } else {
+            HashMap<String, List<MovieItem>> sports = SportProvider.getMovieList();
+            for (Map.Entry<String, List<MovieItem>> entry : sports.entrySet()) {
+                List<MovieItem> list = entry.getValue();
+                for (int j = 0; j < list.size(); j++) {
+                    listRowAdapter.add(list.get(j));
+                }
             }
         }
 

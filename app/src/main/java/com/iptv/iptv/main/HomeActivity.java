@@ -84,6 +84,17 @@ public class HomeActivity extends LeanbackActivity {
             }
         });
 
+        mSportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, SportGridActivity.class);
+                Bundle bundle =
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this)
+                                .toBundle();
+                startActivity(intent, bundle);
+            }
+        });
+
         mFavoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

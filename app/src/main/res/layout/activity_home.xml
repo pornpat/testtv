@@ -21,10 +21,41 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_padding_large"
+            android:layout_marginRight="@dimen/margin_padding_small"
             android:text="@string/app_name"
             android:textColor="@color/white"
             android:textSize="44sp"
             android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/btn_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_padding_xlarge"
+            android:padding="12dp"
+            android:nextFocusDown="@+id/btn_recommend"
+            android:nextFocusLeft="@+id/btn_recommend"
+            android:nextFocusRight="@+id/btn_recommend"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:background="@drawable/bg_search_button">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/search_selected"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_padding_xsmall"
+                android:text="SEARCH"
+                android:textColor="@color/bg_movie_text"
+                android:textSize="26sp"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -80,6 +111,7 @@
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
+                android:nextFocusUp="@+id/btn_search"
                 android:nextFocusDown="@+id/btn_movie"
                 android:nextFocusRight="@+id/btn_recommend"
                 android:padding="@dimen/margin_padding_xxsmall">
@@ -111,6 +143,7 @@
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
+                android:nextFocusUp="@+id/btn_search"
                 android:nextFocusLeft="@+id/btn_live"
                 android:nextFocusDown="@+id/btn_series"
                 android:nextFocusRight="@+id/btn_sport"
@@ -144,6 +177,7 @@
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
+                android:nextFocusUp="@+id/btn_search"
                 android:nextFocusLeft="@+id/btn_recommend"
                 android:nextFocusDown="@+id/btn_advertise"
                 android:nextFocusRight="@+id/btn_favourite"
@@ -154,7 +188,9 @@
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
                     android:src="@drawable/icon_sport"
-                    app:riv_corner_radius="@dimen/margin_padding_small"/>
+                    app:riv_corner_radius="@dimen/margin_padding_small"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -178,6 +214,7 @@
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
+                android:nextFocusUp="@+id/btn_search"
                 android:nextFocusLeft="@+id/btn_sport"
                 android:nextFocusDown="@+id/btn_setting"
                 android:padding="@dimen/margin_padding_xxsmall">

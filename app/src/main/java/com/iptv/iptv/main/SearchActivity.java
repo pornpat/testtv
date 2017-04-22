@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.iptv.iptv.R;
-import com.iptv.iptv.lib.Utils;
 import com.iptv.iptv.main.event.LoadLiveEvent;
 import com.iptv.iptv.main.event.LoadMovieEvent;
 import com.iptv.iptv.main.event.LoadSeriesEvent;
@@ -24,6 +23,7 @@ public class SearchActivity extends LeanbackActivity {
     TextView mMovieText;
     TextView mSeriesText;
     TextView mLiveText;
+    TextView mSportText;
 
     String mOrigin;
 
@@ -33,12 +33,17 @@ public class SearchActivity extends LeanbackActivity {
         setContentView(R.layout.activity_search);
         getWindow().setBackgroundDrawableResource(R.drawable.custom_background);
 
-        mOrigin = getIntent().getExtras().getString("origin");
+        if (getIntent().hasExtra("origin")) {
+            mOrigin = getIntent().getExtras().getString("origin");
+        } else {
+            mOrigin = "";
+        }
 
         mSearchText = (EditText) findViewById(R.id.search);
         mMovieText = (TextView) findViewById(R.id.movie);
         mSeriesText = (TextView) findViewById(R.id.series);
         mLiveText = (TextView) findViewById(R.id.live);
+        mSportText = (TextView) findViewById(R.id.sport);
 
         mSearchText.requestFocus();
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -73,6 +78,13 @@ public class SearchActivity extends LeanbackActivity {
             public void onClick(View view) {
                 setTextSelected(mLiveText);
                 setContainerSelected(findViewById(R.id.live_container));
+            }
+        });
+        mSportText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setTextSelected(mSportText);
+                setContainerSelected(findViewById(R.id.sport_container));
             }
         });
     }
@@ -113,6 +125,8 @@ public class SearchActivity extends LeanbackActivity {
         mSeriesText.setSelected(false);
         mLiveText.setVisibility(View.VISIBLE);
         mLiveText.setSelected(false);
+        mSportText.setVisibility(View.VISIBLE);
+        mSportText.setSelected(false);
 
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
@@ -127,6 +141,9 @@ public class SearchActivity extends LeanbackActivity {
         } else if (mOrigin.equals("live")) {
             mLiveText.requestFocus();
             mLiveText.setSelected(true);
+        } else if (mOrigin.equals("sport")) {
+            mSportText.requestFocus();
+            mSportText.setSelected(true);
         } else {
             mMovieText.requestFocus();
             mMovieText.setSelected(true);
@@ -137,6 +154,7 @@ public class SearchActivity extends LeanbackActivity {
         findViewById(R.id.movie_container).setVisibility(View.GONE);
         findViewById(R.id.series_container).setVisibility(View.GONE);
         findViewById(R.id.live_container).setVisibility(View.GONE);
+        findViewById(R.id.sport_container).setVisibility(View.GONE);
 
         if (mOrigin.equals("movie")) {
             findViewById(R.id.movie_container).setVisibility(View.VISIBLE);
@@ -144,6 +162,8 @@ public class SearchActivity extends LeanbackActivity {
             findViewById(R.id.series_container).setVisibility(View.VISIBLE);
         } else if (mOrigin.equals("live")) {
             findViewById(R.id.live_container).setVisibility(View.VISIBLE);
+        } else if (mOrigin.equals("sport")) {
+            findViewById(R.id.sport_container).setVisibility(View.VISIBLE);
         } else {
             findViewById(R.id.movie_container).setVisibility(View.VISIBLE);
         }
@@ -153,6 +173,7 @@ public class SearchActivity extends LeanbackActivity {
         mMovieText.setSelected(false);
         mSeriesText.setSelected(false);
         mLiveText.setSelected(false);
+        mSportText.setSelected(false);
 
         currentText.setSelected(true);
     }
@@ -161,6 +182,7 @@ public class SearchActivity extends LeanbackActivity {
         findViewById(R.id.movie_container).setVisibility(View.GONE);
         findViewById(R.id.series_container).setVisibility(View.GONE);
         findViewById(R.id.live_container).setVisibility(View.GONE);
+        findViewById(R.id.sport_container).setVisibility(View.GONE);
 
         view.setVisibility(View.VISIBLE);
     }

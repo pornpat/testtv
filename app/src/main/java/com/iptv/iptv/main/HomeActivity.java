@@ -24,6 +24,7 @@ public class HomeActivity extends LeanbackActivity {
     RelativeLayout mAdvertiseButton;
     RelativeLayout mSettingButton;
 
+    View mSearchButton;
     TextView mDateTimeText;
 
     @Override
@@ -41,10 +42,13 @@ public class HomeActivity extends LeanbackActivity {
         mAdvertiseButton = (RelativeLayout) findViewById(R.id.btn_advertise);
         mSettingButton = (RelativeLayout) findViewById(R.id.btn_setting);
 
+        mSearchButton = findViewById(R.id.btn_search);
         mDateTimeText = (TextView) findViewById(R.id.datetime);
 
         ((TextView) findViewById(R.id.txt_username)).setText(PrefUtil.getStringProperty(R.string.pref_username));
         Log.v("testkn", PrefUtil.getStringProperty(R.string.pref_token));
+
+        mLiveButton.requestFocus();
 
         Thread myThread;
         Runnable runnable = new CountDownRunner();
@@ -99,6 +103,17 @@ public class HomeActivity extends LeanbackActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, FavoriteGridActivity.class);
+                Bundle bundle =
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this)
+                                .toBundle();
+                startActivity(intent, bundle);
+            }
+        });
+
+        mSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
                 Bundle bundle =
                         ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this)
                                 .toBundle();

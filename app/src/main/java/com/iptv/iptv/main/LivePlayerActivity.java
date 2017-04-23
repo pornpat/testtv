@@ -279,7 +279,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (!isChannelShowing) {
-            if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+            if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT || keyCode == KeyEvent.KEYCODE_MENU) {
                 showChannelList();
             }
             if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER || keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {

@@ -8,6 +8,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,11 +22,15 @@ import com.iptv.iptv.lib.Utils;
 import com.iptv.iptv.main.data.LiveLoader;
 import com.iptv.iptv.main.data.LiveProvider;
 import com.iptv.iptv.main.model.LiveItem;
+import com.iptv.iptv.main.model.LiveProgramItem;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,21 +46,27 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
     private View mLoadingView;
     private TextView mNameText;
     private ImageView mLogo;
+    private TextView mTimeText;
+    private TextView mProgramText;
+    private TextView mPeriodText;
 
-    private static final int BACKGROUND_UPDATE_DELAY = 2000;
+    private static final int BACKGROUND_UPDATE_DELAY = 3000;
     private final Handler mHandler = new Handler();
     private Timer mBackgroundTimer;
+    private Thread mTimeThread;
 
     private String mLiveUrl;
 
     private List<LiveItem> mLiveList = new ArrayList<>();
+    private List<LiveProgramItem> mProgramList = new ArrayList<>();
 
+    private Date dueTime;
     private int currentChannel = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_live);
+        setContentView(R.layout.activity_live_player);
 
         if (Utils.isInternetConnectionAvailable(LivePlayerActivity.this)) {
             loadLiveData();
@@ -69,6 +80,26 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
         mVideoView = (VideoView) findViewById(R.id.video);
         mNameText = (TextView) findViewById(R.id.txt_name);
         mLogo = (ImageView) findViewById(R.id.logo);
+        mTimeText = (TextView) findViewById(R.id.txt_time);
+        mProgramText = (TextView) findViewById(R.id.txt_program);
+        mPeriodText = (TextView) findViewById(R.id.txt_period);
+
+        // MOCK DATA
+        mProgramList.add(new LiveProgramItem("test5", 5, 0, 10, 0));
+        mProgramList.add(new LiveProgramItem("test6", 10, 0, 12, 0));
+        mProgramList.add(new LiveProgramItem("test7", 12, 0, 14, 0));
+        mProgramList.add(new LiveProgramItem("test8", 14, 0, 17, 0));
+        mProgramList.add(new LiveProgramItem("test9", 18, 0, 19, 0));
+        mProgramList.add(new LiveProgramItem("test1", 19, 0, 20, 0));
+        mProgramList.add(new LiveProgramItem("test2", 20, 0, 20, 26));
+        mProgramList.add(new LiveProgramItem("test3", 20, 26, 21, 38));
+        mProgramList.add(new LiveProgramItem("test4", 21, 38, 5, 0));
+
+//        updateProgram(Calendar.getInstance().getTime());
+
+        Runnable runnable = new CountDownRunner();
+        mTimeThread = new Thread(runnable);
+        mTimeThread.start();
 
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -89,6 +120,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
     }
 
     private void startLive(int position) {
+        updateProgram(Calendar.getInstance().getTime());
         if (Utils.isInternetConnectionAvailable(LivePlayerActivity.this)) {
             if (mLiveList.size() > 0) {
                 mNameText.setText(mLiveList.get(position).getName());
@@ -198,7 +230,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
+        if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER || keyCode == KeyEvent.KEYCODE_DPAD_LEFT || keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
             showDetail();
         }
         if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
@@ -226,6 +258,98 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
             mBackgroundTimer.cancel();
             mBackgroundTimer = null;
         }
+        mTimeThread.interrupt();
         super.onDestroy();
+    }
+
+    private void updateProgram(Date currentTime) {
+        try {
+            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+            currentTime.setSeconds(1);
+            Log.v("testkn", "update by current " + df.format(currentTime));
+
+            Date startTime = Calendar.getInstance().getTime();
+            Date endTime = Calendar.getInstance().getTime();
+
+            List<LiveProgramItem> programs = mLiveList.get(currentChannel).getPrograms();
+            boolean isFound = false;
+            for (int i = 0; i < programs.size(); i++) {
+                startTime.setHours(programs.get(i).getStartHour());
+                startTime.setMinutes(programs.get(i).getStartMin());
+                startTime.setSeconds(0);
+                endTime.setHours(programs.get(i).getEndHour());
+                endTime.setMinutes(programs.get(i).getEndMin());
+                endTime.setSeconds(0);
+
+//                Log.v("testkn", df.format(currentTime));
+//                Log.v("testkn", df.format(startTime));
+//                Log.v("testkn", df.format(endTime));
+
+                if (currentTime.compareTo(startTime) > 0 && currentTime.compareTo(endTime) < 0) {
+                    isFound = true;
+                    dueTime = endTime;
+                    Log.v("testkn", "set" + df.format(dueTime));
+                    mProgramText.setText(programs.get(i).getProgramName());
+                    mPeriodText.setText(String.format("%02d", programs.get(i).getStartHour()) + ":" +
+                            String.format("%02d", programs.get(i).getStartMin()) + " - " +
+                            String.format("%02d", programs.get(i).getEndHour()) + ":" +
+                            String.format("%02d", programs.get(i).getEndMin()));
+                    break;
+                }
+            }
+            if (!isFound) {
+                // or find the biggest start hour
+                LiveProgramItem program = programs.get(programs.size() - 1);
+                endTime.setHours(24);
+                endTime.setMinutes(0);
+                endTime.setSeconds(0);
+
+                dueTime = endTime;
+                Log.v("testkn", "set" + df.format(dueTime));
+                mProgramText.setText(program.getProgramName());
+                mPeriodText.setText(String.format("%02d", program.getStartHour()) + ":" +
+                        String.format("%02d", program.getStartMin()) + " - " +
+                        String.format("%02d", program.getEndHour()) + ":" +
+                        String.format("%02d", program.getEndMin()));
+            }
+        } catch (Exception e) {}
+    }
+
+    public void doWork() {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                try{
+                    Date currentTime = Calendar.getInstance().getTime();
+
+                    SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+                    String formattedCurrentTime = df.format(currentTime);
+                    mTimeText.setText(formattedCurrentTime);
+
+//                    Log.v("testkn", "current " + df.format(currentTime));
+//                    Log.v("testkn", "due " + df.format(dueTime));
+//                    Log.v("testkn", String.valueOf(currentTime.compareTo(dueTime)));
+                    if (currentTime.compareTo(dueTime) > 0) {
+                        updateProgram(currentTime);
+                    }
+                }catch (Exception e) {}
+            }
+        });
+    }
+
+
+    class CountDownRunner implements Runnable{
+        public void run() {
+            while(!Thread.currentThread().isInterrupted()){
+                try {
+                    doWork();
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }catch(Exception e){
+                }
+            }
+        }
     }
 }

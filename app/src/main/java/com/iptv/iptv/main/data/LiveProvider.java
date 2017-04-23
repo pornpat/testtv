@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 
 import com.iptv.iptv.main.model.LiveItem;
+import com.iptv.iptv.main.model.LiveProgramItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,6 +29,11 @@ public class LiveProvider {
     private static final String TAG_NAME = "name";
     private static final String TAG_LOGOURL = "logo_url";
     private static final String TAG_URL = "url";
+    private static final String TAG_PROGRAM = "programs";
+    private static final String TAG_START_TIME = "start_time";
+    private static final String TAG_END_TIME = "end_time";
+    private static final String TAG_HOUR = "hour";
+    private static final String TAG_MINUTE = "minute";
     // for history
     private static final String TAG_MEDIA = "media";
     private static final String TAG_MEDIA_TYPE = "media_type";
@@ -87,8 +93,8 @@ public class LiveProvider {
                     logoUrl = liveObj.getString(TAG_LOGOURL);
                     streamUrl = liveObj.getString(TAG_URL);
 
-                    sLiveListById.put(id, buildLiveInfo(id, name, logoUrl, streamUrl));
-                    liveList.add(buildLiveInfo(id, name, logoUrl, streamUrl));
+                    sLiveListById.put(id, buildLiveInfo(id, name, logoUrl, streamUrl, null));
+                    liveList.add(buildLiveInfo(id, name, logoUrl, streamUrl, null));
                 }
             }
 
@@ -112,8 +118,24 @@ public class LiveProvider {
                 logoUrl = liveObj.getString(TAG_LOGOURL);
                 streamUrl = liveObj.getString(TAG_URL);
 
-                sLiveListById.put(id, buildLiveInfo(id, name, logoUrl, streamUrl));
-                liveList.add(buildLiveInfo(id, name, logoUrl, streamUrl));
+                List<LiveProgramItem> programs = new ArrayList<>();
+
+                JSONArray programArray = liveObj.getJSONArray(TAG_PROGRAM);
+                for (int j = 0; j < programArray.length(); j++) {
+                    JSONObject program = programArray.getJSONObject(j);
+                    String p_name = program.getString(TAG_NAME);
+                    JSONObject start = program.getJSONObject(TAG_START_TIME);
+                    int startHour = Integer.parseInt(start.getString(TAG_HOUR));
+                    int startMin = Integer.parseInt(start.getString(TAG_MINUTE));
+                    JSONObject end = program.getJSONObject(TAG_END_TIME);
+                    int endHour = Integer.parseInt(end.getString(TAG_HOUR));
+                    int endMin = Integer.parseInt(end.getString(TAG_MINUTE));
+
+                    programs.add(new LiveProgramItem(p_name, startHour, startMin, endHour, endMin));
+                }
+
+                sLiveListById.put(id, buildLiveInfo(id, name, logoUrl, streamUrl, programs));
+                liveList.add(buildLiveInfo(id, name, logoUrl, streamUrl, programs));
             }
 
             sLiveList.put("", liveList);
@@ -122,12 +144,13 @@ public class LiveProvider {
         }
     }
 
-    private static LiveItem buildLiveInfo(int id, String name, String logoUrl, String url) {
+    private static LiveItem buildLiveInfo(int id, String name, String logoUrl, String url, List<LiveProgramItem> programs) {
         LiveItem live = new LiveItem();
         live.setId(id);
         live.setName(name);
         live.setLogoUrl(logoUrl);
         live.setUrl(url);
+        live.setPrograms(programs);
 
         return live;
     }

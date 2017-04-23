@@ -2,6 +2,8 @@ package com.iptv.iptv.main.model;
 
 import org.parceler.Parcel;
 
+import java.util.List;
+
 /**
  * Created by Karn on 5/3/2560.
  */
@@ -13,6 +15,7 @@ public class LiveItem {
     private String name;
     private String logoUrl;
     private String url;
+    private List<LiveProgramItem> programs;
 
     public LiveItem() {}
 
@@ -46,5 +49,13 @@ public class LiveItem {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public List<LiveProgramItem> getPrograms() {
+        return programs;
+    }
+
+    public void setPrograms(List<LiveProgramItem> programs) {
+        this.programs = programs;
     }
 }

@@ -187,7 +187,6 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
 
     private void initChannelList() {
         mChannelList.setAdapter(new LiveChannelAdapter(mLiveList, currentChannel, mListener));
-//        mProgramList.setAdapter(new LiveProgramAdapter(mLiveList.get(currentChannel).getPrograms()));
     }
 
     private void addRecentWatch(int id) {
@@ -303,11 +302,6 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
                 }
             }
         }
-//        else {
-//            if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
-//                hideChannelList();
-//            }
-//        }
         return super.onKeyDown(keyCode, event);
     }
 

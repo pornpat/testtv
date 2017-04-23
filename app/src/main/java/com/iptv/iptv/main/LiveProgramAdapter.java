@@ -10,6 +10,9 @@ import android.widget.TextView;
 import com.iptv.iptv.R;
 import com.iptv.iptv.main.model.LiveProgramItem;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,10 +21,34 @@ import java.util.List;
 
 public class LiveProgramAdapter extends RecyclerView.Adapter<LiveProgramAdapter.ViewHolder>{
 
-    private List<LiveProgramItem> mValues;
+    private List<LiveProgramItem> mValues = new ArrayList<>();
 
     public LiveProgramAdapter(List<LiveProgramItem> items) {
-        mValues = items;
+        Date currentTime = Calendar.getInstance().getTime();
+        currentTime.setSeconds(1);
+
+        Date startTime = Calendar.getInstance().getTime();
+        Date endTime = Calendar.getInstance().getTime();
+
+        boolean isFound = false;
+        for (int i = 0; i < items.size(); i++) {
+            startTime.setHours(items.get(i).getStartHour());
+            startTime.setMinutes(items.get(i).getStartMin());
+            startTime.setSeconds(0);
+            endTime.setHours(items.get(i).getEndHour());
+            endTime.setMinutes(items.get(i).getEndMin());
+            endTime.setSeconds(0);
+
+            if (currentTime.compareTo(startTime) > 0 && currentTime.compareTo(endTime) < 0) {
+                isFound = true;
+            }
+            if (isFound) {
+                mValues.add(items.get(i));
+            }
+        }
+        if (!isFound) {
+            mValues.add(items.get(items.size() - 1));
+        }
     }
 
     @Override
@@ -32,7 +59,11 @@ public class LiveProgramAdapter extends RecyclerView.Adapter<LiveProgramAdapter.
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mName.setText(mValues.get(position).getProgramName());
+        if (position == 0) {
+            holder.mName.setText("ขณะนี้:" + mValues.get(position).getProgramName());
+        } else {
+            holder.mName.setText(mValues.get(position).getProgramName());
+        }
         holder.mName.setSelected(true);
         holder.mPeriod.setText(String.format("%02d", mValues.get(position).getStartHour()) + ":" +
                 String.format("%02d", mValues.get(position).getStartMin()) + " - " +

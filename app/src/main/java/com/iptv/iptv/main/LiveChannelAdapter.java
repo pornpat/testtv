@@ -21,11 +21,13 @@ import java.util.List;
 public class LiveChannelAdapter extends RecyclerView.Adapter<LiveChannelAdapter.ViewHolder> {
 
     private List<LiveItem> mValues;
+    private OnChannelSelectedListener mListener;
     private int currentChannel;
 
-    public LiveChannelAdapter(List<LiveItem> items, int currentChannel) {
+    public LiveChannelAdapter(List<LiveItem> items, int currentChannel, OnChannelSelectedListener listener) {
         mValues = items;
         this.currentChannel = currentChannel;
+        mListener = listener;
     }
 
     @Override
@@ -35,7 +37,7 @@ public class LiveChannelAdapter extends RecyclerView.Adapter<LiveChannelAdapter.
     }
 
     @Override
-    public void onBindViewHolder(final LiveChannelAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final LiveChannelAdapter.ViewHolder holder, final int position) {
         holder.mItem = mValues.get(position);
         holder.mChannelName.setText(mValues.get(position).getName());
         Glide.with(holder.mLogo.getContext()).load(mValues.get(position).getLogoUrl()).override(150, 150).into(holder.mLogo);
@@ -47,6 +49,15 @@ public class LiveChannelAdapter extends RecyclerView.Adapter<LiveChannelAdapter.
                     holder.mView.setBackgroundColor(ContextCompat.getColor(holder.mView.getContext(), R.color.detail_background));
                 } else {
                     holder.mView.setBackgroundColor(ContextCompat.getColor(holder.mView.getContext(), android.R.color.transparent));
+                }
+            }
+        });
+
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != mListener) {
+                    mListener.onChannelSelected(position);
                 }
             }
         });

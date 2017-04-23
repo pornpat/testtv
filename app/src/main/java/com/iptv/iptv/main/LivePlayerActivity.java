@@ -41,7 +41,7 @@ import java.util.TimerTask;
 
 import cz.msebera.android.httpclient.Header;
 
-public class LivePlayerActivity extends LeanbackActivity implements LoaderManager.LoaderCallbacks<HashMap<String, List<LiveItem>>> {
+public class LivePlayerActivity extends LeanbackActivity implements LoaderManager.LoaderCallbacks<HashMap<String, List<LiveItem>>>, OnChannelSelectedListener {
 
     private VideoView mVideoView;
     private View mDetailView;
@@ -58,6 +58,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
     private final Handler mHandler = new Handler();
     private Timer mBackgroundTimer;
     private Thread mTimeThread;
+    private OnChannelSelectedListener mListener;
 
     private String mLiveUrl;
 
@@ -95,6 +96,8 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
 
         mChannelList = (RecyclerView) findViewById(R.id.list_channel);
         mChannelList.setLayoutManager(new LinearLayoutManager(this));
+
+        mListener = this;
 
         // MOCK DATA
 //        mProgramList.add(new LiveProgramItem("test6", 0, 0, 2, 0));
@@ -180,7 +183,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
     }
 
     private void initChannelList() {
-        mChannelList.setAdapter(new LiveChannelAdapter(mLiveList, currentChannel));
+        mChannelList.setAdapter(new LiveChannelAdapter(mLiveList, currentChannel, mListener));
     }
 
     private void addRecentWatch(int id) {
@@ -219,6 +222,15 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
                 }
             });
         }
+    }
+
+    @Override
+    public void onChannelSelected(int position) {
+        hideChannelList();
+        mLoadingView.setVisibility(View.VISIBLE);
+
+        currentChannel = position;
+        startLive(currentChannel);
     }
 
     private void showChannelList() {

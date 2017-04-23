@@ -1,5 +1,6 @@
 package com.iptv.iptv.main;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +21,11 @@ import java.util.List;
 public class LiveChannelAdapter extends RecyclerView.Adapter<LiveChannelAdapter.ViewHolder> {
 
     private List<LiveItem> mValues;
+    private int currentChannel;
 
-    public LiveChannelAdapter(List<LiveItem> items) {
+    public LiveChannelAdapter(List<LiveItem> items, int currentChannel) {
         mValues = items;
+        this.currentChannel = currentChannel;
     }
 
     @Override
@@ -32,10 +35,25 @@ public class LiveChannelAdapter extends RecyclerView.Adapter<LiveChannelAdapter.
     }
 
     @Override
-    public void onBindViewHolder(LiveChannelAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final LiveChannelAdapter.ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mChannelName.setText(mValues.get(position).getName());
         Glide.with(holder.mLogo.getContext()).load(mValues.get(position).getLogoUrl()).override(150, 150).into(holder.mLogo);
+
+        holder.mView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean isFocused) {
+                if (isFocused) {
+                    holder.mView.setBackgroundColor(ContextCompat.getColor(holder.mView.getContext(), R.color.detail_background));
+                } else {
+                    holder.mView.setBackgroundColor(ContextCompat.getColor(holder.mView.getContext(), android.R.color.transparent));
+                }
+            }
+        });
+
+        if (position == currentChannel) {
+            holder.mView.requestFocus();
+        }
     }
 
     @Override

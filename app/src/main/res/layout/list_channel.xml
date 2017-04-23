@@ -3,17 +3,16 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin_padding_small"
-    android:layout_marginLeft="@dimen/margin_padding_small"
-    android:layout_marginRight="@dimen/margin_padding_small"
-    android:layout_marginBottom="@dimen/margin_padding_small"
-    android:gravity="center_horizontal|center_vertical">
+    android:gravity="center_horizontal|center_vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <ImageView
         android:id="@+id/logo"
         android:layout_width="0dp"
         android:layout_height="30dp"
         android:layout_weight="1"
+        android:layout_marginLeft="@dimen/margin_padding_small"
         android:adjustViewBounds="true"
         android:src="@drawable/test_icon_ch3"/>
 
@@ -22,7 +21,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="3"
+        android:layout_marginTop="@dimen/margin_padding_small"
+        android:layout_marginBottom="@dimen/margin_padding_small"
         android:layout_marginLeft="@dimen/margin_padding_xsmall"
+        android:layout_marginRight="@dimen/margin_padding_small"
         android:textSize="38sp"
         android:text="CH3 HD"
         android:textColor="@color/white" />

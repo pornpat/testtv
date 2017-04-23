@@ -57,7 +57,8 @@
                 android:layout_marginBottom="@dimen/margin_padding_normal"
                 android:layout_gravity="center_horizontal"
                 android:text="ช่องทั้งหมด"
-                android:textSize="26sp"/>
+                android:textSize="30sp"
+                android:textColor="@color/white"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/list_channel"

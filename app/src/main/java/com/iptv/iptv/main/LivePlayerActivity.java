@@ -45,6 +45,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
 
     private VideoView mVideoView;
     private View mDetailView;
+    private View mChannelView;
     private View mLoadingView;
     private TextView mNameText;
     private ImageView mLogo;
@@ -68,6 +69,8 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
 
     private boolean isMidnightContinue = false;
 
+    private boolean isChannelShowing = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +84,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
         }
 
         mDetailView = findViewById(R.id.layout_detail);
+        mChannelView = findViewById(R.id.layout_channel);
         mLoadingView = findViewById(R.id.loading);
         mVideoView = (VideoView) findViewById(R.id.video);
         mNameText = (TextView) findViewById(R.id.txt_name);
@@ -125,6 +129,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
     }
 
     private void startLive(int position) {
+        initChannelList();
         updateProgram(Calendar.getInstance().getTime());
         if (Utils.isInternetConnectionAvailable(LivePlayerActivity.this)) {
             if (mLiveList.size() > 0) {
@@ -162,7 +167,6 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
                 }
             }
 
-            initChannelList();
             startLive(currentChannel);
         } else {
             Toast.makeText(this, "No live data available..", Toast.LENGTH_LONG).show();
@@ -176,7 +180,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
     }
 
     private void initChannelList() {
-        mChannelList.setAdapter(new LiveChannelAdapter(mLiveList));
+        mChannelList.setAdapter(new LiveChannelAdapter(mLiveList, currentChannel));
     }
 
     private void addRecentWatch(int id) {
@@ -217,7 +221,22 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
         }
     }
 
-    private void hideDetail() {mDetailView.animate()
+    private void showChannelList() {
+        isChannelShowing = true;
+        if (mDetailView.getVisibility() == View.VISIBLE) {
+            mDetailView.setVisibility(View.GONE);
+        }
+        mChannelView.setVisibility(View.VISIBLE);
+        mChannelList.requestFocus();
+    }
+
+    private void hideChannelList() {
+        isChannelShowing = false;
+        mChannelView.setVisibility(View.GONE);
+    }
+
+    private void hideDetail() {
+        mDetailView.animate()
             .alpha(0f)
             .setDuration(300)
             .setListener(new AnimatorListenerAdapter() {
@@ -240,25 +259,35 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER || keyCode == KeyEvent.KEYCODE_DPAD_LEFT || keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
-            showDetail();
-        }
-        if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
-            if ((currentChannel + 1) < mLiveList.size()) {
-                mLoadingView.setVisibility(View.VISIBLE);
+        if (!isChannelShowing) {
+            if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+                showChannelList();
+            }
+            if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER || keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+                showDetail();
+            }
+            if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
+                if ((currentChannel + 1) < mLiveList.size()) {
+                    mLoadingView.setVisibility(View.VISIBLE);
 
-                currentChannel++;
-                startLive(currentChannel);
+                    currentChannel++;
+                    startLive(currentChannel);
+                }
+            }
+            if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
+                if ((currentChannel - 1) >= 0) {
+                    mLoadingView.setVisibility(View.VISIBLE);
+
+                    currentChannel--;
+                    startLive(currentChannel);
+                }
             }
         }
-        if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-            if ((currentChannel - 1) >= 0) {
-                mLoadingView.setVisibility(View.VISIBLE);
-
-                currentChannel--;
-                startLive(currentChannel);
-            }
-        }
+//        else {
+//            if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+//                hideChannelList();
+//            }
+//        }
         return super.onKeyDown(keyCode, event);
     }
 
@@ -370,6 +399,15 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
                 }catch(Exception e){
                 }
             }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isChannelShowing) {
+            hideChannelList();
+        } else {
+            super.onBackPressed();
         }
     }
 }

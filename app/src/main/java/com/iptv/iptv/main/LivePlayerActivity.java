@@ -29,6 +29,10 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -54,6 +58,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
     private TextView mPeriodText;
     private RecyclerView mChannelList;
     private RecyclerView mProgramList;
+    private TextView mFavText;
 
     private static final int BACKGROUND_UPDATE_DELAY = 3000;
     private final Handler mHandler = new Handler();
@@ -64,10 +69,12 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
     private String mLiveUrl;
 
     private List<LiveItem> mLiveList = new ArrayList<>();
+    private List<Integer> mFavList = new ArrayList<>();
 //    private List<LiveProgramItem> mProgramList = new ArrayList<>();
 
     private Date dueTime;
     private int currentChannel = -1;
+    private int currentFocusChannel = -1;
 
     private boolean isMidnightContinue = false;
 
@@ -94,6 +101,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
         mTimeText = (TextView) findViewById(R.id.txt_time);
         mProgramText = (TextView) findViewById(R.id.txt_program);
         mPeriodText = (TextView) findViewById(R.id.txt_period);
+        mFavText = (TextView) findViewById(R.id.txt_fav);
 
         mChannelList = (RecyclerView) findViewById(R.id.list_channel);
         mChannelList.setLayoutManager(new LinearLayoutManager(this));
@@ -101,6 +109,37 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
         mProgramList.setLayoutManager(new LinearLayoutManager(this));
 
         mListener = this;
+
+        mFavText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!mFavList.contains(mLiveList.get(currentFocusChannel).getId())) {
+                    AsyncHttpClient client = new AsyncHttpClient();
+                    client.post(UrlUtil.appendUri(UrlUtil.addMediaId(UrlUtil.FAVORITE_URL, mLiveList.get(currentFocusChannel).getId()), UrlUtil.addToken()), new TextHttpResponseHandler() {
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {}
+
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, String responseString) {}
+                    });
+                    mFavList.add(mLiveList.get(currentFocusChannel).getId());
+                    mFavText.setText("ลบรายการโปรด");
+                    Log.v("testkn", "size" + mFavList.size());
+                } else {
+                    AsyncHttpClient client = new AsyncHttpClient();
+                    client.delete(UrlUtil.appendUri(UrlUtil.addMediaId(UrlUtil.FAVORITE_URL, mLiveList.get(currentFocusChannel).getId()), UrlUtil.addToken()), new TextHttpResponseHandler() {
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {}
+
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, String responseString) {}
+                    });
+                    mFavList.remove(new Integer(mLiveList.get(currentFocusChannel).getId()));
+                    mFavText.setText("เพิ่มรายการโปรด");
+                    Log.v("testkn", "size" + mFavList.size());
+                }
+            }
+        });
 
         // MOCK DATA
 //        mProgramList.add(new LiveProgramItem("test6", 0, 0, 2, 0));
@@ -172,8 +211,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
                     mLiveList.add(list.get(j));
                 }
             }
-
-            startLive(currentChannel);
+            initFavorite();
         } else {
             Toast.makeText(this, "No live data available..", Toast.LENGTH_LONG).show();
             finish();
@@ -187,6 +225,36 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
 
     private void initChannelList() {
         mChannelList.setAdapter(new LiveChannelAdapter(mLiveList, currentChannel, mListener));
+    }
+
+    private void initFavorite() {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(UrlUtil.appendUri(UrlUtil.FAVORITE_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                try {
+                    JSONArray jsonArray = new JSONArray(responseString);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject movieObj = jsonArray.getJSONObject(i);
+
+                        JSONObject media = movieObj.getJSONObject("media");
+                        JSONObject mediaType = media.getJSONObject("media_type");
+                        String type = mediaType.getString("type_name");
+                        if (type.equals("live")) {
+                            mFavList.add(media.getInt("id"));
+                        }
+                    }
+                    startLive(currentChannel);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
     }
 
     private void addRecentWatch(int id) {
@@ -236,6 +304,12 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
             currentChannel = position;
             startLive(currentChannel);
         } else {
+            if (mFavList.contains(mLiveList.get(position).getId())) {
+                mFavText.setText("ลบรายการโปรด");
+            } else {
+                mFavText.setText("เพิ่มรายการโปรด");
+            }
+            currentFocusChannel = position;
             mProgramList.setAdapter(new LiveProgramAdapter(mLiveList.get(position).getPrograms()));
         }
     }

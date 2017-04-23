@@ -34,6 +34,49 @@
             android:layout_gravity="center_horizontal"/>
 
     </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/layout_channel"
+        android:layout_width="640dp"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_padding_normal"
+        android:orientation="horizontal"
+        android:background="@color/black_60"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_normal"
+                android:layout_marginBottom="@dimen/margin_padding_normal"
+                android:layout_gravity="center_horizontal"
+                android:text="ช่องทั้งหมด"
+                android:textSize="26sp"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/list_channel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="3dp"
+            android:layout_height="match_parent"
+            android:background="@color/black"/>
+        
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layout_detail"

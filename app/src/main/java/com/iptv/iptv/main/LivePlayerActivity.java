@@ -8,6 +8,8 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -49,6 +51,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
     private TextView mTimeText;
     private TextView mProgramText;
     private TextView mPeriodText;
+    private RecyclerView mChannelList;
 
     private static final int BACKGROUND_UPDATE_DELAY = 3000;
     private final Handler mHandler = new Handler();
@@ -85,6 +88,9 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
         mTimeText = (TextView) findViewById(R.id.txt_time);
         mProgramText = (TextView) findViewById(R.id.txt_program);
         mPeriodText = (TextView) findViewById(R.id.txt_period);
+
+        mChannelList = (RecyclerView) findViewById(R.id.list_channel);
+        mChannelList.setLayoutManager(new LinearLayoutManager(this));
 
         // MOCK DATA
 //        mProgramList.add(new LiveProgramItem("test6", 0, 0, 2, 0));
@@ -156,6 +162,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
                 }
             }
 
+            initChannelList();
             startLive(currentChannel);
         } else {
             Toast.makeText(this, "No live data available..", Toast.LENGTH_LONG).show();
@@ -166,6 +173,10 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
     @Override
     public void onLoaderReset(Loader<HashMap<String, List<LiveItem>>> loader) {
         mLiveList.clear();
+    }
+
+    private void initChannelList() {
+        mChannelList.setAdapter(new LiveChannelAdapter(mLiveList));
     }
 
     private void addRecentWatch(int id) {

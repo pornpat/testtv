@@ -187,7 +187,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
 
     private void initChannelList() {
         mChannelList.setAdapter(new LiveChannelAdapter(mLiveList, currentChannel, mListener));
-        mProgramList.setAdapter(new LiveProgramAdapter(mLiveList.get(currentChannel).getPrograms()));
+//        mProgramList.setAdapter(new LiveProgramAdapter(mLiveList.get(currentChannel).getPrograms()));
     }
 
     private void addRecentWatch(int id) {
@@ -229,12 +229,16 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
     }
 
     @Override
-    public void onChannelSelected(int position) {
-        hideChannelList();
-        mLoadingView.setVisibility(View.VISIBLE);
+    public void onChannelSelected(int position, boolean isClicked) {
+        if (isClicked) {
+            hideChannelList();
+            mLoadingView.setVisibility(View.VISIBLE);
 
-        currentChannel = position;
-        startLive(currentChannel);
+            currentChannel = position;
+            startLive(currentChannel);
+        } else {
+            mProgramList.setAdapter(new LiveProgramAdapter(mLiveList.get(position).getPrograms()));
+        }
     }
 
     private void showChannelList() {

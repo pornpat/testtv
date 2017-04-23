@@ -5,5 +5,5 @@ package com.iptv.iptv.main;
  */
 
 public interface OnChannelSelectedListener {
-    void onChannelSelected(int position);
+    void onChannelSelected(int position, boolean isClicked);
 }

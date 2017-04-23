@@ -58,6 +58,21 @@
 
         </FrameLayout>
 
+        <FrameLayout
+            android:id="@+id/sport_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:visibility="gone">
+
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:name="com.iptv.iptv.main.SportGridFragment"
+                android:layout_marginTop="@dimen/activity_margin_reverse" />
+
+        </FrameLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -122,6 +137,20 @@
                 android:background="@drawable/bg_menu_button"
                 android:padding="12dp"
                 android:text="ช่องรายการ"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/bg_movie_text"
+                android:focusable="true"
+                android:focusableInTouchMode="true"/>
+
+            <TextView
+                android:id="@+id/sport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_small"
+                android:background="@drawable/bg_menu_button"
+                android:padding="12dp"
+                android:text="กีฬาย้อนหลัง"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/bg_movie_text"

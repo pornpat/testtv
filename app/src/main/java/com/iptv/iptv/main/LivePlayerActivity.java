@@ -53,6 +53,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
     private TextView mProgramText;
     private TextView mPeriodText;
     private RecyclerView mChannelList;
+    private RecyclerView mProgramList;
 
     private static final int BACKGROUND_UPDATE_DELAY = 3000;
     private final Handler mHandler = new Handler();
@@ -96,6 +97,8 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
 
         mChannelList = (RecyclerView) findViewById(R.id.list_channel);
         mChannelList.setLayoutManager(new LinearLayoutManager(this));
+        mProgramList = (RecyclerView) findViewById(R.id.list_program);
+        mProgramList.setLayoutManager(new LinearLayoutManager(this));
 
         mListener = this;
 
@@ -184,6 +187,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
 
     private void initChannelList() {
         mChannelList.setAdapter(new LiveChannelAdapter(mLiveList, currentChannel, mListener));
+        mProgramList.setAdapter(new LiveProgramAdapter(mLiveList.get(currentChannel).getPrograms()));
     }
 
     private void addRecentWatch(int id) {

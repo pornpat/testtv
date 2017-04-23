@@ -71,11 +71,32 @@
             android:layout_width="3dp"
             android:layout_height="match_parent"
             android:background="@color/black"/>
-        
-        <FrameLayout
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_normal"
+                android:layout_marginBottom="@dimen/margin_padding_normal"
+                android:layout_gravity="center_horizontal"
+                android:text="เพิ่มรายการโปรด"
+                android:textSize="30sp"
+                android:textColor="@color/white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:background="@drawable/bg_fav_text"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/list_program"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

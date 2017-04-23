@@ -23,6 +23,7 @@ public class LiveChannelAdapter extends RecyclerView.Adapter<LiveChannelAdapter.
     private List<LiveItem> mValues;
     private OnChannelSelectedListener mListener;
     private int currentChannel;
+    private View previousFocusView;
 
     public LiveChannelAdapter(List<LiveItem> items, int currentChannel, OnChannelSelectedListener listener) {
         mValues = items;
@@ -47,9 +48,11 @@ public class LiveChannelAdapter extends RecyclerView.Adapter<LiveChannelAdapter.
             public void onFocusChange(View view, boolean isFocused) {
                 if (isFocused) {
                     holder.mView.setBackgroundColor(ContextCompat.getColor(holder.mView.getContext(), R.color.detail_background));
+                    if (previousFocusView != null) {
+                        previousFocusView.setBackgroundColor(ContextCompat.getColor(holder.mView.getContext(), android.R.color.transparent));
+                    }
+                    previousFocusView = holder.mView;
                     mListener.onChannelSelected(position, false);
-                } else {
-                    holder.mView.setBackgroundColor(ContextCompat.getColor(holder.mView.getContext(), android.R.color.transparent));
                 }
             }
         });

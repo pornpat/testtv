@@ -58,10 +58,12 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
     private String mLiveUrl;
 
     private List<LiveItem> mLiveList = new ArrayList<>();
-    private List<LiveProgramItem> mProgramList = new ArrayList<>();
+//    private List<LiveProgramItem> mProgramList = new ArrayList<>();
 
     private Date dueTime;
     private int currentChannel = -1;
+
+    private boolean isMidnightContinue = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,17 +87,14 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
         mPeriodText = (TextView) findViewById(R.id.txt_period);
 
         // MOCK DATA
-        mProgramList.add(new LiveProgramItem("test5", 5, 0, 10, 0));
-        mProgramList.add(new LiveProgramItem("test6", 10, 0, 12, 0));
-        mProgramList.add(new LiveProgramItem("test7", 12, 0, 14, 0));
-        mProgramList.add(new LiveProgramItem("test8", 14, 0, 17, 0));
-        mProgramList.add(new LiveProgramItem("test9", 18, 0, 19, 0));
-        mProgramList.add(new LiveProgramItem("test1", 19, 0, 20, 0));
-        mProgramList.add(new LiveProgramItem("test2", 20, 0, 20, 26));
-        mProgramList.add(new LiveProgramItem("test3", 20, 26, 21, 38));
-        mProgramList.add(new LiveProgramItem("test4", 21, 38, 5, 0));
-
-//        updateProgram(Calendar.getInstance().getTime());
+//        mProgramList.add(new LiveProgramItem("test6", 0, 0, 2, 0));
+//        mProgramList.add(new LiveProgramItem("test1", 2, 0, 3, 0));
+//        mProgramList.add(new LiveProgramItem("test2", 3, 0, 6, 0));
+//        mProgramList.add(new LiveProgramItem("test3", 6, 0, 9, 0));
+//        mProgramList.add(new LiveProgramItem("test4", 9, 0, 0, 0));
+//        mProgramList.add(new LiveProgramItem("test6", 12, 47, 2, 0));
+//        mProgramList.add(new LiveProgramItem("test7", 18, 0, 21, 0));
+//        mProgramList.add(new LiveProgramItem("test8", 21, 0, 0, 0));
 
         Runnable runnable = new CountDownRunner();
         mTimeThread = new Thread(runnable);
@@ -295,18 +294,28 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
                             String.format("%02d", programs.get(i).getStartMin()) + " - " +
                             String.format("%02d", programs.get(i).getEndHour()) + ":" +
                             String.format("%02d", programs.get(i).getEndMin()));
+                    isMidnightContinue = false;
                     break;
                 }
             }
             if (!isFound) {
                 // or find the biggest start hour
                 LiveProgramItem program = programs.get(programs.size() - 1);
-                endTime.setHours(24);
-                endTime.setMinutes(0);
-                endTime.setSeconds(0);
+                if (!isMidnightContinue) {
+                    endTime.setHours(24);
+                    endTime.setMinutes(0);
+                    endTime.setSeconds(0);
 
+                    isMidnightContinue = true;
+                } else {
+                    endTime.setHours(program.getEndHour());
+                    endTime.setMinutes(program.getEndMin());
+                    endTime.setSeconds(0);
+
+                    isMidnightContinue = false;
+                }
                 dueTime = endTime;
-                Log.v("testkn", "set" + df.format(dueTime));
+                Log.v("testkn", "not found set" + df.format(dueTime));
                 mProgramText.setText(program.getProgramName());
                 mPeriodText.setText(String.format("%02d", program.getStartHour()) + ":" +
                         String.format("%02d", program.getStartMin()) + " - " +

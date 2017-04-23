@@ -70,6 +70,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:paddingLeft="@dimen/margin_padding_mid"
+            android:paddingRight="@dimen/margin_padding_mid"
             android:paddingTop="@dimen/activity_margin"
             android:orientation="vertical"
             android:background="@color/black_60">
@@ -77,6 +78,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
                 android:layout_marginBottom="@dimen/margin_padding_small"
                 android:text="รายการโปรด"
                 android:textSize="26sp"
@@ -85,9 +87,11 @@
 
             <TextView
                 android:id="@+id/movie"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_padding_normal"
+                android:background="@drawable/bg_menu_button"
+                android:padding="12dp"
                 android:text="ภาพยนตร์"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -98,9 +102,11 @@
 
             <TextView
                 android:id="@+id/series"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_padding_normal"
+                android:layout_marginTop="@dimen/margin_padding_small"
+                android:background="@drawable/bg_menu_button"
+                android:padding="12dp"
                 android:text="ซีรี่ย์"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -110,9 +116,11 @@
 
             <TextView
                 android:id="@+id/live"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_padding_normal"
+                android:layout_marginTop="@dimen/margin_padding_small"
+                android:background="@drawable/bg_menu_button"
+                android:padding="12dp"
                 android:text="ช่องรายการ"
                 android:textSize="20sp"
                 android:textStyle="bold"

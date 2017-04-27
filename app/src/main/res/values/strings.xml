@@ -47,7 +47,7 @@
     </string>
 
     <string name="browse_title"><![CDATA[IPTV APP]]></string>
-    <string name="related_movies">Related Videos</string>
+    <string name="related_movies">แนะนำ</string>
     <string name="vertical_grid_title"><![CDATA[Vertical Video Grid]]></string>
     <string name="error">Error</string>
     <string name="ok">OK</string>

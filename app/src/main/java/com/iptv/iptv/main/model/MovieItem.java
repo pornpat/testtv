@@ -17,6 +17,7 @@ public class MovieItem {
     private String imageUrl;
     private String released;
     private List<TrackItem> tracks;
+    private String type;
 
     public MovieItem() {}
 
@@ -66,5 +67,13 @@ public class MovieItem {
 
     public void setTracks(List<TrackItem> tracks) {
         this.tracks = tracks;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

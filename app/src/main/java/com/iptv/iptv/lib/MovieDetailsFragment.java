@@ -44,8 +44,7 @@ import com.iptv.iptv.R;
 import com.iptv.iptv.main.MovieEpisodeActivity;
 import com.iptv.iptv.main.MoviePlayerActivity;
 import com.iptv.iptv.main.UrlUtil;
-import com.iptv.iptv.main.data.MovieProvider;
-import com.iptv.iptv.main.data.SportProvider;
+import com.iptv.iptv.main.data.MovieDataUtil;
 import com.iptv.iptv.main.model.MovieItem;
 import com.iptv.iptv.main.presenter.CardPresenter;
 import com.iptv.iptv.main.presenter.DetailsDescriptionPresenter;
@@ -57,9 +56,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -252,25 +249,40 @@ public class MovieDetailsFragment extends DetailsFragment {
 
     private void setupMovieListRow() {
         String subcategories[] = {getString(R.string.related_movies)};
-        HashMap<String, List<MovieItem>> movies = MovieProvider.getMovieList();
+        final ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter());
 
-        // Generating related video list.
-        ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter());
-        if (movies != null) {
-            for (Map.Entry<String, List<MovieItem>> entry : movies.entrySet()) {
-                List<MovieItem> list = entry.getValue();
-                for (int j = 0; j < list.size(); j++) {
-                    listRowAdapter.add(list.get(j));
+        if (mSelectedMovie.getType().equals("movie")) {
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.get(UrlUtil.appendUri(UrlUtil.getRecommendUrl(UrlUtil.MOVIE_URL, mSelectedMovie.getId()), UrlUtil.addToken()), new TextHttpResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+
                 }
-            }
-        } else {
-            HashMap<String, List<MovieItem>> sports = SportProvider.getMovieList();
-            for (Map.Entry<String, List<MovieItem>> entry : sports.entrySet()) {
-                List<MovieItem> list = entry.getValue();
-                for (int j = 0; j < list.size(); j++) {
-                    listRowAdapter.add(list.get(j));
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                    List<MovieItem> list = MovieDataUtil.getMovieListFromJson(responseString);
+                    for (int i = 0; i < list.size(); i++) {
+                        listRowAdapter.add(list.get(i));
+                    }
                 }
-            }
+            });
+        } else if (mSelectedMovie.getType().equals("sport")) {
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.get(UrlUtil.appendUri(UrlUtil.getRecommendUrl(UrlUtil.SPORT_URL, mSelectedMovie.getId()), UrlUtil.addToken()), new TextHttpResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                    List<MovieItem> list = MovieDataUtil.getMovieListFromJson(responseString);
+                    for (int i = 0; i < list.size(); i++) {
+                        listRowAdapter.add(list.get(i));
+                    }
+                }
+            });
         }
 
         HeaderItem header = new HeaderItem(0, subcategories[0]);

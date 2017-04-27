@@ -22,6 +22,7 @@ public class UrlUtil {
     public static final String SPORT_FILTER_URL = SPORT_URL + "/filters";
     public static final String HISTORY_URL = BASE_URL + "/users/histories";
     public static final String FAVORITE_URL = BASE_URL + "/users/favorites";
+    public static final String RECOMMEND_URL = "/related";
 
     public static String addToken() {
         return "token=" + PrefUtil.getStringProperty(R.string.pref_token);
@@ -50,4 +51,9 @@ public class UrlUtil {
     public static String addMediaId(String url, int id) {
         return url + "/" + id;
     }
+
+    public static String getRecommendUrl(String url, int id) {
+        return url + "/" + id + RECOMMEND_URL;
+    }
+
 }

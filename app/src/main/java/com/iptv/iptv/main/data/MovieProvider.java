@@ -86,13 +86,14 @@ public class MovieProvider {
             String description;
             String imageUrl;
             String released;
+            String type;
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject movieObj = jsonArray.getJSONObject(i);
 
                 JSONObject media = movieObj.getJSONObject(TAG_MEDIA);
                 JSONObject mediaType = media.getJSONObject(TAG_MEDIA_TYPE);
-                String type = mediaType.getString(TAG_TYPE_NAME);
+                type = mediaType.getString(TAG_TYPE_NAME);
 
                 if (type.equals(TAG_MOVIE)) {
                     JSONObject detailObj = media.getJSONObject(TAG_DETAIL);
@@ -137,8 +138,8 @@ public class MovieProvider {
                         tracks.add(buildTrackInfo(trackId, audio, subtitle, discs));
                     }
 
-                    sMovieListById.put(id, buildMovieInfo(id, name, description, imageUrl, released, tracks));
-                    movieList.add(buildMovieInfo(id, name, description, imageUrl, released, tracks));
+                    sMovieListById.put(id, buildMovieInfo(id, name, description, imageUrl, released, tracks, type));
+                    movieList.add(buildMovieInfo(id, name, description, imageUrl, released, tracks, type));
                 }
             }
 
@@ -153,9 +154,13 @@ public class MovieProvider {
             String description;
             String imageUrl;
             String released;
+            String type;
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject movieObj = jsonArray.getJSONObject(i);
+
+                JSONObject mediaType = movieObj.getJSONObject(TAG_MEDIA_TYPE);
+                type = mediaType.getString(TAG_TYPE_NAME);
 
                 JSONObject detailObj = movieObj.getJSONObject(TAG_DETAIL);
                 id = detailObj.getInt(TAG_MEDIA_ID);
@@ -199,8 +204,8 @@ public class MovieProvider {
                     tracks.add(buildTrackInfo(trackId, audio, subtitle, discs));
                 }
 
-                sMovieListById.put(id, buildMovieInfo(id, name, description, imageUrl, released, tracks));
-                movieList.add(buildMovieInfo(id, name, description, imageUrl, released, tracks));
+                sMovieListById.put(id, buildMovieInfo(id, name, description, imageUrl, released, tracks, type));
+                movieList.add(buildMovieInfo(id, name, description, imageUrl, released, tracks, type));
             }
 
             sMovieList.put("", movieList);
@@ -209,7 +214,7 @@ public class MovieProvider {
         }
     }
 
-    private static MovieItem buildMovieInfo(int id, String name, String description, String imageUrl, String released, List<TrackItem> tracks) {
+    private static MovieItem buildMovieInfo(int id, String name, String description, String imageUrl, String released, List<TrackItem> tracks, String type) {
         MovieItem movie = new MovieItem();
         movie.setId(id);
         movie.setName(name);
@@ -217,6 +222,7 @@ public class MovieProvider {
         movie.setImageUrl(imageUrl);
         movie.setReleased(released);
         movie.setTracks(tracks);
+        movie.setType(type);
 
         return movie;
     }

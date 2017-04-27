@@ -29,7 +29,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.iptv.iptv.R;
 import com.iptv.iptv.main.SeriesEpisodeActivity;
 import com.iptv.iptv.main.UrlUtil;
-import com.iptv.iptv.main.data.SeriesProvider;
+import com.iptv.iptv.main.data.SeriesDataUtil;
 import com.iptv.iptv.main.model.SeriesItem;
 import com.iptv.iptv.main.presenter.CardPresenter;
 import com.iptv.iptv.main.presenter.DetailsDescriptionPresenter;
@@ -41,9 +41,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -220,16 +218,23 @@ public class SeriesDetailsFragment extends DetailsFragment {
 
     private void setupMovieListRow() {
         String subcategories[] = {getString(R.string.related_movies)};
-        HashMap<String, List<SeriesItem>> series = SeriesProvider.getMovieList();
+        final ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter());
 
-        // Generating related video list.
-        ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter());
-        for (Map.Entry<String, List<SeriesItem>> entry : series.entrySet()) {
-            List<SeriesItem> list = entry.getValue();
-            for (int j = 0; j < list.size(); j++) {
-                listRowAdapter.add(list.get(j));
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(UrlUtil.appendUri(UrlUtil.getRecommendUrl(UrlUtil.SERIES_URL, mSelectedMovie.getId()), UrlUtil.addToken()), new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+
             }
-        }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                List<SeriesItem> list = SeriesDataUtil.getSeriesListFromJson(responseString);
+                for (int i = 0; i < list.size(); i++) {
+                    listRowAdapter.add(list.get(i));
+                }
+            }
+        });
 
         HeaderItem header = new HeaderItem(0, subcategories[0]);
         mAdapter.add(new ListRow(header, listRowAdapter));

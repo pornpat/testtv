@@ -10,8 +10,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.event.SelectMovieEvent;
 import com.iptv.iptv.main.model.MovieItem;
 import com.makeramen.roundedimageview.RoundedImageView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -36,7 +39,7 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mItem = mValues.get(position);
         Glide.with(mContext).load(mValues.get(position).getImageUrl()).override(200, 300).centerCrop().into(holder.mImage);
         holder.mTitle.setText(mValues.get(position).getName());
@@ -49,6 +52,13 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.View
                 } else {
                     holder.mImage.setBackgroundColor(ContextCompat.getColor(mContext, android.R.color.transparent));
                 }
+            }
+        });
+
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EventBus.getDefault().post(new SelectMovieEvent(position));
             }
         });
     }

@@ -3,6 +3,7 @@ package com.iptv.iptv.main;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,13 +15,16 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.iptv.iptv.R;
+import com.iptv.iptv.lib.MovieDetailsActivity;
 import com.iptv.iptv.main.data.MovieLoader;
 import com.iptv.iptv.main.data.MovieProvider;
 import com.iptv.iptv.main.event.LoadMovieEvent;
+import com.iptv.iptv.main.event.SelectMovieEvent;
 import com.iptv.iptv.main.model.MovieItem;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,6 +98,14 @@ public class MovieGridFragment2 extends Fragment implements LoaderManager.Loader
     @Subscribe
     public void onLoadMovieData(LoadMovieEvent event) {
         loadVideoData(event.url);
+    }
+
+    @Subscribe
+    public void onSelectMovie(SelectMovieEvent event) {
+        MovieItem movie = mMovieList.get(event.position);
+        Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
+        intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(movie));
+        getActivity().startActivity(intent);
     }
 
     @Override

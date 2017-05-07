@@ -15,11 +15,10 @@
 
         <fragment
             android:id="@+id/grid_fragment"
-            android:name="com.iptv.iptv.main.MovieGridFragment"
+            android:name="com.iptv.iptv.main.MovieGridFragment2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="4"
-            android:layout_marginTop="@dimen/activity_margin_reverse" />
+            android:layout_weight="4" />
 
     </LinearLayout>
 

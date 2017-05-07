@@ -154,6 +154,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
         Runnable runnable = new CountDownRunner();
         mTimeThread = new Thread(runnable);
         mTimeThread.start();
+        
 
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override

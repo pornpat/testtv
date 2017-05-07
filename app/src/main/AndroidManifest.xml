@@ -96,6 +96,11 @@
             android:parentActivityName=".main.HomeActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.Leanback.VerticalGrid"/>
+        <activity android:name="io.vov.vitamio.activity.InitActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
     </application>
 
 </manifest>

@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.LoaderManager;
 import android.content.Loader;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,7 +15,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.iptv.iptv.R;
@@ -44,6 +42,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import cz.msebera.android.httpclient.Header;
+import io.vov.vitamio.widget.VideoView;
 
 public class LivePlayerActivity extends LeanbackActivity implements LoaderManager.LoaderCallbacks<HashMap<String, List<LiveItem>>>, OnChannelSelectedListener {
 
@@ -83,6 +82,9 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!io.vov.vitamio.LibsChecker.checkVitamioLibs(this))
+            return;
+
         setContentView(R.layout.activity_live_player);
 
         if (Utils.isInternetConnectionAvailable(LivePlayerActivity.this)) {
@@ -151,13 +153,13 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
 //        mProgramList.add(new LiveProgramItem("test7", 18, 0, 21, 0));
 //        mProgramList.add(new LiveProgramItem("test8", 21, 0, 0, 0));
 
-        Runnable runnable = new CountDownRunner();
-        mTimeThread = new Thread(runnable);
-        mTimeThread.start();
+//        Runnable runnable = new CountDownRunner();
+//        mTimeThread = new Thread(runnable);
+//        mTimeThread.start();
 
-        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+        mVideoView.setOnPreparedListener(new io.vov.vitamio.MediaPlayer.OnPreparedListener() {
             @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
+            public void onPrepared(io.vov.vitamio.MediaPlayer mp) {
                 mLoadingView.setVisibility(View.GONE);
                 mVideoView.start();
 
@@ -385,7 +387,9 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
             mBackgroundTimer.cancel();
             mBackgroundTimer = null;
         }
-        mTimeThread.interrupt();
+        if (null != mTimeThread) {
+            mTimeThread.interrupt();
+        }
         super.onDestroy();
     }
 

@@ -1,16 +1,17 @@
 package com.iptv.iptv.main;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.iptv.iptv.R;
 import com.iptv.iptv.main.model.MovieItem;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.List;
 
@@ -35,10 +36,21 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         Glide.with(mContext).load(mValues.get(position).getImageUrl()).override(200, 300).centerCrop().into(holder.mImage);
         holder.mTitle.setText(mValues.get(position).getName());
+
+        holder.mView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean isFocused) {
+                if (isFocused) {
+                    holder.mImage.setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_movie_selected));
+                } else {
+                    holder.mImage.setBackgroundColor(ContextCompat.getColor(mContext, android.R.color.transparent));
+                }
+            }
+        });
     }
 
     @Override
@@ -48,14 +60,14 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final ImageView mImage;
+        public final RoundedImageView mImage;
         public final TextView mTitle;
         public MovieItem mItem;
 
         public ViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
-            mImage = (ImageView) itemView.findViewById(R.id.image);
+            mImage = (RoundedImageView) itemView.findViewById(R.id.image);
             mTitle = (TextView) itemView.findViewById(R.id.title);
         }
     }

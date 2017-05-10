@@ -18,7 +18,7 @@ import com.iptv.iptv.R;
 import com.iptv.iptv.main.data.LiveLoader;
 import com.iptv.iptv.main.data.LiveProvider;
 import com.iptv.iptv.main.event.LoadLiveEvent;
-import com.iptv.iptv.main.event.SelectMovieEvent;
+import com.iptv.iptv.main.event.SelectLiveEvent;
 import com.iptv.iptv.main.model.LiveItem;
 
 import org.greenrobot.eventbus.EventBus;
@@ -99,7 +99,7 @@ public class LiveGridFragment2 extends Fragment implements LoaderManager.LoaderC
     }
 
     @Subscribe
-    public void onSelectMovie(SelectMovieEvent event) {
+    public void onSelectMovie(SelectLiveEvent event) {
         LiveItem live = mMovieList.get(event.position);
         Intent intent = new Intent(getActivity(), LivePlayerActivity.class);
         intent.putExtra("id", live.getId());

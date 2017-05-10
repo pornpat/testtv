@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.iptv.iptv.R;
-import com.iptv.iptv.main.event.SelectSeriesEvent;
-import com.iptv.iptv.main.model.SeriesItem;
+import com.iptv.iptv.main.event.SelectSportEvent;
+import com.iptv.iptv.main.model.MovieItem;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -19,15 +19,15 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.List;
 
 /**
- * Created by Karn on 10/5/2560.
+ * Created by Karn on 7/5/2560.
  */
 
-public class SeriesGridAdapter extends RecyclerView.Adapter<SeriesGridAdapter.ViewHolder> {
+public class SportGridAdapter extends RecyclerView.Adapter<SportGridAdapter.ViewHolder> {
 
     private final Context mContext;
-    private final List<SeriesItem> mValues;
+    private final List<MovieItem> mValues;
 
-    public SeriesGridAdapter(Context context, List<SeriesItem> items) {
+    public SportGridAdapter(Context context, List<MovieItem> items) {
         mContext = context;
         mValues = items;
     }
@@ -58,7 +58,7 @@ public class SeriesGridAdapter extends RecyclerView.Adapter<SeriesGridAdapter.Vi
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(new SelectSeriesEvent(position));
+                EventBus.getDefault().post(new SelectSportEvent(position));
             }
         });
     }
@@ -72,7 +72,7 @@ public class SeriesGridAdapter extends RecyclerView.Adapter<SeriesGridAdapter.Vi
         public final View mView;
         public final RoundedImageView mImage;
         public final TextView mTitle;
-        public SeriesItem mItem;
+        public MovieItem mItem;
 
         public ViewHolder(View itemView) {
             super(itemView);

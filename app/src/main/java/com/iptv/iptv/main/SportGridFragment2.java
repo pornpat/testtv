@@ -19,7 +19,7 @@ import com.iptv.iptv.lib.MovieDetailsActivity;
 import com.iptv.iptv.main.data.SportLoader;
 import com.iptv.iptv.main.data.SportProvider;
 import com.iptv.iptv.main.event.LoadSportEvent;
-import com.iptv.iptv.main.event.SelectMovieEvent;
+import com.iptv.iptv.main.event.SelectSportEvent;
 import com.iptv.iptv.main.model.MovieItem;
 
 import org.greenrobot.eventbus.EventBus;
@@ -87,7 +87,7 @@ public class SportGridFragment2 extends Fragment implements LoaderManager.Loader
             Toast.makeText(getActivity(), "Failed to load videos.", Toast.LENGTH_LONG).show();
         }
 
-        mRecyclerView.setAdapter(new MovieGridAdapter(getActivity(), mMovieList));
+        mRecyclerView.setAdapter(new SportGridAdapter(getActivity(), mMovieList));
     }
 
     @Override
@@ -101,7 +101,7 @@ public class SportGridFragment2 extends Fragment implements LoaderManager.Loader
     }
 
     @Subscribe
-    public void onSelectMovie(SelectMovieEvent event) {
+    public void onSelectMovie(SelectSportEvent event) {
         MovieItem movie = mMovieList.get(event.position);
         Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
         intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(movie));

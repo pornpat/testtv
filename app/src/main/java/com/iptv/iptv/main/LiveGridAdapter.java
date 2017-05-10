@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.iptv.iptv.R;
-import com.iptv.iptv.main.event.SelectMovieEvent;
+import com.iptv.iptv.main.event.SelectLiveEvent;
 import com.iptv.iptv.main.model.LiveItem;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -54,7 +54,7 @@ public class LiveGridAdapter extends RecyclerView.Adapter<LiveGridAdapter.ViewHo
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(new SelectMovieEvent(position));
+                EventBus.getDefault().post(new SelectLiveEvent(position));
             }
         });
     }

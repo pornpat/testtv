@@ -19,7 +19,7 @@ import com.iptv.iptv.lib.SeriesDetailsActivity;
 import com.iptv.iptv.main.data.SeriesLoader;
 import com.iptv.iptv.main.data.SeriesProvider;
 import com.iptv.iptv.main.event.LoadSeriesEvent;
-import com.iptv.iptv.main.event.SelectMovieEvent;
+import com.iptv.iptv.main.event.SelectSeriesEvent;
 import com.iptv.iptv.main.model.SeriesItem;
 
 import org.greenrobot.eventbus.EventBus;
@@ -101,7 +101,7 @@ public class SeriesGridFragment2 extends Fragment implements LoaderManager.Loade
     }
 
     @Subscribe
-    public void onSelectMovie(SelectMovieEvent event) {
+    public void onSelectMovie(SelectSeriesEvent event) {
         SeriesItem movie = mMovieList.get(event.position);
         Intent intent = new Intent(getActivity(), SeriesDetailsActivity.class);
         intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(movie));

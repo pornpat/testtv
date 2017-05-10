@@ -15,12 +15,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.iptv.iptv.R;
-import com.iptv.iptv.lib.MovieDetailsActivity;
-import com.iptv.iptv.main.data.MovieLoader;
-import com.iptv.iptv.main.data.MovieProvider;
-import com.iptv.iptv.main.event.LoadMovieEvent;
+import com.iptv.iptv.lib.SeriesDetailsActivity;
+import com.iptv.iptv.main.data.SeriesLoader;
+import com.iptv.iptv.main.data.SeriesProvider;
+import com.iptv.iptv.main.event.LoadSeriesEvent;
 import com.iptv.iptv.main.event.SelectMovieEvent;
-import com.iptv.iptv.main.model.MovieItem;
+import com.iptv.iptv.main.model.SeriesItem;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -31,15 +31,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MovieGridFragment2 extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, List<MovieItem>>> {
+public class SeriesGridFragment2 extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, List<SeriesItem>>> {
 
     private RecyclerView mRecyclerView;
-    private List<MovieItem> mMovieList = new ArrayList<>();
+    private List<SeriesItem> mMovieList = new ArrayList<>();
 
     private static String mVideosUrl;
     private int loaderId = 0;
 
-    public MovieGridFragment2() {
+    public SeriesGridFragment2() {
 
     }
 
@@ -59,7 +59,7 @@ public class MovieGridFragment2 extends Fragment implements LoaderManager.Loader
     }
 
     private void loadVideoData(String url) {
-        MovieProvider.setContext(getActivity());
+        SeriesProvider.setContext(getActivity());
         mVideosUrl = url;
         if (getLoaderManager().getLoader(loaderId) != null) {
             getLoaderManager().destroyLoader(loaderId);
@@ -68,16 +68,16 @@ public class MovieGridFragment2 extends Fragment implements LoaderManager.Loader
     }
 
     @Override
-    public Loader<HashMap<String, List<MovieItem>>> onCreateLoader(int i, Bundle bundle) {
-        return new MovieLoader(getActivity(), mVideosUrl);
+    public Loader<HashMap<String, List<SeriesItem>>> onCreateLoader(int i, Bundle bundle) {
+        return new SeriesLoader(getActivity(), mVideosUrl);
     }
 
     @Override
-    public void onLoadFinished(Loader<HashMap<String, List<MovieItem>>> loader, HashMap<String, List<MovieItem>> data) {
+    public void onLoadFinished(Loader<HashMap<String, List<SeriesItem>>> loader, HashMap<String, List<SeriesItem>> data) {
         if (null != data && !data.isEmpty()) {
             mMovieList.clear();
-            for (Map.Entry<String, List<MovieItem>> entry : data.entrySet()) {
-                List<MovieItem> list = entry.getValue();
+            for (Map.Entry<String, List<SeriesItem>> entry : data.entrySet()) {
+                List<SeriesItem> list = entry.getValue();
 
                 for (int j = 0; j < list.size(); j++) {
                     mMovieList.add(list.get(j));
@@ -87,24 +87,24 @@ public class MovieGridFragment2 extends Fragment implements LoaderManager.Loader
             Toast.makeText(getActivity(), "Failed to load videos.", Toast.LENGTH_LONG).show();
         }
 
-        mRecyclerView.setAdapter(new MovieGridAdapter(getActivity(), mMovieList));
+        mRecyclerView.setAdapter(new SeriesGridAdapter(getActivity(), mMovieList));
     }
 
     @Override
-    public void onLoaderReset(Loader<HashMap<String, List<MovieItem>>> loader) {
+    public void onLoaderReset(Loader<HashMap<String, List<SeriesItem>>> loader) {
         mMovieList.clear();
     }
 
     @Subscribe
-    public void onLoadMovieData(LoadMovieEvent event) {
+    public void onLoadMovieData(LoadSeriesEvent event) {
         loadVideoData(event.url);
     }
 
     @Subscribe
     public void onSelectMovie(SelectMovieEvent event) {
-        MovieItem movie = mMovieList.get(event.position);
-        Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
-        intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(movie));
+        SeriesItem movie = mMovieList.get(event.position);
+        Intent intent = new Intent(getActivity(), SeriesDetailsActivity.class);
+        intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(movie));
         getActivity().startActivity(intent);
     }
 

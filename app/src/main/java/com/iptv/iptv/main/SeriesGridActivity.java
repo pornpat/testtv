@@ -63,6 +63,7 @@ public class SeriesGridActivity extends LeanbackActivity implements FilterFragme
                         FilterFragment.newInstance(UrlUtil.appendUri(UrlUtil.SERIES_FILTER_URL, UrlUtil.addToken()),
                                 mCurrentCategory, mCurrentCountry, mCurrentYear)).commit();
                 findViewById(R.id.layout_filter).setVisibility(View.VISIBLE);
+                findViewById(R.id.grid_fragment).setVisibility(View.GONE);
             }
         });
 
@@ -143,6 +144,7 @@ public class SeriesGridActivity extends LeanbackActivity implements FilterFragme
         setTextSelected(mSeriesText);
         getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.layout_filter)).commit();
         findViewById(R.id.layout_filter).setVisibility(View.GONE);
+        findViewById(R.id.grid_fragment).setVisibility(View.VISIBLE);
     }
 
     @Override

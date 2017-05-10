@@ -23,8 +23,7 @@
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:name="com.iptv.iptv.main.MovieGridFragment"
-                android:layout_marginTop="@dimen/activity_margin_reverse" />
+                android:name="com.iptv.iptv.main.MovieGridFragment2" />
 
         </FrameLayout>
 
@@ -38,8 +37,7 @@
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:name="com.iptv.iptv.main.SeriesGridFragment"
-                android:layout_marginTop="@dimen/activity_margin_reverse" />
+                android:name="com.iptv.iptv.main.SeriesGridFragment2" />
 
         </FrameLayout>
 
@@ -53,8 +51,7 @@
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:name="com.iptv.iptv.main.LiveGridFragment"
-                android:layout_marginTop="@dimen/activity_margin_reverse" />
+                android:name="com.iptv.iptv.main.LiveGridFragment2" />
 
         </FrameLayout>
 
@@ -68,8 +65,7 @@
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:name="com.iptv.iptv.main.SportGridFragment"
-                android:layout_marginTop="@dimen/activity_margin_reverse" />
+                android:name="com.iptv.iptv.main.SportGridFragment2" />
 
         </FrameLayout>
 

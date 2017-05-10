@@ -90,16 +90,16 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
         mYearAdapter = new FilterYearAdapter(mYearList, currentYear, mYearListener);
 
         RecyclerView categoryList = (RecyclerView) view.findViewById(R.id.list_category);
-        categoryList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        categoryList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         categoryList.setAdapter(mCategoryAdapter);
         categoryList.requestFocus();
 
         RecyclerView countryList = (RecyclerView) view.findViewById(R.id.list_country);
-        countryList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        countryList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         countryList.setAdapter(mCountryAdapter);
 
         RecyclerView yearList = (RecyclerView) view.findViewById(R.id.list_year);
-        yearList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        yearList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         yearList.setAdapter(mYearAdapter);
 
         view.findViewById(R.id.btn_apply).setOnClickListener(new View.OnClickListener() {

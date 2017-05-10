@@ -15,11 +15,30 @@
 
         <fragment
             android:id="@+id/grid_fragment"
-            android:name="com.iptv.iptv.main.SportGridFragment"
+            android:name="com.iptv.iptv.main.SportGridFragment2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <FrameLayout
+            android:id="@+id/layout_filter"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
-            android:layout_marginTop="@dimen/activity_margin_reverse" />
+            android:visibility="gone"
+            android:background="@color/black" />
 
     </LinearLayout>
 
@@ -114,13 +133,5 @@
             android:layout_weight="4"/>
 
     </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/layout_filter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/black"
-        android:visibility="gone" />
 
 </FrameLayout>

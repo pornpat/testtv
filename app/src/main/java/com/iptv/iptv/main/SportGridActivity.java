@@ -63,6 +63,7 @@ public class SportGridActivity extends LeanbackActivity implements FilterFragmen
                         FilterFragment.newInstance(UrlUtil.appendUri(UrlUtil.SPORT_FILTER_URL, UrlUtil.addToken()),
                                 mCurrentCategory, mCurrentCountry, mCurrentYear)).commit();
                 findViewById(R.id.layout_filter).setVisibility(View.VISIBLE);
+                findViewById(R.id.grid_fragment).setVisibility(View.GONE);
             }
         });
 
@@ -143,6 +144,7 @@ public class SportGridActivity extends LeanbackActivity implements FilterFragmen
         setTextSelected(mSportText);
         getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.layout_filter)).commit();
         findViewById(R.id.layout_filter).setVisibility(View.GONE);
+        findViewById(R.id.grid_fragment).setVisibility(View.VISIBLE);
     }
 
     @Override

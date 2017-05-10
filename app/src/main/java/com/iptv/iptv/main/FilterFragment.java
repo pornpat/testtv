@@ -46,6 +46,8 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
     private OnCountryInteractionListener mCountryListener;
     private OnYearInteractionListener mYearListener;
 
+    private View mView;
+
     public static FilterFragment newInstance(String url, int currentCategory, int currentCountry, int currentYear) {
         FilterFragment fragment = new FilterFragment();
         Bundle bundle = new Bundle();
@@ -79,6 +81,8 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mView = view;
 
         mCategoryList = new ArrayList<>();
         mCategoryAdapter = new FilterCategoryAdapter(mCategoryList, currentCategory, mCategoryListener);
@@ -151,6 +155,9 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
         mCategoryAdapter.notifyDataSetChanged();
         mCountryAdapter.notifyDataSetChanged();
         mYearAdapter.notifyDataSetChanged();
+
+        mView.findViewById(R.id.loading).setVisibility(View.GONE);
+        mView.findViewById(R.id.content).setVisibility(View.VISIBLE);
     }
 
     @Override

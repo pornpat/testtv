@@ -35,6 +35,7 @@ public class SeriesGridFragment2 extends Fragment implements LoaderManager.Loade
 
     private RecyclerView mRecyclerView;
     private List<SeriesItem> mMovieList = new ArrayList<>();
+    private View mLoading;
 
     private static String mVideosUrl;
     private int loaderId = 0;
@@ -55,10 +56,14 @@ public class SeriesGridFragment2 extends Fragment implements LoaderManager.Loade
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 5));
+        mLoading = view.findViewById(R.id.loading);
 
     }
 
     private void loadVideoData(String url) {
+        mLoading.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.GONE);
+
         SeriesProvider.setContext(getActivity());
         mVideosUrl = url;
         if (getLoaderManager().getLoader(loaderId) != null) {
@@ -88,6 +93,9 @@ public class SeriesGridFragment2 extends Fragment implements LoaderManager.Loade
         }
 
         mRecyclerView.setAdapter(new SeriesGridAdapter(getActivity(), mMovieList));
+
+        mLoading.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override

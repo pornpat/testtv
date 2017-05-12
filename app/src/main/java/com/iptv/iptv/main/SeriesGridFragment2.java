@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.iptv.iptv.R;
 import com.iptv.iptv.lib.SeriesDetailsActivity;
@@ -36,6 +35,7 @@ public class SeriesGridFragment2 extends Fragment implements LoaderManager.Loade
     private RecyclerView mRecyclerView;
     private List<SeriesItem> mMovieList = new ArrayList<>();
     private View mLoading;
+    private View mEmpty;
 
     private static String mVideosUrl;
     private int loaderId = 0;
@@ -57,12 +57,12 @@ public class SeriesGridFragment2 extends Fragment implements LoaderManager.Loade
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 5));
         mLoading = view.findViewById(R.id.loading);
+        mEmpty = view.findViewById(R.id.empty);
 
     }
 
     private void loadVideoData(String url) {
-        mLoading.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.GONE);
+        updateUI(mLoading);
 
         SeriesProvider.setContext(getActivity());
         mVideosUrl = url;
@@ -88,14 +88,14 @@ public class SeriesGridFragment2 extends Fragment implements LoaderManager.Loade
                     mMovieList.add(list.get(j));
                 }
             }
-        } else {
-            Toast.makeText(getActivity(), "Failed to load videos.", Toast.LENGTH_LONG).show();
         }
-
         mRecyclerView.setAdapter(new SeriesGridAdapter(getActivity(), mMovieList));
 
-        mLoading.setVisibility(View.GONE);
-        mRecyclerView.setVisibility(View.VISIBLE);
+        if (mMovieList.size() > 0) {
+            updateUI(mRecyclerView);
+        } else {
+            updateUI(mEmpty);
+        }
     }
 
     @Override
@@ -114,6 +114,14 @@ public class SeriesGridFragment2 extends Fragment implements LoaderManager.Loade
         Intent intent = new Intent(getActivity(), SeriesDetailsActivity.class);
         intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(movie));
         getActivity().startActivity(intent);
+    }
+
+    private void updateUI(View view) {
+        mLoading.setVisibility(View.GONE);
+        mEmpty.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.GONE);
+
+        view.setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.iptv.iptv.R;
 import com.iptv.iptv.main.data.LiveLoader;
@@ -34,6 +33,7 @@ public class LiveGridFragment2 extends Fragment implements LoaderManager.LoaderC
     private RecyclerView mRecyclerView;
     private List<LiveItem> mMovieList = new ArrayList<>();
     private View mLoading;
+    private View mEmpty;
 
     private static String mVideosUrl;
     private int loaderId = 0;
@@ -55,12 +55,12 @@ public class LiveGridFragment2 extends Fragment implements LoaderManager.LoaderC
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 5));
         mLoading = view.findViewById(R.id.loading);
+        mEmpty = view.findViewById(R.id.empty);
 
     }
 
     private void loadVideoData(String url) {
-        mLoading.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.GONE);
+        updateUI(mLoading);
 
         LiveProvider.setContext(getActivity());
         mVideosUrl = url;
@@ -86,14 +86,14 @@ public class LiveGridFragment2 extends Fragment implements LoaderManager.LoaderC
                     mMovieList.add(list.get(j));
                 }
             }
-        } else {
-            Toast.makeText(getActivity(), "Failed to load videos.", Toast.LENGTH_LONG).show();
         }
-
         mRecyclerView.setAdapter(new LiveGridAdapter(getActivity(), mMovieList));
 
-        mLoading.setVisibility(View.GONE);
-        mRecyclerView.setVisibility(View.VISIBLE);
+        if (mMovieList.size() > 0) {
+            updateUI(mRecyclerView);
+        } else {
+            updateUI(mEmpty);
+        }
     }
 
     @Override
@@ -112,6 +112,14 @@ public class LiveGridFragment2 extends Fragment implements LoaderManager.LoaderC
         Intent intent = new Intent(getActivity(), LivePlayerActivity.class);
         intent.putExtra("id", live.getId());
         startActivity(intent);
+    }
+
+    private void updateUI(View view) {
+        mLoading.setVisibility(View.GONE);
+        mEmpty.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.GONE);
+
+        view.setVisibility(View.VISIBLE);
     }
 
     @Override

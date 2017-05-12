@@ -65,7 +65,8 @@ public class LiveProvider {
         sLiveList = new HashMap<>();
         sLiveListById = new HashMap<>();
 
-        JSONArray jsonArray = new LiveProvider().fetchJSON(url);
+        JSONObject jsonObject = new LiveProvider().fetchJSON(url);
+        JSONArray jsonArray = jsonObject.getJSONArray("data");
 
         if (null == jsonArray) {
             return sLiveList;
@@ -155,7 +156,7 @@ public class LiveProvider {
         return live;
     }
 
-    private JSONArray fetchJSON(String urlString) {
+    private JSONObject fetchJSON(String urlString) {
         BufferedReader reader = null;
 
         try {
@@ -169,7 +170,7 @@ public class LiveProvider {
                 sb.append(line);
             }
             String json = sb.toString();
-            return new JSONArray(json);
+            return new JSONObject(json);
         } catch (Exception e) {
             return null;
         } finally {

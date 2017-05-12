@@ -72,7 +72,8 @@ public class SeriesProvider {
         sSeriesList = new HashMap<>();
         sSeriesListById = new HashMap<>();
 
-        JSONArray jsonArray = new SeriesProvider().fetchJSON(url);
+        JSONObject jsonObject = new SeriesProvider().fetchJSON(url);
+        JSONArray jsonArray = jsonObject.getJSONArray("data");
 
         if (null == jsonArray) {
             return sSeriesList;
@@ -240,7 +241,7 @@ public class SeriesProvider {
         return episode;
     }
 
-    private JSONArray fetchJSON(String urlString) {
+    private JSONObject fetchJSON(String urlString) {
         BufferedReader reader = null;
 
         try {
@@ -254,7 +255,7 @@ public class SeriesProvider {
                 sb.append(line);
             }
             String json = sb.toString();
-            return new JSONArray(json);
+            return new JSONObject(json);
         } catch (Exception e) {
             return null;
         } finally {

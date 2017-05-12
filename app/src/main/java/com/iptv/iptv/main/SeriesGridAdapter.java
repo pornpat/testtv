@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.iptv.iptv.R;
 import com.iptv.iptv.main.event.SelectSeriesEvent;
 import com.iptv.iptv.main.model.SeriesItem;
@@ -41,8 +44,18 @@ public class SeriesGridAdapter extends RecyclerView.Adapter<SeriesGridAdapter.Vi
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mItem = mValues.get(position);
-        Glide.with(mContext).load(mValues.get(position).getImageUrl()).override(200, 300).centerCrop().into(holder.mImage);
-        holder.mTitle.setText(mValues.get(position).getName());
+        Glide.with(mContext).load(mValues.get(position).getImageUrl()).override(200, 300).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
+            @Override
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                holder.mTitle.setText(mValues.get(position).getName());
+                return false;
+            }
+        }).into(holder.mImage);
 
         holder.mView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

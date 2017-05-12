@@ -72,7 +72,8 @@ public class MovieProvider {
         sMovieList = new HashMap<>();
         sMovieListById = new HashMap<>();
 
-        JSONArray jsonArray = new MovieProvider().fetchJSON(url);
+        JSONObject jsonObject = new MovieProvider().fetchJSON(url);
+        JSONArray jsonArray = jsonObject.getJSONArray("data");
 
         if (null == jsonArray) {
             return sMovieList;
@@ -245,7 +246,7 @@ public class MovieProvider {
         return disc;
     }
 
-    private JSONArray fetchJSON(String urlString) {
+    private JSONObject fetchJSON(String urlString) {
         BufferedReader reader = null;
 
         try {
@@ -259,7 +260,7 @@ public class MovieProvider {
                 sb.append(line);
             }
             String json = sb.toString();
-            return new JSONArray(json);
+            return new JSONObject(json);
         } catch (Exception e) {
             return null;
         } finally {

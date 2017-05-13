@@ -3,10 +3,12 @@ package com.iptv.iptv.main.data;
 import android.content.Context;
 import android.content.res.Resources;
 
+import com.iptv.iptv.main.event.TokenErrorEvent;
 import com.iptv.iptv.main.model.DiscItem;
 import com.iptv.iptv.main.model.MovieItem;
 import com.iptv.iptv.main.model.TrackItem;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,6 +75,10 @@ public class SportProvider {
         sMovieListById = new HashMap<>();
 
         JSONObject jsonObject = new SportProvider().fetchJSON(url);
+        if (null == jsonObject) {
+            EventBus.getDefault().post(new TokenErrorEvent());
+            return sMovieList;
+        }
         JSONArray jsonArray = jsonObject.getJSONArray("data");
 
         if (null == jsonArray) {

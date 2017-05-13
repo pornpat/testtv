@@ -3,10 +3,12 @@ package com.iptv.iptv.main.data;
 import android.content.Context;
 import android.content.res.Resources;
 
+import com.iptv.iptv.main.event.TokenErrorEvent;
 import com.iptv.iptv.main.model.SeriesEpisodeItem;
 import com.iptv.iptv.main.model.SeriesItem;
 import com.iptv.iptv.main.model.SeriesTrackItem;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,7 +74,10 @@ public class SeriesProvider {
         sSeriesList = new HashMap<>();
         sSeriesListById = new HashMap<>();
 
-        JSONObject jsonObject = new SeriesProvider().fetchJSON(url);
+        JSONObject jsonObject = new SeriesProvider().fetchJSON(url);if (null == jsonObject) {
+            EventBus.getDefault().post(new TokenErrorEvent());
+            return sSeriesList;
+        }
         JSONArray jsonArray = jsonObject.getJSONArray("data");
 
         if (null == jsonArray) {

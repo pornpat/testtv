@@ -18,6 +18,7 @@ import com.iptv.iptv.main.data.LiveLoader;
 import com.iptv.iptv.main.data.LiveProvider;
 import com.iptv.iptv.main.event.LoadLiveEvent;
 import com.iptv.iptv.main.event.SelectLiveEvent;
+import com.iptv.iptv.main.event.TokenErrorEvent;
 import com.iptv.iptv.main.model.LiveItem;
 
 import org.greenrobot.eventbus.EventBus;
@@ -111,6 +112,14 @@ public class LiveGridFragment2 extends Fragment implements LoaderManager.LoaderC
         LiveItem live = mMovieList.get(event.position);
         Intent intent = new Intent(getActivity(), LivePlayerActivity.class);
         intent.putExtra("id", live.getId());
+        startActivity(intent);
+    }
+
+    @Subscribe
+    public void onTokenError(TokenErrorEvent event) {
+        PrefUtil.setStringProperty(R.string.pref_token, "");
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 

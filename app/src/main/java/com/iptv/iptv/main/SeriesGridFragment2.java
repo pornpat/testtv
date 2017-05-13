@@ -19,6 +19,7 @@ import com.iptv.iptv.main.data.SeriesLoader;
 import com.iptv.iptv.main.data.SeriesProvider;
 import com.iptv.iptv.main.event.LoadSeriesEvent;
 import com.iptv.iptv.main.event.SelectSeriesEvent;
+import com.iptv.iptv.main.event.TokenErrorEvent;
 import com.iptv.iptv.main.model.SeriesItem;
 
 import org.greenrobot.eventbus.EventBus;
@@ -114,6 +115,14 @@ public class SeriesGridFragment2 extends Fragment implements LoaderManager.Loade
         Intent intent = new Intent(getActivity(), SeriesDetailsActivity.class);
         intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(movie));
         getActivity().startActivity(intent);
+    }
+
+    @Subscribe
+    public void onTokenError(TokenErrorEvent event) {
+        PrefUtil.setStringProperty(R.string.pref_token, "");
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     private void updateUI(View view) {

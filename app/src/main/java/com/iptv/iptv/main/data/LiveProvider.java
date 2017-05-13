@@ -3,9 +3,11 @@ package com.iptv.iptv.main.data;
 import android.content.Context;
 import android.content.res.Resources;
 
+import com.iptv.iptv.main.event.TokenErrorEvent;
 import com.iptv.iptv.main.model.LiveItem;
 import com.iptv.iptv.main.model.LiveProgramItem;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,6 +68,10 @@ public class LiveProvider {
         sLiveListById = new HashMap<>();
 
         JSONObject jsonObject = new LiveProvider().fetchJSON(url);
+        if (null == jsonObject) {
+            EventBus.getDefault().post(new TokenErrorEvent());
+            return sLiveList;
+        }
         JSONArray jsonArray = jsonObject.getJSONArray("data");
 
         if (null == jsonArray) {

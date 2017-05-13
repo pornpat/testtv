@@ -39,6 +39,12 @@ public class LoginActivity extends LeanbackActivity {
 
         mUsernameText.setText("tester");
         mPasswordText.setText("123456");
+
+        if (!PrefUtil.getStringProperty(R.string.pref_token).equals("")) {
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     public void signIn(View view) {

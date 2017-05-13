@@ -77,7 +77,8 @@ public class SeriesDetailsFragment extends DetailsFragment {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 try {
-                    JSONArray jsonArray = new JSONArray(responseString);
+                    JSONObject jsonObject = new JSONObject(responseString);
+                    JSONArray jsonArray = jsonObject.getJSONArray("data");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject movieObj = jsonArray.getJSONObject(i);
 

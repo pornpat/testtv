@@ -124,7 +124,6 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
                     });
                     mFavList.add(mLiveList.get(currentFocusChannel).getId());
                     mFavText.setText("ลบรายการโปรด");
-                    Log.v("testkn", "size" + mFavList.size());
                 } else {
                     AsyncHttpClient client = new AsyncHttpClient();
                     client.delete(UrlUtil.appendUri(UrlUtil.addMediaId(UrlUtil.FAVORITE_URL, mLiveList.get(currentFocusChannel).getId()), UrlUtil.addToken()), new TextHttpResponseHandler() {
@@ -136,7 +135,6 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
                     });
                     mFavList.remove(new Integer(mLiveList.get(currentFocusChannel).getId()));
                     mFavText.setText("เพิ่มรายการโปรด");
-                    Log.v("testkn", "size" + mFavList.size());
                 }
             }
         });
@@ -238,7 +236,8 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 try {
-                    JSONArray jsonArray = new JSONArray(responseString);
+                    JSONObject jsonObject = new JSONObject(responseString);
+                    JSONArray jsonArray = jsonObject.getJSONArray("data");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject movieObj = jsonArray.getJSONObject(i);
 

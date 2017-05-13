@@ -22,6 +22,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -137,6 +138,7 @@ public class HomeActivity extends LeanbackActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, AdvertiseActivity.class);
+                intent.putExtra("ads", Parcels.wrap(mAdsItem));
                 startActivity(intent);
             }
         });
@@ -181,7 +183,7 @@ public class HomeActivity extends LeanbackActivity {
                             @Override
                             public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                                 mAdsImage.setImageDrawable(resource);
-                                return false;
+                                return true;
                             }
                         }).into(mAdsImage);
                     } catch (JSONException e) {

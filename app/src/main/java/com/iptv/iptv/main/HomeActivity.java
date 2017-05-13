@@ -10,9 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.iptv.iptv.R;
 import com.iptv.iptv.lib.Utils;
 import com.iptv.iptv.main.model.AdsItem;
@@ -76,8 +73,6 @@ public class HomeActivity extends LeanbackActivity {
         Runnable runnable = new CountDownRunner();
         myThread= new Thread(runnable);
         myThread.start();
-
-        updateAdvertise();
 
         mLiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,18 +169,10 @@ public class HomeActivity extends LeanbackActivity {
                         mAdsItem.setDescription(jsonObject.getString("description"));
                         mAdsItem.setImageUrl(jsonObject.getString("image_url"));
 
-                        Glide.with(HomeActivity.this).load(mAdsItem.getImageUrl()).override(400, 200).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
-                            @Override
-                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                                return false;
-                            }
+                        Log.v("testkn", mAdsItem.getImageUrl());
 
-                            @Override
-                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                                mAdsImage.setImageDrawable(resource);
-                                return true;
-                            }
-                        }).into(mAdsImage);
+                        Glide.with(HomeActivity.this).load(mAdsItem.getImageUrl()).placeholder(R.drawable.test_advertise)
+                                .error(R.drawable.test_advertise).override(400, 200).centerCrop().into(mAdsImage);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

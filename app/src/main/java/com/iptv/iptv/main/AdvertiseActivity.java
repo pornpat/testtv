@@ -23,13 +23,15 @@ public class AdvertiseActivity extends LeanbackActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_advertise);
+        getWindow().setBackgroundDrawableResource(R.drawable.custom_background);
 
         currentAds = Parcels.unwrap(getIntent().getParcelableExtra("ads"));
 
         mImage = (ImageView) findViewById(R.id.img_advertise);
         ((TextView) findViewById(R.id.txt_title)).setText(currentAds.getTitle());
         ((TextView) findViewById(R.id.txt_description)).setText(currentAds.getDescription());
-        Glide.with(this).load(currentAds.getImageUrl()).listener(new RequestListener<String, GlideDrawable>() {
+        Glide.with(this).load(currentAds.getImageUrl()).placeholder(R.drawable.test_advertise).error(R.drawable.test_advertise)
+                .override(600, 300).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
             @Override
             public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
                 findViewById(R.id.content).setVisibility(View.VISIBLE);

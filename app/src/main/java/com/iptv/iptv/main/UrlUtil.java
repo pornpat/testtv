@@ -23,6 +23,7 @@ public class UrlUtil {
     public static final String HISTORY_URL = BASE_URL + "/users/histories";
     public static final String FAVORITE_URL = BASE_URL + "/users/favorites";
     public static final String RECOMMEND_URL = "/related";
+    public static final String ADVERTISE_URL = "/advertises/get";
 
     public static String addToken() {
         return "token=" + PrefUtil.getStringProperty(R.string.pref_token);

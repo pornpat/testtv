@@ -92,10 +92,11 @@
         <activity
             android:name=".main.FavoriteGridActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".main.SportGridActivity"
-            android:parentActivityName=".main.HomeActivity"
-            android:screenOrientation="landscape"
-            android:theme="@style/Theme.Leanback.VerticalGrid"/>
+        <activity
+            android:name=".main.SportGridActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".main.AdvertiseActivity"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

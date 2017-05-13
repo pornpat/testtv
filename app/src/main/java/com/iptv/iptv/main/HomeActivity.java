@@ -7,11 +7,26 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.iptv.iptv.R;
+import com.iptv.iptv.lib.Utils;
+import com.iptv.iptv.main.model.AdsItem;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.TextHttpResponseHandler;
+import com.makeramen.roundedimageview.RoundedImageView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import cz.msebera.android.httpclient.Header;
 
 public class HomeActivity extends LeanbackActivity {
 
@@ -26,6 +41,9 @@ public class HomeActivity extends LeanbackActivity {
 
     View mSearchButton;
     TextView mDateTimeText;
+
+    RoundedImageView mAdsImage;
+    AdsItem mAdsItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +63,9 @@ public class HomeActivity extends LeanbackActivity {
         mSearchButton = findViewById(R.id.btn_search);
         mDateTimeText = (TextView) findViewById(R.id.datetime);
 
+        mAdsImage = (RoundedImageView) findViewById(R.id.img_advertise);
+        mAdsItem = new AdsItem();
+
         ((TextView) findViewById(R.id.txt_username)).setText(PrefUtil.getStringProperty(R.string.pref_username));
         Log.v("testkn", PrefUtil.getStringProperty(R.string.pref_token));
 
@@ -54,6 +75,8 @@ public class HomeActivity extends LeanbackActivity {
         Runnable runnable = new CountDownRunner();
         myThread= new Thread(runnable);
         myThread.start();
+
+        updateAdvertise();
 
         mLiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,6 +133,14 @@ public class HomeActivity extends LeanbackActivity {
             }
         });
 
+        mAdvertiseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, AdvertiseActivity.class);
+                startActivity(intent);
+            }
+        });
+
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,6 +151,47 @@ public class HomeActivity extends LeanbackActivity {
                 startActivity(intent, bundle);
             }
         });
+    }
+
+    private void updateAdvertise() {
+        if (Utils.isInternetConnectionAvailable(this)) {
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.get(UrlUtil.appendUri(UrlUtil.ADVERTISE_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    mAdsImage.setImageResource(R.drawable.test_advertise);
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(responseString);
+                        mAdsItem.setId(jsonObject.getInt("id"));
+                        mAdsItem.setTitle(jsonObject.getString("title"));
+                        mAdsItem.setDescription(jsonObject.getString("description"));
+                        mAdsItem.setImageUrl(jsonObject.getString("image_url"));
+
+                        Glide.with(HomeActivity.this).load(mAdsItem.getImageUrl()).override(400, 200).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
+                            @Override
+                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                mAdsImage.setImageDrawable(resource);
+                                return false;
+                            }
+                        }).into(mAdsImage);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(this, "Please connect the internet..", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void doWork() {
@@ -159,4 +231,9 @@ public class HomeActivity extends LeanbackActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateAdvertise();
+    }
 }

@@ -149,6 +149,11 @@
                 android:nextFocusRight="@+id/btn_sport"
                 android:padding="@dimen/margin_padding_xxsmall">
 
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -189,11 +194,12 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
-                    android:padding="@dimen/margin_padding_xsmall"
+                    android:padding="@dimen/margin_padding_small"
                     android:text="@string/menu_recommend"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/white"
+                    android:background="@drawable/bg_banner_text"/>
 
             </RelativeLayout>
 
@@ -349,23 +355,28 @@
                 android:nextFocusRight="@+id/btn_setting"
                 android:padding="@dimen/margin_padding_xxsmall">
 
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"/>
+
                 <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/img_advertise"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/test_advertise"
                     app:riv_corner_radius="@dimen/margin_padding_small"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/margin_padding_xsmall"
+                    android:padding="@dimen/margin_padding_small"
                     android:text="@string/menu_advertise"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
+                    android:background="@drawable/bg_banner_text"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentEnd="true" />
 

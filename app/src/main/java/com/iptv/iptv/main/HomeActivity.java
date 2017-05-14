@@ -27,7 +27,9 @@ import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -50,6 +52,8 @@ public class HomeActivity extends LeanbackActivity {
     RoundedImageView mHitImage3;
     RoundedImageView mAdsImage;
     AdsItem mAdsItem;
+    List<String> mHitList;
+    int currentSet = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,7 @@ public class HomeActivity extends LeanbackActivity {
         mHitImage3 = (RoundedImageView) findViewById(R.id.img_hit3);
         mAdsImage = (RoundedImageView) findViewById(R.id.img_advertise);
         mAdsItem = new AdsItem();
+        mHitList = new ArrayList<>();
 
         ((TextView) findViewById(R.id.txt_username)).setText(PrefUtil.getStringProperty(R.string.pref_username));
         Log.v("testkn", PrefUtil.getStringProperty(R.string.pref_token));
@@ -85,7 +90,7 @@ public class HomeActivity extends LeanbackActivity {
         myThread= new Thread(runnable);
         myThread.start();
 
-        updateHitMovie();
+        fetchHitMovie();
 
         mLiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,9 +185,7 @@ public class HomeActivity extends LeanbackActivity {
             client.get(UrlUtil.appendUri(UrlUtil.ADVERTISE_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
 
                 @Override
-                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    mAdsImage.setImageResource(R.drawable.test_advertise);
-                }
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {}
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, String responseString) {
@@ -193,8 +196,8 @@ public class HomeActivity extends LeanbackActivity {
                         mAdsItem.setDescription(jsonObject.getString("description"));
                         mAdsItem.setImageUrl(jsonObject.getString("image_url"));
 
-                        Glide.with(HomeActivity.this).load(mAdsItem.getImageUrl()).placeholder(R.drawable.test_advertise)
-                                .error(R.drawable.test_advertise).override(400, 200).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
+                        Glide.with(HomeActivity.this).load(mAdsItem.getImageUrl()).override(400, 200).centerCrop()
+                                .error(R.drawable.test_advertise).listener(new RequestListener<String, GlideDrawable>() {
                             @Override
                             public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
                                 return false;
@@ -217,71 +220,26 @@ public class HomeActivity extends LeanbackActivity {
         }
     }
 
-    private void updateHitMovie() {
+    private void fetchHitMovie() {
         if (Utils.isInternetConnectionAvailable(this)) {
             AsyncHttpClient client = new AsyncHttpClient();
             client.get(UrlUtil.appendUri(UrlUtil.MOVIE_HIT_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
 
                 @Override
-                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-//                    mHitImage.setImageResource(R.drawable.test_recommend);
-                }
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {}
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, String responseString) {
                     try {
                         JSONObject jsonObject = new JSONObject(responseString);
                         JSONArray jsonArray = jsonObject.getJSONArray("data");
-                        JSONObject movieItem = jsonArray.getJSONObject(0);
-                        JSONObject movieDetail = movieItem.getJSONObject("detail");
-                        JSONObject movieItem2 = jsonArray.getJSONObject(1);
-                        JSONObject movieDetail2 = movieItem2.getJSONObject("detail");
-                        JSONObject movieItem3 = jsonArray.getJSONObject(2);
-                        JSONObject movieDetail3 = movieItem3.getJSONObject("detail");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject movieItem = jsonArray.getJSONObject(i);
+                            JSONObject movieDetail = movieItem.getJSONObject("detail");
 
-                        Glide.with(HomeActivity.this).load(movieDetail.getString("image_url")).override(150, 200).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
-                            @Override
-                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                                return false;
-                            }
-
-                            @Override
-                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                                mHitImage1.setImageDrawable(resource);
-                                mHitImage1.setCornerRadiusDimen(Corner.TOP_LEFT, R.dimen.margin_padding_small);
-                                mHitImage1.setCornerRadiusDimen(Corner.BOTTOM_LEFT, R.dimen.margin_padding_small);
-                                return true;
-                            }
-                        }).into(mHitImage1);
-
-                        Glide.with(HomeActivity.this).load(movieDetail2.getString("image_url")).override(150, 200).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
-                            @Override
-                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                                return false;
-                            }
-
-                            @Override
-                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                                mHitImage2.setImageDrawable(resource);
-                                return true;
-                            }
-                        }).into(mHitImage2);
-
-                        Glide.with(HomeActivity.this).load(movieDetail3.getString("image_url")).override(150, 200).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
-                            @Override
-                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                                return false;
-                            }
-
-                            @Override
-                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                                mHitImage3.setImageDrawable(resource);
-                                mHitImage3.setCornerRadiusDimen(Corner.TOP_RIGHT, R.dimen.margin_padding_small);
-                                mHitImage3.setCornerRadiusDimen(Corner.BOTTOM_RIGHT, R.dimen.margin_padding_small);
-                                return true;
-                            }
-                        }).into(mHitImage3);
-
+                            mHitList.add(movieDetail.getString("image_url"));
+                        }
+                        updateHitMovie();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -290,16 +248,71 @@ public class HomeActivity extends LeanbackActivity {
         }
     }
 
+    private void updateHitMovie() {
+        int img1 = 0, img2 = 1, img3 = 2;
+        if (mHitList.size() > 3) {
+            if (currentSet == 0) {
+                img1 = 0; img2 = 1; img3 = 2;
+                currentSet = 1;
+            } else if (currentSet == 1) {
+                img1 = 3; img2 = 4; img3 = 5;
+                currentSet = 2;
+            } else {
+                img1 = 6; img2 = 7; img3 = 8;
+                currentSet = 0;
+            }
+        }
+        Glide.with(HomeActivity.this).load(mHitList.get(img1)).override(150, 200).centerCrop().error(R.drawable.movie_placeholder)
+                .listener(new RequestListener<String, GlideDrawable>() {
+            @Override
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                mHitImage1.setImageDrawable(resource);
+                mHitImage1.setCornerRadiusDimen(Corner.TOP_LEFT, R.dimen.margin_padding_small);
+                mHitImage1.setCornerRadiusDimen(Corner.BOTTOM_LEFT, R.dimen.margin_padding_small);
+                return true;
+            }
+        }).into(mHitImage1);
+
+        Glide.with(HomeActivity.this).load(mHitList.get(img2)).override(150, 200).centerCrop().error(R.drawable.movie_placeholder)
+                .listener(new RequestListener<String, GlideDrawable>() {
+            @Override
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                mHitImage2.setImageDrawable(resource);
+                return true;
+            }
+        }).into(mHitImage2);
+
+        Glide.with(HomeActivity.this).load(mHitList.get(img3)).override(150, 200).centerCrop().error(R.drawable.movie_placeholder)
+                .listener(new RequestListener<String, GlideDrawable>() {
+            @Override
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                mHitImage3.setImageDrawable(resource);
+                mHitImage3.setCornerRadiusDimen(Corner.TOP_RIGHT, R.dimen.margin_padding_small);
+                mHitImage3.setCornerRadiusDimen(Corner.BOTTOM_RIGHT, R.dimen.margin_padding_small);
+                return true;
+            }
+        }).into(mHitImage3);
+    }
+
     public void doWork() {
         runOnUiThread(new Runnable() {
             public void run() {
                 try{
-//                    Date dt = new Date();
-//                    int hours = dt.getHours();
-//                    int minutes = dt.getMinutes();
-//                    int seconds = dt.getSeconds();
-//                    String curTime = hours + ":" + minutes + ":" + seconds;
-
                     Calendar c = Calendar.getInstance();
 
                     SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -331,5 +344,8 @@ public class HomeActivity extends LeanbackActivity {
     protected void onResume() {
         super.onResume();
         updateAdvertise();
+        if (mHitList.size() > 0) {
+            updateHitMovie();
+        }
     }
 }

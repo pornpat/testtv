@@ -169,8 +169,6 @@ public class HomeActivity extends LeanbackActivity {
                         mAdsItem.setDescription(jsonObject.getString("description"));
                         mAdsItem.setImageUrl(jsonObject.getString("image_url"));
 
-                        Log.v("testkn", mAdsItem.getImageUrl());
-
                         Glide.with(HomeActivity.this).load(mAdsItem.getImageUrl()).placeholder(R.drawable.test_advertise)
                                 .error(R.drawable.test_advertise).override(400, 200).centerCrop().into(mAdsImage);
                     } catch (JSONException e) {

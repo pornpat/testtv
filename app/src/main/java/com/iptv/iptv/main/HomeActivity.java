@@ -10,13 +10,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.iptv.iptv.R;
 import com.iptv.iptv.lib.Utils;
 import com.iptv.iptv.main.model.AdsItem;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.TextHttpResponseHandler;
+import com.makeramen.roundedimageview.Corner;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
@@ -40,6 +45,9 @@ public class HomeActivity extends LeanbackActivity {
     View mSearchButton;
     TextView mDateTimeText;
 
+    RoundedImageView mHitImage1;
+    RoundedImageView mHitImage2;
+    RoundedImageView mHitImage3;
     RoundedImageView mAdsImage;
     AdsItem mAdsItem;
 
@@ -61,6 +69,9 @@ public class HomeActivity extends LeanbackActivity {
         mSearchButton = findViewById(R.id.btn_search);
         mDateTimeText = (TextView) findViewById(R.id.datetime);
 
+        mHitImage1 = (RoundedImageView) findViewById(R.id.img_hit1);
+        mHitImage2 = (RoundedImageView) findViewById(R.id.img_hit2);
+        mHitImage3 = (RoundedImageView) findViewById(R.id.img_hit3);
         mAdsImage = (RoundedImageView) findViewById(R.id.img_advertise);
         mAdsItem = new AdsItem();
 
@@ -73,6 +84,8 @@ public class HomeActivity extends LeanbackActivity {
         Runnable runnable = new CountDownRunner();
         myThread= new Thread(runnable);
         myThread.start();
+
+        updateHitMovie();
 
         mLiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,7 +194,19 @@ public class HomeActivity extends LeanbackActivity {
                         mAdsItem.setImageUrl(jsonObject.getString("image_url"));
 
                         Glide.with(HomeActivity.this).load(mAdsItem.getImageUrl()).placeholder(R.drawable.test_advertise)
-                                .error(R.drawable.test_advertise).override(400, 200).centerCrop().into(mAdsImage);
+                                .error(R.drawable.test_advertise).override(400, 200).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
+                            @Override
+                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                mAdsImage.setImageDrawable(resource);
+                                mAdsImage.setCornerRadiusDimen(R.dimen.margin_padding_small);
+                                return true;
+                            }
+                        }).into(mAdsImage);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -189,6 +214,79 @@ public class HomeActivity extends LeanbackActivity {
             });
         } else {
             Toast.makeText(this, "Please connect the internet..", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void updateHitMovie() {
+        if (Utils.isInternetConnectionAvailable(this)) {
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.get(UrlUtil.appendUri(UrlUtil.MOVIE_HIT_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+//                    mHitImage.setImageResource(R.drawable.test_recommend);
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(responseString);
+                        JSONArray jsonArray = jsonObject.getJSONArray("data");
+                        JSONObject movieItem = jsonArray.getJSONObject(0);
+                        JSONObject movieDetail = movieItem.getJSONObject("detail");
+                        JSONObject movieItem2 = jsonArray.getJSONObject(1);
+                        JSONObject movieDetail2 = movieItem2.getJSONObject("detail");
+                        JSONObject movieItem3 = jsonArray.getJSONObject(2);
+                        JSONObject movieDetail3 = movieItem3.getJSONObject("detail");
+
+                        Glide.with(HomeActivity.this).load(movieDetail.getString("image_url")).override(150, 200).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
+                            @Override
+                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                mHitImage1.setImageDrawable(resource);
+                                mHitImage1.setCornerRadiusDimen(Corner.TOP_LEFT, R.dimen.margin_padding_small);
+                                mHitImage1.setCornerRadiusDimen(Corner.BOTTOM_LEFT, R.dimen.margin_padding_small);
+                                return true;
+                            }
+                        }).into(mHitImage1);
+
+                        Glide.with(HomeActivity.this).load(movieDetail2.getString("image_url")).override(150, 200).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
+                            @Override
+                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                mHitImage2.setImageDrawable(resource);
+                                return true;
+                            }
+                        }).into(mHitImage2);
+
+                        Glide.with(HomeActivity.this).load(movieDetail3.getString("image_url")).override(150, 200).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
+                            @Override
+                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                mHitImage3.setImageDrawable(resource);
+                                mHitImage3.setCornerRadiusDimen(Corner.TOP_RIGHT, R.dimen.margin_padding_small);
+                                mHitImage3.setCornerRadiusDimen(Corner.BOTTOM_RIGHT, R.dimen.margin_padding_small);
+                                return true;
+                            }
+                        }).into(mHitImage3);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
     }
 

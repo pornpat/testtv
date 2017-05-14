@@ -149,13 +149,40 @@
                 android:nextFocusRight="@+id/btn_sport"
                 android:padding="@dimen/margin_padding_xxsmall">
 
-                <com.makeramen.roundedimageview.RoundedImageView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/test_recommend"
-                    app:riv_corner_radius="@dimen/margin_padding_small" />
+                    android:orientation="horizontal">
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/img_hit1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        app:riv_corner_radius_top_left="@dimen/margin_padding_small"
+                        app:riv_corner_radius_bottom_left="@dimen/margin_padding_small"/>
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/img_hit2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop" />
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/img_hit3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        app:riv_corner_radius_top_right="@dimen/margin_padding_small"
+                        app:riv_corner_radius_bottom_right="@dimen/margin_padding_small" />
+
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"

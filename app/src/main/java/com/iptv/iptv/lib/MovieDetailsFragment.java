@@ -235,6 +235,7 @@ public class MovieDetailsFragment extends DetailsFragment {
                         Intent intent = new Intent(getActivity(), MoviePlayerActivity.class);
                         intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(mSelectedMovie));
                         intent.putExtra("url", mSelectedMovie.getTracks().get((int)action.getId()).getDiscs().get(0).getVideoUrl());
+                        intent.putExtra("extra_id", mSelectedMovie.getTracks().get((int)action.getId()).getDiscs().get(0).getDiscId());
                         startActivity(intent);
                     } else {
                         Intent intent = new Intent(getActivity(), MovieEpisodeActivity.class);

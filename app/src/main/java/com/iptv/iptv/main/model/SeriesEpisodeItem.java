@@ -9,10 +9,19 @@ import org.parceler.Parcel;
 @Parcel
 public class SeriesEpisodeItem {
 
+    private int episodeId;
     private int order;
     private String url;
 
     public SeriesEpisodeItem() {}
+
+    public int getEpisodeId() {
+        return episodeId;
+    }
+
+    public void setEpisodeId(int episodeId) {
+        this.episodeId = episodeId;
+    }
 
     public int getOrder() {
         return order;

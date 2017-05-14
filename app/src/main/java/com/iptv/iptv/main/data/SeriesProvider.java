@@ -128,17 +128,19 @@ public class SeriesProvider {
                         audio = audioObj.getString(TAG_LANGUAGE);
 
                         int episodeId;
+                        int order;
                         String videoUrl;
                         List<SeriesEpisodeItem> episodes = new ArrayList<>();
                         JSONArray episodeArray = trackObj.getJSONArray(TAG_EPISODES);
                         for (int k = 0; k < episodeArray.length(); k++) {
                             JSONObject episodeObj = episodeArray.getJSONObject(k);
-                            episodeId = episodeObj.getInt(TAG_ORDER);
+                            episodeId = episodeObj.getInt("id");
+                            order = episodeObj.getInt(TAG_ORDER);
                             JSONArray linkArray = episodeObj.getJSONArray(TAG_LINKS);
                             JSONObject linkObj = linkArray.getJSONObject(0);
                             videoUrl = linkObj.getString(TAG_URL);
 
-                            episodes.add(buildEpisodeInfo(episodeId, videoUrl));
+                            episodes.add(buildEpisodeInfo(episodeId, order, videoUrl));
                         }
 
                         tracks.add(buildTrackInfo(trackId, audio, subtitle, episodes));
@@ -190,17 +192,19 @@ public class SeriesProvider {
                     audio = audioObj.getString(TAG_LANGUAGE);
 
                     int episodeId;
+                    int order;
                     String videoUrl;
                     List<SeriesEpisodeItem> episodes = new ArrayList<>();
                     JSONArray episodeArray = trackObj.getJSONArray(TAG_EPISODES);
                     for (int k = 0; k < episodeArray.length(); k++) {
                         JSONObject episodeObj = episodeArray.getJSONObject(k);
-                        episodeId = episodeObj.getInt(TAG_ORDER);
+                        episodeId = episodeObj.getInt("id");
+                        order = episodeObj.getInt(TAG_ORDER);
                         JSONArray linkArray = episodeObj.getJSONArray(TAG_LINKS);
                         JSONObject linkObj = linkArray.getJSONObject(0);
                         videoUrl = linkObj.getString(TAG_URL);
 
-                        episodes.add(buildEpisodeInfo(episodeId, videoUrl));
+                        episodes.add(buildEpisodeInfo(episodeId, order, videoUrl));
                     }
 
                     tracks.add(buildTrackInfo(trackId, audio, subtitle, episodes));
@@ -238,8 +242,9 @@ public class SeriesProvider {
         return track;
     }
 
-    private static SeriesEpisodeItem buildEpisodeInfo(int order, String videoUrl) {
+    private static SeriesEpisodeItem buildEpisodeInfo(int id, int order, String videoUrl) {
         SeriesEpisodeItem episode = new SeriesEpisodeItem();
+        episode.setEpisodeId(id);
         episode.setOrder(order);
         episode.setUrl(videoUrl);
 

@@ -11,7 +11,6 @@ import android.support.v4.content.ContextCompat;
 
 import com.iptv.iptv.R;
 import com.iptv.iptv.lib.SeriesDetailsActivity;
-import com.iptv.iptv.lib.SeriesPlayerActivity;
 import com.iptv.iptv.main.model.SeriesItem;
 
 import org.parceler.Parcels;
@@ -68,6 +67,7 @@ public class SeriesEpisodeActivity extends LeanbackActivity {
             Intent intent = new Intent(getActivity(), MoviePlayerActivity.class);
             intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(mSelectSeries));
             intent.putExtra("url", mSelectSeries.getTracks().get(track).getEpisodes().get((int) action.getId()).getUrl());
+            intent.putExtra("extra_id", mSelectSeries.getTracks().get(track).getEpisodes().get((int) action.getId()).getEpisodeId());
             startActivity(intent);
         }
     }

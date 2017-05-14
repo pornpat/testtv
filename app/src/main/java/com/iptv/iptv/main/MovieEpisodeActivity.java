@@ -67,6 +67,7 @@ public class MovieEpisodeActivity extends LeanbackActivity {
             Intent intent = new Intent(getActivity(), MoviePlayerActivity.class);
             intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(mSelectMovie));
             intent.putExtra("url", mSelectMovie.getTracks().get(track).getDiscs().get((int) action.getId()).getVideoUrl());
+            intent.putExtra("extra_id", mSelectMovie.getTracks().get(track).getDiscs().get((int) action.getId()).getDiscId());
             startActivity(intent);
         }
     }

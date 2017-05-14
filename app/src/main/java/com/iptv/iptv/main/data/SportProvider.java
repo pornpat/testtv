@@ -129,17 +129,19 @@ public class SportProvider {
                         audio = audioObj.getString(TAG_LANGUAGE);
 
                         int discId;
+                        int orderId;
                         String videoUrl;
                         List<DiscItem> discs = new ArrayList<>();
                         JSONArray discArray = trackObj.getJSONArray(TAG_DISCS);
                         for (int k = 0; k < discArray.length(); k++) {
                             JSONObject discObj = discArray.getJSONObject(k);
-                            discId = discObj.getInt(TAG_ORDER);
+                            discId = discObj.getInt("id");
+                            orderId = discObj.getInt(TAG_ORDER);
                             JSONArray linkArray = discObj.getJSONArray(TAG_LINKS);
                             JSONObject linkObj = linkArray.getJSONObject(0);
                             videoUrl = linkObj.getString(TAG_URL);
 
-                            discs.add(buildDiscInfo(discId, videoUrl));
+                            discs.add(buildDiscInfo(discId, orderId, videoUrl));
                         }
 
                         tracks.add(buildTrackInfo(trackId, audio, subtitle, discs));
@@ -195,17 +197,19 @@ public class SportProvider {
                     audio = audioObj.getString(TAG_LANGUAGE);
 
                     int discId;
+                    int orderId;
                     String videoUrl;
                     List<DiscItem> discs = new ArrayList<>();
                     JSONArray discArray = trackObj.getJSONArray(TAG_DISCS);
                     for (int k = 0; k < discArray.length(); k++) {
                         JSONObject discObj = discArray.getJSONObject(k);
-                        discId = discObj.getInt(TAG_ORDER);
+                        discId = discObj.getInt("id");
+                        orderId = discObj.getInt(TAG_ORDER);
                         JSONArray linkArray = discObj.getJSONArray(TAG_LINKS);
                         JSONObject linkObj = linkArray.getJSONObject(0);
                         videoUrl = linkObj.getString(TAG_URL);
 
-                        discs.add(buildDiscInfo(discId, videoUrl));
+                        discs.add(buildDiscInfo(discId, orderId, videoUrl));
                     }
 
                     tracks.add(buildTrackInfo(trackId, audio, subtitle, discs));
@@ -244,9 +248,10 @@ public class SportProvider {
         return track;
     }
 
-    private static DiscItem buildDiscInfo(int id, String videoUrl) {
+    private static DiscItem buildDiscInfo(int discId, int orderId, String videoUrl) {
         DiscItem disc = new DiscItem();
-        disc.setId(id);
+        disc.setDiscId(discId);
+        disc.setId(orderId);
         disc.setVideoUrl(videoUrl);
 
         return disc;

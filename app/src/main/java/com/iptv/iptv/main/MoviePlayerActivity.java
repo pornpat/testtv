@@ -40,6 +40,7 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
     private SeriesItem mSelectedSeries;
     private String mUrl;
     private int mMediaId;
+    private int mExtraId;
 
     private static final int BACKGROUND_UPDATE_DELAY = 2500;
     private final Handler mHandler = new Handler();
@@ -61,6 +62,7 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
             mSelectedSeries = Parcels.unwrap(getIntent().getParcelableExtra(SeriesDetailsActivity.SERIES));
         }
         mUrl = getIntent().getExtras().getString("url");
+        mExtraId = getIntent().getExtras().getInt("extra_id");
 
         player = (EasyVideoPlayer) findViewById(R.id.video);
         player.setRestartDrawable(ContextCompat.getDrawable(this, R.drawable.icon_restart));
@@ -84,8 +86,6 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
 //        player.setSource(Uri.parse("http://45.64.185.101:8081/atomvod/bluray2016/10-Cloverfield-Lane-2016-th-en-1080p.mp4"));
         player.setAutoPlay(true);
 
-        addRecentWatch();
-
 //        mVideoView = (VideoView) findViewById(R.id.video);
 //        mVideoView.post(new Runnable() {
 //            @Override
@@ -108,7 +108,14 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
     }
 
     private void addRecentWatch() {
-        RequestParams params = new RequestParams("media_id", mMediaId);
+        RequestParams params = new RequestParams();
+        params.put("media_id", mMediaId);
+        if (mSelectedMovie != null) {
+            params.put("disc_id", mExtraId);
+        }
+        if (mSelectedSeries != null) {
+            params.put("episode_id", mExtraId);
+        }
 
         AsyncHttpClient client = new AsyncHttpClient();
         client.post(UrlUtil.appendUri(UrlUtil.HISTORY_URL, UrlUtil.addToken()), params, new TextHttpResponseHandler() {
@@ -167,6 +174,7 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
 
     @Override
     protected void onDestroy() {
+        addRecentWatch();
         if (null != mBackgroundTimer) {
             mBackgroundTimer.cancel();
             mBackgroundTimer = null;

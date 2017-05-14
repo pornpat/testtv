@@ -10,6 +10,7 @@ import org.parceler.Parcel;
 public class DiscItem {
 
     private int id;
+    private int discId;
     private String videoUrl;
 
     public DiscItem() {}
@@ -20,6 +21,14 @@ public class DiscItem {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getDiscId() {
+        return discId;
+    }
+
+    public void setDiscId(int discId) {
+        this.discId = discId;
     }
 
     public String getVideoUrl() {

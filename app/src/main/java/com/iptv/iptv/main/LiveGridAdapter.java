@@ -50,7 +50,8 @@ public class LiveGridAdapter extends RecyclerView.Adapter<LiveGridAdapter.ViewHo
             @Override
             public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                 holder.mTitle.setText(mValues.get(position).getName());
-                return false;
+                holder.mImage.setImageDrawable(resource);
+                return true;
             }
         }).into(holder.mImage);
 

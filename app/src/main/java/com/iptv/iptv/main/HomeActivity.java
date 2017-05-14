@@ -90,8 +90,6 @@ public class HomeActivity extends LeanbackActivity {
         myThread= new Thread(runnable);
         myThread.start();
 
-        fetchHitMovie();
-
         mLiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -346,6 +344,8 @@ public class HomeActivity extends LeanbackActivity {
         updateAdvertise();
         if (mHitList.size() > 0) {
             updateHitMovie();
+        } else {
+            fetchHitMovie();
         }
     }
 }

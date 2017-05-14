@@ -110,6 +110,8 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
     private void addRecentWatch() {
         RequestParams params = new RequestParams();
         params.put("media_id", mMediaId);
+        params.put("minute", String.valueOf(player.getCurrentPosition()/60000));
+        params.put("second", String.valueOf((player.getCurrentPosition()/1000)%60));
         if (mSelectedMovie != null) {
             params.put("disc_id", mExtraId);
         }

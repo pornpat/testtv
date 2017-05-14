@@ -95,7 +95,10 @@
         <activity
             android:name=".main.SportGridActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".main.AdvertiseActivity"
+        <activity
+            android:name=".main.AdvertiseActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".main.HitGridActivity"
             android:screenOrientation="landscape" />
     </application>
 

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <FrameLayout
+            android:id="@+id/movie_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:visibility="gone">
+
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:name="com.iptv.iptv.main.MovieGridFragment2" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/series_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:visibility="gone">
+
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:name="com.iptv.iptv.main.SeriesGridFragment2" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/sport_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:visibility="gone">
+
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:name="com.iptv.iptv.main.SportGridFragment2" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingLeft="@dimen/margin_padding_mid"
+            android:paddingRight="@dimen/margin_padding_mid"
+            android:paddingTop="@dimen/activity_margin"
+            android:orientation="vertical"
+            android:background="@color/black_60">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginBottom="@dimen/margin_padding_small"
+                android:text="หนังยอดนิยม"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_default"/>
+
+            <TextView
+                android:id="@+id/movie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_normal"
+                android:background="@drawable/bg_menu_button"
+                android:padding="12dp"
+                android:text="ภาพยนตร์"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/bg_movie_text"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:nextFocusUp="@+id/search"/>
+
+            <TextView
+                android:id="@+id/series"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_small"
+                android:background="@drawable/bg_menu_button"
+                android:padding="12dp"
+                android:text="ซีรี่ย์"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/bg_movie_text"
+                android:focusable="true"
+                android:focusableInTouchMode="true"/>
+
+            <TextView
+                android:id="@+id/sport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_small"
+                android:background="@drawable/bg_menu_button"
+                android:padding="12dp"
+                android:text="กีฬาย้อนหลัง"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/bg_movie_text"
+                android:focusable="true"
+                android:focusableInTouchMode="true"/>
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"/>
+
+    </LinearLayout>
+
+</FrameLayout>

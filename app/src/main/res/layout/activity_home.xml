@@ -137,7 +137,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/btn_recommend"
+                android:id="@+id/btn_hit"
                 android:layout_width="460dp"
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_home_button"

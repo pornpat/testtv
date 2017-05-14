@@ -29,7 +29,7 @@ import cz.msebera.android.httpclient.Header;
 public class HomeActivity extends LeanbackActivity {
 
     RelativeLayout mLiveButton;
-    RelativeLayout mRecommendButton;
+    RelativeLayout mHitButton;
     RelativeLayout mSportButton;
     RelativeLayout mFavoriteButton;
     RelativeLayout mMovieButton;
@@ -50,7 +50,7 @@ public class HomeActivity extends LeanbackActivity {
         getWindow().setBackgroundDrawableResource(R.drawable.custom_background);
 
         mLiveButton = (RelativeLayout) findViewById(R.id.btn_live);
-        mRecommendButton = (RelativeLayout) findViewById(R.id.btn_recommend);
+        mHitButton = (RelativeLayout) findViewById(R.id.btn_hit);
         mSportButton = (RelativeLayout) findViewById(R.id.btn_sport);
         mFavoriteButton = (RelativeLayout) findViewById(R.id.btn_favorite);
         mMovieButton = (RelativeLayout) findViewById(R.id.btn_movie);
@@ -122,6 +122,17 @@ public class HomeActivity extends LeanbackActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, FavoriteGridActivity.class);
+                Bundle bundle =
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this)
+                                .toBundle();
+                startActivity(intent, bundle);
+            }
+        });
+
+        mHitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, HitGridActivity.class);
                 Bundle bundle =
                         ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this)
                                 .toBundle();

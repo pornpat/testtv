@@ -3,6 +3,7 @@ package com.iptv.iptv.main.data;
 import android.content.Context;
 import android.content.res.Resources;
 
+import com.iptv.iptv.main.event.PageLiveEvent;
 import com.iptv.iptv.main.event.TokenErrorEvent;
 import com.iptv.iptv.main.model.LiveItem;
 import com.iptv.iptv.main.model.LiveProgramItem;
@@ -72,6 +73,11 @@ public class LiveProvider {
             EventBus.getDefault().post(new TokenErrorEvent());
             return sLiveList;
         }
+
+        String prev = jsonObject.getString("prev_page_url");
+        String next = jsonObject.getString("next_page_url");
+        EventBus.getDefault().post(new PageLiveEvent(!prev.equals("null") ? prev : "", !next.equals("null") ? next : ""));
+
         JSONArray jsonArray = jsonObject.getJSONArray("data");
 
         if (null == jsonArray) {

@@ -12,11 +12,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.iptv.iptv.R;
 import com.iptv.iptv.main.data.LiveLoader;
 import com.iptv.iptv.main.data.LiveProvider;
 import com.iptv.iptv.main.event.LoadLiveEvent;
+import com.iptv.iptv.main.event.PageLiveEvent;
 import com.iptv.iptv.main.event.SelectLiveEvent;
 import com.iptv.iptv.main.event.TokenErrorEvent;
 import com.iptv.iptv.main.model.LiveItem;
@@ -29,15 +31,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.iptv.iptv.R.id.next;
+import static com.iptv.iptv.R.id.prev;
+
 public class LiveGridFragment2 extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, List<LiveItem>>> {
 
     private RecyclerView mRecyclerView;
     private List<LiveItem> mMovieList = new ArrayList<>();
     private View mLoading;
     private View mEmpty;
+    private TextView mPrev;
+    private TextView mNext;
 
     private static String mVideosUrl;
     private int loaderId = 0;
+
+    private String nextPageUrl;
+    private String prevPageUrl;
 
     public LiveGridFragment2() {
 
@@ -58,6 +68,22 @@ public class LiveGridFragment2 extends Fragment implements LoaderManager.LoaderC
         mLoading = view.findViewById(R.id.loading);
         mEmpty = view.findViewById(R.id.empty);
 
+        mPrev = (TextView) view.findViewById(prev);
+        mPrev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadVideoData(UrlUtil.appendUri(prevPageUrl, UrlUtil.addToken()));
+                mRecyclerView.requestFocus();
+            }
+        });
+        mNext = (TextView) view.findViewById(next);
+        mNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadVideoData(UrlUtil.appendUri(nextPageUrl, UrlUtil.addToken()));
+                mRecyclerView.requestFocus();
+            }
+        });
     }
 
     private void loadVideoData(String url) {
@@ -113,6 +139,24 @@ public class LiveGridFragment2 extends Fragment implements LoaderManager.LoaderC
         Intent intent = new Intent(getActivity(), LivePlayerActivity.class);
         intent.putExtra("id", live.getId());
         startActivity(intent);
+    }
+
+    @Subscribe
+    public void onInformPage(PageLiveEvent event) {
+        prevPageUrl = event.prevUrl;
+        nextPageUrl = event.nextUrl;
+
+        if (prevPageUrl.length() > 10) {
+            mPrev.setVisibility(View.VISIBLE);
+        } else {
+            mPrev.setVisibility(View.INVISIBLE);
+        }
+
+        if (nextPageUrl.length() > 10) {
+            mNext.setVisibility(View.VISIBLE);
+        } else {
+            mNext.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Subscribe

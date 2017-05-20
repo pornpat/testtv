@@ -53,7 +53,7 @@ public class HomeActivity extends LeanbackActivity {
     RoundedImageView mAdsImage;
     AdsItem mAdsItem;
     List<String> mHitList;
-    int currentSet = 0;
+    int currentHit = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -247,20 +247,8 @@ public class HomeActivity extends LeanbackActivity {
     }
 
     private void updateHitMovie() {
-        int img1 = 0, img2 = 1, img3 = 2;
-        if (mHitList.size() > 3) {
-            if (currentSet == 0) {
-                img1 = 0; img2 = 1; img3 = 2;
-                currentSet = 1;
-            } else if (currentSet == 1) {
-                img1 = 3; img2 = 4; img3 = 5;
-                currentSet = 2;
-            } else {
-                img1 = 6; img2 = 7; img3 = 8;
-                currentSet = 0;
-            }
-        }
-        Glide.with(HomeActivity.this).load(mHitList.get(img1)).override(150, 200).centerCrop().error(R.drawable.movie_placeholder)
+        shuffleCurrentHit();
+        Glide.with(HomeActivity.this).load(mHitList.get(currentHit)).override(150, 200).centerCrop().error(R.drawable.movie_placeholder)
                 .listener(new RequestListener<String, GlideDrawable>() {
             @Override
             public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -276,7 +264,8 @@ public class HomeActivity extends LeanbackActivity {
             }
         }).into(mHitImage1);
 
-        Glide.with(HomeActivity.this).load(mHitList.get(img2)).override(150, 200).centerCrop().error(R.drawable.movie_placeholder)
+        shuffleCurrentHit();
+        Glide.with(HomeActivity.this).load(mHitList.get(currentHit)).override(150, 200).centerCrop().error(R.drawable.movie_placeholder)
                 .listener(new RequestListener<String, GlideDrawable>() {
             @Override
             public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -290,7 +279,8 @@ public class HomeActivity extends LeanbackActivity {
             }
         }).into(mHitImage2);
 
-        Glide.with(HomeActivity.this).load(mHitList.get(img3)).override(150, 200).centerCrop().error(R.drawable.movie_placeholder)
+        shuffleCurrentHit();
+        Glide.with(HomeActivity.this).load(mHitList.get(currentHit)).override(150, 200).centerCrop().error(R.drawable.movie_placeholder)
                 .listener(new RequestListener<String, GlideDrawable>() {
             @Override
             public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -305,6 +295,14 @@ public class HomeActivity extends LeanbackActivity {
                 return true;
             }
         }).into(mHitImage3);
+    }
+
+    private void shuffleCurrentHit() {
+        if (currentHit < mHitList.size() - 1) {
+            currentHit++;
+        } else {
+            currentHit = 0;
+        }
     }
 
     public void doWork() {

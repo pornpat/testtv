@@ -60,7 +60,7 @@ public class LiveGridActivity extends LeanbackActivity {
             @Override
             public void onClick(View view) {
                 EventBus.getDefault().post(new LoadLiveEvent(
-                        UrlUtil.appendUri(UrlUtil.HISTORY_URL, UrlUtil.addToken())));
+                        UrlUtil.appendUri(UrlUtil.LIVE_HISTORY_URL, UrlUtil.addToken())));
                 setTextSelected(mRecentText);
             }
         });
@@ -69,7 +69,7 @@ public class LiveGridActivity extends LeanbackActivity {
             @Override
             public void onClick(View view) {
                 EventBus.getDefault().post(new LoadLiveEvent(
-                        UrlUtil.appendUri(UrlUtil.FAVORITE_URL, UrlUtil.addToken())));
+                        UrlUtil.appendUri(UrlUtil.LIVE_FAVORITE_URL, UrlUtil.addToken())));
                 setTextSelected(mFavoriteText);
             }
         });

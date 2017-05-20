@@ -70,10 +70,10 @@ public class FavoriteGridActivity extends LeanbackActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                EventBus.getDefault().post(new LoadMovieEvent(UrlUtil.appendUri(UrlUtil.FAVORITE_URL, UrlUtil.addToken())));
-                EventBus.getDefault().post(new LoadSeriesEvent(UrlUtil.appendUri(UrlUtil.FAVORITE_URL, UrlUtil.addToken())));
-                EventBus.getDefault().post(new LoadLiveEvent(UrlUtil.appendUri(UrlUtil.FAVORITE_URL, UrlUtil.addToken())));
-                EventBus.getDefault().post(new LoadSportEvent(UrlUtil.appendUri(UrlUtil.FAVORITE_URL, UrlUtil.addToken())));
+                EventBus.getDefault().post(new LoadMovieEvent(UrlUtil.appendUri(UrlUtil.MOVIE_FAVORITE_URL, UrlUtil.addToken())));
+                EventBus.getDefault().post(new LoadSeriesEvent(UrlUtil.appendUri(UrlUtil.SERIES_FAVORITE_URL, UrlUtil.addToken())));
+                EventBus.getDefault().post(new LoadLiveEvent(UrlUtil.appendUri(UrlUtil.LIVE_FAVORITE_URL, UrlUtil.addToken())));
+                EventBus.getDefault().post(new LoadSportEvent(UrlUtil.appendUri(UrlUtil.SPORT_FAVORITE_URL, UrlUtil.addToken())));
             }
         }, 500);
 

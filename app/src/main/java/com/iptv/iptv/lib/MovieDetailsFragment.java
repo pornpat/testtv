@@ -87,8 +87,15 @@ public class MovieDetailsFragment extends DetailsFragment {
         mSelectedMovie = Parcels.unwrap(getActivity().getIntent()
                 .getParcelableExtra(MovieDetailsActivity.MOVIE));
 
+        String tempUrl = "";
+        if (mSelectedMovie.getType().equals("movie")) {
+            tempUrl = UrlUtil.MOVIE_FAVORITE_URL;
+        } else if (mSelectedMovie.getType().equals("sport")) {
+            tempUrl = UrlUtil.SPORT_FAVORITE_URL;
+        }
+
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(UrlUtil.appendUri(UrlUtil.FAVORITE_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
+        client.get(UrlUtil.appendUri(tempUrl, UrlUtil.addToken()), new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             }
@@ -100,22 +107,11 @@ public class MovieDetailsFragment extends DetailsFragment {
                     JSONArray jsonArray = jsonObject.getJSONArray("data");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject movieObj = jsonArray.getJSONObject(i);
-
                         JSONObject media = movieObj.getJSONObject("media");
-                        JSONObject mediaType = media.getJSONObject("media_type");
-                        String type = mediaType.getString("type_name");
-
                         int id = media.getInt("id");
                         if (id == mSelectedMovie.getId()) {
                             isFav = true;
                         }
-
-//                        if (type.equals("movie")) {
-//                            int id = media.getInt("id");
-//                            if (id == mSelectedMovie.getId()) {
-//                                isFav = true;
-//                            }
-//                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

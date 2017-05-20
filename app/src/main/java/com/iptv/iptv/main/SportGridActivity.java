@@ -80,7 +80,7 @@ public class SportGridActivity extends LeanbackActivity implements FilterFragmen
             @Override
             public void onClick(View view) {
                 EventBus.getDefault().post(new LoadSportEvent(
-                        UrlUtil.appendUri(UrlUtil.HISTORY_URL, UrlUtil.addToken())));
+                        UrlUtil.appendUri(UrlUtil.SPORT_HISTORY_URL, UrlUtil.addToken())));
                 setTextSelected(mRecentText);
             }
         });
@@ -89,7 +89,7 @@ public class SportGridActivity extends LeanbackActivity implements FilterFragmen
             @Override
             public void onClick(View view) {
                 EventBus.getDefault().post(new LoadSportEvent(
-                        UrlUtil.appendUri(UrlUtil.FAVORITE_URL, UrlUtil.addToken())));
+                        UrlUtil.appendUri(UrlUtil.SPORT_FAVORITE_URL, UrlUtil.addToken())));
                 setTextSelected(mFavoriteText);
             }
         });

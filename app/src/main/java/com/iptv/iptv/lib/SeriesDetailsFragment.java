@@ -69,7 +69,7 @@ public class SeriesDetailsFragment extends DetailsFragment {
                 .getParcelableExtra(SeriesDetailsActivity.SERIES));
 
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(UrlUtil.appendUri(UrlUtil.FAVORITE_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
+        client.get(UrlUtil.appendUri(UrlUtil.SERIES_FAVORITE_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             }
@@ -81,16 +81,10 @@ public class SeriesDetailsFragment extends DetailsFragment {
                     JSONArray jsonArray = jsonObject.getJSONArray("data");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject movieObj = jsonArray.getJSONObject(i);
-
                         JSONObject media = movieObj.getJSONObject("media");
-                        JSONObject mediaType = media.getJSONObject("media_type");
-                        String type = mediaType.getString("type_name");
-
-                        if (type.equals("series")) {
-                            int id = media.getInt("id");
-                            if (id == mSelectedMovie.getId()) {
-                                isFav = true;
-                            }
+                        int id = media.getInt("id");
+                        if (id == mSelectedMovie.getId()) {
+                            isFav = true;
                         }
                     }
                 } catch (JSONException e) {

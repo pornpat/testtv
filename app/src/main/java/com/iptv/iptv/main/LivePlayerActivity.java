@@ -228,7 +228,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
 
     private void initFavorite() {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(UrlUtil.appendUri(UrlUtil.FAVORITE_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
+        client.get(UrlUtil.appendUri(UrlUtil.LIVE_FAVORITE_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
             }
@@ -242,11 +242,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
                         JSONObject movieObj = jsonArray.getJSONObject(i);
 
                         JSONObject media = movieObj.getJSONObject("media");
-                        JSONObject mediaType = media.getJSONObject("media_type");
-                        String type = mediaType.getString("type_name");
-                        if (type.equals("live")) {
-                            mFavList.add(media.getInt("id"));
-                        }
+                        mFavList.add(media.getInt("id"));
                     }
                     startLive(currentChannel);
                 } catch (JSONException e) {

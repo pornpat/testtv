@@ -20,14 +20,12 @@ public class UrlUtil {
     public static final String MOVIE_FILTER_URL = MOVIE_URL + "/filters";
     public static final String SERIES_FILTER_URL = SERIES_URL + "/filters";
     public static final String SPORT_FILTER_URL = SPORT_URL + "/filters";
-//    public static final String HISTORY_URL = BASE_URL + "/users/histories";
     public static final String HISTORY_URL = BASE_URL + "/users/histories";
     public static final String MOVIE_HISTORY_URL = BASE_URL + "/users/histories/movies";
     public static final String SERIES_HISTORY_URL = BASE_URL + "/users/histories/series";
     public static final String LIVE_HISTORY_URL = BASE_URL + "/users/histories/lives";
     public static final String SPORT_HISTORY_URL = BASE_URL + "/users/histories/sports";
-//    public static final String FAVORITE_URL = BASE_URL + "/users/favorites";
-public static final String FAVORITE_URL = BASE_URL + "/users/favorites";
+    public static final String FAVORITE_URL = BASE_URL + "/users/favorites";
     public static final String MOVIE_FAVORITE_URL = BASE_URL + "/users/favorites/movies";
     public static final String SERIES_FAVORITE_URL = BASE_URL + "/users/favorites/series";
     public static final String LIVE_FAVORITE_URL = BASE_URL + "/users/favorites/lives";

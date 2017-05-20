@@ -28,4 +28,34 @@
         android:layout_marginRight="@dimen/margin_padding_large"
         android:visibility="gone"/>
 
+    <TextView
+        android:id="@+id/prev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_page_button"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_margin="@dimen/margin_padding_mid"
+        android:padding="12dp"
+        android:layout_gravity="bottom|left"
+        android:text="ก่อนหน้า"
+        android:textColor="@color/bg_movie_text"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_page_button"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_margin="@dimen/margin_padding_mid"
+        android:padding="12dp"
+        android:layout_gravity="bottom|right"
+        android:text="ถัดไป"
+        android:textColor="@color/bg_movie_text"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
 </FrameLayout>

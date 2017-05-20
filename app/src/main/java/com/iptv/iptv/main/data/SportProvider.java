@@ -3,6 +3,7 @@ package com.iptv.iptv.main.data;
 import android.content.Context;
 import android.content.res.Resources;
 
+import com.iptv.iptv.main.event.PageSportEvent;
 import com.iptv.iptv.main.event.TokenErrorEvent;
 import com.iptv.iptv.main.model.DiscItem;
 import com.iptv.iptv.main.model.MovieItem;
@@ -79,6 +80,11 @@ public class SportProvider {
             EventBus.getDefault().post(new TokenErrorEvent());
             return sMovieList;
         }
+
+        String prev = jsonObject.getString("prev_page_url");
+        String next = jsonObject.getString("next_page_url");
+        EventBus.getDefault().post(new PageSportEvent(!prev.equals("null") ? prev : "", !next.equals("null") ? next : ""));
+
         JSONArray jsonArray = jsonObject.getJSONArray("data");
 
         if (null == jsonArray) {

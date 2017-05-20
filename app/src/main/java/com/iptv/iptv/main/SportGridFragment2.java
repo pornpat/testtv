@@ -12,12 +12,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.iptv.iptv.R;
 import com.iptv.iptv.lib.MovieDetailsActivity;
 import com.iptv.iptv.main.data.SportLoader;
 import com.iptv.iptv.main.data.SportProvider;
 import com.iptv.iptv.main.event.LoadSportEvent;
+import com.iptv.iptv.main.event.PageSportEvent;
 import com.iptv.iptv.main.event.SelectSportEvent;
 import com.iptv.iptv.main.event.TokenErrorEvent;
 import com.iptv.iptv.main.model.MovieItem;
@@ -31,15 +33,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.iptv.iptv.R.id.next;
+import static com.iptv.iptv.R.id.prev;
+
 public class SportGridFragment2 extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, List<MovieItem>>> {
 
     private RecyclerView mRecyclerView;
     private List<MovieItem> mMovieList = new ArrayList<>();
     private View mLoading;
     private View mEmpty;
+    private TextView mPrev;
+    private TextView mNext;
 
     private static String mVideosUrl;
     private int loaderId = 0;
+
+    private String nextPageUrl;
+    private String prevPageUrl;
 
     public SportGridFragment2() {
 
@@ -60,6 +70,22 @@ public class SportGridFragment2 extends Fragment implements LoaderManager.Loader
         mLoading = view.findViewById(R.id.loading);
         mEmpty = view.findViewById(R.id.empty);
 
+        mPrev = (TextView) view.findViewById(prev);
+        mPrev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadVideoData(UrlUtil.appendUri(prevPageUrl, UrlUtil.addToken()));
+                mRecyclerView.requestFocus();
+            }
+        });
+        mNext = (TextView) view.findViewById(next);
+        mNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadVideoData(UrlUtil.appendUri(nextPageUrl, UrlUtil.addToken()));
+                mRecyclerView.requestFocus();
+            }
+        });
     }
 
     private void loadVideoData(String url) {
@@ -115,6 +141,24 @@ public class SportGridFragment2 extends Fragment implements LoaderManager.Loader
         Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
         intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(movie));
         getActivity().startActivity(intent);
+    }
+
+    @Subscribe
+    public void onInformPage(PageSportEvent event) {
+        prevPageUrl = event.prevUrl;
+        nextPageUrl = event.nextUrl;
+
+        if (prevPageUrl.length() > 10) {
+            mPrev.setVisibility(View.VISIBLE);
+        } else {
+            mPrev.setVisibility(View.INVISIBLE);
+        }
+
+        if (nextPageUrl.length() > 10) {
+            mNext.setVisibility(View.VISIBLE);
+        } else {
+            mNext.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Subscribe

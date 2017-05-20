@@ -3,7 +3,7 @@ package com.iptv.iptv.main.data;
 import android.content.Context;
 import android.content.res.Resources;
 
-import com.iptv.iptv.main.event.InformPageEvent;
+import com.iptv.iptv.main.event.PageMovieEvent;
 import com.iptv.iptv.main.event.TokenErrorEvent;
 import com.iptv.iptv.main.model.DiscItem;
 import com.iptv.iptv.main.model.MovieItem;
@@ -83,7 +83,7 @@ public class MovieProvider {
 
         String prev = jsonObject.getString("prev_page_url");
         String next = jsonObject.getString("next_page_url");
-        EventBus.getDefault().post(new InformPageEvent(!prev.equals("null") ? prev : "", !next.equals("null") ? next : ""));
+        EventBus.getDefault().post(new PageMovieEvent(!prev.equals("null") ? prev : "", !next.equals("null") ? next : ""));
 
         JSONArray jsonArray = jsonObject.getJSONArray("data");
 

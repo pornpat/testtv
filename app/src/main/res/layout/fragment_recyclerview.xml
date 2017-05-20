@@ -41,7 +41,8 @@
         android:text="ก่อนหน้า"
         android:textColor="@color/bg_movie_text"
         android:textSize="20sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/next"
@@ -56,6 +57,7 @@
         android:text="ถัดไป"
         android:textColor="@color/bg_movie_text"
         android:textSize="20sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:visibility="invisible"/>
 
 </FrameLayout>

@@ -18,7 +18,7 @@ import com.iptv.iptv.R;
 import com.iptv.iptv.lib.MovieDetailsActivity;
 import com.iptv.iptv.main.data.MovieLoader;
 import com.iptv.iptv.main.data.MovieProvider;
-import com.iptv.iptv.main.event.InformPageEvent;
+import com.iptv.iptv.main.event.PageMovieEvent;
 import com.iptv.iptv.main.event.LoadMovieEvent;
 import com.iptv.iptv.main.event.SelectMovieEvent;
 import com.iptv.iptv.main.event.TokenErrorEvent;
@@ -144,7 +144,7 @@ public class MovieGridFragment2 extends Fragment implements LoaderManager.Loader
     }
 
     @Subscribe
-    public void onInformPage(InformPageEvent event) {
+    public void onInformPage(PageMovieEvent event) {
         prevPageUrl = event.prevUrl;
         nextPageUrl = event.nextUrl;
 

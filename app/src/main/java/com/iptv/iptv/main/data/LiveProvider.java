@@ -74,9 +74,10 @@ public class LiveProvider {
             return sLiveList;
         }
 
-        String prev = jsonObject.getString("prev_page_url");
+        int current = jsonObject.getInt("current_page");
+        int total = jsonObject.getInt("last_page");
         String next = jsonObject.getString("next_page_url");
-        EventBus.getDefault().post(new PageLiveEvent(!prev.equals("null") ? prev : "", !next.equals("null") ? next : ""));
+        EventBus.getDefault().post(new PageLiveEvent(current < total, !next.equals("null") ? next : ""));
 
         JSONArray jsonArray = jsonObject.getJSONArray("data");
 

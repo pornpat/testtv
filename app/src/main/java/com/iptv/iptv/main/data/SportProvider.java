@@ -81,9 +81,10 @@ public class SportProvider {
             return sMovieList;
         }
 
-        String prev = jsonObject.getString("prev_page_url");
+        int current = jsonObject.getInt("current_page");
+        int total = jsonObject.getInt("last_page");
         String next = jsonObject.getString("next_page_url");
-        EventBus.getDefault().post(new PageSportEvent(!prev.equals("null") ? prev : "", !next.equals("null") ? next : ""));
+        EventBus.getDefault().post(new PageSportEvent(current < total, !next.equals("null") ? next : ""));
 
         JSONArray jsonArray = jsonObject.getJSONArray("data");
 

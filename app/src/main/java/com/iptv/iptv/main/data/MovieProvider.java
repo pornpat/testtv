@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.iptv.iptv.R.id.prev;
+
 /**
  * Created by Asus N46V on 3/3/2017.
  */
@@ -81,9 +83,10 @@ public class MovieProvider {
             return sMovieList;
         }
 
-        String prev = jsonObject.getString("prev_page_url");
+        int current = jsonObject.getInt("current_page");
+        int total = jsonObject.getInt("last_page");
         String next = jsonObject.getString("next_page_url");
-        EventBus.getDefault().post(new PageMovieEvent(!prev.equals("null") ? prev : "", !next.equals("null") ? next : ""));
+        EventBus.getDefault().post(new PageMovieEvent(current < total, !next.equals("null") ? next : ""));
 
         JSONArray jsonArray = jsonObject.getJSONArray("data");
 

@@ -6,11 +6,11 @@ package com.iptv.iptv.main.event;
 
 public class PageMovieEvent {
 
-    public final String prevUrl;
+    public final boolean hasNext;
     public final String nextUrl;
 
-    public PageMovieEvent(String prevUrl, String nextUrl) {
-        this.prevUrl = prevUrl;
+    public PageMovieEvent(boolean hasNext, String nextUrl) {
+        this.hasNext = hasNext;
         this.nextUrl = nextUrl;
     }
 }

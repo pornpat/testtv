@@ -46,6 +46,9 @@ public class SportGridFragment2 extends Fragment implements LoaderManager.Loader
     private static String mVideosUrl;
     private int loaderId = 0;
 
+    private boolean shouldLoad = false;
+    private boolean isNewLoad = false;
+
     public SportGridFragment2() {
 
     }
@@ -77,6 +80,7 @@ public class SportGridFragment2 extends Fragment implements LoaderManager.Loader
     }
 
     private void loadVideoData(String url) {
+        shouldLoad = true;
         updateUI(mLoading);
         mLoadmore.setVisibility(View.INVISIBLE);
 
@@ -95,55 +99,62 @@ public class SportGridFragment2 extends Fragment implements LoaderManager.Loader
 
     @Override
     public void onLoadFinished(Loader<HashMap<String, List<MovieItem>>> loader, HashMap<String, List<MovieItem>> data) {
-        if (!isLoadmore) {
-            if (null != data && !data.isEmpty()) {
-                mMovieList.clear();
-                for (Map.Entry<String, List<MovieItem>> entry : data.entrySet()) {
-                    List<MovieItem> list = entry.getValue();
+        if (shouldLoad) {
+            if (!isLoadmore) {
+                if (null != data && !data.isEmpty()) {
+                    if (isNewLoad) {
+                        mMovieList.clear();
+                        isNewLoad = false;
+                    }
+                    for (Map.Entry<String, List<MovieItem>> entry : data.entrySet()) {
+                        List<MovieItem> list = entry.getValue();
 
-                    for (int j = 0; j < list.size(); j++) {
-                        mMovieList.add(list.get(j));
+                        for (int j = 0; j < list.size(); j++) {
+                            mMovieList.add(list.get(j));
+                        }
                     }
                 }
-            }
-            mRecyclerView.setAdapter(new SportGridAdapter(getActivity(), mMovieList));
+                mRecyclerView.setAdapter(new SportGridAdapter(getActivity(), mMovieList));
 
-            if (mMovieList.size() > 0) {
-                updateUI(mRecyclerView);
+                if (mMovieList.size() > 0) {
+                    updateUI(mRecyclerView);
+                } else {
+                    updateUI(mEmpty);
+                }
             } else {
-                updateUI(mEmpty);
-            }
-        } else {
-            if (null != data && !data.isEmpty()) {
-                for (Map.Entry<String, List<MovieItem>> entry : data.entrySet()) {
-                    List<MovieItem> list = entry.getValue();
+                if (null != data && !data.isEmpty()) {
+                    for (Map.Entry<String, List<MovieItem>> entry : data.entrySet()) {
+                        List<MovieItem> list = entry.getValue();
 
-                    for (int j = 0; j < list.size(); j++) {
-                        mMovieList.add(list.get(j));
+                        for (int j = 0; j < list.size(); j++) {
+                            mMovieList.add(list.get(j));
+                        }
                     }
                 }
-            }
-            mRecyclerView.getAdapter().notifyDataSetChanged();
+                mRecyclerView.getAdapter().notifyDataSetChanged();
 
-            if (mMovieList.size() > 0) {
-                updateUI(mRecyclerView);
-            } else {
-                updateUI(mEmpty);
-            }
+                if (mMovieList.size() > 0) {
+                    updateUI(mRecyclerView);
+                } else {
+                    updateUI(mEmpty);
+                }
 
-            isLoadmore = false;
+                isLoadmore = false;
+            }
+            shouldLoad = false;
         }
     }
 
     @Override
     public void onLoaderReset(Loader<HashMap<String, List<MovieItem>>> loader) {
-        if (!isLoadmore) {
-            mMovieList.clear();
-        }
+//        if (!isLoadmore) {
+//            mMovieList.clear();
+//        }
     }
 
     @Subscribe
     public void onLoadMovieData(LoadSportEvent event) {
+        isNewLoad = true;
         loadVideoData(event.url);
     }
 

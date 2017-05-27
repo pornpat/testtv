@@ -44,6 +44,9 @@ public class LiveGridFragment2 extends Fragment implements LoaderManager.LoaderC
     private static String mVideosUrl;
     private int loaderId = 0;
 
+    private boolean shouldLoad = false;
+    private boolean isNewLoad = false;
+
     public LiveGridFragment2() {
 
     }
@@ -75,6 +78,7 @@ public class LiveGridFragment2 extends Fragment implements LoaderManager.LoaderC
     }
 
     private void loadVideoData(String url) {
+        shouldLoad = true;
         updateUI(mLoading);
         mLoadmore.setVisibility(View.INVISIBLE);
 
@@ -93,55 +97,62 @@ public class LiveGridFragment2 extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public void onLoadFinished(Loader<HashMap<String, List<LiveItem>>> loader, HashMap<String, List<LiveItem>> data) {
-        if (!isLoadmore) {
-            if (null != data && !data.isEmpty()) {
-                mMovieList.clear();
-                for (Map.Entry<String, List<LiveItem>> entry : data.entrySet()) {
-                    List<LiveItem> list = entry.getValue();
+        if (shouldLoad) {
+            if (!isLoadmore) {
+                if (null != data && !data.isEmpty()) {
+                    if (isNewLoad) {
+                        mMovieList.clear();
+                        isNewLoad = false;
+                    }
+                    for (Map.Entry<String, List<LiveItem>> entry : data.entrySet()) {
+                        List<LiveItem> list = entry.getValue();
 
-                    for (int j = 0; j < list.size(); j++) {
-                        mMovieList.add(list.get(j));
+                        for (int j = 0; j < list.size(); j++) {
+                            mMovieList.add(list.get(j));
+                        }
                     }
                 }
-            }
-            mRecyclerView.setAdapter(new LiveGridAdapter(getActivity(), mMovieList));
+                mRecyclerView.setAdapter(new LiveGridAdapter(getActivity(), mMovieList));
 
-            if (mMovieList.size() > 0) {
-                updateUI(mRecyclerView);
+                if (mMovieList.size() > 0) {
+                    updateUI(mRecyclerView);
+                } else {
+                    updateUI(mEmpty);
+                }
             } else {
-                updateUI(mEmpty);
-            }
-        } else {
-            if (null != data && !data.isEmpty()) {
-                for (Map.Entry<String, List<LiveItem>> entry : data.entrySet()) {
-                    List<LiveItem> list = entry.getValue();
+                if (null != data && !data.isEmpty()) {
+                    for (Map.Entry<String, List<LiveItem>> entry : data.entrySet()) {
+                        List<LiveItem> list = entry.getValue();
 
-                    for (int j = 0; j < list.size(); j++) {
-                        mMovieList.add(list.get(j));
+                        for (int j = 0; j < list.size(); j++) {
+                            mMovieList.add(list.get(j));
+                        }
                     }
                 }
-            }
-            mRecyclerView.getAdapter().notifyDataSetChanged();
+                mRecyclerView.getAdapter().notifyDataSetChanged();
 
-            if (mMovieList.size() > 0) {
-                updateUI(mRecyclerView);
-            } else {
-                updateUI(mEmpty);
-            }
+                if (mMovieList.size() > 0) {
+                    updateUI(mRecyclerView);
+                } else {
+                    updateUI(mEmpty);
+                }
 
-            isLoadmore = false;
+                isLoadmore = false;
+            }
+            shouldLoad = false;
         }
     }
 
     @Override
     public void onLoaderReset(Loader<HashMap<String, List<LiveItem>>> loader) {
-        if (!isLoadmore) {
-            mMovieList.clear();
-        }
+//        if (!isLoadmore) {
+//            mMovieList.clear();
+//        }
     }
 
     @Subscribe
     public void onLoadMovieData(LoadLiveEvent event) {
+        isNewLoad = true;
         loadVideoData(event.url);
     }
 

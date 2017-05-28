@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
@@ -21,9 +20,10 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.parceler.Parcels;
 
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -45,6 +45,9 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
     private static final int BACKGROUND_UPDATE_DELAY = 2500;
     private final Handler mHandler = new Handler();
     private Timer mBackgroundTimer;
+
+    int startMin = 0;
+    int startSec = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,9 +85,50 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
 
         player.setCustomLabelText(movieName);
         player.setCallback(this);
-        player.setSource(Uri.parse(mUrl));
-//        player.setSource(Uri.parse("http://45.64.185.101:8081/atomvod/bluray2016/10-Cloverfield-Lane-2016-th-en-1080p.mp4"));
-        player.setAutoPlay(true);
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        String apiUrl = "";
+        if (mSelectedMovie != null) {
+            apiUrl = UrlUtil.appendUri(UrlUtil.getRecentWatch(UrlUtil.HISTORY_DISC_URL, mExtraId), UrlUtil.addToken());
+        } else if (mSelectedSeries != null) {
+            apiUrl = UrlUtil.appendUri(UrlUtil.getRecentWatch(UrlUtil.HISTORY_EPISODE_URL, mExtraId), UrlUtil.addToken());
+        }
+        client.get(apiUrl, new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                player.setSource(Uri.parse(mUrl));
+                player.setAutoPlay(true);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                try {
+                    if (mSelectedMovie != null) {
+                        JSONObject jsonObject = new JSONObject(responseString);
+                        if (jsonObject.has("disc_id")) {
+                            int discId = jsonObject.getInt("disc_id");
+                            if (discId == mExtraId) {
+                                startMin = jsonObject.getInt("minute");
+                                startSec = jsonObject.getInt("second");
+                            }
+                        }
+                    } else if (mSelectedSeries != null) {
+                        JSONObject jsonObject = new JSONObject(responseString);
+                        if (jsonObject.has("episode_id")) {
+                            int episodeId = jsonObject.getInt("episode_id");
+                            if (episodeId == mExtraId) {
+                                startMin = jsonObject.getInt("minute");
+                                startSec = jsonObject.getInt("second");
+                            }
+                        }
+                    }
+                    player.setSource(Uri.parse(mUrl));
+                    player.setAutoPlay(true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
 //        mVideoView = (VideoView) findViewById(R.id.video);
 //        mVideoView.post(new Runnable() {
@@ -201,16 +245,17 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
 
     @Override
     public void onPrepared(EasyVideoPlayer player) {
-
+        int position = ((startMin * 60) + startSec)*1000;
+        player.seekTo(position);
     }
 
     @Override
     public void onInfo(EasyVideoPlayer player) {
-        List<String> tracks = player.getTracks();
-        for (int i = 0; i < tracks.size(); i++) {
-            Log.v("testkn", tracks.get(i));
-        }
-//        player.setTrack(2);
+//        List<String> tracks = player.getTracks();
+//        for (int i = 0; i < tracks.size(); i++) {
+//            Log.v("testkn", tracks.get(i));
+//        }
+////        player.setTrack(2);
     }
 
     @Override
@@ -226,6 +271,7 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
     @Override
     public void onCompletion(EasyVideoPlayer player) {
         player.showControls();
+        player.seekTo(0);
     }
 
     @Override

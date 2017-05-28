@@ -25,6 +25,8 @@ public class UrlUtil {
     public static final String SERIES_HISTORY_URL = BASE_URL + "/users/histories/series";
     public static final String LIVE_HISTORY_URL = BASE_URL + "/users/histories/lives";
     public static final String SPORT_HISTORY_URL = BASE_URL + "/users/histories/sports";
+    public static final String HISTORY_DISC_URL = BASE_URL + "/users/histories/discs";
+    public static final String HISTORY_EPISODE_URL = BASE_URL + "/users/histories/episodes";
     public static final String FAVORITE_URL = BASE_URL + "/users/favorites";
     public static final String MOVIE_FAVORITE_URL = BASE_URL + "/users/favorites/movies";
     public static final String SERIES_FAVORITE_URL = BASE_URL + "/users/favorites/series";
@@ -66,6 +68,10 @@ public class UrlUtil {
 
     public static String getRecommendUrl(String url, int id) {
         return url + "/" + id + RECOMMEND_URL;
+    }
+
+    public static String getRecentWatch(String url, int id) {
+        return url + "/" + id;
     }
 
 }

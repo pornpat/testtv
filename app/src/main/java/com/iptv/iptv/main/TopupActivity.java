@@ -1,15 +1,23 @@
 package com.iptv.iptv.main;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.iptv.iptv.R;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
 
-import java.util.Calendar;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
 
 public class TopupActivity extends LeanbackActivity {
 
@@ -20,12 +28,10 @@ public class TopupActivity extends LeanbackActivity {
     CheckBox mMoneyRefBox;
 
     EditText mPincodeText;
-
-    int mYear;
-    int mMonth;
-    int mDay;
-    int mHour;
-    int mMinute;
+    EditText mMoneyRefText;
+    EditText mMoneyPriceText;
+    EditText mWalletRefText;
+    EditText mWalletPriceText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +39,11 @@ public class TopupActivity extends LeanbackActivity {
         setContentView(R.layout.activity_topup);
         getWindow().setBackgroundDrawableResource(R.drawable.custom_background);
 
-        Calendar calendar = Calendar.getInstance();
-        mYear = calendar.get(Calendar.YEAR);
-        mMonth = calendar.get(Calendar.MONTH);
-        mDay = calendar.get(Calendar.DAY_OF_MONTH);
-
         mPincodeText = (EditText) findViewById(R.id.txt_pincode);
+        mMoneyRefText = (EditText) findViewById(R.id.txt_money_ref);
+        mMoneyPriceText = (EditText) findViewById(R.id.txt_money_price);
+        mWalletRefText = (EditText) findViewById(R.id.txt_wallet_ref);
+        mWalletPriceText = (EditText) findViewById(R.id.txt_wallet_price);
 
         mPincodeButton = (Button) findViewById(R.id.btn_pincode);
         mPincodeButton.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +115,185 @@ public class TopupActivity extends LeanbackActivity {
                 mMoneyRefBox.setChecked(true);
             }
         });
-
     }
+
+    public void applyPincodeTopup(View v) {
+        if (mPincodeText.getText().length() == 9) {
+            final ProgressDialog pDialog = new ProgressDialog(TopupActivity.this);
+            pDialog.setMessage("กำลังดำเนินการ..");
+            pDialog.show();
+
+            RequestParams params = new RequestParams();
+            params.put("pincode", mPincodeText.getText().toString());
+
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.post(UrlUtil.appendUri(UrlUtil.TOPUP_PINCODE, UrlUtil.addSession()), params, new TextHttpResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Toast.makeText(TopupActivity.this, responseString, Toast.LENGTH_LONG).show();
+                    pDialog.dismiss();
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(responseString);
+                        JSONObject payment = jsonObject.getJSONObject("payment");
+                        Toast.makeText(TopupActivity.this, payment.getString("message"), Toast.LENGTH_LONG).show();
+                        boolean status = payment.getBoolean("status");
+                        if (status) {
+                            int day = payment.getInt("day");
+                            // add day to PACKAGE API
+
+                            finish();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    pDialog.dismiss();
+                }
+            });
+        } else {
+            Toast.makeText(this, "รหัส Pincode ไม่ถูกต้อง กรุณากรอกใหม่่", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void applyMoneyRefTopup(View v) {
+        if (mMoneyRefText.getText().length() > 0 && mMoneyPriceText.getText().length() > 0) {
+            final ProgressDialog pDialog = new ProgressDialog(TopupActivity.this);
+            pDialog.setMessage("กำลังดำเนินการ..");
+            pDialog.show();
+
+            RequestParams params = new RequestParams();
+            params.put("type", "truemoney");
+            params.put("price", Integer.parseInt(mMoneyPriceText.getText().toString()));
+            params.put("reference", Integer.parseInt(mMoneyRefText.getText().toString()));
+
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.post(UrlUtil.appendUri(UrlUtil.TOPUP_TRUE, UrlUtil.addSession()), params, new TextHttpResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Toast.makeText(TopupActivity.this, responseString, Toast.LENGTH_LONG).show();
+                    pDialog.dismiss();
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(responseString);
+                        JSONObject payment = jsonObject.getJSONObject("payment");
+                        boolean status = payment.getBoolean("status");
+                        if (status) {
+                            int transaction = payment.getInt("transaction");
+
+                            AsyncHttpClient client = new AsyncHttpClient();
+                            client.get(UrlUtil.appendUri(UrlUtil.getTopupTransaction(transaction), UrlUtil.addSession()), new TextHttpResponseHandler() {
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                    Toast.makeText(TopupActivity.this, responseString, Toast.LENGTH_LONG).show();
+                                    pDialog.dismiss();
+                                }
+
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(responseString);
+                                        JSONObject payment = jsonObject.getJSONObject("payment");
+                                        Toast.makeText(TopupActivity.this, payment.getString("message"), Toast.LENGTH_LONG).show();
+                                        boolean status = payment.getBoolean("status");
+                                        if (status) {
+                                            int day = payment.getInt("day");
+                                            // add day to PACKAGE API
+
+                                            finish();
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    pDialog.dismiss();
+                                }
+                            });
+                        } else {
+                            Toast.makeText(TopupActivity.this, payment.getString("message"), Toast.LENGTH_LONG).show();
+                            pDialog.dismiss();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(this, "กรุณากรอกข้อมูลให้ครบถ้วน", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void applyWalletRefTopup(View v) {
+        if (mWalletRefText.getText().length() > 0 && mWalletPriceText.getText().length() > 0) {
+            final ProgressDialog pDialog = new ProgressDialog(TopupActivity.this);
+            pDialog.setMessage("กำลังดำเนินการ..");
+            pDialog.show();
+
+            RequestParams params = new RequestParams();
+            params.put("type", "wallet_ref");
+            params.put("price", Integer.parseInt(mWalletPriceText.getText().toString()));
+            params.put("reference", Integer.parseInt(mWalletRefText.getText().toString()));
+
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.post(UrlUtil.appendUri(UrlUtil.TOPUP_TRUE, UrlUtil.addSession()), params, new TextHttpResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Toast.makeText(TopupActivity.this, responseString, Toast.LENGTH_LONG).show();
+                    pDialog.dismiss();
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(responseString);
+                        JSONObject payment = jsonObject.getJSONObject("payment");
+                        boolean status = payment.getBoolean("status");
+                        if (status) {
+                            int transaction = payment.getInt("transaction");
+
+                            AsyncHttpClient client = new AsyncHttpClient();
+                            client.get(UrlUtil.appendUri(UrlUtil.getTopupTransaction(transaction), UrlUtil.addSession()), new TextHttpResponseHandler() {
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                    Toast.makeText(TopupActivity.this, responseString, Toast.LENGTH_LONG).show();
+                                    pDialog.dismiss();
+                                }
+
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(responseString);
+                                        JSONObject payment = jsonObject.getJSONObject("payment");
+                                        Toast.makeText(TopupActivity.this, payment.getString("message"), Toast.LENGTH_LONG).show();
+                                        boolean status = payment.getBoolean("status");
+                                        if (status) {
+                                            int day = payment.getInt("day");
+                                            // add day to PACKAGE API
+
+                                            finish();
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    pDialog.dismiss();
+                                }
+                            });
+                        } else {
+                            Toast.makeText(TopupActivity.this, payment.getString("message"), Toast.LENGTH_LONG).show();
+                            pDialog.dismiss();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(this, "กรุณากรอกข้อมูลให้ครบถ้วน", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

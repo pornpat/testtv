@@ -38,8 +38,16 @@ public class UrlUtil {
     public static final String SERIES_HIT_URL = SERIES_URL + "?hit=VIEW&hit_days=7";
     public static final String SPORT_HIT_URL = SPORT_URL + "?hit=VIEW&hit_days=7";
 
+    public static final String TOPUP_BASE_URL = "http://cdnhispeed.com/mock_api/REST/V1/topup";
+    public static final String TOPUP_PINCODE = TOPUP_BASE_URL + "/pincode";
+    public static final String TOPUP_TRUE = TOPUP_BASE_URL + "/new";
+
     public static String addToken() {
         return "token=" + PrefUtil.getStringProperty(R.string.pref_token);
+    }
+
+    public static String addSession() {
+        return "session=" + PrefUtil.getStringProperty(R.string.pref_token);
     }
 
     public static String appendUri(String uri, String appendQuery) {
@@ -72,6 +80,10 @@ public class UrlUtil {
 
     public static String getRecentWatch(String url, int id) {
         return url + "/" + id;
+    }
+
+    public static String getTopupTransaction(int transactionId) {
+        return TOPUP_BASE_URL + "/" + transactionId;
     }
 
 }

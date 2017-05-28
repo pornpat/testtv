@@ -129,7 +129,7 @@
                 android:textStyle="normal"
                 android:textAllCaps="false"
                 android:textSize="26sp"
-                android:onClick="signIn"
+                android:onClick="applyPincodeTopup"
                 android:background="@drawable/bg_login_button"/>
 
         </LinearLayout>
@@ -243,6 +243,7 @@
                 android:visibility="gone">
 
                 <EditText
+                    android:id="@+id/txt_money_ref"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="ใส่เลขอ้างอิง"
@@ -250,9 +251,11 @@
                     android:paddingLeft="@dimen/margin_padding_small"
                     android:textColor="@color/text_default"
                     android:textSize="26sp"
+                    android:inputType="number"
                     android:singleLine="true"/>
 
                 <EditText
+                    android:id="@+id/txt_money_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_padding_xsmall"
@@ -274,6 +277,7 @@
                     android:textStyle="normal"
                     android:textAllCaps="false"
                     android:textSize="26sp"
+                    android:onClick="applyMoneyRefTopup"
                     android:background="@drawable/bg_login_button"/>
 
             </LinearLayout>
@@ -289,6 +293,7 @@
                 android:visibility="gone">
 
                 <EditText
+                    android:id="@+id/txt_wallet_ref"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="ใส่เลขอ้างอิง"
@@ -296,9 +301,11 @@
                     android:paddingLeft="@dimen/margin_padding_small"
                     android:textColor="@color/text_default"
                     android:textSize="26sp"
+                    android:inputType="number"
                     android:singleLine="true"/>
 
                 <EditText
+                    android:id="@+id/txt_wallet_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_padding_xsmall"
@@ -320,6 +327,7 @@
                     android:textStyle="normal"
                     android:textAllCaps="false"
                     android:textSize="26sp"
+                    android:onClick="applyWalletRefTopup"
                     android:background="@drawable/bg_login_button"/>
 
             </LinearLayout>

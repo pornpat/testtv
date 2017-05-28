@@ -175,6 +175,14 @@ public class HomeActivity extends LeanbackActivity {
                 startActivity(intent, bundle);
             }
         });
+
+        mSettingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, TopupActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void updateAdvertise() {

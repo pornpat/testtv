@@ -15,4 +15,5 @@
          would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively). -->
     <dimen name="activity_margin">64dp</dimen>
     <dimen name="activity_margin_reverse">-64dp</dimen>
+    <dimen name="margin_small_reverse">-16dp</dimen>
 </resources>

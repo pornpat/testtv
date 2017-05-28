@@ -10,19 +10,19 @@
     <Space
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1.25"/>
+        android:layout_weight="1"/>
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_weight="2.5"
         android:layout_marginTop="@dimen/activity_margin"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_large"
+            android:layout_marginTop="@dimen/margin_padding_mid"
             android:orientation="horizontal"
             android:gravity="center_horizontal|center_vertical">
 
@@ -63,6 +63,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_padding_normal"
+            android:layout_marginLeft="@dimen/margin_padding_normal"
+            android:layout_marginRight="@dimen/margin_padding_normal"
             android:orientation="horizontal">
 
             <Button
@@ -99,6 +101,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_margin"
+            android:layout_marginLeft="@dimen/margin_padding_large"
+            android:layout_marginRight="@dimen/margin_padding_large"
             android:orientation="vertical"
             android:visibility="gone">
 
@@ -141,6 +145,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_padding_normal"
+                android:layout_marginRight="@dimen/margin_padding_normal"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -150,7 +156,7 @@
                     android:layout_weight="1"
                     android:padding="@dimen/margin_padding_xsmall"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical"
+                    android:gravity="center"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:background="@drawable/bg_search_button">
@@ -164,7 +170,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_padding_xsmall"
-                        android:text="วันที่โอน Wallet"
+                        android:text="@string/topup_wallet_date"
                         android:textColor="@color/bg_movie_text"
                         android:textSize="24sp"/>
 
@@ -177,7 +183,7 @@
                     android:layout_weight="1"
                     android:padding="@dimen/margin_padding_xsmall"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical"
+                    android:gravity="center"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:background="@drawable/bg_search_button">
@@ -191,7 +197,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_padding_xsmall"
-                        android:text="เลขอ้างอิง Wallet"
+                        android:text="@string/topup_wallet_ref"
                         android:textColor="@color/bg_movie_text"
                         android:textSize="24sp"/>
 
@@ -204,7 +210,7 @@
                     android:layout_weight="1"
                     android:padding="@dimen/margin_padding_xsmall"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical"
+                    android:gravity="center"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:background="@drawable/bg_search_button">
@@ -218,7 +224,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margin_padding_xsmall"
-                        android:text="เลขอ้างอิง Truemoney"
+                        android:text="@string/topup_money_ref"
                         android:textColor="@color/bg_movie_text"
                         android:textSize="24sp"/>
 
@@ -227,15 +233,16 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/layout_true_ref"
+                android:id="@+id/layout_money_ref"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_padding_small"
+                android:layout_marginLeft="@dimen/margin_padding_large"
+                android:layout_marginRight="@dimen/margin_padding_large"
                 android:orientation="vertical"
                 android:visibility="gone">
 
                 <EditText
-                    android:id="@+id/txt_reference"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="ใส่เลขอ้างอิง"
@@ -246,7 +253,6 @@
                     android:singleLine="true"/>
 
                 <EditText
-                    android:id="@+id/txt_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_padding_xsmall"
@@ -268,21 +274,21 @@
                     android:textStyle="normal"
                     android:textAllCaps="false"
                     android:textSize="26sp"
-                    android:onClick="signIn"
                     android:background="@drawable/bg_login_button"/>
 
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/layout_true_date"
+                android:id="@+id/layout_wallet_ref"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_padding_small"
+                android:layout_marginLeft="@dimen/margin_padding_large"
+                android:layout_marginRight="@dimen/margin_padding_large"
                 android:orientation="vertical"
                 android:visibility="gone">
 
                 <EditText
-                    android:id="@+id/txt_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="ใส่เลขอ้างอิง"
@@ -293,7 +299,6 @@
                     android:singleLine="true"/>
 
                 <EditText
-                    android:id="@+id/txt_date_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_padding_xsmall"
@@ -315,55 +320,127 @@
                     android:textStyle="normal"
                     android:textAllCaps="false"
                     android:textSize="26sp"
-                    android:onClick="signIn"
                     android:background="@drawable/bg_login_button"/>
 
             </LinearLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <EditText
-                android:id="@+id/text_username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_padding_normal"
-                android:hint="Username"
-                android:paddingLeft="@dimen/margin_padding_small"
-                android:textColor="@color/text_default"
-                android:textSize="26sp"
-                android:singleLine="true"/>
-
-            <EditText
-                android:id="@+id/text_password"
+            <LinearLayout
+                android:id="@+id/layout_wallet_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_padding_small"
-                android:hint="Password"
-                android:paddingLeft="@dimen/margin_padding_small"
-                android:textColor="@color/text_default"
-                android:textSize="26sp"
-                android:inputType="textPassword"
-                android:imeOptions="actionDone"
-                android:singleLine="true"/>
+                android:orientation="vertical"
+                android:visibility="gone">
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_padding_small"
-                android:paddingTop="@dimen/margin_padding_small"
-                android:paddingBottom="@dimen/margin_padding_small"
-                android:text="Sign in"
-                android:textStyle="normal"
-                android:textAllCaps="false"
-                android:textSize="26sp"
-                android:onClick="signIn"
-                android:background="@drawable/bg_login_button"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="วัน (1-31)"
+                        android:gravity="center_horizontal"
+                        android:maxLength="2"
+                        android:inputType="number"
+                        android:paddingLeft="@dimen/margin_padding_small"
+                        android:textColor="@color/text_default"
+                        android:textSize="24sp"
+                        android:singleLine="true"/>
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:hint="เดือน (1-12)"
+                        android:maxLength="2"
+                        android:inputType="number"
+                        android:paddingLeft="@dimen/margin_padding_small"
+                        android:textColor="@color/text_default"
+                        android:textSize="24sp"
+                        android:singleLine="true"/>
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:hint="ปี (2017, ...)"
+                        android:maxLength="4"
+                        android:inputType="number"
+                        android:paddingLeft="@dimen/margin_padding_small"
+                        android:textColor="@color/text_default"
+                        android:textSize="24sp"
+                        android:singleLine="true"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_padding_xsmall"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:hint="ชั่วโมง (0-23)"
+                        android:maxLength="2"
+                        android:inputType="number"
+                        android:paddingLeft="@dimen/margin_padding_small"
+                        android:textColor="@color/text_default"
+                        android:textSize="24sp"
+                        android:singleLine="true"/>
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:hint="นาที (0-59)"
+                        android:maxLength="2"
+                        android:inputType="number"
+                        android:paddingLeft="@dimen/margin_padding_small"
+                        android:textColor="@color/text_default"
+                        android:textSize="24sp"
+                        android:singleLine="true"/>
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:gravity="center_horizontal"
+                        android:hint="จำนวนเงิน (ex. 300, ...)"
+                        android:paddingLeft="@dimen/margin_padding_small"
+                        android:textColor="@color/text_default"
+                        android:textSize="24sp"
+                        android:inputType="number"
+                        android:imeOptions="actionDone"
+                        android:singleLine="true"/>
+
+                </LinearLayout>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_padding_small"
+                    android:layout_marginLeft="@dimen/margin_padding_large"
+                    android:layout_marginRight="@dimen/margin_padding_large"
+                    android:paddingTop="@dimen/margin_padding_small"
+                    android:paddingBottom="@dimen/margin_padding_small"
+                    android:text="Top Up"
+                    android:textStyle="normal"
+                    android:textAllCaps="false"
+                    android:textSize="26sp"
+                    android:onClick="signIn"
+                    android:background="@drawable/bg_login_button"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -372,6 +449,6 @@
     <Space
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1.25"/>
+        android:layout_weight="1"/>
 
 </LinearLayout>

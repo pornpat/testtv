@@ -24,6 +24,10 @@
     <string name="add_fav">เพิ่มรายการโปรด</string>
     <string name="remove_fav">ลบรายการโปรด</string>
 
+    <string name="topup_wallet_date">วันที่โอน\nWallet</string>
+    <string name="topup_wallet_ref">เลขอ้างอิง\nWallet</string>
+    <string name="topup_money_ref">เลขอ้างอิง\nTruemoney</string>
+
     <string name="catalog_url">https://commondatastorage.googleapis.com/android-tv/android_tv_videos.json</string>
     <string name="prefix_url">https://commondatastorage.googleapis.com/android-tv/Sample%20videos/</string>
 

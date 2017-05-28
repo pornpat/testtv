@@ -346,6 +346,7 @@
                     android:orientation="horizontal">
 
                     <EditText
+                        android:id="@+id/txt_date"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -359,6 +360,7 @@
                         android:singleLine="true"/>
 
                     <EditText
+                        android:id="@+id/txt_month"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -372,6 +374,7 @@
                         android:singleLine="true"/>
 
                     <EditText
+                        android:id="@+id/txt_year"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -393,6 +396,7 @@
                     android:orientation="horizontal">
 
                     <EditText
+                        android:id="@+id/txt_hour"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -406,6 +410,7 @@
                         android:singleLine="true"/>
 
                     <EditText
+                        android:id="@+id/txt_minute"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -419,6 +424,7 @@
                         android:singleLine="true"/>
 
                     <EditText
+                        android:id="@+id/txt_price"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1.5"
@@ -445,7 +451,7 @@
                     android:textStyle="normal"
                     android:textAllCaps="false"
                     android:textSize="26sp"
-                    android:onClick="signIn"
+                    android:onClick="applyWalletDateTopup"
                     android:background="@drawable/bg_login_button"/>
 
             </LinearLayout>

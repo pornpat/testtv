@@ -3,6 +3,7 @@ package com.iptv.iptv.main;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -32,6 +33,12 @@ public class TopupActivity extends LeanbackActivity {
     EditText mMoneyPriceText;
     EditText mWalletRefText;
     EditText mWalletPriceText;
+    EditText mDateText;
+    EditText mMonthText;
+    EditText mYearText;
+    EditText mHourText;
+    EditText mMinuteText;
+    EditText mPriceText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +51,12 @@ public class TopupActivity extends LeanbackActivity {
         mMoneyPriceText = (EditText) findViewById(R.id.txt_money_price);
         mWalletRefText = (EditText) findViewById(R.id.txt_wallet_ref);
         mWalletPriceText = (EditText) findViewById(R.id.txt_wallet_price);
+        mDateText = (EditText) findViewById(R.id.txt_date);
+        mMonthText = (EditText) findViewById(R.id.txt_month);
+        mYearText = (EditText) findViewById(R.id.txt_year);
+        mHourText = (EditText) findViewById(R.id.txt_hour);
+        mMinuteText = (EditText) findViewById(R.id.txt_minute);
+        mPriceText = (EditText) findViewById(R.id.txt_price);
 
         mPincodeButton = (Button) findViewById(R.id.btn_pincode);
         mPincodeButton.setOnClickListener(new View.OnClickListener() {
@@ -237,6 +250,90 @@ public class TopupActivity extends LeanbackActivity {
             params.put("type", "wallet_ref");
             params.put("price", Integer.parseInt(mWalletPriceText.getText().toString()));
             params.put("reference", Integer.parseInt(mWalletRefText.getText().toString()));
+
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.post(UrlUtil.appendUri(UrlUtil.TOPUP_TRUE, UrlUtil.addSession()), params, new TextHttpResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Toast.makeText(TopupActivity.this, responseString, Toast.LENGTH_LONG).show();
+                    pDialog.dismiss();
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(responseString);
+                        JSONObject payment = jsonObject.getJSONObject("payment");
+                        boolean status = payment.getBoolean("status");
+                        if (status) {
+                            int transaction = payment.getInt("transaction");
+
+                            AsyncHttpClient client = new AsyncHttpClient();
+                            client.get(UrlUtil.appendUri(UrlUtil.getTopupTransaction(transaction), UrlUtil.addSession()), new TextHttpResponseHandler() {
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                    Toast.makeText(TopupActivity.this, responseString, Toast.LENGTH_LONG).show();
+                                    pDialog.dismiss();
+                                }
+
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(responseString);
+                                        JSONObject payment = jsonObject.getJSONObject("payment");
+                                        Toast.makeText(TopupActivity.this, payment.getString("message"), Toast.LENGTH_LONG).show();
+                                        boolean status = payment.getBoolean("status");
+                                        if (status) {
+                                            int day = payment.getInt("day");
+                                            // add day to PACKAGE API
+
+                                            finish();
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    pDialog.dismiss();
+                                }
+                            });
+                        } else {
+                            Toast.makeText(TopupActivity.this, payment.getString("message"), Toast.LENGTH_LONG).show();
+                            pDialog.dismiss();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(this, "กรุณากรอกข้อมูลให้ครบถ้วน", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void applyWalletDateTopup(View v) {
+        if (mDateText.getText().length() > 0 && mMonthText.getText().length() > 0 && mYearText.getText().length() > 0
+                && mHourText.getText().length() > 0 && mMinuteText.getText().length() > 0 && mPriceText.getText().length() > 0) {
+            final ProgressDialog pDialog = new ProgressDialog(TopupActivity.this);
+            pDialog.setMessage("กำลังดำเนินการ..");
+            pDialog.show();
+
+            if (mDateText.getText().length() == 1) {
+                mDateText.setText("0" + mDateText.getText().toString());
+            }
+            if (mMonthText.getText().length() == 1) {
+                mMonthText.setText("0" + mMonthText.getText().toString());
+            }
+            if (mHourText.getText().length() == 1) {
+                mHourText.setText("0" + mHourText.getText().toString());
+            }
+            if (mMinuteText.getText().length() == 1) {
+                mMinuteText.setText("0" + mMinuteText.getText().toString());
+            }
+
+            RequestParams params = new RequestParams();
+            params.put("type", "wallet_date");
+            params.put("price", Integer.parseInt(mPriceText.getText().toString()));
+            params.put("reference", mYearText.getText().toString() + "-" + mMonthText.getText().toString() + "-" +
+                    mDateText.getText().toString() + " " + mHourText.getText().toString() + ":" + mMinuteText.getText().toString() + ":00");
 
             AsyncHttpClient client = new AsyncHttpClient();
             client.post(UrlUtil.appendUri(UrlUtil.TOPUP_TRUE, UrlUtil.addSession()), params, new TextHttpResponseHandler() {

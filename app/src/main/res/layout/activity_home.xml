@@ -64,36 +64,67 @@
             android:gravity="right"
             android:orientation="horizontal">
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/btn_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ID: "
-                android:textColor="@color/light_purple"
-                android:textSize="30sp" />
+                android:padding="12dp"
+                android:nextFocusDown="@+id/btn_sport"
+                android:nextFocusLeft="@+id/btn_search"
+                android:nextFocusRight="@+id/btn_remaining"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:background="@drawable/bg_search_button">
 
-            <TextView
-                android:id="@+id/txt_username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Test123"
-                android:textColor="@color/light_purple"
-                android:textSize="30sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ID: "
+                    android:textColor="@color/light_purple"
+                    android:textSize="30sp" />
 
-            <TextView
+                <TextView
+                    android:id="@+id/txt_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Test123"
+                    android:textColor="@color/light_purple"
+                    android:textSize="30sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_remaining"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_padding_large"
-                android:text="จำนวนวันคงเหลือ "
-                android:textColor="@color/light_purple"
-                android:textSize="30sp" />
+                android:padding="12dp"
+                android:nextFocusDown="@+id/btn_favorite"
+                android:nextFocusLeft="@+id/btn_account"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:background="@drawable/bg_search_button">
 
-            <TextView
-                android:id="@+id/txt_remaining"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="- วัน"
-                android:textColor="@color/light_purple"
-                android:textSize="30sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="จำนวนวันคงเหลือ "
+                    android:textColor="@color/light_purple"
+                    android:textSize="28sp" />
+
+                <TextView
+                    android:id="@+id/txt_remaining"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="- วัน"
+                    android:textColor="@color/light_purple"
+                    android:textSize="30sp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -218,7 +249,7 @@
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:nextFocusUp="@+id/btn_search"
+                android:nextFocusUp="@+id/btn_account"
                 android:nextFocusLeft="@+id/btn_recommend"
                 android:nextFocusDown="@+id/btn_advertise"
                 android:nextFocusRight="@+id/btn_favourite"
@@ -255,7 +286,7 @@
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:nextFocusUp="@+id/btn_search"
+                android:nextFocusUp="@+id/btn_remaining"
                 android:nextFocusLeft="@+id/btn_sport"
                 android:nextFocusDown="@+id/btn_setting"
                 android:padding="@dimen/margin_padding_xxsmall">
@@ -405,7 +436,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/icon_setting"
+                    android:src="@drawable/icon_topup"
                     app:riv_corner_radius="@dimen/margin_padding_small"/>
 
                 <TextView

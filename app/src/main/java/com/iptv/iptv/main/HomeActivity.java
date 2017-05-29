@@ -185,37 +185,35 @@ public class HomeActivity extends LeanbackActivity {
         });
     }
 
-    private void updateAdvertise() {
+    private void updateUserProfile() {
         if (Utils.isInternetConnectionAvailable(this)) {
             AsyncHttpClient client = new AsyncHttpClient();
-            client.get(UrlUtil.appendUri(UrlUtil.ADVERTISE_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
-
+            client.get(UrlUtil.appendUri(UrlUtil.ALL_PACKAGE_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
                 @Override
-                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {}
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Toast.makeText(HomeActivity.this, responseString, Toast.LENGTH_SHORT).show();
+                }
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, String responseString) {
                     try {
-                        JSONObject jsonObject = new JSONObject(responseString);
-                        mAdsItem.setId(jsonObject.getInt("id"));
-                        mAdsItem.setTitle(jsonObject.getString("title"));
-                        mAdsItem.setDescription(jsonObject.getString("description"));
-                        mAdsItem.setImageUrl(jsonObject.getString("image_url"));
+                        JSONArray jsonArray = new JSONArray(responseString);
+                        JSONObject jsonObject = jsonArray.getJSONObject(2);
+                        String expire = jsonObject.getString("expire_at");
 
-                        Glide.with(HomeActivity.this).load(mAdsItem.getImageUrl()).override(400, 200).centerCrop()
-                                .error(R.drawable.test_advertise).listener(new RequestListener<String, GlideDrawable>() {
-                            @Override
-                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                                return false;
-                            }
+//                        //format yyyy-mm-dd hh:nn:ss
+//                        int year = Integer.parseInt(expire.substring(0, 4));
+//                        int month = Integer.parseInt(expire.substring(5, 7));
+//                        int date = Integer.parseInt(expire.substring(8, 10));
+//
+//                        Calendar expireDate = Calendar.getInstance();
+//                        expireDate.set(year, month, date);
+//
+//                        long diff = expireDate.getTimeInMillis() - System.currentTimeMillis();
+//                        long diffDays = diff / (24 * 60 * 60 * 1000);
+//
+//                        Log.v("testkn", diffDays + "");
 
-                            @Override
-                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                                mAdsImage.setImageDrawable(resource);
-                                mAdsImage.setCornerRadiusDimen(R.dimen.margin_padding_small);
-                                return true;
-                            }
-                        }).into(mAdsImage);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -226,11 +224,46 @@ public class HomeActivity extends LeanbackActivity {
         }
     }
 
+    private void updateAdvertise() {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(UrlUtil.appendUri(UrlUtil.ADVERTISE_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {}
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                try {
+                    JSONObject jsonObject = new JSONObject(responseString);
+                    mAdsItem.setId(jsonObject.getInt("id"));
+                    mAdsItem.setTitle(jsonObject.getString("title"));
+                    mAdsItem.setDescription(jsonObject.getString("description"));
+                    mAdsItem.setImageUrl(jsonObject.getString("image_url"));
+
+                    Glide.with(HomeActivity.this).load(mAdsItem.getImageUrl()).override(400, 200).centerCrop()
+                            .error(R.drawable.test_advertise).listener(new RequestListener<String, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            mAdsImage.setImageDrawable(resource);
+                            mAdsImage.setCornerRadiusDimen(R.dimen.margin_padding_small);
+                            return true;
+                        }
+                    }).into(mAdsImage);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     private void fetchHitMovie() {
         if (Utils.isInternetConnectionAvailable(this)) {
             AsyncHttpClient client = new AsyncHttpClient();
             client.get(UrlUtil.appendUri(UrlUtil.MOVIE_HIT_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
-
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {}
 
@@ -347,6 +380,7 @@ public class HomeActivity extends LeanbackActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        updateUserProfile();
         updateAdvertise();
         if (mHitList.size() > 0) {
             updateHitMovie();

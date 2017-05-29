@@ -37,6 +37,8 @@ public class UrlUtil {
     public static final String MOVIE_HIT_URL = MOVIE_URL + "?hit=VIEW&hit_days=7";
     public static final String SERIES_HIT_URL = SERIES_URL + "?hit=VIEW&hit_days=7";
     public static final String SPORT_HIT_URL = SPORT_URL + "?hit=VIEW&hit_days=7";
+    public static final String ALL_PACKAGE_URL = BASE_URL + "/packages/mypackages?noExpired=true";
+    public static final String PACKAGE_URL = BASE_URL + "/packages";
 
     public static final String TOPUP_BASE_URL = "http://cdnhispeed.com/mock_api/REST/V1/topup";
     public static final String TOPUP_PINCODE = TOPUP_BASE_URL + "/pincode";

@@ -156,9 +156,26 @@ public class TopupActivity extends LeanbackActivity {
                         boolean status = payment.getBoolean("status");
                         if (status) {
                             int day = payment.getInt("day");
-                            // add day to PACKAGE API
 
-                            finish();
+                            // add day to PACKAGE API
+                            RequestParams params = new RequestParams();
+                            params.put("package", "ALL");
+                            params.put("days", day);
+
+                            AsyncHttpClient client = new AsyncHttpClient();
+                            client.post(UrlUtil.appendUri(UrlUtil.PACKAGE_URL, UrlUtil.addToken()), params, new TextHttpResponseHandler() {
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+
+                                }
+
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                                    Log.v("testkn", responseString);
+
+                                    finish();
+                                }
+                            });
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

@@ -83,6 +83,12 @@ public class SeriesGridAdapter extends RecyclerView.Adapter<SeriesGridAdapter.Vi
         return mValues.size();
     }
 
+    @Override
+    public void onViewDetachedFromWindow(ViewHolder holder) {
+        Glide.clear(holder.mImage);
+        super.onViewDetachedFromWindow(holder);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final RoundedImageView mImage;

@@ -83,6 +83,12 @@ public class SportGridAdapter extends RecyclerView.Adapter<SportGridAdapter.View
         return mValues.size();
     }
 
+    @Override
+    public void onViewDetachedFromWindow(ViewHolder holder) {
+        Glide.clear(holder.mImage);
+        super.onViewDetachedFromWindow(holder);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final RoundedImageView mImage;

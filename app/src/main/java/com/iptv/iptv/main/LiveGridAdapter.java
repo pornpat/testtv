@@ -75,6 +75,12 @@ public class LiveGridAdapter extends RecyclerView.Adapter<LiveGridAdapter.ViewHo
     }
 
     @Override
+    public void onViewDetachedFromWindow(ViewHolder holder) {
+        Glide.clear(holder.mImage);
+        super.onViewDetachedFromWindow(holder);
+    }
+
+    @Override
     public int getItemCount() {
         return mValues.size();
     }

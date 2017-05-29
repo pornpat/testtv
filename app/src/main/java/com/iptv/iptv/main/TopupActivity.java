@@ -3,7 +3,6 @@ package com.iptv.iptv.main;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -171,8 +170,6 @@ public class TopupActivity extends LeanbackActivity {
 
                                 @Override
                                 public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                                    Log.v("testkn", responseString);
-
                                     finish();
                                 }
                             });

@@ -46,6 +46,7 @@ public class HomeActivity extends LeanbackActivity {
 
     View mSearchButton;
     TextView mDateTimeText;
+    TextView mRemainingText;
 
     RoundedImageView mHitImage1;
     RoundedImageView mHitImage2;
@@ -72,6 +73,7 @@ public class HomeActivity extends LeanbackActivity {
 
         mSearchButton = findViewById(R.id.btn_search);
         mDateTimeText = (TextView) findViewById(R.id.datetime);
+        mRemainingText = (TextView) findViewById(R.id.txt_remaining);
 
         mHitImage1 = (RoundedImageView) findViewById(R.id.img_hit1);
         mHitImage2 = (RoundedImageView) findViewById(R.id.img_hit2);
@@ -198,8 +200,10 @@ public class HomeActivity extends LeanbackActivity {
                 public void onSuccess(int statusCode, Header[] headers, String responseString) {
                     try {
                         JSONArray jsonArray = new JSONArray(responseString);
-                        JSONObject jsonObject = jsonArray.getJSONObject(2);
-                        String expire = jsonObject.getString("expire_at");
+                        JSONObject jsonObject = jsonArray.getJSONObject(0);
+                        int remain_day = jsonObject.getInt("remaining_days");
+
+                        mRemainingText.setText(remain_day + " วัน");
 
 //                        //format yyyy-mm-dd hh:nn:ss
 //                        int year = Integer.parseInt(expire.substring(0, 4));

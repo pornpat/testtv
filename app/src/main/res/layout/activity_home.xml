@@ -83,7 +83,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_padding_large"
-                android:text="Remaining: - Days"
+                android:text="จำนวนวันคงเหลือ "
+                android:textColor="@color/light_purple"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/txt_remaining"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="- วัน"
                 android:textColor="@color/light_purple"
                 android:textSize="30sp" />
 

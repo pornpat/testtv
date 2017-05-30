@@ -3,6 +3,7 @@ package com.iptv.iptv.main;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
@@ -35,11 +36,14 @@ import java.util.Map;
 public class SeriesGridFragment2 extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, List<SeriesItem>>> {
 
     private RecyclerView mRecyclerView;
+    private SeriesGridAdapter mAdapter;
+
     private List<SeriesItem> mMovieList = new ArrayList<>();
     private View mLoading;
     private View mEmpty;
+    private ProgressDialog mProgress;
 
-    private View mLoadmore;
+    private boolean isNextAvailable = false;
     private boolean isLoadmore = false;
     private String nextPageUrl;
 
@@ -65,24 +69,23 @@ public class SeriesGridFragment2 extends Fragment implements LoaderManager.Loade
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 5));
+        mAdapter = new SeriesGridAdapter(getActivity(), mMovieList);
+        mRecyclerView.setAdapter(mAdapter);
+
         mLoading = view.findViewById(R.id.loading);
         mEmpty = view.findViewById(R.id.empty);
 
-        mLoadmore = view.findViewById(R.id.loadmore);
-        mLoadmore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isLoadmore = true;
-                loadVideoData(UrlUtil.appendUri(nextPageUrl, UrlUtil.addToken()));
-                mRecyclerView.requestFocus();
-            }
-        });
+        mProgress = new ProgressDialog(getActivity());
+        mProgress.setMessage("กำลังโหลดข้อมูลเพิ่มเติม");
     }
 
     private void loadVideoData(String url) {
         shouldLoad = true;
-        updateUI(mLoading);
-        mLoadmore.setVisibility(View.INVISIBLE);
+        if (!isLoadmore) {
+            updateUI(mLoading);
+        } else {
+            mProgress.show();
+        }
 
         SeriesProvider.setContext(getActivity());
         mVideosUrl = url;
@@ -114,7 +117,13 @@ public class SeriesGridFragment2 extends Fragment implements LoaderManager.Loade
                         }
                     }
                 }
-                mRecyclerView.setAdapter(new SeriesGridAdapter(getActivity(), mMovieList));
+                if (isNextAvailable) {
+                    SeriesItem item = new SeriesItem();
+                    item.setId(-1);
+                    mMovieList.add(item);
+                    isNextAvailable = false;
+                }
+                mAdapter.notifyDataSetChanged();
 
                 if (mMovieList.size() > 0) {
                     updateUI(mRecyclerView);
@@ -123,6 +132,7 @@ public class SeriesGridFragment2 extends Fragment implements LoaderManager.Loade
                 }
             } else {
                 if (null != data && !data.isEmpty()) {
+                    mMovieList.remove(mMovieList.size() - 1);
                     for (Map.Entry<String, List<SeriesItem>> entry : data.entrySet()) {
                         List<SeriesItem> list = entry.getValue();
 
@@ -131,13 +141,14 @@ public class SeriesGridFragment2 extends Fragment implements LoaderManager.Loade
                         }
                     }
                 }
-                mRecyclerView.getAdapter().notifyDataSetChanged();
-
-                if (mMovieList.size() > 0) {
-                    updateUI(mRecyclerView);
-                } else {
-                    updateUI(mEmpty);
+                if(isNextAvailable) {
+                    SeriesItem item = new SeriesItem();
+                    item.setId(-1);
+                    mMovieList.add(item);
+                    isNextAvailable = false;
                 }
+                mAdapter.notifyItemInserted(mMovieList.size());
+                mProgress.dismiss();
 
                 isLoadmore = false;
             }
@@ -160,10 +171,15 @@ public class SeriesGridFragment2 extends Fragment implements LoaderManager.Loade
 
     @Subscribe
     public void onSelectMovie(SelectSeriesEvent event) {
-        SeriesItem movie = mMovieList.get(event.position);
-        Intent intent = new Intent(getActivity(), SeriesDetailsActivity.class);
-        intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(movie));
-        getActivity().startActivity(intent);
+        if (event.position != -1) {
+            SeriesItem movie = mMovieList.get(event.position);
+            Intent intent = new Intent(getActivity(), SeriesDetailsActivity.class);
+            intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(movie));
+            getActivity().startActivity(intent);
+        } else {
+            isLoadmore = true;
+            loadVideoData(UrlUtil.appendUri(nextPageUrl, UrlUtil.addToken()));
+        }
     }
 
     @Subscribe
@@ -171,9 +187,7 @@ public class SeriesGridFragment2 extends Fragment implements LoaderManager.Loade
         nextPageUrl = event.nextUrl;
 
         if (event.hasNext) {
-            mLoadmore.setVisibility(View.VISIBLE);
-        } else {
-            mLoadmore.setVisibility(View.INVISIBLE);
+            isNextAvailable = true;
         }
     }
 

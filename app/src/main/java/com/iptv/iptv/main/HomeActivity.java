@@ -274,16 +274,16 @@ public class HomeActivity extends LeanbackActivity {
 
     private void fetchHitMovie() {
         if (Utils.isInternetConnectionAvailable(this)) {
+            Log.v("testkn", UrlUtil.appendUri(UrlUtil.TOP_10_HIT_URL, UrlUtil.addToken()));
             AsyncHttpClient client = new AsyncHttpClient();
-            client.get(UrlUtil.appendUri(UrlUtil.MOVIE_HIT_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
+            client.get(UrlUtil.appendUri(UrlUtil.TOP_10_HIT_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {}
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, String responseString) {
                     try {
-                        JSONObject jsonObject = new JSONObject(responseString);
-                        JSONArray jsonArray = jsonObject.getJSONArray("data");
+                        JSONArray jsonArray = new JSONArray(responseString);
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject movieItem = jsonArray.getJSONObject(i);
                             JSONObject movieDetail = movieItem.getJSONObject("detail");

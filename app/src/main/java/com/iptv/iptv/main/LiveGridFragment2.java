@@ -3,6 +3,7 @@ package com.iptv.iptv.main;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
@@ -33,11 +34,14 @@ import java.util.Map;
 public class LiveGridFragment2 extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, List<LiveItem>>> {
 
     private RecyclerView mRecyclerView;
+    private LiveGridAdapter mAdapter;
+
     private List<LiveItem> mMovieList = new ArrayList<>();
     private View mLoading;
     private View mEmpty;
+    private ProgressDialog mProgress;
 
-    private View mLoadmore;
+    private boolean isNextAvailable = false;
     private boolean isLoadmore = false;
     private String nextPageUrl;
 
@@ -63,24 +67,23 @@ public class LiveGridFragment2 extends Fragment implements LoaderManager.LoaderC
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 5));
+        mAdapter = new LiveGridAdapter(getActivity(), mMovieList);
+        mRecyclerView.setAdapter(mAdapter);
+
         mLoading = view.findViewById(R.id.loading);
         mEmpty = view.findViewById(R.id.empty);
 
-        mLoadmore = view.findViewById(R.id.loadmore);
-        mLoadmore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isLoadmore = true;
-                loadVideoData(UrlUtil.appendUri(nextPageUrl, UrlUtil.addToken()));
-                mRecyclerView.requestFocus();
-            }
-        });
+        mProgress = new ProgressDialog(getActivity());
+        mProgress.setMessage("กำลังโหลดข้อมูลเพิ่มเติม");
     }
 
     private void loadVideoData(String url) {
         shouldLoad = true;
-        updateUI(mLoading);
-        mLoadmore.setVisibility(View.INVISIBLE);
+        if (!isLoadmore) {
+            updateUI(mLoading);
+        } else {
+            mProgress.show();
+        }
 
         LiveProvider.setContext(getActivity());
         mVideosUrl = url;
@@ -112,7 +115,13 @@ public class LiveGridFragment2 extends Fragment implements LoaderManager.LoaderC
                         }
                     }
                 }
-                mRecyclerView.setAdapter(new LiveGridAdapter(getActivity(), mMovieList));
+                if (isNextAvailable) {
+                    LiveItem item = new LiveItem();
+                    item.setId(-1);
+                    mMovieList.add(item);
+                    isNextAvailable = false;
+                }
+                mAdapter.notifyDataSetChanged();
 
                 if (mMovieList.size() > 0) {
                     updateUI(mRecyclerView);
@@ -121,6 +130,7 @@ public class LiveGridFragment2 extends Fragment implements LoaderManager.LoaderC
                 }
             } else {
                 if (null != data && !data.isEmpty()) {
+                    mMovieList.remove(mMovieList.size() - 1);
                     for (Map.Entry<String, List<LiveItem>> entry : data.entrySet()) {
                         List<LiveItem> list = entry.getValue();
 
@@ -129,13 +139,14 @@ public class LiveGridFragment2 extends Fragment implements LoaderManager.LoaderC
                         }
                     }
                 }
-                mRecyclerView.getAdapter().notifyDataSetChanged();
-
-                if (mMovieList.size() > 0) {
-                    updateUI(mRecyclerView);
-                } else {
-                    updateUI(mEmpty);
+                if (isNextAvailable) {
+                    LiveItem item = new LiveItem();
+                    item.setId(-1);
+                    mMovieList.add(item);
+                    isNextAvailable = false;
                 }
+                mAdapter.notifyItemInserted(mMovieList.size());
+                mProgress.dismiss();
 
                 isLoadmore = false;
             }
@@ -158,10 +169,15 @@ public class LiveGridFragment2 extends Fragment implements LoaderManager.LoaderC
 
     @Subscribe
     public void onSelectMovie(SelectLiveEvent event) {
-        LiveItem live = mMovieList.get(event.position);
-        Intent intent = new Intent(getActivity(), LivePlayerActivity.class);
-        intent.putExtra("id", live.getId());
-        startActivity(intent);
+        if (event.position != -1) {
+            LiveItem live = mMovieList.get(event.position);
+            Intent intent = new Intent(getActivity(), LivePlayerActivity.class);
+            intent.putExtra("id", live.getId());
+            startActivity(intent);
+        } else {
+            isLoadmore = true;
+            loadVideoData(UrlUtil.appendUri(nextPageUrl, UrlUtil.addToken()));
+        }
     }
 
     @Subscribe
@@ -169,9 +185,7 @@ public class LiveGridFragment2 extends Fragment implements LoaderManager.LoaderC
         nextPageUrl = event.nextUrl;
 
         if (event.hasNext) {
-            mLoadmore.setVisibility(View.VISIBLE);
-        } else {
-            mLoadmore.setVisibility(View.INVISIBLE);
+            isNextAvailable = true;
         }
     }
 

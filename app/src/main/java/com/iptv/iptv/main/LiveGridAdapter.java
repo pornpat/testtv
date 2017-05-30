@@ -21,7 +21,10 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
-public class LiveGridAdapter extends RecyclerView.Adapter<LiveGridAdapter.ViewHolder> {
+public class LiveGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private static final int TYPE_NORMAL = 0;
+    private static final int TYPE_LOADMORE = 1;
 
     private final Context mContext;
     private final List<LiveItem> mValues;
@@ -32,52 +35,73 @@ public class LiveGridAdapter extends RecyclerView.Adapter<LiveGridAdapter.ViewHo
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_movie, parent, false);
-        return new ViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == TYPE_LOADMORE) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_loadmore, parent, false);
+            return new LoadmoreViewHolder(view);
+        } else {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_movie, parent, false);
+            return new LiveViewHolder(view);
+        }
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.mItem = mValues.get(position);
-        Glide.with(mContext).load(mValues.get(position).getLogoUrl()).placeholder(R.drawable.movie_placeholder)
-                .error(R.drawable.movie_placeholder).override(200, 200).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
-            @Override
-            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                return false;
-            }
-
-            @Override
-            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                holder.mTitle.setText(mValues.get(position).getName());
-                holder.mImage.setImageDrawable(resource);
-                return true;
-            }
-        }).into(holder.mImage);
-
-        holder.mView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean isFocused) {
-                if (isFocused) {
-                    holder.mImage.setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_movie_selected));
-                } else {
-                    holder.mImage.setBackgroundColor(ContextCompat.getColor(mContext, android.R.color.transparent));
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        if (holder instanceof LiveViewHolder) {
+            final LiveViewHolder vh = (LiveViewHolder) holder;
+            vh.mItem = mValues.get(position);
+            Glide.with(mContext).load(mValues.get(position).getLogoUrl()).placeholder(R.drawable.movie_placeholder)
+                    .error(R.drawable.movie_placeholder).override(200, 200).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
+                @Override
+                public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                    return false;
                 }
-            }
-        });
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EventBus.getDefault().post(new SelectLiveEvent(position));
-            }
-        });
-    }
+                @Override
+                public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                    vh.mTitle.setText(mValues.get(position).getName());
+                    vh.mImage.setImageDrawable(resource);
+                    return true;
+                }
+            }).into(vh.mImage);
 
-    @Override
-    public void onViewDetachedFromWindow(ViewHolder holder) {
-        Glide.clear(holder.mImage);
-        super.onViewDetachedFromWindow(holder);
+            vh.mView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean isFocused) {
+                    if (isFocused) {
+                        vh.mImage.setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_movie_selected));
+                    } else {
+                        vh.mImage.setBackgroundColor(ContextCompat.getColor(mContext, android.R.color.transparent));
+                    }
+                }
+            });
+
+            vh.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EventBus.getDefault().post(new SelectLiveEvent(position));
+                }
+            });
+        } else if (holder instanceof LoadmoreViewHolder) {
+            final LoadmoreViewHolder vh = (LoadmoreViewHolder) holder;
+            vh.mView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean isFocused) {
+                    if (isFocused) {
+                        vh.mImage.setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_movie_selected));
+                    } else {
+                        vh.mImage.setBackgroundColor(ContextCompat.getColor(mContext, android.R.color.transparent));
+                    }
+                }
+            });
+
+            vh.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EventBus.getDefault().post(new SelectLiveEvent(-1));
+                }
+            });
+        }
     }
 
     @Override
@@ -85,17 +109,46 @@ public class LiveGridAdapter extends RecyclerView.Adapter<LiveGridAdapter.ViewHo
         return mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
+        if (holder instanceof LiveViewHolder) {
+            Glide.clear(((LiveViewHolder) holder).mImage);
+        }
+        super.onViewDetachedFromWindow(holder);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (mValues.get(position).getId() == -1) {
+            return TYPE_LOADMORE;
+        } else {
+            return TYPE_NORMAL;
+        }
+    }
+
+    public class LiveViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final RoundedImageView mImage;
         public final TextView mTitle;
         public LiveItem mItem;
 
-        public ViewHolder(View itemView) {
+        public LiveViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
             mImage = (RoundedImageView) itemView.findViewById(R.id.image);
             mTitle = (TextView) itemView.findViewById(R.id.title);
+        }
+    }
+
+    public class LoadmoreViewHolder extends RecyclerView.ViewHolder {
+        public final View mView;
+        public final RoundedImageView mImage;
+
+        public LoadmoreViewHolder(View itemView) {
+            super(itemView);
+            mView = itemView;
+            mImage = (RoundedImageView) itemView.findViewById(R.id.image);
+            mImage.setImageResource(R.drawable.img_loadmore_square);
         }
     }
 

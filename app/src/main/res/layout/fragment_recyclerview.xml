@@ -49,7 +49,7 @@
             android:textColor="@color/bg_movie_text"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:visibility="invisible"/>
+            android:visibility="gone"/>
 
     </LinearLayout>
 

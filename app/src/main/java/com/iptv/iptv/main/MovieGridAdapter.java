@@ -25,7 +25,10 @@ import java.util.List;
  * Created by Karn on 7/5/2560.
  */
 
-public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.ViewHolder> {
+public class MovieGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private static final int TYPE_NORMAL = 0;
+    private static final int TYPE_LOADMORE = 1;
 
     private final Context mContext;
     private final List<MovieItem> mValues;
@@ -36,46 +39,73 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.View
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_movie, parent, false);
-        return new ViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == TYPE_LOADMORE) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_loadmore, parent, false);
+            return new LoadmoreViewHolder(view);
+        } else {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_movie, parent, false);
+            return new MovieViewHolder(view);
+        }
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.mItem = mValues.get(position);
-        Glide.with(mContext).load(mValues.get(position).getImageUrl()).placeholder(R.drawable.movie_placeholder)
-                .error(R.drawable.movie_placeholder).override(200, 300).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
-            @Override
-            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                return false;
-            }
-
-            @Override
-            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                holder.mTitle.setText(mValues.get(position).getName());
-                holder.mImage.setImageDrawable(resource);
-                return true;
-            }
-        }).into(holder.mImage);
-
-        holder.mView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean isFocused) {
-                if (isFocused) {
-                    holder.mImage.setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_movie_selected));
-                } else {
-                    holder.mImage.setBackgroundColor(ContextCompat.getColor(mContext, android.R.color.transparent));
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        if (holder instanceof MovieViewHolder) {
+            final MovieViewHolder vh = (MovieViewHolder) holder;
+            vh.mItem = mValues.get(position);
+            Glide.with(mContext).load(mValues.get(position).getImageUrl()).placeholder(R.drawable.movie_placeholder)
+                    .error(R.drawable.movie_placeholder).override(200, 300).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
+                @Override
+                public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                    return false;
                 }
-            }
-        });
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EventBus.getDefault().post(new SelectMovieEvent(position));
-            }
-        });
+                @Override
+                public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                    vh.mTitle.setText(mValues.get(position).getName());
+                    vh.mImage.setImageDrawable(resource);
+                    return true;
+                }
+            }).into(vh.mImage);
+
+            vh.mView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean isFocused) {
+                    if (isFocused) {
+                        vh.mImage.setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_movie_selected));
+                    } else {
+                        vh.mImage.setBackgroundColor(ContextCompat.getColor(mContext, android.R.color.transparent));
+                    }
+                }
+            });
+
+            vh.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EventBus.getDefault().post(new SelectMovieEvent(position));
+                }
+            });
+        } else if (holder instanceof LoadmoreViewHolder) {
+            final LoadmoreViewHolder vh = (LoadmoreViewHolder) holder;
+            vh.mView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean isFocused) {
+                    if (isFocused) {
+                        vh.mImage.setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_movie_selected));
+                    } else {
+                        vh.mImage.setBackgroundColor(ContextCompat.getColor(mContext, android.R.color.transparent));
+                    }
+                }
+            });
+
+            vh.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EventBus.getDefault().post(new SelectMovieEvent(-1));
+                }
+            });
+        }
     }
 
     @Override
@@ -84,22 +114,43 @@ public class MovieGridAdapter extends RecyclerView.Adapter<MovieGridAdapter.View
     }
 
     @Override
-    public void onViewDetachedFromWindow(ViewHolder holder) {
-        Glide.clear(holder.mImage);
+    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
+        if (holder instanceof MovieViewHolder) {
+            Glide.clear(((MovieViewHolder) holder).mImage);
+        }
         super.onViewDetachedFromWindow(holder);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public int getItemViewType(int position) {
+        if (mValues.get(position).getId() == -1) {
+            return TYPE_LOADMORE;
+        } else {
+            return TYPE_NORMAL;
+        }
+    }
+
+    public class MovieViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final RoundedImageView mImage;
         public final TextView mTitle;
         public MovieItem mItem;
 
-        public ViewHolder(View itemView) {
+        public MovieViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
             mImage = (RoundedImageView) itemView.findViewById(R.id.image);
             mTitle = (TextView) itemView.findViewById(R.id.title);
+        }
+    }
+
+    public class LoadmoreViewHolder extends RecyclerView.ViewHolder {
+        public final View mView;
+        public final RoundedImageView mImage;
+
+        public LoadmoreViewHolder(View itemView) {
+            super(itemView);
+            mView = itemView;
+            mImage = (RoundedImageView) itemView.findViewById(R.id.image);
         }
     }
 

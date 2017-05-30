@@ -22,8 +22,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.iptv.iptv.R.id.prev;
-
 /**
  * Created by Asus N46V on 3/3/2017.
  */

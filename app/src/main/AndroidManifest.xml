@@ -98,8 +98,11 @@
         <activity
             android:name=".main.HitGridActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".main.TopupActivity"
-            android:screenOrientation="landscape"></activity>
+        <activity
+            android:name=".main.TopupActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".main.SettingActivity"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

@@ -193,6 +193,14 @@ public class HomeActivity extends LeanbackActivity {
                 startActivity(intent);
             }
         });
+
+        findViewById(R.id.btn_account).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, SettingActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void updateUserProfile() {

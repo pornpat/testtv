@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.iptv.iptv.R;
 import com.iptv.iptv.main.data.LiveLoader;
@@ -22,14 +23,20 @@ import com.iptv.iptv.main.event.PageLiveEvent;
 import com.iptv.iptv.main.event.SelectLiveEvent;
 import com.iptv.iptv.main.event.TokenErrorEvent;
 import com.iptv.iptv.main.model.LiveItem;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import cz.msebera.android.httpclient.Header;
 
 public class LiveGridFragment2 extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, List<LiveItem>>> {
 
@@ -168,12 +175,39 @@ public class LiveGridFragment2 extends Fragment implements LoaderManager.LoaderC
     }
 
     @Subscribe
-    public void onSelectMovie(SelectLiveEvent event) {
+    public void onSelectMovie(final SelectLiveEvent event) {
         if (event.position != -1) {
-            LiveItem live = mMovieList.get(event.position);
-            Intent intent = new Intent(getActivity(), LivePlayerActivity.class);
-            intent.putExtra("id", live.getId());
-            startActivity(intent);
+            final ProgressDialog progress = new ProgressDialog(getActivity());
+            progress.setMessage("โปรดรอ...");
+            progress.show();
+
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.get(UrlUtil.appendUri(UrlUtil.EXPIRE_CHECK_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Toast.makeText(getActivity(), "กรุณาลองใหม่ในภายหลัง", Toast.LENGTH_SHORT).show();
+                    progress.dismiss();
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(responseString);
+                        boolean isExpired = jsonObject.getBoolean("expired");
+                        if (!isExpired) {
+                            LiveItem live = mMovieList.get(event.position);
+                            Intent intent = new Intent(getActivity(), LivePlayerActivity.class);
+                            intent.putExtra("id", live.getId());
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(getActivity(), "วันใช้งานของคุณหมด กรุณาเติมเวันใช้งานเพื่อรับชม", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    progress.dismiss();
+                }
+            });
         } else {
             isLoadmore = true;
             loadVideoData(UrlUtil.appendUri(nextPageUrl, UrlUtil.addToken()));

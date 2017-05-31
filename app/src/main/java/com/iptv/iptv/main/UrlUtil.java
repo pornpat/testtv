@@ -40,6 +40,7 @@ public class UrlUtil {
     public static final String TOP_10_HIT_URL = MOVIE_URL + "/tops?days=7&limit=10";
     public static final String ALL_PACKAGE_URL = BASE_URL + "/packages/mypackages?noExpired=true";
     public static final String PACKAGE_URL = BASE_URL + "/packages";
+    public static final String EXPIRE_CHECK_URL = BASE_URL + "/packages/expired";
 
     public static final String TOPUP_BASE_URL = "http://cdnhispeed.com/mock_api/REST/V1/topup";
     public static final String TOPUP_PINCODE = TOPUP_BASE_URL + "/pincode";

@@ -14,6 +14,7 @@
 
 package com.iptv.iptv.lib;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,6 +36,7 @@ import android.support.v17.leanback.widget.RowPresenter;
 import android.support.v17.leanback.widget.SparseArrayObjectAdapter;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
@@ -125,8 +127,7 @@ public class MovieDetailsFragment extends DetailsFragment {
                     setupMovieListRowPresenter();
                     setOnItemViewClickedListener(new ItemViewClickedListener());
                 } else {
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    startActivity(intent);
+                    getActivity().finish();
                 }
             }
         });
@@ -193,7 +194,7 @@ public class MovieDetailsFragment extends DetailsFragment {
 
         detailsPresenter.setOnActionClickedListener(new OnActionClickedListener() {
             @Override
-            public void onActionClicked(Action action) {
+            public void onActionClicked(final Action action) {
                 if (action.getId() == ACTION_ADD_FAV) {
                     if (!isFav) {
                         AsyncHttpClient client = new AsyncHttpClient();
@@ -228,16 +229,70 @@ public class MovieDetailsFragment extends DetailsFragment {
                     }
                 } else {
                     if (mSelectedMovie.getTracks().get((int)action.getId()).getDiscs().size() < 2) {
-                        Intent intent = new Intent(getActivity(), MoviePlayerActivity.class);
-                        intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(mSelectedMovie));
-                        intent.putExtra("url", mSelectedMovie.getTracks().get((int)action.getId()).getDiscs().get(0).getVideoUrl());
-                        intent.putExtra("extra_id", mSelectedMovie.getTracks().get((int)action.getId()).getDiscs().get(0).getDiscId());
-                        startActivity(intent);
+                        final ProgressDialog progress = new ProgressDialog(getActivity());
+                        progress.setMessage("โปรดรอ...");
+                        progress.show();
+
+                        AsyncHttpClient client = new AsyncHttpClient();
+                        client.get(UrlUtil.appendUri(UrlUtil.EXPIRE_CHECK_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                Toast.makeText(getActivity(), "กรุณาลองใหม่ในภายหลัง", Toast.LENGTH_SHORT).show();
+                                progress.dismiss();
+                            }
+
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    boolean isExpired = jsonObject.getBoolean("expired");
+                                    if (!isExpired) {
+                                        Intent intent = new Intent(getActivity(), MoviePlayerActivity.class);
+                                        intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(mSelectedMovie));
+                                        intent.putExtra("url", mSelectedMovie.getTracks().get((int)action.getId()).getDiscs().get(0).getVideoUrl());
+                                        intent.putExtra("extra_id", mSelectedMovie.getTracks().get((int)action.getId()).getDiscs().get(0).getDiscId());
+                                        startActivity(intent);
+                                    } else {
+                                        Toast.makeText(getActivity(), "วันใช้งานของคุณหมด กรุณาเติมเวันใช้งานเพื่อรับชม", Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                progress.dismiss();
+                            }
+                        });
                     } else {
-                        Intent intent = new Intent(getActivity(), MovieEpisodeActivity.class);
-                        intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(mSelectedMovie));
-                        intent.putExtra("track", (int)action.getId());
-                        startActivity(intent);
+                        final ProgressDialog progress = new ProgressDialog(getActivity());
+                        progress.setMessage("โปรดรอ...");
+                        progress.show();
+
+                        AsyncHttpClient client = new AsyncHttpClient();
+                        client.get(UrlUtil.appendUri(UrlUtil.EXPIRE_CHECK_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                Toast.makeText(getActivity(), "กรุณาลองใหม่ในภายหลัง", Toast.LENGTH_SHORT).show();
+                                progress.dismiss();
+                            }
+
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    boolean isExpired = jsonObject.getBoolean("expired");
+                                    if (!isExpired) {
+                                        Intent intent = new Intent(getActivity(), MovieEpisodeActivity.class);
+                                        intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(mSelectedMovie));
+                                        intent.putExtra("track", (int)action.getId());
+                                        startActivity(intent);
+                                    } else {
+                                        Toast.makeText(getActivity(), "วันใช้งานของคุณหมด กรุณาเติมเวันใช้งานเพื่อรับชม", Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                progress.dismiss();
+                            }
+                        });
                     }
                 }
             }

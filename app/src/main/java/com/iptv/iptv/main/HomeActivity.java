@@ -274,7 +274,6 @@ public class HomeActivity extends LeanbackActivity {
 
     private void fetchHitMovie() {
         if (Utils.isInternetConnectionAvailable(this)) {
-            Log.v("testkn", UrlUtil.appendUri(UrlUtil.TOP_10_HIT_URL, UrlUtil.addToken()));
             AsyncHttpClient client = new AsyncHttpClient();
             client.get(UrlUtil.appendUri(UrlUtil.TOP_10_HIT_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
                 @Override

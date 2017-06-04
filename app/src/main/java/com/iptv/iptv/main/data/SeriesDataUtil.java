@@ -41,6 +41,7 @@ public class SeriesDataUtil {
 
             int id;
             String name;
+            String eng_name;
             String description;
             String imageUrl;
             String released;
@@ -51,6 +52,7 @@ public class SeriesDataUtil {
                 JSONObject detailObj = seriesObj.getJSONObject(TAG_DETAIL);
                 id = detailObj.getInt(TAG_MEDIA_ID);
                 name = detailObj.getString(TAG_NAME);
+                eng_name = detailObj.getString("eng_name");
                 description = detailObj.getString(TAG_DESCRIPTION);
                 imageUrl = detailObj.getString(TAG_IMAGEURL);
                 released = detailObj.getString(TAG_RELEASED);
@@ -92,7 +94,7 @@ public class SeriesDataUtil {
                     tracks.add(buildTrackInfo(trackId, audio, subtitle, episodes));
                 }
 
-                list.add(buildSeriesInfo(id, name, description, imageUrl, released, tracks));
+                list.add(buildSeriesInfo(id, name, eng_name, description, imageUrl, released, tracks));
             }
 
             return list;
@@ -102,10 +104,11 @@ public class SeriesDataUtil {
         }
     }
 
-    private static SeriesItem buildSeriesInfo(int id, String name, String description, String imageUrl, String released, List<SeriesTrackItem> tracks) {
+    private static SeriesItem buildSeriesInfo(int id, String name, String eng_name, String description, String imageUrl, String released, List<SeriesTrackItem> tracks) {
         SeriesItem series = new SeriesItem();
         series.setId(id);
         series.setName(name);
+        series.setEngName(eng_name);
         series.setDescription(description);
         series.setImageUrl(imageUrl);
         series.setReleased(released);

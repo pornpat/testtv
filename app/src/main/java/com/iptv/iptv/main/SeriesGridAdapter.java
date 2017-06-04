@@ -64,6 +64,7 @@ public class SeriesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 @Override
                 public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                     vh.mTitle.setText(mValues.get(position).getName());
+                    vh.mEngTitle.setText(mValues.get(position).getEngName());
                     vh.mImage.setImageDrawable(resource);
                     return true;
                 }
@@ -134,6 +135,7 @@ public class SeriesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public final View mView;
         public final RoundedImageView mImage;
         public final TextView mTitle;
+        public final TextView mEngTitle;
         public SeriesItem mItem;
 
         public SeriesViewHolder(View itemView) {
@@ -141,6 +143,7 @@ public class SeriesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             mView = itemView;
             mImage = (RoundedImageView) itemView.findViewById(R.id.image);
             mTitle = (TextView) itemView.findViewById(R.id.title);
+            mEngTitle = (TextView) itemView.findViewById(R.id.eng_title);
         }
     }
 

@@ -19,6 +19,7 @@ public class SportGridActivity extends LeanbackActivity implements FilterFragmen
         FilterFragment.OnCountryInteractionListener, FilterFragment.OnYearInteractionListener {
 
     TextView mSportText;
+    TextView mHitText;
     TextView mRecentText;
     TextView mFavoriteText;
 
@@ -33,6 +34,7 @@ public class SportGridActivity extends LeanbackActivity implements FilterFragmen
         getWindow().setBackgroundDrawableResource(R.drawable.custom_background);
 
         mSportText = (TextView) findViewById(R.id.sport);
+        mHitText = (TextView) findViewById(R.id.hit);
         mRecentText = (TextView) findViewById(R.id.recent);
         mFavoriteText = (TextView) findViewById(R.id.favorite);
 
@@ -73,6 +75,17 @@ public class SportGridActivity extends LeanbackActivity implements FilterFragmen
                 EventBus.getDefault().post(new LoadSportEvent(
                         UrlUtil.appendUri(UrlUtil.SPORT_URL, UrlUtil.addToken())));
                 setTextSelected(mSportText);
+                clearFilter();
+            }
+        });
+
+        mHitText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EventBus.getDefault().post(new LoadSportEvent(
+                        UrlUtil.appendUri(UrlUtil.SPORT_HIT_URL, UrlUtil.addToken())));
+                setTextSelected(mHitText);
+                clearFilter();
             }
         });
 
@@ -82,6 +95,7 @@ public class SportGridActivity extends LeanbackActivity implements FilterFragmen
                 EventBus.getDefault().post(new LoadSportEvent(
                         UrlUtil.appendUri(UrlUtil.SPORT_HISTORY_URL, UrlUtil.addToken())));
                 setTextSelected(mRecentText);
+                clearFilter();
             }
         });
 
@@ -91,16 +105,24 @@ public class SportGridActivity extends LeanbackActivity implements FilterFragmen
                 EventBus.getDefault().post(new LoadSportEvent(
                         UrlUtil.appendUri(UrlUtil.SPORT_FAVORITE_URL, UrlUtil.addToken())));
                 setTextSelected(mFavoriteText);
+                clearFilter();
             }
         });
     }
 
     private void setTextSelected(TextView currentText) {
         mSportText.setSelected(false);
+        mHitText.setSelected(false);
         mRecentText.setSelected(false);
         mFavoriteText.setSelected(false);
 
         currentText.setSelected(true);
+    }
+
+    private void clearFilter() {
+        mCurrentCategory = -1;
+        mCurrentCountry = -1;
+        mCurrentYear = -1;
     }
 
     @Override

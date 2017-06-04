@@ -89,13 +89,27 @@
                 android:layout_marginTop="@dimen/margin_padding_normal"
                 android:background="@drawable/bg_menu_button"
                 android:padding="12dp"
-                android:text="กีฬาย้อนหลัง"
+                android:text="รีรันมาใหม่"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/bg_movie_text"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:nextFocusUp="@+id/search"/>
+
+            <TextView
+                android:id="@+id/hit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_small"
+                android:background="@drawable/bg_menu_button"
+                android:padding="12dp"
+                android:text="รีรันยอดนิยม"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/bg_movie_text"
+                android:focusable="true"
+                android:focusableInTouchMode="true"/>
 
             <TextView
                 android:id="@+id/recent"

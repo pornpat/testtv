@@ -53,7 +53,7 @@
                 android:layout_marginTop="@dimen/margin_padding_normal"
                 android:background="@drawable/bg_menu_button"
                 android:padding="12dp"
-                android:text="ช่องรายการ"
+                android:text="ถ่ายทอดสด"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/bg_movie_text"

@@ -64,6 +64,12 @@ public class SportGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 @Override
                 public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                     vh.mTitle.setText(mValues.get(position).getName());
+                    if (!mValues.get(position).getEngName().equals("")) {
+                        vh.mEngTitle.setText(mValues.get(position).getEngName());
+                        vh.mEngTitle.setVisibility(View.VISIBLE);
+                    } else {
+                        vh.mEngTitle.setVisibility(View.GONE);
+                    }
                     vh.mImage.setImageDrawable(resource);
                     return true;
                 }
@@ -134,6 +140,7 @@ public class SportGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public final View mView;
         public final RoundedImageView mImage;
         public final TextView mTitle;
+        public final TextView mEngTitle;
         public MovieItem mItem;
 
         public SportViewHolder(View itemView) {
@@ -141,6 +148,7 @@ public class SportGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             mView = itemView;
             mImage = (RoundedImageView) itemView.findViewById(R.id.image);
             mTitle = (TextView) itemView.findViewById(R.id.title);
+            mEngTitle = (TextView) itemView.findViewById(R.id.eng_title);
         }
     }
 

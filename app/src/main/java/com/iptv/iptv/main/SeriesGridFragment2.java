@@ -195,7 +195,7 @@ public class SeriesGridFragment2 extends Fragment implements LoaderManager.Loade
     @Subscribe
     public void onTokenError(TokenErrorEvent event) {
         PrefUtil.setStringProperty(R.string.pref_token, "");
-        Toast.makeText(getActivity(), "Token หมดอายุ กรุณาล๊อคอินใหม่อีกครั้ง", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Token หมดอายุ กรุณาล็อกอินใหม่อีกครั้ง", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

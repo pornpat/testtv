@@ -44,6 +44,7 @@ public class MovieDataUtil {
 
             int id;
             String name;
+            String eng_name;
             String description;
             String imageUrl;
             String released;
@@ -58,6 +59,7 @@ public class MovieDataUtil {
                 JSONObject detailObj = movieObj.getJSONObject(TAG_DETAIL);
                 id = detailObj.getInt(TAG_MEDIA_ID);
                 name = detailObj.getString(TAG_NAME);
+                eng_name = detailObj.getString("eng_name");
                 description = detailObj.getString(TAG_DESCRIPTION);
                 imageUrl = detailObj.getString(TAG_IMAGEURL);
                 released = detailObj.getString(TAG_RELEASED);
@@ -100,7 +102,7 @@ public class MovieDataUtil {
                     tracks.add(buildTrackInfo(trackId, audio, subtitle, discs));
                 }
 
-                list.add(buildMovieInfo(id, name, description, imageUrl, released, tracks, type));
+                list.add(buildMovieInfo(id, name, eng_name, description, imageUrl, released, tracks, type));
 
             }
             return list;
@@ -111,10 +113,11 @@ public class MovieDataUtil {
 
     }
 
-    private static MovieItem buildMovieInfo(int id, String name, String description, String imageUrl, String released, List<TrackItem> tracks, String type) {
+    private static MovieItem buildMovieInfo(int id, String name, String eng_name, String description, String imageUrl, String released, List<TrackItem> tracks, String type) {
         MovieItem movie = new MovieItem();
         movie.setId(id);
         movie.setName(name);
+        movie.setEngName(eng_name);
         movie.setDescription(description);
         movie.setImageUrl(imageUrl);
         movie.setReleased(released);

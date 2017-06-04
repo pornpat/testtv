@@ -13,6 +13,7 @@ public class MovieItem {
 
     private int id;
     private String name;
+    private String engName;
     private String description;
     private String imageUrl;
     private String released;
@@ -35,6 +36,14 @@ public class MovieItem {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEngName() {
+        return engName;
+    }
+
+    public void setEngName(String engName) {
+        this.engName = engName;
     }
 
     public String getDescription() {

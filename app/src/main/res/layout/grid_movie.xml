@@ -23,12 +23,24 @@
         app:riv_corner_radius="@dimen/margin_padding_xsmall"/>
 
     <TextView
+        android:id="@+id/eng_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_padding_xsmall"
+        android:layout_marginRight="@dimen/margin_padding_xsmall"
+        android:layout_marginTop="@dimen/margin_padding_xxsmall"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:singleLine="true"/>
+
+    <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_padding_xsmall"
         android:layout_marginRight="@dimen/margin_padding_xsmall"
-        android:layout_marginTop="@dimen/margin_padding_xsmall"
+        android:layout_marginTop="@dimen/margin_padding_xxxsmall"
         android:textSize="20sp"
         android:textColor="@color/text_default"
         android:singleLine="true"/>

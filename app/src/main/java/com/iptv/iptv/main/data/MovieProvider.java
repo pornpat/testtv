@@ -97,6 +97,7 @@ public class MovieProvider {
 
             int id;
             String name;
+            String eng_name;
             String description;
             String imageUrl;
             String released;
@@ -113,6 +114,7 @@ public class MovieProvider {
                     JSONObject detailObj = media.getJSONObject(TAG_DETAIL);
                     id = detailObj.getInt(TAG_MEDIA_ID);
                     name = detailObj.getString(TAG_NAME);
+                    eng_name = detailObj.getString("eng_name");
                     description = detailObj.getString(TAG_DESCRIPTION);
                     imageUrl = detailObj.getString(TAG_IMAGEURL);
                     released = detailObj.getString(TAG_RELEASED);
@@ -154,8 +156,8 @@ public class MovieProvider {
                         tracks.add(buildTrackInfo(trackId, audio, subtitle, discs));
                     }
 
-                    sMovieListById.put(id, buildMovieInfo(id, name, description, imageUrl, released, tracks, type));
-                    movieList.add(buildMovieInfo(id, name, description, imageUrl, released, tracks, type));
+                    sMovieListById.put(id, buildMovieInfo(id, name, eng_name, description, imageUrl, released, tracks, type));
+                    movieList.add(buildMovieInfo(id, name, eng_name, description, imageUrl, released, tracks, type));
                 }
             }
 
@@ -167,6 +169,7 @@ public class MovieProvider {
 
             int id;
             String name;
+            String eng_name;
             String description;
             String imageUrl;
             String released;
@@ -181,6 +184,7 @@ public class MovieProvider {
                 JSONObject detailObj = movieObj.getJSONObject(TAG_DETAIL);
                 id = detailObj.getInt(TAG_MEDIA_ID);
                 name = detailObj.getString(TAG_NAME);
+                eng_name = detailObj.getString("eng_name");
                 description = detailObj.getString(TAG_DESCRIPTION);
                 imageUrl = detailObj.getString(TAG_IMAGEURL);
                 released = detailObj.getString(TAG_RELEASED);
@@ -222,8 +226,8 @@ public class MovieProvider {
                     tracks.add(buildTrackInfo(trackId, audio, subtitle, discs));
                 }
 
-                sMovieListById.put(id, buildMovieInfo(id, name, description, imageUrl, released, tracks, type));
-                movieList.add(buildMovieInfo(id, name, description, imageUrl, released, tracks, type));
+                sMovieListById.put(id, buildMovieInfo(id, name, eng_name, description, imageUrl, released, tracks, type));
+                movieList.add(buildMovieInfo(id, name, eng_name, description, imageUrl, released, tracks, type));
             }
 
             sMovieList.put("", movieList);
@@ -232,10 +236,11 @@ public class MovieProvider {
         }
     }
 
-    private static MovieItem buildMovieInfo(int id, String name, String description, String imageUrl, String released, List<TrackItem> tracks, String type) {
+    private static MovieItem buildMovieInfo(int id, String name, String eng_name, String description, String imageUrl, String released, List<TrackItem> tracks, String type) {
         MovieItem movie = new MovieItem();
         movie.setId(id);
         movie.setName(name);
+        movie.setEngName(eng_name);
         movie.setDescription(description);
         movie.setImageUrl(imageUrl);
         movie.setReleased(released);

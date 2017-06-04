@@ -51,11 +51,11 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@color/black_60"
+            android:orientation="vertical"
             android:paddingLeft="@dimen/margin_padding_mid"
             android:paddingRight="@dimen/margin_padding_mid"
-            android:paddingTop="@dimen/activity_margin"
-            android:orientation="vertical"
-            android:background="@color/black_60">
+            android:paddingTop="@dimen/activity_margin">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -67,18 +67,18 @@
                     android:id="@+id/search"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@drawable/search_selected"
                     android:focusable="true"
-                    android:focusableInTouchMode="true"/>
+                    android:focusableInTouchMode="true"
+                    android:src="@drawable/search_selected" />
 
                 <ImageView
                     android:id="@+id/filter"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_marginLeft="@dimen/margin_padding_normal"
-                    android:src="@drawable/filter_selected"
                     android:focusable="true"
-                    android:focusableInTouchMode="true"/>
+                    android:focusableInTouchMode="true"
+                    android:src="@drawable/filter_selected" />
 
             </LinearLayout>
 
@@ -88,13 +88,27 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_padding_normal"
                 android:background="@drawable/bg_menu_button"
-                android:padding="12dp"
-                android:text="ซีรี่ย์"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/bg_movie_text"
                 android:focusable="true"
-                android:focusableInTouchMode="true"/>
+                android:focusableInTouchMode="true"
+                android:padding="12dp"
+                android:text="ซีรี่ย์มาใหม่"
+                android:textColor="@color/bg_movie_text"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/hit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_small"
+                android:background="@drawable/bg_menu_button"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:padding="12dp"
+                android:text="ซีรี่ย์ยอดนิยม"
+                android:textColor="@color/bg_movie_text"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/recent"
@@ -102,13 +116,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_padding_small"
                 android:background="@drawable/bg_menu_button"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:padding="12dp"
                 android:text="รับชมล่าสุด"
-                android:textSize="20sp"
-                android:textStyle="bold"
                 android:textColor="@color/bg_movie_text"
-                android:focusable="true"
-                android:focusableInTouchMode="true"/>
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/favorite"
@@ -116,20 +130,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_padding_small"
                 android:background="@drawable/bg_menu_button"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:padding="12dp"
                 android:text="รายการโปรด"
-                android:textSize="20sp"
-                android:textStyle="bold"
                 android:textColor="@color/bg_movie_text"
-                android:focusable="true"
-                android:focusableInTouchMode="true"/>
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
         <Space
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="4"/>
+            android:layout_weight="4" />
 
     </LinearLayout>
 

@@ -19,6 +19,7 @@ public class SeriesGridActivity extends LeanbackActivity implements FilterFragme
         FilterFragment.OnCountryInteractionListener, FilterFragment.OnYearInteractionListener {
 
     TextView mSeriesText;
+    TextView mHitText;
     TextView mRecentText;
     TextView mFavoriteText;
 
@@ -33,6 +34,7 @@ public class SeriesGridActivity extends LeanbackActivity implements FilterFragme
         getWindow().setBackgroundDrawableResource(R.drawable.custom_background);
 
         mSeriesText = (TextView) findViewById(R.id.series);
+        mHitText = (TextView) findViewById(R.id.hit);
         mRecentText = (TextView) findViewById(R.id.recent);
         mFavoriteText = (TextView) findViewById(R.id.favorite);
 
@@ -73,6 +75,17 @@ public class SeriesGridActivity extends LeanbackActivity implements FilterFragme
                 EventBus.getDefault().post(new LoadSeriesEvent(
                         UrlUtil.appendUri(UrlUtil.SERIES_URL, UrlUtil.addToken())));
                 setTextSelected(mSeriesText);
+                clearFilter();
+            }
+        });
+
+        mHitText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EventBus.getDefault().post(new LoadSeriesEvent(
+                        UrlUtil.appendUri(UrlUtil.SERIES_HIT_URL, UrlUtil.addToken())));
+                setTextSelected(mHitText);
+                clearFilter();
             }
         });
 
@@ -82,6 +95,7 @@ public class SeriesGridActivity extends LeanbackActivity implements FilterFragme
                 EventBus.getDefault().post(new LoadSeriesEvent(
                         UrlUtil.appendUri(UrlUtil.SERIES_HISTORY_URL, UrlUtil.addToken())));
                 setTextSelected(mRecentText);
+                clearFilter();
             }
         });
 
@@ -91,16 +105,24 @@ public class SeriesGridActivity extends LeanbackActivity implements FilterFragme
                 EventBus.getDefault().post(new LoadSeriesEvent(
                         UrlUtil.appendUri(UrlUtil.SERIES_FAVORITE_URL, UrlUtil.addToken())));
                 setTextSelected(mFavoriteText);
+                clearFilter();
             }
         });
     }
 
     private void setTextSelected(TextView currentText) {
         mSeriesText.setSelected(false);
+        mHitText.setSelected(false);
         mRecentText.setSelected(false);
         mFavoriteText.setSelected(false);
 
         currentText.setSelected(true);
+    }
+
+    private void clearFilter() {
+        mCurrentCategory = -1;
+        mCurrentCountry = -1;
+        mCurrentYear = -1;
     }
 
     @Override

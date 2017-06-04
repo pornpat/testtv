@@ -92,7 +92,7 @@
                 android:focusableInTouchMode="true"
                 android:nextFocusUp="@+id/search"
                 android:padding="12dp"
-                android:text="หนังแนะนำ"
+                android:text="หนังมาใหม่"
                 android:textColor="@color/bg_movie_text"
                 android:textSize="20sp"
                 android:textStyle="bold" />

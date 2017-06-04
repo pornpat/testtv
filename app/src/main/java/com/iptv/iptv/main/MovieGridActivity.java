@@ -19,6 +19,7 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
         FilterFragment.OnCountryInteractionListener, FilterFragment.OnYearInteractionListener {
 
     TextView mMovieText;
+    TextView mHitText;
     TextView mRecentText;
     TextView mFavoriteText;
 
@@ -33,6 +34,7 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
         getWindow().setBackgroundDrawableResource(R.drawable.custom_background);
 
         mMovieText = (TextView) findViewById(R.id.movie);
+        mHitText = (TextView) findViewById(R.id.hit);
         mRecentText = (TextView) findViewById(R.id.recent);
         mFavoriteText = (TextView) findViewById(R.id.favorite);
 
@@ -73,6 +75,17 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
                 EventBus.getDefault().post(new LoadMovieEvent(
                         UrlUtil.appendUri(UrlUtil.MOVIE_URL, UrlUtil.addToken())));
                 setTextSelected(mMovieText);
+                clearFilter();
+            }
+        });
+
+        mHitText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EventBus.getDefault().post(new LoadMovieEvent(
+                        UrlUtil.appendUri(UrlUtil.MOVIE_HIT_URL, UrlUtil.addToken())));
+                setTextSelected(mHitText);
+                clearFilter();
             }
         });
 
@@ -82,6 +95,7 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
                 EventBus.getDefault().post(new LoadMovieEvent(
                         UrlUtil.appendUri(UrlUtil.MOVIE_HISTORY_URL, UrlUtil.addToken())));
                 setTextSelected(mRecentText);
+                clearFilter();
             }
         });
 
@@ -91,16 +105,24 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
                 EventBus.getDefault().post(new LoadMovieEvent(
                         UrlUtil.appendUri(UrlUtil.MOVIE_FAVORITE_URL, UrlUtil.addToken())));
                 setTextSelected(mFavoriteText);
+                clearFilter();
             }
         });
     }
 
     private void setTextSelected(TextView currentText) {
         mMovieText.setSelected(false);
+        mHitText.setSelected(false);
         mRecentText.setSelected(false);
         mFavoriteText.setSelected(false);
 
         currentText.setSelected(true);
+    }
+
+    private void clearFilter() {
+        mCurrentCategory = -1;
+        mCurrentCountry = -1;
+        mCurrentYear = -1;
     }
 
     @Override

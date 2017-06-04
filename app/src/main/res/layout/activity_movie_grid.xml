@@ -92,7 +92,21 @@
                 android:focusableInTouchMode="true"
                 android:nextFocusUp="@+id/search"
                 android:padding="12dp"
-                android:text="ภาพยนตร์"
+                android:text="หนังแนะนำ"
+                android:textColor="@color/bg_movie_text"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/hit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_small"
+                android:background="@drawable/bg_menu_button"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:padding="12dp"
+                android:text="หนังยอดนิยม"
                 android:textColor="@color/bg_movie_text"
                 android:textSize="20sp"
                 android:textStyle="bold" />

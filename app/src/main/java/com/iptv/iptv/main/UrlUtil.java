@@ -42,6 +42,7 @@ public class UrlUtil {
     public static final String PACKAGE_URL = BASE_URL + "/packages";
     public static final String EXPIRE_CHECK_URL = BASE_URL + "/packages/expired";
     public static final String CHANGE_PASSWORD_URL = BASE_URL + "/auth/password";
+    public static final String MEDIA_URL = BASE_URL + "/media";
 
     public static final String TOPUP_BASE_URL = "http://cdnhispeed.com/mock_api/REST/V1/topup";
     public static final String TOPUP_PINCODE = TOPUP_BASE_URL + "/pincode";
@@ -89,6 +90,10 @@ public class UrlUtil {
 
     public static String getTopupTransaction(int transactionId) {
         return TOPUP_BASE_URL + "/" + transactionId;
+    }
+
+    public static String getFavCheckUrl(int id) {
+        return MEDIA_URL + "/" + id + "/isFavorite";
     }
 
 }

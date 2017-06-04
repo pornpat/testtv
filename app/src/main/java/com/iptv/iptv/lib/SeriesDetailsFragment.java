@@ -39,7 +39,6 @@ import com.iptv.iptv.main.presenter.DetailsDescriptionPresenter;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.TextHttpResponseHandler;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
@@ -72,24 +71,17 @@ public class SeriesDetailsFragment extends DetailsFragment {
                 .getParcelableExtra(SeriesDetailsActivity.SERIES));
 
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(UrlUtil.appendUri(UrlUtil.SERIES_FAVORITE_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
+        client.get(UrlUtil.appendUri(UrlUtil.getFavCheckUrl(mSelectedMovie.getId()), UrlUtil.addToken()), new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 try {
                     JSONObject jsonObject = new JSONObject(responseString);
-                    JSONArray jsonArray = jsonObject.getJSONArray("data");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject movieObj = jsonArray.getJSONObject(i);
-                        JSONObject media = movieObj.getJSONObject("media");
-                        int id = media.getInt("id");
-                        if (id == mSelectedMovie.getId()) {
-                            isFav = true;
-                        }
-                    }
+                    isFav = jsonObject.getBoolean("isFavorite");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

@@ -265,7 +265,8 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
 
     @Override
     public void onError(EasyVideoPlayer player, Exception e) {
-
+        Toast.makeText(MoviePlayerActivity.this, "ขออภัย ไม่สามารถดูไฟล์หนังนี้ได้ (Unsupported format)", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override

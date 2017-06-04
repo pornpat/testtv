@@ -165,6 +165,15 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
                 startBackgroundTimer();
             }
         });
+
+        mVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+                Toast.makeText(LivePlayerActivity.this, "ขออภัย ไม่สามารถดูรายการสดนี้ได้ (Unsupported format)", Toast.LENGTH_SHORT).show();
+                finish();
+                return true;
+            }
+        });
     }
 
     private void loadLiveData() {

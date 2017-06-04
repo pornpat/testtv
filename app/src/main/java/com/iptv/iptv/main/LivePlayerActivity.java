@@ -433,28 +433,30 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
                 }
             }
             if (!isFound) {
-                // or find the biggest start hour
-                LiveProgramItem program = programs.get(programs.size() - 1);
-                if (!isMidnightContinue) {
-                    endTime.setHours(24);
-                    endTime.setMinutes(0);
-                    endTime.setSeconds(0);
+                if (programs.size() > 0) {
+                    // or find the biggest start hour
+                    LiveProgramItem program = programs.get(programs.size() - 1);
+                    if (!isMidnightContinue) {
+                        endTime.setHours(24);
+                        endTime.setMinutes(0);
+                        endTime.setSeconds(0);
 
-                    isMidnightContinue = true;
-                } else {
-                    endTime.setHours(program.getEndHour());
-                    endTime.setMinutes(program.getEndMin());
-                    endTime.setSeconds(0);
+                        isMidnightContinue = true;
+                    } else {
+                        endTime.setHours(program.getEndHour());
+                        endTime.setMinutes(program.getEndMin());
+                        endTime.setSeconds(0);
 
-                    isMidnightContinue = false;
+                        isMidnightContinue = false;
+                    }
+                    dueTime = endTime;
+                    Log.v("testkn", "not found set" + df.format(dueTime));
+                    mProgramText.setText(program.getProgramName());
+                    mPeriodText.setText(String.format("%02d", program.getStartHour()) + ":" +
+                            String.format("%02d", program.getStartMin()) + " - " +
+                            String.format("%02d", program.getEndHour()) + ":" +
+                            String.format("%02d", program.getEndMin()));
                 }
-                dueTime = endTime;
-                Log.v("testkn", "not found set" + df.format(dueTime));
-                mProgramText.setText(program.getProgramName());
-                mPeriodText.setText(String.format("%02d", program.getStartHour()) + ":" +
-                        String.format("%02d", program.getStartMin()) + " - " +
-                        String.format("%02d", program.getEndHour()) + ":" +
-                        String.format("%02d", program.getEndMin()));
             }
         } catch (Exception e) {}
     }

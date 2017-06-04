@@ -47,7 +47,9 @@ public class LiveProgramAdapter extends RecyclerView.Adapter<LiveProgramAdapter.
             }
         }
         if (!isFound) {
-            mValues.add(items.get(items.size() - 1));
+            if (items.size() > 0) {
+                mValues.add(items.get(items.size() - 1));
+            }
         }
     }
 

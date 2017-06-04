@@ -269,13 +269,11 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:paddingBottom="@dimen/margin_padding_small"
+                    android:paddingBottom="@dimen/margin_padding_normal"
                     android:text="@string/menu_sport"
                     android:textSize="22sp"
                     android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:lineSpacingExtra="-5dp"
-                    android:gravity="center_horizontal"/>
+                    android:textColor="@color/white"/>
 
             </RelativeLayout>
 

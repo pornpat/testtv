@@ -113,6 +113,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
         mFavText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                PrefUtil.setBooleanProperty(R.string.pref_update_favorite, true);
                 if (!mFavList.contains(mLiveList.get(currentFocusChannel).getId())) {
                     AsyncHttpClient client = new AsyncHttpClient();
                     client.post(UrlUtil.appendUri(UrlUtil.addMediaId(UrlUtil.FAVORITE_URL, mLiveList.get(currentFocusChannel).getId()), UrlUtil.addToken()), new TextHttpResponseHandler() {

@@ -23,4 +23,12 @@ public class PrefUtil {
         getPref().edit().putString(AppApplication.getAppResources().getString(resId), value).commit();
     }
 
+    public static boolean getBooleanProperty(int resId) {
+        return getPref().getBoolean(AppApplication.getAppResources().getString(resId), false);
+    }
+
+    public static void setBooleanProperty(int resId, boolean value) {
+        getPref().edit().putBoolean(AppApplication.getAppResources().getString(resId), value).commit();
+    }
+
 }

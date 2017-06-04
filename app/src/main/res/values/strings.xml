@@ -5,6 +5,8 @@
     <string name="pref_token">pref_token</string>
     <string name="pref_username">pref_username</string>
     <string name="pref_password">pref_password</string>
+    <string name="pref_update_favorite">pref_update_favorite</string>
+    <string name="pref_current_favorite">pref_current_favorite</string>
 
     <string name="menu_live">LIVE</string>
     <string name="menu_recommend">HIT MOVIES</string>

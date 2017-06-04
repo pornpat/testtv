@@ -117,6 +117,12 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
         mFavoriteText.setSelected(false);
 
         currentText.setSelected(true);
+
+        if (currentText == mFavoriteText) {
+            PrefUtil.setBooleanProperty(R.string.pref_current_favorite, true);
+        } else {
+            PrefUtil.setBooleanProperty(R.string.pref_current_favorite, false);
+        }
     }
 
     private void clearFilter() {

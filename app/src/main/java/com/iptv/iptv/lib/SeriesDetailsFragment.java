@@ -29,6 +29,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.PrefUtil;
 import com.iptv.iptv.main.SeriesEpisodeActivity;
 import com.iptv.iptv.main.UrlUtil;
 import com.iptv.iptv.main.data.SeriesDataUtil;
@@ -170,6 +171,7 @@ public class SeriesDetailsFragment extends DetailsFragment {
             @Override
             public void onActionClicked(final Action action) {
                 if (action.getId() == ACTION_ADD_FAV) {
+                    PrefUtil.setBooleanProperty(R.string.pref_update_favorite, true);
                     if (!isFav) {
                         AsyncHttpClient client = new AsyncHttpClient();
                         client.post(UrlUtil.appendUri(UrlUtil.addMediaId(UrlUtil.FAVORITE_URL, mSelectedMovie.getId()), UrlUtil.addToken()), new TextHttpResponseHandler() {

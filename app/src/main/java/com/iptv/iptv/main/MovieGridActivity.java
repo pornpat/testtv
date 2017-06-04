@@ -47,7 +47,7 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
         }, 500);
 
         mMovieText.requestFocus();
-        mMovieText.setSelected(true);
+        setTextSelected(mMovieText);
 
         findViewById(R.id.search).setOnClickListener(new View.OnClickListener() {
             @Override

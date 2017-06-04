@@ -46,6 +46,8 @@ public class SearchActivity extends LeanbackActivity {
         mLiveText = (TextView) findViewById(R.id.live);
         mSportText = (TextView) findViewById(R.id.sport);
 
+        PrefUtil.setBooleanProperty(R.string.pref_current_favorite, false);
+
         mSearchText.requestFocus();
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

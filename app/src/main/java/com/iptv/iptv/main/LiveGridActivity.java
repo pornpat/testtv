@@ -36,7 +36,7 @@ public class LiveGridActivity extends LeanbackActivity {
         }, 500);
 
         mLiveText.requestFocus();
-        mLiveText.setSelected(true);
+        setTextSelected(mLiveText);
 
         findViewById(R.id.search).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,5 +81,11 @@ public class LiveGridActivity extends LeanbackActivity {
         mFavoriteText.setSelected(false);
 
         currentText.setSelected(true);
+
+        if (currentText == mFavoriteText) {
+            PrefUtil.setBooleanProperty(R.string.pref_current_favorite, true);
+        } else {
+            PrefUtil.setBooleanProperty(R.string.pref_current_favorite, false);
+        }
     }
 }

@@ -213,6 +213,11 @@ public class SportGridFragment2 extends Fragment implements LoaderManager.Loader
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        if (PrefUtil.getBooleanProperty(R.string.pref_update_sport) && PrefUtil.getBooleanProperty(R.string.pref_current_favorite)) {
+            isNewLoad = true;
+            shouldLoad = true;
+        }
+        PrefUtil.setBooleanProperty(R.string.pref_update_sport, false);
     }
 
     @Override

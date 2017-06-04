@@ -244,6 +244,11 @@ public class LiveGridFragment2 extends Fragment implements LoaderManager.LoaderC
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        if (PrefUtil.getBooleanProperty(R.string.pref_update_live) && PrefUtil.getBooleanProperty(R.string.pref_current_favorite)) {
+            isNewLoad = true;
+            shouldLoad = true;
+        }
+        PrefUtil.setBooleanProperty(R.string.pref_update_live, false);
     }
 
     @Override

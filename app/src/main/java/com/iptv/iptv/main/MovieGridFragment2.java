@@ -214,11 +214,11 @@ public class MovieGridFragment2 extends Fragment implements LoaderManager.Loader
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-        if (PrefUtil.getBooleanProperty(R.string.pref_update_favorite) && PrefUtil.getBooleanProperty(R.string.pref_current_favorite)) {
+        if (PrefUtil.getBooleanProperty(R.string.pref_update_movie) && PrefUtil.getBooleanProperty(R.string.pref_current_favorite)) {
             isNewLoad = true;
             shouldLoad = true;
         }
-        PrefUtil.setBooleanProperty(R.string.pref_update_favorite, false);
+        PrefUtil.setBooleanProperty(R.string.pref_update_movie, false);
     }
 
     @Override

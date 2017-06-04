@@ -28,6 +28,8 @@ public class HitGridActivity extends LeanbackActivity {
         mSeriesText = (TextView) findViewById(R.id.series);
         mSportText = (TextView) findViewById(R.id.sport);
 
+        PrefUtil.setBooleanProperty(R.string.pref_current_favorite, false);
+
         mMovieText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

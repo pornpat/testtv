@@ -47,7 +47,7 @@ public class SeriesGridActivity extends LeanbackActivity implements FilterFragme
         }, 500);
 
         mSeriesText.requestFocus();
-        mSeriesText.setSelected(true);
+        setTextSelected(mSeriesText);
 
         findViewById(R.id.search).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,6 +117,12 @@ public class SeriesGridActivity extends LeanbackActivity implements FilterFragme
         mFavoriteText.setSelected(false);
 
         currentText.setSelected(true);
+
+        if (currentText == mFavoriteText) {
+            PrefUtil.setBooleanProperty(R.string.pref_current_favorite, true);
+        } else {
+            PrefUtil.setBooleanProperty(R.string.pref_current_favorite, false);
+        }
     }
 
     private void clearFilter() {

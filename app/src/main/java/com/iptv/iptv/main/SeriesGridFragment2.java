@@ -213,6 +213,11 @@ public class SeriesGridFragment2 extends Fragment implements LoaderManager.Loade
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        if (PrefUtil.getBooleanProperty(R.string.pref_update_series) && PrefUtil.getBooleanProperty(R.string.pref_current_favorite)) {
+            isNewLoad = true;
+            shouldLoad = true;
+        }
+        PrefUtil.setBooleanProperty(R.string.pref_update_series, false);
     }
 
     @Override

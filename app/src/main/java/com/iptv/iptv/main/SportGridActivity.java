@@ -47,7 +47,7 @@ public class SportGridActivity extends LeanbackActivity implements FilterFragmen
         }, 500);
 
         mSportText.requestFocus();
-        mSportText.setSelected(true);
+        setTextSelected(mSportText);
 
         findViewById(R.id.search).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,6 +117,12 @@ public class SportGridActivity extends LeanbackActivity implements FilterFragmen
         mFavoriteText.setSelected(false);
 
         currentText.setSelected(true);
+
+        if (currentText == mFavoriteText) {
+            PrefUtil.setBooleanProperty(R.string.pref_current_favorite, true);
+        } else {
+            PrefUtil.setBooleanProperty(R.string.pref_current_favorite, false);
+        }
     }
 
     private void clearFilter() {

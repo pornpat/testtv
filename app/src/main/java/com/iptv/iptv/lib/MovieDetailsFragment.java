@@ -197,7 +197,11 @@ public class MovieDetailsFragment extends DetailsFragment {
             @Override
             public void onActionClicked(final Action action) {
                 if (action.getId() == ACTION_ADD_FAV) {
-                    PrefUtil.setBooleanProperty(R.string.pref_update_favorite, true);
+                    if (mSelectedMovie.getType().equals("movie")) {
+                        PrefUtil.setBooleanProperty(R.string.pref_update_movie, true);
+                    } else if (mSelectedMovie.getType().equals("sport")) {
+                        PrefUtil.setBooleanProperty(R.string.pref_update_sport, true);
+                    }
                     if (!isFav) {
                         AsyncHttpClient client = new AsyncHttpClient();
                         client.post(UrlUtil.appendUri(UrlUtil.addMediaId(UrlUtil.FAVORITE_URL, mSelectedMovie.getId()), UrlUtil.addToken()), new TextHttpResponseHandler() {

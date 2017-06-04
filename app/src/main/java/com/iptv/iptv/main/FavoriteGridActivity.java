@@ -31,6 +31,8 @@ public class FavoriteGridActivity extends LeanbackActivity {
         mLiveText = (TextView) findViewById(R.id.live);
         mSportText = (TextView) findViewById(R.id.sport);
 
+        PrefUtil.setBooleanProperty(R.string.pref_current_favorite, true);
+
         mMovieText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

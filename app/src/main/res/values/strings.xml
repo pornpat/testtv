@@ -5,7 +5,10 @@
     <string name="pref_token">pref_token</string>
     <string name="pref_username">pref_username</string>
     <string name="pref_password">pref_password</string>
-    <string name="pref_update_favorite">pref_update_favorite</string>
+    <string name="pref_update_movie">pref_update_movie</string>
+    <string name="pref_update_series">pref_update_series</string>
+    <string name="pref_update_live">pref_update_live</string>
+    <string name="pref_update_sport">pref_update_sport</string>
     <string name="pref_current_favorite">pref_current_favorite</string>
 
     <string name="menu_live">LIVE</string>

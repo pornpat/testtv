@@ -171,7 +171,7 @@ public class SeriesDetailsFragment extends DetailsFragment {
             @Override
             public void onActionClicked(final Action action) {
                 if (action.getId() == ACTION_ADD_FAV) {
-                    PrefUtil.setBooleanProperty(R.string.pref_update_favorite, true);
+                    PrefUtil.setBooleanProperty(R.string.pref_update_series, true);
                     if (!isFav) {
                         AsyncHttpClient client = new AsyncHttpClient();
                         client.post(UrlUtil.appendUri(UrlUtil.addMediaId(UrlUtil.FAVORITE_URL, mSelectedMovie.getId()), UrlUtil.addToken()), new TextHttpResponseHandler() {

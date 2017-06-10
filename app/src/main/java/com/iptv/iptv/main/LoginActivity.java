@@ -40,6 +40,10 @@ public class LoginActivity extends LeanbackActivity {
         mUsernameText.setText("tester");
         mPasswordText.setText("123456");
 
+        if (getIntent().hasExtra("toast")) {
+            Toast.makeText(LoginActivity.this, "Token หมดอายุ กรุณาล็อกอินใหม่อีกครั้ง", Toast.LENGTH_SHORT).show();
+        }
+
         if (!PrefUtil.getStringProperty(R.string.pref_token).equals("")) {
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
             startActivity(intent);

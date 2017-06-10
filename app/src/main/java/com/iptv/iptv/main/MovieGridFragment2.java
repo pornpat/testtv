@@ -13,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.iptv.iptv.R;
 import com.iptv.iptv.lib.MovieDetailsActivity;
@@ -196,8 +195,8 @@ public class MovieGridFragment2 extends Fragment implements LoaderManager.Loader
     @Subscribe
     public void onTokenError(TokenErrorEvent event) {
         PrefUtil.setStringProperty(R.string.pref_token, "");
-        Toast.makeText(getActivity(), "Token หมดอายุ กรุณาล็อกอินใหม่อีกครั้ง", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getActivity(), LoginActivity.class);
+        intent.putExtra("toast", true);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }

@@ -8,50 +8,57 @@
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:layout_marginTop="@dimen/margin_padding_mid"
-        android:paddingLeft="@dimen/margin_padding_small"
-        android:orientation="vertical">
+        android:paddingLeft="@dimen/margin_padding_small">
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_mid"
-            android:text="นำมาใช้"
-            android:textColor="@color/text_default"
-            android:textSize="20sp"/>
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/btn_apply"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="@dimen/margin_padding_xxsmall"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:src="@drawable/okay_selected"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_mid"
+                android:text="นำมาใช้"
+                android:textColor="@color/text_default"
+                android:textSize="20sp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_mid"
-            android:text="ล้าง"
-            android:textColor="@color/text_default"
-            android:textSize="20sp"/>
+            <ImageView
+                android:id="@+id/btn_apply"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="@dimen/margin_padding_xsmall"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:src="@drawable/okay_selected"/>
 
-        <ImageView
-            android:id="@+id/btn_clear"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="@dimen/margin_padding_xxsmall"
-            android:layout_marginBottom="@dimen/margin_padding_mid"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:src="@drawable/clear_selected"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_mid"
+                android:text="ล้าง"
+                android:textColor="@color/text_default"
+                android:textSize="20sp"/>
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/btn_clear"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="@dimen/margin_padding_xsmall"
+                android:layout_marginBottom="@dimen/margin_padding_mid"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:src="@drawable/clear_selected"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="0dp"

@@ -2,8 +2,6 @@ package com.iptv.iptv.main;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.app.LoaderManager;
-import android.content.Loader;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,31 +19,24 @@ import android.widget.VideoView;
 import com.bumptech.glide.Glide;
 import com.iptv.iptv.R;
 import com.iptv.iptv.lib.Utils;
-import com.iptv.iptv.main.data.LiveLoader;
-import com.iptv.iptv.main.data.LiveProvider;
 import com.iptv.iptv.main.model.LiveItem;
 import com.iptv.iptv.main.model.LiveProgramItem;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import cz.msebera.android.httpclient.Header;
 
-public class LivePlayerActivity extends LeanbackActivity implements LoaderManager.LoaderCallbacks<HashMap<String, List<LiveItem>>>, OnChannelSelectedListener {
+public class LivePlayerActivity extends LeanbackActivity implements OnChannelSelectedListener {
 
     private VideoView mVideoView;
     private View mDetailView;
@@ -66,10 +57,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
     private Thread mTimeThread;
     private OnChannelSelectedListener mListener;
 
-    private String mLiveUrl;
-
-    private List<LiveItem> mLiveList = new ArrayList<>();
-    private List<Integer> mFavList = new ArrayList<>();
+    private List<LiveItem> mLiveList;
 //    private List<LiveProgramItem> mProgramList = new ArrayList<>();
 
     private Date dueTime;
@@ -85,12 +73,13 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_player);
 
-        if (Utils.isInternetConnectionAvailable(LivePlayerActivity.this)) {
-            loadLiveData();
-        } else {
+        if (!Utils.isInternetConnectionAvailable(this)) {
             Toast.makeText(this, "Please check your internet..", Toast.LENGTH_SHORT).show();
             finish();
         }
+
+        mLiveList = Parcels.unwrap(getIntent().getExtras().getParcelable("list"));
+        currentChannel = getIntent().getExtras().getInt("position");
 
         mDetailView = findViewById(R.id.layout_detail);
         mChannelView = findViewById(R.id.layout_channel);
@@ -114,7 +103,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
             @Override
             public void onClick(View view) {
                 PrefUtil.setBooleanProperty(R.string.pref_update_live, true);
-                if (!mFavList.contains(mLiveList.get(currentFocusChannel).getId())) {
+                if (!mLiveList.get(currentFocusChannel).isFav()) {
                     AsyncHttpClient client = new AsyncHttpClient();
                     client.post(UrlUtil.appendUri(UrlUtil.addMediaId(UrlUtil.FAVORITE_URL, mLiveList.get(currentFocusChannel).getId()), UrlUtil.addToken()), new TextHttpResponseHandler() {
                         @Override
@@ -123,7 +112,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, String responseString) {}
                     });
-                    mFavList.add(mLiveList.get(currentFocusChannel).getId());
+                    mLiveList.get(currentFocusChannel).setFav(true);
                     mFavText.setText("ลบรายการโปรด");
                 } else {
                     AsyncHttpClient client = new AsyncHttpClient();
@@ -134,7 +123,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, String responseString) {}
                     });
-                    mFavList.remove(new Integer(mLiveList.get(currentFocusChannel).getId()));
+                    mLiveList.get(currentFocusChannel).setFav(false);
                     mFavText.setText("เพิ่มรายการโปรด");
                 }
             }
@@ -153,7 +142,6 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
         Runnable runnable = new CountDownRunner();
         mTimeThread = new Thread(runnable);
         mTimeThread.start();
-        
 
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -174,12 +162,8 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
                 return true;
             }
         });
-    }
 
-    private void loadLiveData() {
-        LiveProvider.setContext(this);
-        mLiveUrl = UrlUtil.appendUri(UrlUtil.LIVE_URL, UrlUtil.addToken());
-        getLoaderManager().initLoader(0, null, this);
+        startLive(currentChannel);
     }
 
     private void startLive(int position) {
@@ -202,65 +186,8 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
         }
     }
 
-    @Override
-    public Loader<HashMap<String, List<LiveItem>>> onCreateLoader(int i, Bundle bundle) {
-        return new LiveLoader(this, mLiveUrl);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<HashMap<String, List<LiveItem>>> loader, HashMap<String, List<LiveItem>> data) {
-        if (null != data && !data.isEmpty()) {
-            for (Map.Entry<String, List<LiveItem>> entry : data.entrySet()) {
-                List<LiveItem> list = entry.getValue();
-
-                for (int j = 0; j < list.size(); j++) {
-                    if (list.get(j).getId() == getIntent().getExtras().getInt("id")) {
-                        currentChannel = j;
-                    }
-                    mLiveList.add(list.get(j));
-                }
-            }
-            initFavorite();
-        } else {
-            Toast.makeText(this, "No live data available..", Toast.LENGTH_LONG).show();
-            finish();
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<HashMap<String, List<LiveItem>>> loader) {
-        mLiveList.clear();
-    }
-
     private void initChannelList() {
         mChannelList.setAdapter(new LiveChannelAdapter(mLiveList, currentChannel, mListener));
-    }
-
-    private void initFavorite() {
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get(UrlUtil.appendUri(UrlUtil.LIVE_FAVORITE_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                try {
-                    JSONObject jsonObject = new JSONObject(responseString);
-                    JSONArray jsonArray = jsonObject.getJSONArray("data");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject movieObj = jsonArray.getJSONObject(i);
-
-                        JSONObject media = movieObj.getJSONObject("media");
-                        mFavList.add(media.getInt("id"));
-                    }
-                    startLive(currentChannel);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
     }
 
     private void addRecentWatch(int id) {
@@ -310,7 +237,7 @@ public class LivePlayerActivity extends LeanbackActivity implements LoaderManage
             currentChannel = position;
             startLive(currentChannel);
         } else {
-            if (mFavList.contains(mLiveList.get(position).getId())) {
+            if (mLiveList.get(position).isFav()) {
                 mFavText.setText("ลบรายการโปรด");
             } else {
                 mFavText.setText("เพิ่มรายการโปรด");

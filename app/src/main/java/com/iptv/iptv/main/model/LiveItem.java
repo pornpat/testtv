@@ -16,6 +16,7 @@ public class LiveItem {
     private String logoUrl;
     private String url;
     private List<LiveProgramItem> programs;
+    private boolean isFav;
 
     public LiveItem() {}
 
@@ -57,5 +58,13 @@ public class LiveItem {
 
     public void setPrograms(List<LiveProgramItem> programs) {
         this.programs = programs;
+    }
+
+    public boolean isFav() {
+        return isFav;
+    }
+
+    public void setFav(boolean fav) {
+        isFav = fav;
     }
 }

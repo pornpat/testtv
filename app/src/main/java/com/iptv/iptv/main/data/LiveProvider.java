@@ -107,8 +107,24 @@ public class LiveProvider {
                     logoUrl = liveObj.getString(TAG_LOGOURL);
                     streamUrl = liveObj.getString(TAG_URL);
 
-                    sLiveListById.put(id, buildLiveInfo(id, name, logoUrl, streamUrl, null));
-                    liveList.add(buildLiveInfo(id, name, logoUrl, streamUrl, null));
+                    List<LiveProgramItem> programs = new ArrayList<>();
+
+                    JSONArray programArray = liveObj.getJSONArray(TAG_PROGRAM);
+                    for (int j = 0; j < programArray.length(); j++) {
+                        JSONObject program = programArray.getJSONObject(j);
+                        String p_name = program.getString(TAG_NAME);
+                        JSONObject start = program.getJSONObject(TAG_START_TIME);
+                        int startHour = Integer.parseInt(start.getString(TAG_HOUR));
+                        int startMin = Integer.parseInt(start.getString(TAG_MINUTE));
+                        JSONObject end = program.getJSONObject(TAG_END_TIME);
+                        int endHour = Integer.parseInt(end.getString(TAG_HOUR));
+                        int endMin = Integer.parseInt(end.getString(TAG_MINUTE));
+
+                        programs.add(new LiveProgramItem(p_name, startHour, startMin, endHour, endMin));
+                    }
+
+                    sLiveListById.put(id, buildLiveInfo(id, name, logoUrl, streamUrl, programs, false));
+                    liveList.add(buildLiveInfo(id, name, logoUrl, streamUrl, programs, false));
                 }
             }
 
@@ -122,6 +138,7 @@ public class LiveProvider {
             String name;
             String logoUrl;
             String streamUrl;
+            boolean isFav;
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObj = jsonArray.getJSONObject(i);
@@ -131,6 +148,13 @@ public class LiveProvider {
                 name = liveObj.getString(TAG_NAME);
                 logoUrl = liveObj.getString(TAG_LOGOURL);
                 streamUrl = liveObj.getString(TAG_URL);
+
+                JSONArray favArray = jsonObj.getJSONArray("my_favorite");
+                if (favArray.length() > 0) {
+                    isFav = true;
+                } else {
+                    isFav = false;
+                }
 
                 List<LiveProgramItem> programs = new ArrayList<>();
 
@@ -148,8 +172,8 @@ public class LiveProvider {
                     programs.add(new LiveProgramItem(p_name, startHour, startMin, endHour, endMin));
                 }
 
-                sLiveListById.put(id, buildLiveInfo(id, name, logoUrl, streamUrl, programs));
-                liveList.add(buildLiveInfo(id, name, logoUrl, streamUrl, programs));
+                sLiveListById.put(id, buildLiveInfo(id, name, logoUrl, streamUrl, programs, isFav));
+                liveList.add(buildLiveInfo(id, name, logoUrl, streamUrl, programs, isFav));
             }
 
             sLiveList.put("", liveList);
@@ -158,13 +182,14 @@ public class LiveProvider {
         }
     }
 
-    private static LiveItem buildLiveInfo(int id, String name, String logoUrl, String url, List<LiveProgramItem> programs) {
+    private static LiveItem buildLiveInfo(int id, String name, String logoUrl, String url, List<LiveProgramItem> programs, boolean isFav) {
         LiveItem live = new LiveItem();
         live.setId(id);
         live.setName(name);
         live.setLogoUrl(logoUrl);
         live.setUrl(url);
         live.setPrograms(programs);
+        live.setFav(isFav);
 
         return live;
     }

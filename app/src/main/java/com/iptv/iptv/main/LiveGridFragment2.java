@@ -30,6 +30,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -195,9 +196,9 @@ public class LiveGridFragment2 extends Fragment implements LoaderManager.LoaderC
                         JSONObject jsonObject = new JSONObject(responseString);
                         boolean isExpired = jsonObject.getBoolean("expired");
                         if (!isExpired) {
-                            LiveItem live = mMovieList.get(event.position);
                             Intent intent = new Intent(getActivity(), LivePlayerActivity.class);
-                            intent.putExtra("id", live.getId());
+                            intent.putExtra("position", event.position);
+                            intent.putExtra("list", Parcels.wrap(mMovieList));
                             startActivity(intent);
                         } else {
                             Toast.makeText(getActivity(), "วันใช้งานของคุณหมด กรุณาเติมเวันใช้งานเพื่อรับชม", Toast.LENGTH_SHORT).show();

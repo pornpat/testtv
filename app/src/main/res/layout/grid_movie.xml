@@ -32,7 +32,9 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/white"
-        android:singleLine="true"/>
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"/>
 
     <TextView
         android:id="@+id/title"
@@ -43,6 +45,8 @@
         android:layout_marginTop="@dimen/margin_padding_xxxsmall"
         android:textSize="20sp"
         android:textColor="@color/text_default"
-        android:singleLine="true"/>
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"/>
 
 </LinearLayout>

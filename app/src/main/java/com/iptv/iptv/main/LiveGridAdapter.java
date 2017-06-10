@@ -69,8 +69,10 @@ public class LiveGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 @Override
                 public void onFocusChange(View view, boolean isFocused) {
                     if (isFocused) {
+                        vh.mTitle.setSelected(true);
                         vh.mImage.setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_movie_selected));
                     } else {
+                        vh.mTitle.setSelected(false);
                         vh.mImage.setBackgroundColor(ContextCompat.getColor(mContext, android.R.color.transparent));
                     }
                 }
@@ -137,6 +139,7 @@ public class LiveGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             mView = itemView;
             mImage = (RoundedImageView) itemView.findViewById(R.id.image);
             mTitle = (TextView) itemView.findViewById(R.id.title);
+            itemView.findViewById(R.id.eng_title).setVisibility(View.GONE);
         }
     }
 

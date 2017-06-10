@@ -79,8 +79,12 @@ public class SportGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 @Override
                 public void onFocusChange(View view, boolean isFocused) {
                     if (isFocused) {
+                        vh.mTitle.setSelected(true);
+                        vh.mEngTitle.setSelected(true);
                         vh.mImage.setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_movie_selected));
                     } else {
+                        vh.mTitle.setSelected(false);
+                        vh.mEngTitle.setSelected(false);
                         vh.mImage.setBackgroundColor(ContextCompat.getColor(mContext, android.R.color.transparent));
                     }
                 }

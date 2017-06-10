@@ -209,17 +209,25 @@ public class HomeActivity extends LeanbackActivity {
             client.get(UrlUtil.appendUri(UrlUtil.ALL_PACKAGE_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    Toast.makeText(HomeActivity.this, responseString, Toast.LENGTH_SHORT).show();
+                    PrefUtil.setStringProperty(R.string.pref_token, "");
+                    Toast.makeText(HomeActivity.this, "Token หมดอายุ กรุณาล็อกอินใหม่อีกครั้ง", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
                 }
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, String responseString) {
                     try {
                         JSONArray jsonArray = new JSONArray(responseString);
-                        JSONObject jsonObject = jsonArray.getJSONObject(0);
-                        int remain_day = jsonObject.getInt("remaining_days");
+                        if (jsonArray.length() > 0) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            int remain_day = jsonObject.getInt("remaining_days");
 
-                        mRemainingText.setText(remain_day + " วัน");
+                            mRemainingText.setText(remain_day + " วัน");
+                        } else {
+                            mRemainingText.setText("0 วัน");
+                        }
 
 //                        //format yyyy-mm-dd hh:nn:ss
 //                        int year = Integer.parseInt(expire.substring(0, 4));
@@ -245,39 +253,52 @@ public class HomeActivity extends LeanbackActivity {
     }
 
     private void updateAdvertise() {
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get(UrlUtil.appendUri(UrlUtil.ADVERTISE_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {}
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                try {
-                    JSONObject jsonObject = new JSONObject(responseString);
-                    mAdsItem.setId(jsonObject.getInt("id"));
-                    mAdsItem.setTitle(jsonObject.getString("title"));
-                    mAdsItem.setDescription(jsonObject.getString("description"));
-                    mAdsItem.setImageUrl(jsonObject.getString("image_url"));
-
-                    Glide.with(HomeActivity.this).load(mAdsItem.getImageUrl()).override(400, 200).centerCrop()
-                            .error(R.drawable.test_advertise).listener(new RequestListener<String, GlideDrawable>() {
-                        @Override
-                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                            mAdsImage.setImageDrawable(resource);
-                            mAdsImage.setCornerRadiusDimen(R.dimen.margin_padding_small);
-                            return true;
-                        }
-                    }).into(mAdsImage);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+        if (Utils.isInternetConnectionAvailable(this)) {
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.get(UrlUtil.appendUri(UrlUtil.ADVERTISE_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, Header[] headers,
+                        String responseString, Throwable throwable) {
                 }
-            }
-        });
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers,
+                        String responseString) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(responseString);
+                        mAdsItem.setId(jsonObject.getInt("id"));
+                        mAdsItem.setTitle(jsonObject.getString("title"));
+                        mAdsItem.setDescription(jsonObject.getString("description"));
+                        mAdsItem.setImageUrl(jsonObject.getString("image_url"));
+
+                        Glide.with(HomeActivity.this).load(mAdsItem.getImageUrl()).override(
+                                400, 200).centerCrop()
+                                .error(R.drawable.test_advertise).listener(
+                                new RequestListener<String, GlideDrawable>() {
+                                    @Override
+                                    public boolean onException(Exception e, String model,
+                                            Target<GlideDrawable> target,
+                                            boolean isFirstResource) {
+                                        return false;
+                                    }
+
+                                    @Override
+                                    public boolean onResourceReady(GlideDrawable resource,
+                                            String model, Target<GlideDrawable> target,
+                                            boolean isFromMemoryCache,
+                                            boolean isFirstResource) {
+                                        mAdsImage.setImageDrawable(resource);
+                                        mAdsImage.setCornerRadiusDimen(
+                                                R.dimen.margin_padding_small);
+                                        return true;
+                                    }
+                                }).into(mAdsImage);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
     }
 
     private void fetchHitMovie() {

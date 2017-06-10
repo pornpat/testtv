@@ -28,6 +28,7 @@ import com.loopj.android.http.TextHttpResponseHandler;
 import org.parceler.Parcels;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -57,7 +58,7 @@ public class LivePlayerActivity extends LeanbackActivity implements OnChannelSel
     private Thread mTimeThread;
     private OnChannelSelectedListener mListener;
 
-    private List<LiveItem> mLiveList;
+    private List<LiveItem> mLiveList = new ArrayList<>();
 //    private List<LiveProgramItem> mProgramList = new ArrayList<>();
 
     private Date dueTime;
@@ -78,7 +79,12 @@ public class LivePlayerActivity extends LeanbackActivity implements OnChannelSel
             finish();
         }
 
-        mLiveList = Parcels.unwrap(getIntent().getExtras().getParcelable("list"));
+        List<LiveItem> list = Parcels.unwrap(getIntent().getExtras().getParcelable("list"));
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getId() != -1) {
+                mLiveList.add(list.get(i));
+            }
+        }
         currentChannel = getIntent().getExtras().getInt("position");
 
         mDetailView = findViewById(R.id.layout_detail);

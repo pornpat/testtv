@@ -92,40 +92,43 @@ public class LiveProvider {
             String name;
             String logoUrl;
             String streamUrl;
+            boolean isFav;
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObj = jsonArray.getJSONObject(i);
 
                 JSONObject media = jsonObj.getJSONObject(TAG_MEDIA);
-                JSONObject mediaType = media.getJSONObject(TAG_MEDIA_TYPE);
-                String type = mediaType.getString(TAG_TYPE_NAME);
 
-                if (type.equals(TAG_LIVE)) {
-                    JSONObject liveObj = media.getJSONObject(TAG_LIVE);
-                    id = liveObj.getInt(TAG_MEDIA_ID);
-                    name = liveObj.getString(TAG_NAME);
-                    logoUrl = liveObj.getString(TAG_LOGOURL);
-                    streamUrl = liveObj.getString(TAG_URL);
-
-                    List<LiveProgramItem> programs = new ArrayList<>();
-
-                    JSONArray programArray = liveObj.getJSONArray(TAG_PROGRAM);
-                    for (int j = 0; j < programArray.length(); j++) {
-                        JSONObject program = programArray.getJSONObject(j);
-                        String p_name = program.getString(TAG_NAME);
-                        JSONObject start = program.getJSONObject(TAG_START_TIME);
-                        int startHour = Integer.parseInt(start.getString(TAG_HOUR));
-                        int startMin = Integer.parseInt(start.getString(TAG_MINUTE));
-                        JSONObject end = program.getJSONObject(TAG_END_TIME);
-                        int endHour = Integer.parseInt(end.getString(TAG_HOUR));
-                        int endMin = Integer.parseInt(end.getString(TAG_MINUTE));
-
-                        programs.add(new LiveProgramItem(p_name, startHour, startMin, endHour, endMin));
-                    }
-
-                    sLiveListById.put(id, buildLiveInfo(id, name, logoUrl, streamUrl, programs, false));
-                    liveList.add(buildLiveInfo(id, name, logoUrl, streamUrl, programs, false));
+                if (url.contains("favorites")) {
+                    isFav = true;
+                } else {
+                    isFav = media.getBoolean("is_favorite");
                 }
+
+                JSONObject liveObj = media.getJSONObject(TAG_LIVE);
+                id = liveObj.getInt(TAG_MEDIA_ID);
+                name = liveObj.getString(TAG_NAME);
+                logoUrl = liveObj.getString(TAG_LOGOURL);
+                streamUrl = liveObj.getString(TAG_URL);
+
+                List<LiveProgramItem> programs = new ArrayList<>();
+
+                JSONArray programArray = liveObj.getJSONArray(TAG_PROGRAM);
+                for (int j = 0; j < programArray.length(); j++) {
+                    JSONObject program = programArray.getJSONObject(j);
+                    String p_name = program.getString(TAG_NAME);
+                    JSONObject start = program.getJSONObject(TAG_START_TIME);
+                    int startHour = Integer.parseInt(start.getString(TAG_HOUR));
+                    int startMin = Integer.parseInt(start.getString(TAG_MINUTE));
+                    JSONObject end = program.getJSONObject(TAG_END_TIME);
+                    int endHour = Integer.parseInt(end.getString(TAG_HOUR));
+                    int endMin = Integer.parseInt(end.getString(TAG_MINUTE));
+
+                    programs.add(new LiveProgramItem(p_name, startHour, startMin, endHour, endMin));
+                }
+
+                sLiveListById.put(id, buildLiveInfo(id, name, logoUrl, streamUrl, programs, isFav));
+                liveList.add(buildLiveInfo(id, name, logoUrl, streamUrl, programs, isFav));
             }
 
             sLiveList.put("", liveList);
@@ -149,12 +152,7 @@ public class LiveProvider {
                 logoUrl = liveObj.getString(TAG_LOGOURL);
                 streamUrl = liveObj.getString(TAG_URL);
 
-                JSONArray favArray = jsonObj.getJSONArray("my_favorite");
-                if (favArray.length() > 0) {
-                    isFav = true;
-                } else {
-                    isFav = false;
-                }
+                isFav = jsonObj.getBoolean("is_favorite");
 
                 List<LiveProgramItem> programs = new ArrayList<>();
 

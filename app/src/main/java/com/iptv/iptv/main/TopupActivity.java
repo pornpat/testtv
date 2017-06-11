@@ -165,19 +165,21 @@ public class TopupActivity extends LeanbackActivity {
                             client.post(UrlUtil.appendUri(UrlUtil.PACKAGE_URL, UrlUtil.addToken()), params, new TextHttpResponseHandler() {
                                 @Override
                                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-
+                                    pDialog.dismiss();
+                                    Toast.makeText(TopupActivity.this, "ขออภัย มีความผิดพลาดในการเติมเงิน", Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override
                                 public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                                    pDialog.dismiss();
                                     finish();
                                 }
                             });
                         }
                     } catch (JSONException e) {
+                        pDialog.dismiss();
                         e.printStackTrace();
                     }
-                    pDialog.dismiss();
                 }
             });
         } else {
@@ -230,14 +232,31 @@ public class TopupActivity extends LeanbackActivity {
                                         boolean status = payment.getBoolean("status");
                                         if (status) {
                                             int day = payment.getInt("day");
-                                            // add day to PACKAGE API
 
-                                            finish();
+                                            // add day to PACKAGE API
+                                            RequestParams params = new RequestParams();
+                                            params.put("package", "ALL");
+                                            params.put("days", day);
+
+                                            AsyncHttpClient client = new AsyncHttpClient();
+                                            client.post(UrlUtil.appendUri(UrlUtil.PACKAGE_URL, UrlUtil.addToken()), params, new TextHttpResponseHandler() {
+                                                @Override
+                                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                                    pDialog.dismiss();
+                                                    Toast.makeText(TopupActivity.this, "ขออภัย มีความผิดพลาดในการเติมเงิน", Toast.LENGTH_SHORT).show();
+                                                }
+
+                                                @Override
+                                                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                                                    pDialog.dismiss();
+                                                    finish();
+                                                }
+                                            });
                                         }
                                     } catch (JSONException e) {
+                                        pDialog.dismiss();
                                         e.printStackTrace();
                                     }
-                                    pDialog.dismiss();
                                 }
                             });
                         } else {
@@ -245,6 +264,7 @@ public class TopupActivity extends LeanbackActivity {
                             pDialog.dismiss();
                         }
                     } catch (JSONException e) {
+                        pDialog.dismiss();
                         e.printStackTrace();
                     }
                 }
@@ -299,14 +319,31 @@ public class TopupActivity extends LeanbackActivity {
                                         boolean status = payment.getBoolean("status");
                                         if (status) {
                                             int day = payment.getInt("day");
-                                            // add day to PACKAGE API
 
-                                            finish();
+                                            // add day to PACKAGE API
+                                            RequestParams params = new RequestParams();
+                                            params.put("package", "ALL");
+                                            params.put("days", day);
+
+                                            AsyncHttpClient client = new AsyncHttpClient();
+                                            client.post(UrlUtil.appendUri(UrlUtil.PACKAGE_URL, UrlUtil.addToken()), params, new TextHttpResponseHandler() {
+                                                @Override
+                                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                                    pDialog.dismiss();
+                                                    Toast.makeText(TopupActivity.this, "ขออภัย มีความผิดพลาดในการเติมเงิน", Toast.LENGTH_SHORT).show();
+                                                }
+
+                                                @Override
+                                                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                                                    pDialog.dismiss();
+                                                    finish();
+                                                }
+                                            });
                                         }
                                     } catch (JSONException e) {
+                                        pDialog.dismiss();
                                         e.printStackTrace();
                                     }
-                                    pDialog.dismiss();
                                 }
                             });
                         } else {
@@ -314,6 +351,7 @@ public class TopupActivity extends LeanbackActivity {
                             pDialog.dismiss();
                         }
                     } catch (JSONException e) {
+                        pDialog.dismiss();
                         e.printStackTrace();
                     }
                 }
@@ -383,11 +421,29 @@ public class TopupActivity extends LeanbackActivity {
                                         boolean status = payment.getBoolean("status");
                                         if (status) {
                                             int day = payment.getInt("day");
-                                            // add day to PACKAGE API
 
-                                            finish();
+                                            // add day to PACKAGE API
+                                            RequestParams params = new RequestParams();
+                                            params.put("package", "ALL");
+                                            params.put("days", day);
+
+                                            AsyncHttpClient client = new AsyncHttpClient();
+                                            client.post(UrlUtil.appendUri(UrlUtil.PACKAGE_URL, UrlUtil.addToken()), params, new TextHttpResponseHandler() {
+                                                @Override
+                                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                                    pDialog.dismiss();
+                                                    Toast.makeText(TopupActivity.this, "ขออภัย มีความผิดพลาดในการเติมเงิน", Toast.LENGTH_SHORT).show();
+                                                }
+
+                                                @Override
+                                                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                                                    pDialog.dismiss();
+                                                    finish();
+                                                }
+                                            });
                                         }
                                     } catch (JSONException e) {
+                                        pDialog.dismiss();
                                         e.printStackTrace();
                                     }
                                     pDialog.dismiss();
@@ -398,6 +454,7 @@ public class TopupActivity extends LeanbackActivity {
                             pDialog.dismiss();
                         }
                     } catch (JSONException e) {
+                        pDialog.dismiss();
                         e.printStackTrace();
                     }
                 }

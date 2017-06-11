@@ -446,7 +446,6 @@ public class TopupActivity extends LeanbackActivity {
                                         pDialog.dismiss();
                                         e.printStackTrace();
                                     }
-                                    pDialog.dismiss();
                                 }
                             });
                         } else {

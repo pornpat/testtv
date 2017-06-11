@@ -71,31 +71,33 @@ public class FilterProvider {
         }
 
         List<CountryItem> countryList = new ArrayList<>();
-
-        JSONArray countryArray = jsonObject.getJSONArray(TAG_COUNTRIES);
-        for (int i = 0; i < countryArray.length(); i++) {
-            JSONObject jsonObj = countryArray.getJSONObject(i);
-            int id = jsonObj.getInt(TAG_ID);
-            String country = jsonObj.getString(TAG_COUNTRY);
-
-            countryList.add(buildCountryInfo(id, country));
-        }
-
         List<Integer> yearList = new ArrayList<>();
 
-        JSONArray yearArray = jsonObject.getJSONArray(TAG_YEARS);
-        for (int i = 0; i < yearArray.length(); i++) {
-            yearList.add(yearArray.getInt(i));
+        if (!url.contains("lives")) {
+            JSONArray countryArray = jsonObject.getJSONArray(TAG_COUNTRIES);
+            for (int i = 0; i < countryArray.length(); i++) {
+                JSONObject jsonObj = countryArray.getJSONObject(i);
+                int id = jsonObj.getInt(TAG_ID);
+                String country = jsonObj.getString(TAG_COUNTRY);
+
+                countryList.add(buildCountryInfo(id, country));
+            }
+
+            JSONArray yearArray = jsonObject.getJSONArray(TAG_YEARS);
+            for (int i = 0; i < yearArray.length(); i++) {
+                yearList.add(yearArray.getInt(i));
+            }
+
+            if (categoryList.size() > 0) {
+                Collections.sort(categoryList, new Comparator<CategoryItem>() {
+                    @Override
+                    public int compare(CategoryItem obj1, CategoryItem obj2) {
+                        return obj1.getOrder() - obj2.getOrder();
+                    }
+                });
+            }
         }
 
-        if (categoryList.size() > 0) {
-            Collections.sort(categoryList, new Comparator<CategoryItem>() {
-                @Override
-                public int compare(CategoryItem obj1, CategoryItem obj2) {
-                    return obj1.getOrder() - obj2.getOrder();
-                }
-            });
-        }
         sFilter.setCategoryList(categoryList);
         sFilter.setCountryList(countryList);
         sFilter.setYearList(yearList);

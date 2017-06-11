@@ -106,6 +106,13 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
         yearList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         yearList.setAdapter(mYearAdapter);
 
+        if (mFilterUrl.contains("lives")) {
+            countryList.setVisibility(View.GONE);
+            view.findViewById(R.id.country).setVisibility(View.GONE);
+            yearList.setVisibility(View.GONE);
+            view.findViewById(R.id.year).setVisibility(View.GONE);
+        }
+
         view.findViewById(R.id.btn_apply).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,26 +142,40 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onLoadFinished(Loader<FilterItem> loader, FilterItem data) {
-        if (data.getCategoryList().size() > 0 && data.getCountryList().size() > 0 && data.getYearList().size() > 0) {
-            mCategoryList.clear();
-            mCountryList.clear();
-            mYearList.clear();
-            for (int i = 0; i < data.getCategoryList().size(); i++) {
-                mCategoryList.add(data.getCategoryList().get(i));
+        if (!mFilterUrl.contains("lives")) {
+            if (data.getCategoryList().size() > 0 && data.getCountryList().size() > 0
+                    && data.getYearList().size() > 0) {
+                mCategoryList.clear();
+                mCountryList.clear();
+                mYearList.clear();
+                for (int i = 0; i < data.getCategoryList().size(); i++) {
+                    mCategoryList.add(data.getCategoryList().get(i));
+                }
+                for (int i = 0; i < data.getCountryList().size(); i++) {
+                    mCountryList.add(data.getCountryList().get(i));
+                }
+                for (int i = 0; i < data.getYearList().size(); i++) {
+                    mYearList.add(data.getYearList().get(i));
+                }
+            } else {
+                Toast.makeText(getActivity(), "Failed to load.", Toast.LENGTH_LONG).show();
             }
-            for (int i = 0; i < data.getCountryList().size(); i++) {
-                mCountryList.add(data.getCountryList().get(i));
-            }
-            for (int i = 0; i < data.getYearList().size(); i++) {
-                mYearList.add(data.getYearList().get(i));
-            }
-        } else {
-            Toast.makeText(getActivity(), "Failed to load videos.", Toast.LENGTH_LONG).show();
-        }
 
-        mCategoryAdapter.notifyDataSetChanged();
-        mCountryAdapter.notifyDataSetChanged();
-        mYearAdapter.notifyDataSetChanged();
+            mCategoryAdapter.notifyDataSetChanged();
+            mCountryAdapter.notifyDataSetChanged();
+            mYearAdapter.notifyDataSetChanged();
+        } else {
+            if (data.getCategoryList().size() > 0) {
+                mCategoryList.clear();
+                for (int i = 0; i < data.getCategoryList().size(); i++) {
+                    mCategoryList.add(data.getCategoryList().get(i));
+                }
+            } else {
+                Toast.makeText(getActivity(), "Failed to load.", Toast.LENGTH_LONG).show();
+            }
+
+            mCategoryAdapter.notifyDataSetChanged();
+        }
 
         mView.findViewById(R.id.loading).setVisibility(View.GONE);
         mView.findViewById(R.id.content).setVisibility(View.VISIBLE);

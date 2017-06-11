@@ -19,6 +19,7 @@ public class UrlUtil {
     public static final String SPORT_URL = BASE_URL + "/sports";
     public static final String MOVIE_FILTER_URL = MOVIE_URL + "/filters";
     public static final String SERIES_FILTER_URL = SERIES_URL + "/filters";
+    public static final String LIVE_FILTER_URL = LIVE_URL + "/filters";
     public static final String SPORT_FILTER_URL = SPORT_URL + "/filters";
     public static final String HISTORY_URL = BASE_URL + "/users/histories";
     public static final String MOVIE_HISTORY_URL = BASE_URL + "/users/histories/movies";

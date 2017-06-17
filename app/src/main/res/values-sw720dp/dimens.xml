@@ -16,4 +16,6 @@
     <dimen name="activity_margin">64dp</dimen>
     <dimen name="activity_margin_reverse">-64dp</dimen>
     <dimen name="margin_small_reverse">-16dp</dimen>
+
+    <dimen name="login_logo_size">160dp</dimen>
 </resources>

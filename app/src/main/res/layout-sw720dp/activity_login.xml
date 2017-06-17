@@ -37,7 +37,7 @@
                 android:layout_marginLeft="@dimen/margin_padding_normal"
                 android:text="IPTV"
                 android:textColor="@color/text_default"
-                android:textSize="80sp"
+                android:textSize="@dimen/text_home_title"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -51,7 +51,7 @@
             android:paddingLeft="@dimen/margin_padding_small"
             android:singleLine="true"
             android:textColor="@color/text_default"
-            android:textSize="26sp" />
+            android:textSize="@dimen/text_editfield" />
 
         <EditText
             android:id="@+id/text_password"
@@ -64,7 +64,7 @@
             android:paddingLeft="@dimen/margin_padding_small"
             android:singleLine="true"
             android:textColor="@color/text_default"
-            android:textSize="26sp" />
+            android:textSize="@dimen/text_editfield" />
 
         <Button
             android:layout_width="match_parent"
@@ -76,7 +76,7 @@
             android:paddingTop="@dimen/margin_padding_small"
             android:text="Sign in"
             android:textAllCaps="false"
-            android:textSize="26sp"
+            android:textSize="@dimen/text_editfield"
             android:textStyle="normal" />
 
     </LinearLayout>

@@ -27,12 +27,12 @@
                 android:layout_marginTop="@dimen/margin_padding_mid"
                 android:text="นำมาใช้"
                 android:textColor="@color/text_default"
-                android:textSize="@dimen/text_normal"/>
+                android:textSize="@dimen/text_highlight"/>
 
             <ImageView
                 android:id="@+id/btn_apply"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginTop="@dimen/margin_padding_xsmall"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -44,12 +44,12 @@
                 android:layout_marginTop="@dimen/margin_padding_mid"
                 android:text="ล้าง"
                 android:textColor="@color/text_default"
-                android:textSize="@dimen/text_normal"/>
+                android:textSize="@dimen/text_highlight"/>
 
             <ImageView
                 android:id="@+id/btn_clear"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginTop="@dimen/margin_padding_xsmall"
                 android:layout_marginBottom="@dimen/margin_padding_mid"
                 android:focusable="true"
@@ -91,7 +91,7 @@
                     android:layout_margin="@dimen/margin_padding_small"
                     android:text="ประเภท: "
                     android:textColor="@color/text_default"
-                    android:textSize="@dimen/text_normal"/>
+                    android:textSize="@dimen/text_highlight"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/list_category"
@@ -115,7 +115,7 @@
                     android:layout_margin="@dimen/margin_padding_small"
                     android:text="ประเทศ: "
                     android:textColor="@color/text_default"
-                    android:textSize="@dimen/text_normal"/>
+                    android:textSize="@dimen/text_highlight"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/list_country"
@@ -140,7 +140,7 @@
                     android:layout_margin="@dimen/margin_padding_small"
                     android:text="ปี: "
                     android:textColor="@color/text_default"
-                    android:textSize="@dimen/text_normal"/>
+                    android:textSize="@dimen/text_highlight"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/list_year"

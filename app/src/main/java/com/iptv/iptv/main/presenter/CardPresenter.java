@@ -88,7 +88,7 @@ public class CardPresenter extends Presenter {
                 int width = cardView.getResources().getDimensionPixelSize(R.dimen.card_width);
                 int height = cardView.getResources().getDimensionPixelSize(R.dimen.card_height);
                 cardView.setMainImageDimensions(width, height);
-                Glide.with(viewHolder.view.getContext())
+                Glide.with(viewHolder.view.getContext().getApplicationContext())
                         .load(movie.getImageUrl())
                         .centerCrop()
                         .error(mDefaultCardImage)
@@ -113,7 +113,7 @@ public class CardPresenter extends Presenter {
                 int width = cardView.getResources().getDimensionPixelSize(R.dimen.card_width);
                 int height = cardView.getResources().getDimensionPixelSize(R.dimen.card_height);
                 cardView.setMainImageDimensions(width, height);
-                Glide.with(viewHolder.view.getContext())
+                Glide.with(viewHolder.view.getContext().getApplicationContext())
                         .load(series.getImageUrl())
                         .centerCrop()
                         .error(mDefaultCardImage)
@@ -131,7 +131,7 @@ public class CardPresenter extends Presenter {
                 int width = cardView.getResources().getDimensionPixelSize(R.dimen.card_width);
                 int height = cardView.getResources().getDimensionPixelSize(R.dimen.card_height);
                 cardView.setMainImageDimensions(width, height);
-                Glide.with(viewHolder.view.getContext())
+                Glide.with(viewHolder.view.getContext().getApplicationContext())
                         .load(live.getLogoUrl())
                         .centerCrop()
                         .error(mDefaultCardImage)

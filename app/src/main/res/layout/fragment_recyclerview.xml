@@ -17,7 +17,7 @@
         android:layout_gravity="center"
         android:text="ไม่มีข้อมูล"
         android:textColor="@color/white"
-        android:textSize="50sp"
+        android:textSize="30sp"
         android:visibility="gone"/>
 
     <LinearLayout

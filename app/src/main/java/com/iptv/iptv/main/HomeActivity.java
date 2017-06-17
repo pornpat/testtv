@@ -270,8 +270,7 @@ public class HomeActivity extends LeanbackActivity {
                         mAdsItem.setDescription(jsonObject.getString("description"));
                         mAdsItem.setImageUrl(jsonObject.getString("image_url"));
 
-                        Glide.with(HomeActivity.this).load(mAdsItem.getImageUrl()).override(
-                                400, 200).centerCrop()
+                        Glide.with(getApplicationContext()).load(mAdsItem.getImageUrl()).override(400, 200).centerCrop()
                                 .error(R.drawable.test_advertise).listener(
                                 new RequestListener<String, GlideDrawable>() {
                                     @Override
@@ -328,7 +327,7 @@ public class HomeActivity extends LeanbackActivity {
 
     private void updateHitMovie() {
         shuffleCurrentHit();
-        Glide.with(HomeActivity.this).load(mHitList.get(currentHit)).override(150, 200).centerCrop().error(R.drawable.movie_placeholder)
+        Glide.with(getApplicationContext()).load(mHitList.get(currentHit)).override(150, 200).centerCrop().error(R.drawable.movie_placeholder)
                 .listener(new RequestListener<String, GlideDrawable>() {
             @Override
             public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -345,7 +344,7 @@ public class HomeActivity extends LeanbackActivity {
         }).into(mHitImage1);
 
         shuffleCurrentHit();
-        Glide.with(HomeActivity.this).load(mHitList.get(currentHit)).override(150, 200).centerCrop().error(R.drawable.movie_placeholder)
+        Glide.with(getApplicationContext()).load(mHitList.get(currentHit)).override(150, 200).centerCrop().error(R.drawable.movie_placeholder)
                 .listener(new RequestListener<String, GlideDrawable>() {
             @Override
             public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -360,7 +359,7 @@ public class HomeActivity extends LeanbackActivity {
         }).into(mHitImage2);
 
         shuffleCurrentHit();
-        Glide.with(HomeActivity.this).load(mHitList.get(currentHit)).override(150, 200).centerCrop().error(R.drawable.movie_placeholder)
+        Glide.with(getApplicationContext()).load(mHitList.get(currentHit)).override(150, 200).centerCrop().error(R.drawable.movie_placeholder)
                 .listener(new RequestListener<String, GlideDrawable>() {
             @Override
             public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {

@@ -177,7 +177,7 @@ public class LivePlayerActivity extends LeanbackActivity implements OnChannelSel
         if (Utils.isInternetConnectionAvailable(LivePlayerActivity.this)) {
             if (mLiveList.size() > 0) {
                 mNameText.setText(mLiveList.get(position).getName());
-                Glide.with(this).load(mLiveList.get(position).getLogoUrl()).override(150, 150).into(mLogo);
+                Glide.with(getApplicationContext()).load(mLiveList.get(position).getLogoUrl()).override(150, 150).into(mLogo);
                 mVideoView.setVideoURI(Uri.parse(mLiveList.get(position).getUrl()));
 
                 addRecentWatch(mLiveList.get(position).getId());

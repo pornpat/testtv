@@ -30,7 +30,7 @@ public class AdvertiseActivity extends LeanbackActivity {
         mImage = (ImageView) findViewById(R.id.img_advertise);
         ((TextView) findViewById(R.id.txt_title)).setText(currentAds.getTitle());
         ((TextView) findViewById(R.id.txt_description)).setText(currentAds.getDescription());
-        Glide.with(this).load(currentAds.getImageUrl()).placeholder(R.drawable.test_advertise).error(R.drawable.test_advertise)
+        Glide.with(getApplicationContext()).load(currentAds.getImageUrl()).placeholder(R.drawable.test_advertise).error(R.drawable.test_advertise)
                 .override(600, 300).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
             @Override
             public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {

@@ -26,6 +26,7 @@
 
     <dimen name="login_logo_size">60dp</dimen>
     <dimen name="icon_search">18dp</dimen>
+    <dimen name="icon_menu">18dp</dimen>
 
     <dimen name="text_login_title">40sp</dimen>
     <dimen name="text_home_title">22sp</dimen>

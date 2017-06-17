@@ -54,7 +54,7 @@ public class SeriesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (holder instanceof SeriesViewHolder) {
             final SeriesViewHolder vh = (SeriesViewHolder) holder;
             vh.mItem = mValues.get(position);
-            Glide.with(mContext).load(mValues.get(position).getImageUrl()).placeholder(R.drawable.movie_placeholder)
+            Glide.with(mContext.getApplicationContext()).load(mValues.get(position).getImageUrl()).placeholder(R.drawable.movie_placeholder)
                     .error(R.drawable.movie_placeholder).override(200, 300).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
                 @Override
                 public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {

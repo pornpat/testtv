@@ -20,9 +20,11 @@
 
     <dimen name="login_logo_size">160dp</dimen>
     <dimen name="icon_search">30dp</dimen>
+    <dimen name="icon_menu">25dp</dimen>
 
     <dimen name="text_login_title">80sp</dimen>
     <dimen name="text_home_title">44sp</dimen>
+    <dimen name="text_normal">20sp</dimen>
     <dimen name="text_editfield">26sp</dimen>
 
 </resources>

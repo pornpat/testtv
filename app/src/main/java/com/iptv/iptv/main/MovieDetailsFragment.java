@@ -134,7 +134,7 @@ public class MovieDetailsFragment extends DetailsFragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Glide.with(getActivity())
+                Glide.with(getActivity().getApplicationContext())
                         .load(mSelectedMovie.getImageUrl())
                         .centerCrop()
                         .error(R.drawable.movie_placeholder)
@@ -345,7 +345,7 @@ public class MovieDetailsFragment extends DetailsFragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Glide.with(getActivity())
+                Glide.with(getActivity().getApplicationContext())
                         .load(mSelectedMovie.getImageUrl())
                         .centerCrop()
                         .error(R.drawable.movie_placeholder)

@@ -41,7 +41,7 @@ public class LiveChannelAdapter extends RecyclerView.Adapter<LiveChannelAdapter.
     public void onBindViewHolder(final LiveChannelAdapter.ViewHolder holder, final int position) {
         holder.mItem = mValues.get(position);
         holder.mChannelName.setText(mValues.get(position).getName());
-        Glide.with(holder.mLogo.getContext()).load(mValues.get(position).getLogoUrl()).override(150, 150).into(holder.mLogo);
+        Glide.with(holder.mLogo.getContext().getApplicationContext()).load(mValues.get(position).getLogoUrl()).override(150, 150).into(holder.mLogo);
 
         holder.mView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

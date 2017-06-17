@@ -50,7 +50,7 @@ public class LiveGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (holder instanceof LiveViewHolder) {
             final LiveViewHolder vh = (LiveViewHolder) holder;
             vh.mItem = mValues.get(position);
-            Glide.with(mContext).load(mValues.get(position).getLogoUrl()).placeholder(R.drawable.movie_placeholder)
+            Glide.with(mContext.getApplicationContext()).load(mValues.get(position).getLogoUrl()).placeholder(R.drawable.movie_placeholder)
                     .error(R.drawable.movie_placeholder).override(200, 200).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
                 @Override
                 public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {

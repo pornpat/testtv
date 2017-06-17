@@ -5,15 +5,13 @@
     android:id="@+id/activity_home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/margin_padding_large"
-    android:paddingLeft="@dimen/margin_padding_normal"
-    android:paddingRight="@dimen/margin_padding_normal"
-    android:paddingTop="@dimen/margin_padding_xlarge"
+    android:padding="@dimen/margin_padding_normal"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_normal"
         android:gravity="bottom"
         android:orientation="horizontal">
 
@@ -22,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_padding_large"
             android:layout_marginRight="@dimen/margin_padding_small"
+            android:layout_gravity="center_vertical"
             android:text="@string/app_name"
             android:textColor="@color/white"
             android:textSize="@dimen/text_home_title"
@@ -51,16 +50,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_padding_xsmall"
-                android:text="SEARCH"
+                android:text="ค้นหา"
                 android:textColor="@color/bg_movie_text"
-                android:textSize="26sp"/>
+                android:textSize="@dimen/text_highlight"/>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/margin_padding_large"
             android:gravity="right"
             android:orientation="horizontal">
 
@@ -83,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:text="ID: "
                     android:textColor="@color/light_purple"
-                    android:textSize="30sp" />
+                    android:textSize="@dimen/text_highlight" />
 
                 <TextView
                     android:id="@+id/txt_username"
@@ -91,7 +89,7 @@
                     android:layout_height="wrap_content"
                     android:text="Test123"
                     android:textColor="@color/light_purple"
-                    android:textSize="30sp" />
+                    android:textSize="@dimen/text_highlight" />
 
             </LinearLayout>
 
@@ -99,7 +97,7 @@
                 android:id="@+id/btn_remaining"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_padding_large"
+                android:layout_marginLeft="@dimen/margin_padding_normal"
                 android:padding="@dimen/touch_padding"
                 android:nextFocusDown="@+id/btn_favorite"
                 android:nextFocusLeft="@+id/btn_account"
@@ -114,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:text="จำนวนวันคงเหลือ "
                     android:textColor="@color/light_purple"
-                    android:textSize="28sp" />
+                    android:textSize="@dimen/text_highlight" />
 
                 <TextView
                     android:id="@+id/txt_remaining"
@@ -122,7 +120,7 @@
                     android:layout_height="wrap_content"
                     android:text="- วัน"
                     android:textColor="@color/light_purple"
-                    android:textSize="30sp" />
+                    android:textSize="@dimen/text_highlight" />
 
             </LinearLayout>
 
@@ -134,19 +132,20 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/margin_padding_small"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="230dp"
-            android:gravity="center_horizontal"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <RelativeLayout
                 android:id="@+id/btn_live"
-                android:layout_width="230dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -169,7 +168,7 @@
                     android:layout_centerHorizontal="true"
                     android:paddingBottom="@dimen/margin_padding_normal"
                     android:text="@string/menu_live"
-                    android:textSize="22sp"
+                    android:textSize="@dimen/text_highlight"
                     android:textStyle="bold"
                     android:textColor="@color/white" />
 
@@ -177,8 +176,9 @@
 
             <RelativeLayout
                 android:id="@+id/btn_hit"
-                android:layout_width="460dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="2"
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -235,7 +235,7 @@
                     android:layout_alignParentRight="true"
                     android:padding="@dimen/margin_padding_small"
                     android:text="@string/menu_recommend"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/text_normal"
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     android:background="@drawable/bg_banner_text"/>
@@ -244,8 +244,9 @@
 
             <RelativeLayout
                 android:id="@+id/btn_sport"
-                android:layout_width="230dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -271,7 +272,7 @@
                     android:layout_centerHorizontal="true"
                     android:paddingBottom="@dimen/margin_padding_normal"
                     android:text="@string/menu_sport"
-                    android:textSize="22sp"
+                    android:textSize="@dimen/text_highlight"
                     android:textStyle="bold"
                     android:textColor="@color/white"/>
 
@@ -279,8 +280,9 @@
 
             <RelativeLayout
                 android:id="@+id/btn_favorite"
-                android:layout_width="230dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -303,7 +305,7 @@
                     android:layout_centerHorizontal="true"
                     android:paddingBottom="@dimen/margin_padding_normal"
                     android:text="@string/menu_favorite"
-                    android:textSize="22sp"
+                    android:textSize="@dimen/text_highlight"
                     android:textStyle="bold"
                     android:textColor="@color/white"/>
 
@@ -313,14 +315,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="230dp"
-            android:gravity="center_horizontal"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <RelativeLayout
                 android:id="@+id/btn_movie"
-                android:layout_width="230dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -340,7 +343,7 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="@dimen/margin_padding_normal"
                     android:text="@string/menu_movie"
-                    android:textSize="22sp"
+                    android:textSize="@dimen/text_highlight"
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     android:layout_alignParentBottom="true"
@@ -350,8 +353,9 @@
 
             <RelativeLayout
                 android:id="@+id/btn_series"
-                android:layout_width="230dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -374,7 +378,7 @@
                     android:layout_centerHorizontal="true"
                     android:paddingBottom="@dimen/margin_padding_normal"
                     android:text="@string/menu_series"
-                    android:textSize="22sp"
+                    android:textSize="@dimen/text_highlight"
                     android:textStyle="bold"
                     android:textColor="@color/white"/>
 
@@ -382,8 +386,9 @@
 
             <RelativeLayout
                 android:id="@+id/btn_advertise"
-                android:layout_width="460dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="2"
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -410,7 +415,7 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/margin_padding_small"
                     android:text="@string/menu_advertise"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/text_normal"
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     android:background="@drawable/bg_banner_text"
@@ -421,8 +426,9 @@
 
             <RelativeLayout
                 android:id="@+id/btn_setting"
-                android:layout_width="230dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -444,7 +450,7 @@
                     android:layout_centerHorizontal="true"
                     android:paddingBottom="@dimen/margin_padding_normal"
                     android:text="@string/menu_setting"
-                    android:textSize="22sp"
+                    android:textSize="@dimen/text_highlight"
                     android:textStyle="bold"
                     android:textColor="@color/white"/>
 
@@ -457,14 +463,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/margin_padding_large">
+        android:layout_marginTop="@dimen/margin_padding_small"
+        android:layout_marginRight="@dimen/margin_padding_small">
 
         <TextView
             android:id="@+id/datetime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:textSize="26sp"
+            android:textSize="@dimen/text_normal"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:text="1/1/2017 12:00"/>

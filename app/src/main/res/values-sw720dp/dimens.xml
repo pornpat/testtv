@@ -16,10 +16,13 @@
     <dimen name="activity_margin">64dp</dimen>
     <dimen name="activity_margin_reverse">-64dp</dimen>
     <dimen name="margin_small_reverse">-16dp</dimen>
+    <dimen name="touch_padding">12dp</dimen>
 
     <dimen name="login_logo_size">160dp</dimen>
+    <dimen name="icon_search">30dp</dimen>
 
-    <dimen name="text_home_title">80sp</dimen>
+    <dimen name="text_login_title">80sp</dimen>
+    <dimen name="text_home_title">44sp</dimen>
     <dimen name="text_editfield">26sp</dimen>
 
 </resources>

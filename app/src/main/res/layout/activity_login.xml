@@ -38,7 +38,7 @@
                 android:layout_marginLeft="@dimen/margin_padding_normal"
                 android:text="IPTV"
                 android:textColor="@color/text_default"
-                android:textSize="@dimen/text_home_title"
+                android:textSize="@dimen/text_login_title"
                 android:textStyle="bold" />
 
         </LinearLayout>

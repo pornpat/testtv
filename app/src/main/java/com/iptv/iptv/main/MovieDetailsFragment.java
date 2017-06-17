@@ -1,4 +1,18 @@
-package com.iptv.iptv.lib;
+/*
+ * Copyright (C) 2014 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
+package com.iptv.iptv.main;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -29,11 +43,8 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.iptv.iptv.R;
-import com.iptv.iptv.main.PrefUtil;
-import com.iptv.iptv.main.SeriesEpisodeActivity;
-import com.iptv.iptv.main.UrlUtil;
-import com.iptv.iptv.main.data.SeriesDataUtil;
-import com.iptv.iptv.main.model.SeriesItem;
+import com.iptv.iptv.main.data.MovieDataUtil;
+import com.iptv.iptv.main.model.MovieItem;
 import com.iptv.iptv.main.presenter.CardPresenter;
 import com.iptv.iptv.main.presenter.DetailsDescriptionPresenter;
 import com.loopj.android.http.AsyncHttpClient;
@@ -47,15 +58,19 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
-public class SeriesDetailsFragment extends DetailsFragment {
-    private static final String TAG = "SeriesDetailsFragment";
+/*
+ * LeanbackDetailsFragment extends DetailsFragment, a Wrapper fragment for leanback details screens.
+ * It shows a detailed view of video and its meta plus related videos.
+ */
+public class MovieDetailsFragment extends DetailsFragment {
+    private static final String TAG = "MovieDetailsFragment";
 
     private static final int ACTION_ADD_FAV = 99;
 
     private static final int DETAIL_THUMB_WIDTH = 225;
     private static final int DETAIL_THUMB_HEIGHT = 300;
 
-    private SeriesItem mSelectedMovie;
+    private MovieItem mSelectedMovie;
 
     private ArrayObjectAdapter mAdapter;
     private ClassPresenterSelector mPresenterSelector;
@@ -68,7 +83,7 @@ public class SeriesDetailsFragment extends DetailsFragment {
         super.onCreate(savedInstanceState);
 
         mSelectedMovie = Parcels.unwrap(getActivity().getIntent()
-                .getParcelableExtra(SeriesDetailsActivity.SERIES));
+                .getParcelableExtra(MovieDetailsActivity.MOVIE));
 
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(UrlUtil.appendUri(UrlUtil.getFavCheckUrl(mSelectedMovie.getId()), UrlUtil.addToken()), new TextHttpResponseHandler() {
@@ -157,13 +172,17 @@ public class SeriesDetailsFragment extends DetailsFragment {
 
         // Hook up transition element.
         detailsPresenter.setSharedElementEnterTransition(getActivity(),
-                SeriesDetailsActivity.SHARED_ELEMENT_NAME);
+                MovieDetailsActivity.SHARED_ELEMENT_NAME);
 
         detailsPresenter.setOnActionClickedListener(new OnActionClickedListener() {
             @Override
             public void onActionClicked(final Action action) {
                 if (action.getId() == ACTION_ADD_FAV) {
-                    PrefUtil.setBooleanProperty(R.string.pref_update_series, true);
+                    if (mSelectedMovie.getType().equals("movie")) {
+                        PrefUtil.setBooleanProperty(R.string.pref_update_movie, true);
+                    } else if (mSelectedMovie.getType().equals("sport")) {
+                        PrefUtil.setBooleanProperty(R.string.pref_update_sport, true);
+                    }
                     if (!isFav) {
                         AsyncHttpClient client = new AsyncHttpClient();
                         client.post(UrlUtil.appendUri(UrlUtil.addMediaId(UrlUtil.FAVORITE_URL, mSelectedMovie.getId()), UrlUtil.addToken()), new TextHttpResponseHandler() {
@@ -196,37 +215,72 @@ public class SeriesDetailsFragment extends DetailsFragment {
                         updateDetailsOverviewRow();
                     }
                 } else {
-                    final ProgressDialog progress = new ProgressDialog(getActivity());
-                    progress.setMessage("โปรดรอ...");
-                    progress.show();
+                    if (mSelectedMovie.getTracks().get((int)action.getId()).getDiscs().size() < 2) {
+                        final ProgressDialog progress = new ProgressDialog(getActivity());
+                        progress.setMessage("โปรดรอ...");
+                        progress.show();
 
-                    AsyncHttpClient client = new AsyncHttpClient();
-                    client.get(UrlUtil.appendUri(UrlUtil.EXPIRE_CHECK_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                            Toast.makeText(getActivity(), "กรุณาลองใหม่ในภายหลัง", Toast.LENGTH_SHORT).show();
-                            progress.dismiss();
-                        }
-
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                            try {
-                                JSONObject jsonObject = new JSONObject(responseString);
-                                boolean isExpired = jsonObject.getBoolean("expired");
-                                if (!isExpired) {
-                                    Intent intent = new Intent(getActivity(), SeriesEpisodeActivity.class);
-                                    intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(mSelectedMovie));
-                                    intent.putExtra("track", (int)action.getId());
-                                    startActivity(intent);
-                                } else {
-                                    Toast.makeText(getActivity(), "วันใช้งานของคุณหมด กรุณาเติมเวันใช้งานเพื่อรับชม", Toast.LENGTH_SHORT).show();
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                        AsyncHttpClient client = new AsyncHttpClient();
+                        client.get(UrlUtil.appendUri(UrlUtil.EXPIRE_CHECK_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                Toast.makeText(getActivity(), "กรุณาลองใหม่ในภายหลัง", Toast.LENGTH_SHORT).show();
+                                progress.dismiss();
                             }
-                            progress.dismiss();
-                        }
-                    });
+
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    boolean isExpired = jsonObject.getBoolean("expired");
+                                    if (!isExpired) {
+                                        Intent intent = new Intent(getActivity(), MoviePlayerActivity.class);
+                                        intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(mSelectedMovie));
+                                        intent.putExtra("url", mSelectedMovie.getTracks().get((int)action.getId()).getDiscs().get(0).getVideoUrl());
+                                        intent.putExtra("extra_id", mSelectedMovie.getTracks().get((int)action.getId()).getDiscs().get(0).getDiscId());
+                                        startActivity(intent);
+                                    } else {
+                                        Toast.makeText(getActivity(), "วันใช้งานของคุณหมด กรุณาเติมเวันใช้งานเพื่อรับชม", Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                progress.dismiss();
+                            }
+                        });
+                    } else {
+                        final ProgressDialog progress = new ProgressDialog(getActivity());
+                        progress.setMessage("โปรดรอ...");
+                        progress.show();
+
+                        AsyncHttpClient client = new AsyncHttpClient();
+                        client.get(UrlUtil.appendUri(UrlUtil.EXPIRE_CHECK_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                Toast.makeText(getActivity(), "กรุณาลองใหม่ในภายหลัง", Toast.LENGTH_SHORT).show();
+                                progress.dismiss();
+                            }
+
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(responseString);
+                                    boolean isExpired = jsonObject.getBoolean("expired");
+                                    if (!isExpired) {
+                                        Intent intent = new Intent(getActivity(), MovieEpisodeActivity.class);
+                                        intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(mSelectedMovie));
+                                        intent.putExtra("track", (int)action.getId());
+                                        startActivity(intent);
+                                    } else {
+                                        Toast.makeText(getActivity(), "วันใช้งานของคุณหมด กรุณาเติมเวันใช้งานเพื่อรับชม", Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                progress.dismiss();
+                            }
+                        });
+                    }
                 }
             }
         });
@@ -237,21 +291,39 @@ public class SeriesDetailsFragment extends DetailsFragment {
         String subcategories[] = {getString(R.string.related_movies)};
         final ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(new CardPresenter());
 
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get(UrlUtil.appendUri(UrlUtil.getRecommendUrl(UrlUtil.SERIES_URL, mSelectedMovie.getId()), UrlUtil.addToken()), new TextHttpResponseHandler() {
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+        if (mSelectedMovie.getType().equals("movie")) {
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.get(UrlUtil.appendUri(UrlUtil.getRecommendUrl(UrlUtil.MOVIE_URL, mSelectedMovie.getId()), UrlUtil.addToken()), new TextHttpResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                List<SeriesItem> list = SeriesDataUtil.getSeriesListFromJson(responseString);
-                for (int i = 0; i < list.size(); i++) {
-                    listRowAdapter.add(list.get(i));
                 }
-            }
-        });
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                    List<MovieItem> list = MovieDataUtil.getMovieListFromJson(responseString);
+                    for (int i = 0; i < list.size(); i++) {
+                        listRowAdapter.add(list.get(i));
+                    }
+                }
+            });
+        } else if (mSelectedMovie.getType().equals("sport")) {
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.get(UrlUtil.appendUri(UrlUtil.getRecommendUrl(UrlUtil.SPORT_URL, mSelectedMovie.getId()), UrlUtil.addToken()), new TextHttpResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                    List<MovieItem> list = MovieDataUtil.getMovieListFromJson(responseString);
+                    for (int i = 0; i < list.size(); i++) {
+                        listRowAdapter.add(list.get(i));
+                    }
+                }
+            });
+        }
 
         HeaderItem header = new HeaderItem(0, subcategories[0]);
         mAdapter.add(new ListRow(header, listRowAdapter));
@@ -307,17 +379,17 @@ public class SeriesDetailsFragment extends DetailsFragment {
         public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
                                   RowPresenter.ViewHolder rowViewHolder, Row row) {
 
-            if (item instanceof SeriesItem) {
-                SeriesItem series = (SeriesItem) item;
+            if (item instanceof MovieItem) {
+                MovieItem movie = (MovieItem) item;
                 Log.d(TAG, "Item: " + item.toString());
-                Intent intent = new Intent(getActivity(), SeriesDetailsActivity.class);
-                intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(series));
+                Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
+                intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(movie));
                 intent.putExtra(getResources().getString(R.string.should_start), true);
 
                 Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
                         getActivity(),
                         ((ImageCardView) itemViewHolder.view).getMainImageView(),
-                        SeriesDetailsActivity.SHARED_ELEMENT_NAME).toBundle();
+                        MovieDetailsActivity.SHARED_ELEMENT_NAME).toBundle();
                 getActivity().startActivity(intent, bundle);
             }
         }

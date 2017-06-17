@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.iptv.iptv.R;
-import com.iptv.iptv.lib.MovieDetailsActivity;
 import com.iptv.iptv.main.data.SportLoader;
 import com.iptv.iptv.main.data.SportProvider;
 import com.iptv.iptv.main.event.LoadSportEvent;

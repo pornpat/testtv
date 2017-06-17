@@ -2,8 +2,8 @@
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/details_fragment"
-    android:name="com.iptv.iptv.lib.MovieDetailsFragment"
+    android:name="com.iptv.iptv.main.MovieDetailsFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".lib.MovieDetailsActivity"
+    tools:context=".main.MovieDetailsActivity"
     tools:deviceIds="tv" />

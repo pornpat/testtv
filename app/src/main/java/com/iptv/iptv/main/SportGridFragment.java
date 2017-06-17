@@ -16,7 +16,7 @@
 //import android.support.v4.app.ActivityOptionsCompat;
 //import android.widget.Toast;
 //
-//import com.iptv.iptv.lib.MovieDetailsActivity;
+//import com.iptv.iptv.main.MovieDetailsActivity;
 //import com.iptv.iptv.main.data.SportLoader;
 //import com.iptv.iptv.main.data.SportProvider;
 //import com.iptv.iptv.main.event.LoadSportEvent;

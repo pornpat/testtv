@@ -18,7 +18,7 @@
 //import android.support.v4.app.Fragment;
 //import android.widget.Toast;
 //
-//import com.iptv.iptv.lib.SeriesDetailsActivity;
+//import com.iptv.iptv.main.SeriesDetailsActivity;
 //import com.iptv.iptv.main.data.SeriesLoader;
 //import com.iptv.iptv.main.data.SeriesProvider;
 //import com.iptv.iptv.main.event.LoadSeriesEvent;

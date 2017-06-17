@@ -10,7 +10,6 @@ import android.support.v17.leanback.widget.GuidedAction;
 import android.support.v4.content.ContextCompat;
 
 import com.iptv.iptv.R;
-import com.iptv.iptv.lib.SeriesDetailsActivity;
 import com.iptv.iptv.main.model.SeriesItem;
 
 import org.parceler.Parcels;

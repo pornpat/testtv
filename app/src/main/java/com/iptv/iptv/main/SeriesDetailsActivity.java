@@ -1,4 +1,4 @@
-package com.iptv.iptv.lib;
+package com.iptv.iptv.main;
 
 import android.app.Activity;
 import android.os.Bundle;

@@ -12,7 +12,7 @@
  * the License.
  */
 
-package com.iptv.iptv.lib;
+package com.iptv.iptv.main;
 
 import android.content.Context;
 import android.graphics.Point;

@@ -18,7 +18,6 @@ import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.iptv.iptv.R;
-import com.iptv.iptv.lib.Utils;
 import com.iptv.iptv.main.model.LiveItem;
 import com.iptv.iptv.main.model.LiveProgramItem;
 import com.loopj.android.http.AsyncHttpClient;

@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.iptv.iptv.R;
-import com.iptv.iptv.lib.SeriesDetailsActivity;
 import com.iptv.iptv.main.data.SeriesLoader;
 import com.iptv.iptv.main.data.SeriesProvider;
 import com.iptv.iptv.main.event.LoadSeriesEvent;

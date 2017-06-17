@@ -30,7 +30,7 @@
             android:layout_marginLeft="@dimen/margin_padding_large"
             android:text="@string/app_name"
             android:textColor="@color/white"
-            android:textSize="44sp"
+            android:textSize="@dimen/text_home_title"
             android:textStyle="bold" />
 
         <TextView

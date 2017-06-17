@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:text="IPTV"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_home_title"
+                    android:textSize="@dimen/text_login_title"
                     android:textStyle="bold" />
 
                 <TextView

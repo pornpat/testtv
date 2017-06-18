@@ -23,6 +23,7 @@
     <color name="text_default">#E0E0E0</color>
     <color name="text_selected">#0088B5</color>
     <color name="bg_selected">#7ea5cf</color>
+    <color name="text_grey">#999999</color>
 
     <color name="detail_background">#0096a6</color>
     <color name="soft_opaque">#30000000</color>

@@ -76,11 +76,11 @@ public class LiveChannelAdapter extends RecyclerView.Adapter<LiveChannelAdapter.
         return mValues.size();
     }
 
-    @Override
-    public void onViewDetachedFromWindow(ViewHolder holder) {
-        Glide.clear(holder.mLogo);
-        super.onViewDetachedFromWindow(holder);
-    }
+//    @Override
+//    public void onViewDetachedFromWindow(ViewHolder holder) {
+//        Glide.clear(holder.mLogo);
+//        super.onViewDetachedFromWindow(holder);
+//    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;

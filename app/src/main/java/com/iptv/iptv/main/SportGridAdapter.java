@@ -123,13 +123,13 @@ public class SportGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return mValues.size();
     }
 
-    @Override
-    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
-        if (holder instanceof SportViewHolder) {
-            Glide.clear(((SportViewHolder) holder).mImage);
-        }
-        super.onViewDetachedFromWindow(holder);
-    }
+//    @Override
+//    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
+//        if (holder instanceof SportViewHolder) {
+//            Glide.clear(((SportViewHolder) holder).mImage);
+//        }
+//        super.onViewDetachedFromWindow(holder);
+//    }
 
     @Override
     public int getItemViewType(int position) {

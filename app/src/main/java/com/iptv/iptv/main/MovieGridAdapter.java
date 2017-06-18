@@ -118,13 +118,13 @@ public class MovieGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return mValues.size();
     }
 
-    @Override
-    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
-        if (holder instanceof MovieViewHolder) {
-            Glide.clear(((MovieViewHolder) holder).mImage);
-        }
-        super.onViewDetachedFromWindow(holder);
-    }
+//    @Override
+//    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
+//        if (holder instanceof MovieViewHolder) {
+//            Glide.clear(((MovieViewHolder) holder).mImage);
+//        }
+//        super.onViewDetachedFromWindow(holder);
+//    }
 
     public int getItemViewType(int position) {
         if (mValues.get(position).getId() == -1) {

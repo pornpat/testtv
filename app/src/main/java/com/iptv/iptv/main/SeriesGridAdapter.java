@@ -118,13 +118,13 @@ public class SeriesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return mValues.size();
     }
 
-    @Override
-    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
-        if (holder instanceof SeriesViewHolder) {
-            Glide.clear(((SeriesViewHolder) holder).mImage);
-        }
-        super.onViewDetachedFromWindow(holder);
-    }
+//    @Override
+//    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
+//        if (holder instanceof SeriesViewHolder) {
+//            Glide.clear(((SeriesViewHolder) holder).mImage);
+//        }
+//        super.onViewDetachedFromWindow(holder);
+//    }
 
     @Override
     public int getItemViewType(int position) {

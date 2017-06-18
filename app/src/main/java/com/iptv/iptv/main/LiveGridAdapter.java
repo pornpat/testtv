@@ -111,13 +111,13 @@ public class LiveGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return mValues.size();
     }
 
-    @Override
-    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
-        if (holder instanceof LiveViewHolder) {
-            Glide.clear(((LiveViewHolder) holder).mImage);
-        }
-        super.onViewDetachedFromWindow(holder);
-    }
+//    @Override
+//    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
+//        if (holder instanceof LiveViewHolder) {
+//            Glide.clear(((LiveViewHolder) holder).mImage);
+//        }
+//        super.onViewDetachedFromWindow(holder);
+//    }
 
     @Override
     public int getItemViewType(int position) {

@@ -14,7 +14,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.iptv.iptv.R;
 import com.iptv.iptv.main.event.RecommendEvent;
-import com.iptv.iptv.main.model.MovieItem;
+import com.iptv.iptv.main.model.SeriesItem;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -25,12 +25,12 @@ import java.util.List;
  * Created by Karn on 7/5/2560.
  */
 
-public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class SeriesRecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final Context mContext;
-    private final List<MovieItem> mValues;
+    private final List<SeriesItem> mValues;
 
-    public RecommendAdapter(Context context, List<MovieItem> items) {
+    public SeriesRecommendAdapter(Context context, List<SeriesItem> items) {
         mContext = context;
         mValues = items;
     }
@@ -38,12 +38,12 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_recommend, parent, false);
-        return new MovieViewHolder(view);
+        return new SeriesViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        final MovieViewHolder vh = (MovieViewHolder) holder;
+        final SeriesViewHolder vh = (SeriesViewHolder) holder;
         vh.mItem = mValues.get(position);
         Glide.with(mContext.getApplicationContext()).load(mValues.get(position).getImageUrl()).placeholder(R.drawable.movie_placeholder)
                 .error(R.drawable.movie_placeholder).override(200, 300).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
@@ -97,14 +97,14 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 //        super.onViewDetachedFromWindow(holder);
 //    }
 
-    public class MovieViewHolder extends RecyclerView.ViewHolder {
+    public class SeriesViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final RoundedImageView mImage;
         public final TextView mTitle;
         public final TextView mEngTitle;
-        public MovieItem mItem;
+        public SeriesItem mItem;
 
-        public MovieViewHolder(View itemView) {
+        public SeriesViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
             mImage = (RoundedImageView) itemView.findViewById(R.id.image);

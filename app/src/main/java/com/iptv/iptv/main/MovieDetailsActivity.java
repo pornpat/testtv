@@ -138,7 +138,7 @@ public class MovieDetailsActivity extends Activity {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, String responseString) {
                     mRecommend = MovieDataUtil.getMovieListFromJson(responseString);
-                    mRecommendList.setAdapter(new RecommendAdapter(MovieDetailsActivity.this, mRecommend));
+                    mRecommendList.setAdapter(new MovieRecommendAdapter(MovieDetailsActivity.this, mRecommend));
                 }
             });
         } else if (mSelectedMovie.getType().equals("sport")) {
@@ -152,7 +152,7 @@ public class MovieDetailsActivity extends Activity {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, String responseString) {
                     mRecommend = MovieDataUtil.getMovieListFromJson(responseString);
-                    mRecommendList.setAdapter(new RecommendAdapter(MovieDetailsActivity.this, mRecommend));
+                    mRecommendList.setAdapter(new MovieRecommendAdapter(MovieDetailsActivity.this, mRecommend));
                 }
             });
         }
@@ -164,7 +164,7 @@ public class MovieDetailsActivity extends Activity {
             trackList.add(mSelectedMovie.getTracks().get(i));
         }
         trackList.add(new TrackItem());
-        mChoiceList.setAdapter(new ChoiceAdapter(MovieDetailsActivity.this, trackList, isFav));
+        mChoiceList.setAdapter(new MovieChoiceAdapter(MovieDetailsActivity.this, trackList, isFav));
         mChoiceList.requestFocus();
 
         showContent(true);

@@ -20,7 +20,7 @@ import java.util.List;
  * Created by Karn on 7/5/2560.
  */
 
-public class ChoiceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MovieChoiceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_NORMAL = 0;
     private static final int TYPE_FAV = 1;
@@ -29,7 +29,7 @@ public class ChoiceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private final List<TrackItem> mValues;
     private final boolean isFav;
 
-    public ChoiceAdapter(Context context, List<TrackItem> items, boolean isFav) {
+    public MovieChoiceAdapter(Context context, List<TrackItem> items, boolean isFav) {
         mContext = context;
         mValues = items;
         this.isFav = isFav;

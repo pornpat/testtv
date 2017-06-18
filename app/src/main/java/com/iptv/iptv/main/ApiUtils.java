@@ -9,7 +9,7 @@ import java.net.URISyntaxException;
  * Created by Karn on 8/4/2560.
  */
 
-public class UrlUtil {
+public class ApiUtils {
 
     public static final String BASE_URL = "http://139.59.231.135/uplay/public/api/v1";
     public static final String AUTH_URL = BASE_URL + "/auth";
@@ -50,11 +50,11 @@ public class UrlUtil {
     public static final String TOPUP_TRUE = TOPUP_BASE_URL + "/new";
 
     public static String addToken() {
-        return "token=" + PrefUtil.getStringProperty(R.string.pref_token);
+        return "token=" + PrefUtils.getStringProperty(R.string.pref_token);
     }
 
     public static String addSession() {
-        return "session=" + PrefUtil.getStringProperty(R.string.pref_token);
+        return "session=" + PrefUtils.getStringProperty(R.string.pref_token);
     }
 
     public static String appendUri(String uri, String appendQuery) {

@@ -46,7 +46,7 @@ public class SearchActivity extends LeanbackActivity {
         mLiveText = (TextView) findViewById(R.id.live);
         mSportText = (TextView) findViewById(R.id.sport);
 
-        PrefUtil.setBooleanProperty(R.string.pref_current_favorite, false);
+        PrefUtils.setBooleanProperty(R.string.pref_current_favorite, false);
 
         mSearchText.requestFocus();
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -96,27 +96,27 @@ public class SearchActivity extends LeanbackActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                String movieUrl = UrlUtil.MOVIE_URL;
-                movieUrl = UrlUtil.appendUri(movieUrl, "keyword=" + mSearchText.getText().toString());
-                movieUrl = UrlUtil.appendUri(movieUrl, UrlUtil.addToken());
+                String movieUrl = ApiUtils.MOVIE_URL;
+                movieUrl = ApiUtils.appendUri(movieUrl, "keyword=" + mSearchText.getText().toString());
+                movieUrl = ApiUtils.appendUri(movieUrl, ApiUtils.addToken());
 
                 EventBus.getDefault().post(new LoadMovieEvent(movieUrl));
 
-                String seriesUrl = UrlUtil.SERIES_URL;
-                seriesUrl = UrlUtil.appendUri(seriesUrl, "keyword=" + mSearchText.getText().toString());
-                seriesUrl = UrlUtil.appendUri(seriesUrl, UrlUtil.addToken());
+                String seriesUrl = ApiUtils.SERIES_URL;
+                seriesUrl = ApiUtils.appendUri(seriesUrl, "keyword=" + mSearchText.getText().toString());
+                seriesUrl = ApiUtils.appendUri(seriesUrl, ApiUtils.addToken());
 
                 EventBus.getDefault().post(new LoadSeriesEvent(seriesUrl));
 
-                String liveUrl = UrlUtil.LIVE_URL;
-                liveUrl = UrlUtil.appendUri(liveUrl, "keyword=" + mSearchText.getText().toString());
-                liveUrl = UrlUtil.appendUri(liveUrl, UrlUtil.addToken());
+                String liveUrl = ApiUtils.LIVE_URL;
+                liveUrl = ApiUtils.appendUri(liveUrl, "keyword=" + mSearchText.getText().toString());
+                liveUrl = ApiUtils.appendUri(liveUrl, ApiUtils.addToken());
 
                 EventBus.getDefault().post(new LoadLiveEvent(liveUrl));
 
-                String sportUrl = UrlUtil.SPORT_URL;
-                sportUrl = UrlUtil.appendUri(sportUrl, "keyword=" + mSearchText.getText().toString());
-                sportUrl = UrlUtil.appendUri(sportUrl, UrlUtil.addToken());
+                String sportUrl = ApiUtils.SPORT_URL;
+                sportUrl = ApiUtils.appendUri(sportUrl, "keyword=" + mSearchText.getText().toString());
+                sportUrl = ApiUtils.appendUri(sportUrl, ApiUtils.addToken());
 
                 EventBus.getDefault().post(new LoadSportEvent(sportUrl));
             }

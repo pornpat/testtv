@@ -86,9 +86,10 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
         AsyncHttpClient client = new AsyncHttpClient();
         String apiUrl = "";
         if (mSelectedMovie != null) {
-            apiUrl = UrlUtil.appendUri(UrlUtil.getRecentWatch(UrlUtil.HISTORY_DISC_URL, mExtraId), UrlUtil.addToken());
+            apiUrl = ApiUtils.appendUri(ApiUtils.getRecentWatch(ApiUtils.HISTORY_DISC_URL, mExtraId), ApiUtils.addToken());
         } else if (mSelectedSeries != null) {
-            apiUrl = UrlUtil.appendUri(UrlUtil.getRecentWatch(UrlUtil.HISTORY_EPISODE_URL, mExtraId), UrlUtil.addToken());
+            apiUrl = ApiUtils.appendUri(
+                    ApiUtils.getRecentWatch(ApiUtils.HISTORY_EPISODE_URL, mExtraId), ApiUtils.addToken());
         }
         client.get(apiUrl, new TextHttpResponseHandler() {
             @Override
@@ -161,7 +162,7 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
         }
 
         AsyncHttpClient client = new AsyncHttpClient();
-        client.post(UrlUtil.appendUri(UrlUtil.HISTORY_URL, UrlUtil.addToken()), params, new TextHttpResponseHandler() {
+        client.post(ApiUtils.appendUri(ApiUtils.HISTORY_URL, ApiUtils.addToken()), params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 

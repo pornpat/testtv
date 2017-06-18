@@ -43,7 +43,7 @@ public class LoginActivity extends LeanbackActivity {
             Toast.makeText(LoginActivity.this, "Token หมดอายุ กรุณาล็อกอินใหม่อีกครั้ง", Toast.LENGTH_SHORT).show();
         }
 
-        if (!PrefUtil.getStringProperty(R.string.pref_token).equals("")) {
+        if (!PrefUtils.getStringProperty(R.string.pref_token).equals("")) {
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
             startActivity(intent);
             finish();
@@ -63,7 +63,7 @@ public class LoginActivity extends LeanbackActivity {
             params.put("password", mPasswordText.getText().toString());
 
             AsyncHttpClient client = new AsyncHttpClient();
-            client.post(UrlUtil.AUTH_URL, params, new TextHttpResponseHandler() {
+            client.post(ApiUtils.AUTH_URL, params, new TextHttpResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                     mProgressDialog.dismiss();
@@ -76,8 +76,8 @@ public class LoginActivity extends LeanbackActivity {
                     try {
                         JSONObject jsonObject = new JSONObject(responseString);
                         String token = jsonObject.getString("token");
-                        PrefUtil.setStringProperty(R.string.pref_token, token);
-                        PrefUtil.setStringProperty(R.string.pref_username, mUsernameText.getText().toString());
+                        PrefUtils.setStringProperty(R.string.pref_token, token);
+                        PrefUtils.setStringProperty(R.string.pref_username, mUsernameText.getText().toString());
 
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
@@ -92,7 +92,7 @@ public class LoginActivity extends LeanbackActivity {
 
     private void test() {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.post(UrlUtil.appendUri(UrlUtil.addMediaId(UrlUtil.FAVORITE_URL, 12), UrlUtil.addToken()), new TextHttpResponseHandler() {
+        client.post(ApiUtils.appendUri(ApiUtils.addMediaId(ApiUtils.FAVORITE_URL, 12), ApiUtils.addToken()), new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();

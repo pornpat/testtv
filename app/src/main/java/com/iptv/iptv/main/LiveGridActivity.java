@@ -40,7 +40,7 @@ public class LiveGridActivity extends LeanbackActivity implements FilterFragment
             @Override
             public void run() {
                 EventBus.getDefault().post(new LoadLiveEvent(
-                        UrlUtil.appendUri(UrlUtil.LIVE_URL, UrlUtil.addToken())));
+                        ApiUtils.appendUri(ApiUtils.LIVE_URL, ApiUtils.addToken())));
             }
         }, 500);
 
@@ -60,7 +60,8 @@ public class LiveGridActivity extends LeanbackActivity implements FilterFragment
             @Override
             public void onClick(View view) {
                 getFragmentManager().beginTransaction().replace(R.id.layout_filter,
-                        FilterFragment.newInstance(UrlUtil.appendUri(UrlUtil.LIVE_FILTER_URL, UrlUtil.addToken()),
+                        FilterFragment.newInstance(
+                                ApiUtils.appendUri(ApiUtils.LIVE_FILTER_URL, ApiUtils.addToken()),
                                 mCurrentCategory, mCurrentCountry, mCurrentYear)).commit();
                 findViewById(R.id.layout_filter).setVisibility(View.VISIBLE);
                 findViewById(R.id.grid_fragment).setVisibility(View.GONE);
@@ -71,7 +72,7 @@ public class LiveGridActivity extends LeanbackActivity implements FilterFragment
             @Override
             public void onClick(View view) {
                 EventBus.getDefault().post(new LoadLiveEvent(
-                        UrlUtil.appendUri(UrlUtil.LIVE_URL, UrlUtil.addToken())));
+                        ApiUtils.appendUri(ApiUtils.LIVE_URL, ApiUtils.addToken())));
                 setTextSelected(mLiveText);
                 clearFilter();
             }
@@ -81,7 +82,7 @@ public class LiveGridActivity extends LeanbackActivity implements FilterFragment
             @Override
             public void onClick(View view) {
                 EventBus.getDefault().post(new LoadLiveEvent(
-                        UrlUtil.appendUri(UrlUtil.LIVE_HISTORY_URL, UrlUtil.addToken())));
+                        ApiUtils.appendUri(ApiUtils.LIVE_HISTORY_URL, ApiUtils.addToken())));
                 setTextSelected(mRecentText);
                 clearFilter();
             }
@@ -91,7 +92,7 @@ public class LiveGridActivity extends LeanbackActivity implements FilterFragment
             @Override
             public void onClick(View view) {
                 EventBus.getDefault().post(new LoadLiveEvent(
-                        UrlUtil.appendUri(UrlUtil.LIVE_FAVORITE_URL, UrlUtil.addToken())));
+                        ApiUtils.appendUri(ApiUtils.LIVE_FAVORITE_URL, ApiUtils.addToken())));
                 setTextSelected(mFavoriteText);
                 clearFilter();
             }
@@ -106,9 +107,9 @@ public class LiveGridActivity extends LeanbackActivity implements FilterFragment
         currentText.setSelected(true);
 
         if (currentText == mFavoriteText) {
-            PrefUtil.setBooleanProperty(R.string.pref_current_favorite, true);
+            PrefUtils.setBooleanProperty(R.string.pref_current_favorite, true);
         } else {
-            PrefUtil.setBooleanProperty(R.string.pref_current_favorite, false);
+            PrefUtils.setBooleanProperty(R.string.pref_current_favorite, false);
         }
     }
 
@@ -136,16 +137,16 @@ public class LiveGridActivity extends LeanbackActivity implements FilterFragment
     @Subscribe
     public void onFilterEvent(ApplyFilterEvent event) {
         if (event.isApplied) {
-            String url = UrlUtil.LIVE_URL;
+            String url = ApiUtils.LIVE_URL;
             if (mCurrentCategory != -1) {
-                url = UrlUtil.appendUri(url, "categories_id=" + mCurrentCategory);
+                url = ApiUtils.appendUri(url, "categories_id=" + mCurrentCategory);
             }
-            url = UrlUtil.appendUri(url, UrlUtil.addToken());
+            url = ApiUtils.appendUri(url, ApiUtils.addToken());
 
             EventBus.getDefault().post(new LoadLiveEvent(url));
         } else {
             EventBus.getDefault().post(new LoadLiveEvent(
-                    UrlUtil.appendUri(UrlUtil.LIVE_URL, UrlUtil.addToken())));
+                    ApiUtils.appendUri(ApiUtils.LIVE_URL, ApiUtils.addToken())));
             mCurrentCategory = -1;
             mCurrentCountry = -1;
             mCurrentYear = -1;

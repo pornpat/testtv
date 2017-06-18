@@ -28,7 +28,7 @@ public class HitGridActivity extends LeanbackActivity {
         mSeriesText = (TextView) findViewById(R.id.series);
         mSportText = (TextView) findViewById(R.id.sport);
 
-        PrefUtil.setBooleanProperty(R.string.pref_current_favorite, false);
+        PrefUtils.setBooleanProperty(R.string.pref_current_favorite, false);
 
         mMovieText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,9 +61,12 @@ public class HitGridActivity extends LeanbackActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                EventBus.getDefault().post(new LoadMovieEvent(UrlUtil.appendUri(UrlUtil.MOVIE_HIT_URL, UrlUtil.addToken())));
-                EventBus.getDefault().post(new LoadSeriesEvent(UrlUtil.appendUri(UrlUtil.SERIES_HIT_URL, UrlUtil.addToken())));
-                EventBus.getDefault().post(new LoadSportEvent(UrlUtil.appendUri(UrlUtil.SPORT_HIT_URL, UrlUtil.addToken())));
+                EventBus.getDefault().post(new LoadMovieEvent(
+                        ApiUtils.appendUri(ApiUtils.MOVIE_HIT_URL, ApiUtils.addToken())));
+                EventBus.getDefault().post(new LoadSeriesEvent(
+                        ApiUtils.appendUri(ApiUtils.SERIES_HIT_URL, ApiUtils.addToken())));
+                EventBus.getDefault().post(new LoadSportEvent(
+                        ApiUtils.appendUri(ApiUtils.SPORT_HIT_URL, ApiUtils.addToken())));
             }
         }, 500);
 

@@ -54,7 +54,7 @@ public class SettingActivity extends LeanbackActivity {
         mLogoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PrefUtil.setStringProperty(R.string.pref_token, "");
+                PrefUtils.setStringProperty(R.string.pref_token, "");
                 Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -72,7 +72,7 @@ public class SettingActivity extends LeanbackActivity {
             params.put("new_password", mNewPasswordText.getText().toString());
 
             AsyncHttpClient client = new AsyncHttpClient();
-            client.put(UrlUtil.appendUri(UrlUtil.CHANGE_PASSWORD_URL, UrlUtil.addToken()), params, new TextHttpResponseHandler() {
+            client.put(ApiUtils.appendUri(ApiUtils.CHANGE_PASSWORD_URL, ApiUtils.addToken()), params, new TextHttpResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                     Toast.makeText(SettingActivity.this, "เกิดข้อผิดพลาด กรุณาลองใหม่ในภายหลัง", Toast.LENGTH_SHORT).show();
@@ -84,7 +84,7 @@ public class SettingActivity extends LeanbackActivity {
                     try {
                         JSONObject jsonObject = new JSONObject(responseString);
                         String token = jsonObject.getString("token");
-                        PrefUtil.setStringProperty(R.string.pref_token, token);
+                        PrefUtils.setStringProperty(R.string.pref_token, token);
 
                         Toast.makeText(SettingActivity.this, "เปลี่ยนรหัสผ่านสำเร็จ", Toast.LENGTH_SHORT).show();
                         SettingActivity.this.finish();

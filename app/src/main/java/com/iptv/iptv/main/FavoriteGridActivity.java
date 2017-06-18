@@ -31,7 +31,7 @@ public class FavoriteGridActivity extends LeanbackActivity {
         mLiveText = (TextView) findViewById(R.id.live);
         mSportText = (TextView) findViewById(R.id.sport);
 
-        PrefUtil.setBooleanProperty(R.string.pref_current_favorite, true);
+        PrefUtils.setBooleanProperty(R.string.pref_current_favorite, true);
 
         mMovieText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,10 +72,14 @@ public class FavoriteGridActivity extends LeanbackActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                EventBus.getDefault().post(new LoadMovieEvent(UrlUtil.appendUri(UrlUtil.MOVIE_FAVORITE_URL, UrlUtil.addToken())));
-                EventBus.getDefault().post(new LoadSeriesEvent(UrlUtil.appendUri(UrlUtil.SERIES_FAVORITE_URL, UrlUtil.addToken())));
-                EventBus.getDefault().post(new LoadLiveEvent(UrlUtil.appendUri(UrlUtil.LIVE_FAVORITE_URL, UrlUtil.addToken())));
-                EventBus.getDefault().post(new LoadSportEvent(UrlUtil.appendUri(UrlUtil.SPORT_FAVORITE_URL, UrlUtil.addToken())));
+                EventBus.getDefault().post(new LoadMovieEvent(
+                        ApiUtils.appendUri(ApiUtils.MOVIE_FAVORITE_URL, ApiUtils.addToken())));
+                EventBus.getDefault().post(new LoadSeriesEvent(
+                        ApiUtils.appendUri(ApiUtils.SERIES_FAVORITE_URL, ApiUtils.addToken())));
+                EventBus.getDefault().post(new LoadLiveEvent(
+                        ApiUtils.appendUri(ApiUtils.LIVE_FAVORITE_URL, ApiUtils.addToken())));
+                EventBus.getDefault().post(new LoadSportEvent(
+                        ApiUtils.appendUri(ApiUtils.SPORT_FAVORITE_URL, ApiUtils.addToken())));
             }
         }, 500);
 

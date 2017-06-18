@@ -139,7 +139,7 @@ public class TopupActivity extends LeanbackActivity {
             params.put("pincode", mPincodeText.getText().toString());
 
             AsyncHttpClient client = new AsyncHttpClient();
-            client.post(UrlUtil.appendUri(UrlUtil.TOPUP_PINCODE, UrlUtil.addSession()), params, new TextHttpResponseHandler() {
+            client.post(ApiUtils.appendUri(ApiUtils.TOPUP_PINCODE, ApiUtils.addSession()), params, new TextHttpResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                     Toast.makeText(TopupActivity.this, responseString, Toast.LENGTH_LONG).show();
@@ -162,7 +162,7 @@ public class TopupActivity extends LeanbackActivity {
                             params.put("days", day);
 
                             AsyncHttpClient client = new AsyncHttpClient();
-                            client.post(UrlUtil.appendUri(UrlUtil.PACKAGE_URL, UrlUtil.addToken()), params, new TextHttpResponseHandler() {
+                            client.post(ApiUtils.appendUri(ApiUtils.PACKAGE_URL, ApiUtils.addToken()), params, new TextHttpResponseHandler() {
                                 @Override
                                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                                     pDialog.dismiss();
@@ -199,7 +199,7 @@ public class TopupActivity extends LeanbackActivity {
             params.put("reference", Integer.parseInt(mMoneyRefText.getText().toString()));
 
             AsyncHttpClient client = new AsyncHttpClient();
-            client.post(UrlUtil.appendUri(UrlUtil.TOPUP_TRUE, UrlUtil.addSession()), params, new TextHttpResponseHandler() {
+            client.post(ApiUtils.appendUri(ApiUtils.TOPUP_TRUE, ApiUtils.addSession()), params, new TextHttpResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                     Toast.makeText(TopupActivity.this, responseString, Toast.LENGTH_LONG).show();
@@ -216,7 +216,7 @@ public class TopupActivity extends LeanbackActivity {
                             int transaction = payment.getInt("transaction");
 
                             AsyncHttpClient client = new AsyncHttpClient();
-                            client.get(UrlUtil.appendUri(UrlUtil.getTopupTransaction(transaction), UrlUtil.addSession()), new TextHttpResponseHandler() {
+                            client.get(ApiUtils.appendUri(ApiUtils.getTopupTransaction(transaction), ApiUtils.addSession()), new TextHttpResponseHandler() {
                                 @Override
                                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                                     Toast.makeText(TopupActivity.this, responseString, Toast.LENGTH_LONG).show();
@@ -239,7 +239,7 @@ public class TopupActivity extends LeanbackActivity {
                                             params.put("days", day);
 
                                             AsyncHttpClient client = new AsyncHttpClient();
-                                            client.post(UrlUtil.appendUri(UrlUtil.PACKAGE_URL, UrlUtil.addToken()), params, new TextHttpResponseHandler() {
+                                            client.post(ApiUtils.appendUri(ApiUtils.PACKAGE_URL, ApiUtils.addToken()), params, new TextHttpResponseHandler() {
                                                 @Override
                                                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                                                     pDialog.dismiss();
@@ -286,7 +286,7 @@ public class TopupActivity extends LeanbackActivity {
             params.put("reference", Integer.parseInt(mWalletRefText.getText().toString()));
 
             AsyncHttpClient client = new AsyncHttpClient();
-            client.post(UrlUtil.appendUri(UrlUtil.TOPUP_TRUE, UrlUtil.addSession()), params, new TextHttpResponseHandler() {
+            client.post(ApiUtils.appendUri(ApiUtils.TOPUP_TRUE, ApiUtils.addSession()), params, new TextHttpResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                     Toast.makeText(TopupActivity.this, responseString, Toast.LENGTH_LONG).show();
@@ -303,7 +303,7 @@ public class TopupActivity extends LeanbackActivity {
                             int transaction = payment.getInt("transaction");
 
                             AsyncHttpClient client = new AsyncHttpClient();
-                            client.get(UrlUtil.appendUri(UrlUtil.getTopupTransaction(transaction), UrlUtil.addSession()), new TextHttpResponseHandler() {
+                            client.get(ApiUtils.appendUri(ApiUtils.getTopupTransaction(transaction), ApiUtils.addSession()), new TextHttpResponseHandler() {
                                 @Override
                                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                                     Toast.makeText(TopupActivity.this, responseString, Toast.LENGTH_LONG).show();
@@ -326,7 +326,7 @@ public class TopupActivity extends LeanbackActivity {
                                             params.put("days", day);
 
                                             AsyncHttpClient client = new AsyncHttpClient();
-                                            client.post(UrlUtil.appendUri(UrlUtil.PACKAGE_URL, UrlUtil.addToken()), params, new TextHttpResponseHandler() {
+                                            client.post(ApiUtils.appendUri(ApiUtils.PACKAGE_URL, ApiUtils.addToken()), params, new TextHttpResponseHandler() {
                                                 @Override
                                                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                                                     pDialog.dismiss();
@@ -388,7 +388,7 @@ public class TopupActivity extends LeanbackActivity {
                     mDateText.getText().toString() + " " + mHourText.getText().toString() + ":" + mMinuteText.getText().toString() + ":00");
 
             AsyncHttpClient client = new AsyncHttpClient();
-            client.post(UrlUtil.appendUri(UrlUtil.TOPUP_TRUE, UrlUtil.addSession()), params, new TextHttpResponseHandler() {
+            client.post(ApiUtils.appendUri(ApiUtils.TOPUP_TRUE, ApiUtils.addSession()), params, new TextHttpResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                     Toast.makeText(TopupActivity.this, responseString, Toast.LENGTH_LONG).show();
@@ -405,7 +405,7 @@ public class TopupActivity extends LeanbackActivity {
                             int transaction = payment.getInt("transaction");
 
                             AsyncHttpClient client = new AsyncHttpClient();
-                            client.get(UrlUtil.appendUri(UrlUtil.getTopupTransaction(transaction), UrlUtil.addSession()), new TextHttpResponseHandler() {
+                            client.get(ApiUtils.appendUri(ApiUtils.getTopupTransaction(transaction), ApiUtils.addSession()), new TextHttpResponseHandler() {
                                 @Override
                                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                                     Toast.makeText(TopupActivity.this, responseString, Toast.LENGTH_LONG).show();
@@ -428,7 +428,7 @@ public class TopupActivity extends LeanbackActivity {
                                             params.put("days", day);
 
                                             AsyncHttpClient client = new AsyncHttpClient();
-                                            client.post(UrlUtil.appendUri(UrlUtil.PACKAGE_URL, UrlUtil.addToken()), params, new TextHttpResponseHandler() {
+                                            client.post(ApiUtils.appendUri(ApiUtils.PACKAGE_URL, ApiUtils.addToken()), params, new TextHttpResponseHandler() {
                                                 @Override
                                                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                                                     pDialog.dismiss();

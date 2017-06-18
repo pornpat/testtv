@@ -9,7 +9,7 @@ import com.iptv.iptv.R;
  * Created by Karn on 8/4/2560.
  */
 
-public class PrefUtil {
+public class PrefUtils {
 
     private static SharedPreferences getPref() {
         return AppApplication.getAppContext().getSharedPreferences(AppApplication.getAppResources().getString(R.string.preference_file), Context.MODE_PRIVATE);

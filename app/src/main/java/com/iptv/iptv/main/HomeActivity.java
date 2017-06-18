@@ -81,8 +81,8 @@ public class HomeActivity extends LeanbackActivity {
         mAdsItem = new AdsItem();
         mHitList = new ArrayList<>();
 
-        ((TextView) findViewById(R.id.txt_username)).setText(PrefUtil.getStringProperty(R.string.pref_username));
-        Log.v("testkn", PrefUtil.getStringProperty(R.string.pref_token));
+        ((TextView) findViewById(R.id.txt_username)).setText(PrefUtils.getStringProperty(R.string.pref_username));
+        Log.v("testkn", PrefUtils.getStringProperty(R.string.pref_token));
 
         mLiveButton.requestFocus();
 
@@ -205,10 +205,10 @@ public class HomeActivity extends LeanbackActivity {
     private void updateUserProfile() {
         if (Utils.isInternetConnectionAvailable(this)) {
             AsyncHttpClient client = new AsyncHttpClient();
-            client.get(UrlUtil.appendUri(UrlUtil.ALL_PACKAGE_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
+            client.get(ApiUtils.appendUri(ApiUtils.ALL_PACKAGE_URL, ApiUtils.addToken()), new TextHttpResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    PrefUtil.setStringProperty(R.string.pref_token, "");
+                    PrefUtils.setStringProperty(R.string.pref_token, "");
                     Toast.makeText(HomeActivity.this, "Token หมดอายุ กรุณาล็อกอินใหม่อีกครั้ง", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -254,7 +254,7 @@ public class HomeActivity extends LeanbackActivity {
     private void updateAdvertise() {
         if (Utils.isInternetConnectionAvailable(this)) {
             AsyncHttpClient client = new AsyncHttpClient();
-            client.get(UrlUtil.appendUri(UrlUtil.ADVERTISE_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
+            client.get(ApiUtils.appendUri(ApiUtils.ADVERTISE_URL, ApiUtils.addToken()), new TextHttpResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, Header[] headers,
                         String responseString, Throwable throwable) {
@@ -302,7 +302,7 @@ public class HomeActivity extends LeanbackActivity {
     private void fetchHitMovie() {
         if (Utils.isInternetConnectionAvailable(this)) {
             AsyncHttpClient client = new AsyncHttpClient();
-            client.get(UrlUtil.appendUri(UrlUtil.TOP_10_HIT_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
+            client.get(ApiUtils.appendUri(ApiUtils.TOP_10_HIT_URL, ApiUtils.addToken()), new TextHttpResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {}
 

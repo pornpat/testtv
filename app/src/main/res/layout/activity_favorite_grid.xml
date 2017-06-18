@@ -24,7 +24,7 @@
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:name="com.iptv.iptv.main.MovieGridFragment2" />
+                android:name="com.iptv.iptv.main.MovieGridFragment" />
 
         </FrameLayout>
 
@@ -38,7 +38,7 @@
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:name="com.iptv.iptv.main.SeriesGridFragment2" />
+                android:name="com.iptv.iptv.main.SeriesGridFragment" />
 
         </FrameLayout>
 
@@ -52,7 +52,7 @@
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:name="com.iptv.iptv.main.LiveGridFragment2" />
+                android:name="com.iptv.iptv.main.LiveGridFragment" />
 
         </FrameLayout>
 
@@ -66,7 +66,7 @@
             <fragment
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:name="com.iptv.iptv.main.SportGridFragment2" />
+                android:name="com.iptv.iptv.main.SportGridFragment" />
 
         </FrameLayout>
 

@@ -107,10 +107,11 @@ public class LivePlayerActivity extends LeanbackActivity implements OnChannelSel
         mFavText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PrefUtil.setBooleanProperty(R.string.pref_update_live, true);
+                PrefUtils.setBooleanProperty(R.string.pref_update_live, true);
                 if (!mLiveList.get(currentFocusChannel).isFav()) {
                     AsyncHttpClient client = new AsyncHttpClient();
-                    client.post(UrlUtil.appendUri(UrlUtil.addMediaId(UrlUtil.FAVORITE_URL, mLiveList.get(currentFocusChannel).getId()), UrlUtil.addToken()), new TextHttpResponseHandler() {
+                    client.post(
+                            ApiUtils.appendUri(ApiUtils.addMediaId(ApiUtils.FAVORITE_URL, mLiveList.get(currentFocusChannel).getId()), ApiUtils.addToken()), new TextHttpResponseHandler() {
                         @Override
                         public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {}
 
@@ -121,7 +122,8 @@ public class LivePlayerActivity extends LeanbackActivity implements OnChannelSel
                     mFavText.setText("ลบรายการโปรด");
                 } else {
                     AsyncHttpClient client = new AsyncHttpClient();
-                    client.delete(UrlUtil.appendUri(UrlUtil.addMediaId(UrlUtil.FAVORITE_URL, mLiveList.get(currentFocusChannel).getId()), UrlUtil.addToken()), new TextHttpResponseHandler() {
+                    client.delete(
+                            ApiUtils.appendUri(ApiUtils.addMediaId(ApiUtils.FAVORITE_URL, mLiveList.get(currentFocusChannel).getId()), ApiUtils.addToken()), new TextHttpResponseHandler() {
                         @Override
                         public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {}
 
@@ -199,7 +201,7 @@ public class LivePlayerActivity extends LeanbackActivity implements OnChannelSel
         RequestParams params = new RequestParams("media_id", id);
 
         AsyncHttpClient client = new AsyncHttpClient();
-        client.post(UrlUtil.appendUri(UrlUtil.HISTORY_URL, UrlUtil.addToken()), params, new TextHttpResponseHandler() {
+        client.post(ApiUtils.appendUri(ApiUtils.HISTORY_URL, ApiUtils.addToken()), params, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 

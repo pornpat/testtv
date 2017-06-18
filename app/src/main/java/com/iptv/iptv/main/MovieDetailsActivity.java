@@ -109,7 +109,7 @@ public class MovieDetailsActivity extends Activity {
         mDetail.setText(mSelectedMovie.getDescription());
 
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(UrlUtil.appendUri(UrlUtil.getFavCheckUrl(mSelectedMovie.getId()), UrlUtil.addToken()), new TextHttpResponseHandler() {
+        client.get(ApiUtils.appendUri(ApiUtils.getFavCheckUrl(mSelectedMovie.getId()), ApiUtils.addToken()), new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 showChoice();
@@ -129,7 +129,8 @@ public class MovieDetailsActivity extends Activity {
 
         if (mSelectedMovie.getType().equals("movie")) {
             AsyncHttpClient client2 = new AsyncHttpClient();
-            client2.get(UrlUtil.appendUri(UrlUtil.getRecommendUrl(UrlUtil.MOVIE_URL, mSelectedMovie.getId()), UrlUtil.addToken()), new TextHttpResponseHandler() {
+            client2.get(
+                    ApiUtils.appendUri(ApiUtils.getRecommendUrl(ApiUtils.MOVIE_URL, mSelectedMovie.getId()), ApiUtils.addToken()), new TextHttpResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 
@@ -143,7 +144,8 @@ public class MovieDetailsActivity extends Activity {
             });
         } else if (mSelectedMovie.getType().equals("sport")) {
             AsyncHttpClient client2 = new AsyncHttpClient();
-            client2.get(UrlUtil.appendUri(UrlUtil.getRecommendUrl(UrlUtil.SPORT_URL, mSelectedMovie.getId()), UrlUtil.addToken()), new TextHttpResponseHandler() {
+            client2.get(
+                    ApiUtils.appendUri(ApiUtils.getRecommendUrl(ApiUtils.SPORT_URL, mSelectedMovie.getId()), ApiUtils.addToken()), new TextHttpResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 
@@ -184,15 +186,15 @@ public class MovieDetailsActivity extends Activity {
     public void onChoiceEvent(final ChoiceEvent event) {
         if (event.position < 0) {
             if (mSelectedMovie.getType().equals("movie")) {
-                PrefUtil.setBooleanProperty(R.string.pref_update_movie, true);
+                PrefUtils.setBooleanProperty(R.string.pref_update_movie, true);
             } else if (mSelectedMovie.getType().equals("sport")) {
-                PrefUtil.setBooleanProperty(R.string.pref_update_sport, true);
+                PrefUtils.setBooleanProperty(R.string.pref_update_sport, true);
             }
             if (!isFav) {
                 AsyncHttpClient client = new AsyncHttpClient();
-                client.post(UrlUtil.appendUri(
-                        UrlUtil.addMediaId(UrlUtil.FAVORITE_URL, mSelectedMovie.getId()),
-                        UrlUtil.addToken()), new TextHttpResponseHandler() {
+                client.post(ApiUtils.appendUri(
+                        ApiUtils.addMediaId(ApiUtils.FAVORITE_URL, mSelectedMovie.getId()),
+                        ApiUtils.addToken()), new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString,
                             Throwable throwable) {
@@ -208,9 +210,9 @@ public class MovieDetailsActivity extends Activity {
                 showChoice();
             } else {
                 AsyncHttpClient client = new AsyncHttpClient();
-                client.delete(UrlUtil.appendUri(
-                        UrlUtil.addMediaId(UrlUtil.FAVORITE_URL, mSelectedMovie.getId()),
-                        UrlUtil.addToken()), new TextHttpResponseHandler() {
+                client.delete(ApiUtils.appendUri(
+                        ApiUtils.addMediaId(ApiUtils.FAVORITE_URL, mSelectedMovie.getId()),
+                        ApiUtils.addToken()), new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString,
                             Throwable throwable) {
@@ -232,7 +234,7 @@ public class MovieDetailsActivity extends Activity {
                 progress.show();
 
                 AsyncHttpClient client = new AsyncHttpClient();
-                client.get(UrlUtil.appendUri(UrlUtil.EXPIRE_CHECK_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
+                client.get(ApiUtils.appendUri(ApiUtils.EXPIRE_CHECK_URL, ApiUtils.addToken()), new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                         Toast.makeText(MovieDetailsActivity.this, "กรุณาลองใหม่ในภายหลัง", Toast.LENGTH_SHORT).show();
@@ -265,7 +267,7 @@ public class MovieDetailsActivity extends Activity {
                 progress.show();
 
                 AsyncHttpClient client = new AsyncHttpClient();
-                client.get(UrlUtil.appendUri(UrlUtil.EXPIRE_CHECK_URL, UrlUtil.addToken()), new TextHttpResponseHandler() {
+                client.get(ApiUtils.appendUri(ApiUtils.EXPIRE_CHECK_URL, ApiUtils.addToken()), new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                         Toast.makeText(MovieDetailsActivity.this, "กรุณาลองใหม่ในภายหลัง", Toast.LENGTH_SHORT).show();

@@ -9,7 +9,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.event.ChoiceEvent;
 import com.iptv.iptv.main.model.TrackItem;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -64,7 +67,7 @@ public class ChoiceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             vh.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    EventBus.getDefault().post(new SelectMovieEvent(position));
+                    EventBus.getDefault().post(new ChoiceEvent(position));
                 }
             });
         } else if (holder instanceof FavoriteViewHolder) {
@@ -90,7 +93,7 @@ public class ChoiceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             vh.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    EventBus.getDefault().post(new SelectMovieEvent(-1));
+                    EventBus.getDefault().post(new ChoiceEvent(-1));
                 }
             });
         }

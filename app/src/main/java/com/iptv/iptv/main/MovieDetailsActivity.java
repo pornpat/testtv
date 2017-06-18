@@ -165,6 +165,9 @@ public class MovieDetailsActivity extends Activity {
         for (int i = 0; i < mSelectedMovie.getTracks().size(); i++) {
             trackList.add(mSelectedMovie.getTracks().get(i));
         }
+        if (trackList.size() == 0) {
+            Toast.makeText(this, "วันใช้งานของคุณหมด กรุณาเติมวันใช้งานเพื่อรับชม", Toast.LENGTH_SHORT).show();
+        }
         trackList.add(new TrackItem());
         mChoiceList.setAdapter(new MovieChoiceAdapter(MovieDetailsActivity.this, trackList, isFav));
         mChoiceList.requestFocus();

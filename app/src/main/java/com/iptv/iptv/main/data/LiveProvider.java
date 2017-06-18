@@ -109,7 +109,11 @@ public class LiveProvider {
                 id = liveObj.getInt(TAG_MEDIA_ID);
                 name = liveObj.getString(TAG_NAME);
                 logoUrl = liveObj.getString(TAG_LOGOURL);
-                streamUrl = liveObj.getString(TAG_URL);
+                if (liveObj.has(TAG_URL)) {
+                    streamUrl = liveObj.getString(TAG_URL);
+                } else {
+                    streamUrl = "";
+                }
 
                 List<LiveProgramItem> programs = new ArrayList<>();
 
@@ -150,7 +154,11 @@ public class LiveProvider {
                 id = liveObj.getInt(TAG_MEDIA_ID);
                 name = liveObj.getString(TAG_NAME);
                 logoUrl = liveObj.getString(TAG_LOGOURL);
-                streamUrl = liveObj.getString(TAG_URL);
+                if (liveObj.has(TAG_URL)) {
+                    streamUrl = liveObj.getString(TAG_URL);
+                } else {
+                    streamUrl = "";
+                }
 
                 isFav = jsonObj.getBoolean("is_favorite");
 

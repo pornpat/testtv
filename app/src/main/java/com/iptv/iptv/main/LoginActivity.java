@@ -36,7 +36,7 @@ public class LoginActivity extends LeanbackActivity {
         mProgressDialog.setMessage("Loading...");
         mProgressDialog.setCancelable(false);
 
-        mUsernameText.setText("tester");
+        mUsernameText.setText("user");
         mPasswordText.setText("123456");
 
         if (getIntent().hasExtra("toast")) {

@@ -175,6 +175,8 @@ public class TopupActivity extends LeanbackActivity {
                                     finish();
                                 }
                             });
+                        } else {
+                            pDialog.dismiss();
                         }
                     } catch (JSONException e) {
                         pDialog.dismiss();

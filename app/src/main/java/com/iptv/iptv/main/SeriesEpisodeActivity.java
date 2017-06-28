@@ -8,6 +8,7 @@ import android.support.v17.leanback.app.GuidedStepFragment;
 import android.support.v17.leanback.widget.GuidanceStylist;
 import android.support.v17.leanback.widget.GuidedAction;
 import android.support.v4.content.ContextCompat;
+import android.view.WindowManager;
 
 import com.iptv.iptv.R;
 import com.iptv.iptv.main.model.SeriesItem;
@@ -24,6 +25,7 @@ public class SeriesEpisodeActivity extends LeanbackActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         mSelectSeries = Parcels.unwrap(getIntent().getParcelableExtra(SeriesDetailsActivity.SERIES));
         track = getIntent().getExtras().getInt("track");

@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.afollestad.easyvideoplayer.EasyVideoCallback;
@@ -50,6 +51,7 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_player);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         if (!Utils.isInternetConnectionAvailable(this)) {
             Toast.makeText(this, "Please check your internet..", Toast.LENGTH_SHORT).show();

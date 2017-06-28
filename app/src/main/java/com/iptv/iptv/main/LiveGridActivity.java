@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.iptv.iptv.R;
@@ -31,6 +32,7 @@ public class LiveGridActivity extends LeanbackActivity implements FilterFragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_grid);
         getWindow().setBackgroundDrawableResource(R.drawable.custom_background);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         mLiveText = (TextView) findViewById(R.id.live);
         mRecentText = (TextView) findViewById(R.id.recent);

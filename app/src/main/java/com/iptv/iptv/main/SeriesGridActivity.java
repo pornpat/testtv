@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.iptv.iptv.R;
@@ -32,6 +33,7 @@ public class SeriesGridActivity extends LeanbackActivity implements FilterFragme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_series_grid);
         getWindow().setBackgroundDrawableResource(R.drawable.custom_background);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         mSeriesText = (TextView) findViewById(R.id.series);
         mHitText = (TextView) findViewById(R.id.hit);

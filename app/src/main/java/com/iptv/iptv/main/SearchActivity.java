@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -33,6 +34,7 @@ public class SearchActivity extends LeanbackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         getWindow().setBackgroundDrawableResource(R.drawable.custom_background);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         if (getIntent().hasExtra("origin")) {
             mOrigin = getIntent().getExtras().getString("origin");

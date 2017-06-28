@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,6 +61,7 @@ public class HomeActivity extends LeanbackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         getWindow().setBackgroundDrawableResource(R.drawable.custom_background);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         mLiveButton = (RelativeLayout) findViewById(R.id.btn_live);
         mHitButton = (RelativeLayout) findViewById(R.id.btn_hit);

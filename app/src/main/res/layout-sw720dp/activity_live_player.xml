@@ -142,7 +142,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
-                    android:textSize="22sp"
+                    android:textSize="26sp"
                     android:textColor="@color/white"/>
 
                 <TextView
@@ -152,53 +152,47 @@
                     android:layout_weight="2"
                     android:gravity="center_horizontal"
                     android:text="2017.01.01 12:15:00"
-                    android:textSize="20sp"
+                    android:textSize="22sp"
                     android:textColor="@color/white"/>
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layout_program"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_padding_small"
                 android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:text="ขณะนี้:"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="ขณะนี้:"
-                        android:textSize="22sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/white"/>
+                <TextView
+                    android:id="@+id/txt_program"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="400dp"
+                    android:maxLines="3"
+                    android:layout_marginLeft="@dimen/margin_padding_small"
+                    android:text="รายการทดสอบ"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white" />
 
-                    <TextView
-                        android:id="@+id/txt_program"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxWidth="400dp"
-                        android:maxLines="3"
-                        android:layout_marginLeft="@dimen/margin_padding_small"
-                        android:text="รายการทดสอบ"
-                        android:textSize="22sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/white" />
-
-                    <TextView
-                        android:id="@+id/txt_period"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/margin_padding_large"
-                        android:text="18:00 - 18:30"
-                        android:textSize="22sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/white"/>
-
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/txt_period"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_padding_large"
+                    android:text="18:00 - 18:30"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"/>
 
             </LinearLayout>
 

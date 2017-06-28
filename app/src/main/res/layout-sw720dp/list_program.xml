@@ -13,7 +13,7 @@
         android:layout_marginTop="@dimen/margin_padding_xsmall"
         android:layout_marginBottom="@dimen/margin_padding_xxsmall"
         android:layout_marginLeft="@dimen/margin_padding_small"
-        android:textSize="34sp"
+        android:textSize="30sp"
         android:text="Program Name 1"
         android:textColor="@color/white"
         android:singleLine="true"

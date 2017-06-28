@@ -25,9 +25,11 @@
         android:layout_weight="4"
         android:layout_marginLeft="@dimen/margin_padding_small"
         android:layout_marginRight="@dimen/margin_padding_small"
-        android:textSize="34sp"
+        android:textSize="32sp"
         android:text="CH3 HD"
         android:textColor="@color/white"
-        android:singleLine="true"/>
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"/>
 
 </LinearLayout>

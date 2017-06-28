@@ -155,11 +155,16 @@ public class LivePlayerActivity extends LeanbackActivity implements OnChannelSel
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
-                mLoadingView.setVisibility(View.GONE);
                 mVideoView.start();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mLoadingView.setVisibility(View.GONE);
 
-                showDetail();
-                startBackgroundTimer();
+                        showDetail();
+                        startBackgroundTimer();
+                    }
+                }, 2000);
             }
         });
 
@@ -303,6 +308,7 @@ public class LivePlayerActivity extends LeanbackActivity implements OnChannelSel
             }
             if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
                 if ((currentChannel + 1) < mLiveList.size()) {
+                    hideDetail();
                     mLoadingView.setVisibility(View.VISIBLE);
 
                     currentChannel++;
@@ -311,6 +317,7 @@ public class LivePlayerActivity extends LeanbackActivity implements OnChannelSel
             }
             if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
                 if ((currentChannel - 1) >= 0) {
+                    hideDetail();
                     mLoadingView.setVisibility(View.VISIBLE);
 
                     currentChannel--;

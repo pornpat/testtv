@@ -49,6 +49,10 @@ public class LivePlayerActivity extends LeanbackActivity implements OnChannelSel
     private TextView mProgramText;
     private TextView mPeriodText;
     private View mProgramView;
+    private TextView mNextProgramText;
+    private TextView mNextPeriodText;
+    private View mNextProgramView;
+
     private RecyclerView mChannelList;
     private RecyclerView mProgramList;
     private TextView mFavText;
@@ -99,6 +103,9 @@ public class LivePlayerActivity extends LeanbackActivity implements OnChannelSel
         mProgramText = (TextView) findViewById(R.id.txt_program);
         mPeriodText = (TextView) findViewById(R.id.txt_period);
         mProgramView = findViewById(R.id.layout_program);
+        mNextProgramText = (TextView) findViewById(R.id.txt_program_next);
+        mNextPeriodText = (TextView) findViewById(R.id.txt_period_next);
+        mNextProgramView = findViewById(R.id.layout_program_next);
         mFavText = (TextView) findViewById(R.id.txt_fav);
 
         mChannelList = (RecyclerView) findViewById(R.id.list_channel);
@@ -166,7 +173,7 @@ public class LivePlayerActivity extends LeanbackActivity implements OnChannelSel
                         showDetail();
                         startBackgroundTimer();
                     }
-                }, 2000);
+                }, 1500);
             }
         });
 
@@ -377,6 +384,18 @@ public class LivePlayerActivity extends LeanbackActivity implements OnChannelSel
                                         +
                                         String.format("%02d", programs.get(i).getEndHour()) + ":" +
                                         String.format("%02d", programs.get(i).getEndMin()));
+                        if (i < programs.size() - 1) {
+                            mNextProgramText.setText(programs.get(i + 1).getProgramName());
+                            mNextPeriodText.setText(
+                                    String.format("%02d", programs.get(i + 1).getStartHour()) + ":" +
+                                            String.format("%02d", programs.get(i + 1).getStartMin()) + " - "
+                                            +
+                                            String.format("%02d", programs.get(i + 1).getEndHour()) + ":" +
+                                            String.format("%02d", programs.get(i + 1).getEndMin()));
+                            mNextProgramView.setVisibility(View.VISIBLE);
+                        } else {
+                            mNextProgramView.setVisibility(View.INVISIBLE);
+                        }
                         isMidnightContinue = false;
                         break;
                     }
@@ -404,10 +423,12 @@ public class LivePlayerActivity extends LeanbackActivity implements OnChannelSel
                             String.format("%02d", program.getStartMin()) + " - " +
                             String.format("%02d", program.getEndHour()) + ":" +
                             String.format("%02d", program.getEndMin()));
+                    mNextProgramView.setVisibility(View.INVISIBLE);
                 }
                 mProgramView.setVisibility(View.VISIBLE);
             } else {
                 mProgramView.setVisibility(View.INVISIBLE);
+                mNextProgramView.setVisibility(View.INVISIBLE);
             }
         } catch (Exception e) {}
     }

@@ -312,6 +312,7 @@ public class MovieDetailsActivity extends Activity {
         intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(mRecommend.get(event.position)));
         intent.putExtra(getResources().getString(R.string.should_start), true);
         startActivity(intent);
+        finish();
     }
 
     @Override

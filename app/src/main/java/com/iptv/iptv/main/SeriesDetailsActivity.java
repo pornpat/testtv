@@ -236,6 +236,7 @@ public class SeriesDetailsActivity extends Activity {
         intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(mRecommend.get(event.position)));
         intent.putExtra(getResources().getString(R.string.should_start), true);
         startActivity(intent);
+        finish();
     }
 
     @Override

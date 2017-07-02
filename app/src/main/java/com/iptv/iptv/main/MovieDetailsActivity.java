@@ -142,6 +142,8 @@ public class MovieDetailsActivity extends Activity {
                 public void onSuccess(int statusCode, Header[] headers, String responseString) {
                     mRecommend = MovieDataUtil.getMovieListFromJson(responseString);
                     mRecommendList.setAdapter(new MovieRecommendAdapter(MovieDetailsActivity.this, mRecommend));
+
+                    findViewById(R.id.layout_recommend).setVisibility(View.VISIBLE);
                 }
             });
         } else if (mSelectedMovie.getType().equals("sport")) {
@@ -157,6 +159,8 @@ public class MovieDetailsActivity extends Activity {
                 public void onSuccess(int statusCode, Header[] headers, String responseString) {
                     mRecommend = MovieDataUtil.getMovieListFromJson(responseString);
                     mRecommendList.setAdapter(new MovieRecommendAdapter(MovieDetailsActivity.this, mRecommend));
+
+                    findViewById(R.id.layout_recommend).setVisibility(View.VISIBLE);
                 }
             });
         }

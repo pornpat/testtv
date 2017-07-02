@@ -30,6 +30,7 @@
 
     <dimen name="text_login_title">40sp</dimen>
     <dimen name="text_home_title">22sp</dimen>
+    <dimen name="text_small">12sp</dimen>
     <dimen name="text_normal">14sp</dimen>
     <dimen name="text_highlight">16sp</dimen>
     <dimen name="text_editfield">16sp</dimen>

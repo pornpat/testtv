@@ -4,8 +4,8 @@
     android:layout_height="wrap_content"
     android:paddingTop="@dimen/margin_padding_small"
     android:paddingBottom="@dimen/margin_padding_small"
-    android:paddingLeft="@dimen/margin_padding_normal"
-    android:paddingRight="@dimen/margin_padding_normal"
+    android:paddingLeft="@dimen/margin_padding_mid"
+    android:paddingRight="@dimen/margin_padding_mid"
     android:layout_marginRight="@dimen/margin_padding_small"
     android:clickable="true"
     android:focusable="true"
@@ -17,8 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_padding_xsmall"
-        android:text="ค้นหา"
         android:textColor="@color/bg_movie_text"
-        android:textSize="@dimen/text_highlight"/>
+        android:textSize="@dimen/text_normal"/>
 
 </FrameLayout>

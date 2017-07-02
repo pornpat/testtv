@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +48,11 @@ public class LivePlayerActivity extends LeanbackActivity implements OnChannelSel
     private TextView mTimeText;
     private TextView mProgramText;
     private TextView mPeriodText;
+    private View mProgramView;
+    private TextView mNextProgramText;
+    private TextView mNextPeriodText;
+    private View mNextProgramView;
+
     private RecyclerView mChannelList;
     private RecyclerView mProgramList;
     private TextView mFavText;
@@ -72,6 +78,7 @@ public class LivePlayerActivity extends LeanbackActivity implements OnChannelSel
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_player);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         if (!Utils.isInternetConnectionAvailable(this)) {
             Toast.makeText(this, "Please check your internet..", Toast.LENGTH_SHORT).show();
@@ -95,6 +102,10 @@ public class LivePlayerActivity extends LeanbackActivity implements OnChannelSel
         mTimeText = (TextView) findViewById(R.id.txt_time);
         mProgramText = (TextView) findViewById(R.id.txt_program);
         mPeriodText = (TextView) findViewById(R.id.txt_period);
+        mProgramView = findViewById(R.id.layout_program);
+        mNextProgramText = (TextView) findViewById(R.id.txt_program_next);
+        mNextPeriodText = (TextView) findViewById(R.id.txt_period_next);
+        mNextProgramView = findViewById(R.id.layout_program_next);
         mFavText = (TextView) findViewById(R.id.txt_fav);
 
         mChannelList = (RecyclerView) findViewById(R.id.list_channel);
@@ -153,11 +164,16 @@ public class LivePlayerActivity extends LeanbackActivity implements OnChannelSel
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
-                mLoadingView.setVisibility(View.GONE);
                 mVideoView.start();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mLoadingView.setVisibility(View.GONE);
 
-                showDetail();
-                startBackgroundTimer();
+                        showDetail();
+                        startBackgroundTimer();
+                    }
+                }, 1500);
             }
         });
 
@@ -301,6 +317,7 @@ public class LivePlayerActivity extends LeanbackActivity implements OnChannelSel
             }
             if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
                 if ((currentChannel + 1) < mLiveList.size()) {
+                    mDetailView.setVisibility(View.GONE);
                     mLoadingView.setVisibility(View.VISIBLE);
 
                     currentChannel++;
@@ -309,6 +326,7 @@ public class LivePlayerActivity extends LeanbackActivity implements OnChannelSel
             }
             if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
                 if ((currentChannel - 1) >= 0) {
+                    mDetailView.setVisibility(View.GONE);
                     mLoadingView.setVisibility(View.VISIBLE);
 
                     currentChannel--;
@@ -340,34 +358,49 @@ public class LivePlayerActivity extends LeanbackActivity implements OnChannelSel
             Date endTime = Calendar.getInstance().getTime();
 
             List<LiveProgramItem> programs = mLiveList.get(currentChannel).getPrograms();
-            boolean isFound = false;
-            for (int i = 0; i < programs.size(); i++) {
-                startTime.setHours(programs.get(i).getStartHour());
-                startTime.setMinutes(programs.get(i).getStartMin());
-                startTime.setSeconds(0);
-                endTime.setHours(programs.get(i).getEndHour());
-                endTime.setMinutes(programs.get(i).getEndMin());
-                endTime.setSeconds(0);
+            if (programs.size() > 0) {
+                boolean isFound = false;
+                for (int i = 0; i < programs.size(); i++) {
+                    startTime.setHours(programs.get(i).getStartHour());
+                    startTime.setMinutes(programs.get(i).getStartMin());
+                    startTime.setSeconds(0);
+                    endTime.setHours(programs.get(i).getEndHour());
+                    endTime.setMinutes(programs.get(i).getEndMin());
+                    endTime.setSeconds(0);
 
 //                Log.v("testkn", df.format(currentTime));
 //                Log.v("testkn", df.format(startTime));
 //                Log.v("testkn", df.format(endTime));
 
-                if (currentTime.compareTo(startTime) > 0 && currentTime.compareTo(endTime) < 0) {
-                    isFound = true;
-                    dueTime = endTime;
-                    Log.v("testkn", "set" + df.format(dueTime));
-                    mProgramText.setText(programs.get(i).getProgramName());
-                    mPeriodText.setText(String.format("%02d", programs.get(i).getStartHour()) + ":" +
-                            String.format("%02d", programs.get(i).getStartMin()) + " - " +
-                            String.format("%02d", programs.get(i).getEndHour()) + ":" +
-                            String.format("%02d", programs.get(i).getEndMin()));
-                    isMidnightContinue = false;
-                    break;
+                    if (currentTime.compareTo(startTime) > 0 && currentTime.compareTo(endTime)
+                            < 0) {
+                        isFound = true;
+                        dueTime = endTime;
+                        Log.v("testkn", "set" + df.format(dueTime));
+                        mProgramText.setText(programs.get(i).getProgramName());
+                        mPeriodText.setText(
+                                String.format("%02d", programs.get(i).getStartHour()) + ":" +
+                                        String.format("%02d", programs.get(i).getStartMin()) + " - "
+                                        +
+                                        String.format("%02d", programs.get(i).getEndHour()) + ":" +
+                                        String.format("%02d", programs.get(i).getEndMin()));
+                        if (i < programs.size() - 1) {
+                            mNextProgramText.setText(programs.get(i + 1).getProgramName());
+                            mNextPeriodText.setText(
+                                    String.format("%02d", programs.get(i + 1).getStartHour()) + ":" +
+                                            String.format("%02d", programs.get(i + 1).getStartMin()) + " - "
+                                            +
+                                            String.format("%02d", programs.get(i + 1).getEndHour()) + ":" +
+                                            String.format("%02d", programs.get(i + 1).getEndMin()));
+                            mNextProgramView.setVisibility(View.VISIBLE);
+                        } else {
+                            mNextProgramView.setVisibility(View.INVISIBLE);
+                        }
+                        isMidnightContinue = false;
+                        break;
+                    }
                 }
-            }
-            if (!isFound) {
-                if (programs.size() > 0) {
+                if (!isFound) {
                     // or find the biggest start hour
                     LiveProgramItem program = programs.get(programs.size() - 1);
                     if (!isMidnightContinue) {
@@ -390,7 +423,12 @@ public class LivePlayerActivity extends LeanbackActivity implements OnChannelSel
                             String.format("%02d", program.getStartMin()) + " - " +
                             String.format("%02d", program.getEndHour()) + ":" +
                             String.format("%02d", program.getEndMin()));
+                    mNextProgramView.setVisibility(View.INVISIBLE);
                 }
+                mProgramView.setVisibility(View.VISIBLE);
+            } else {
+                mProgramView.setVisibility(View.INVISIBLE);
+                mNextProgramView.setVisibility(View.INVISIBLE);
             }
         } catch (Exception e) {}
     }

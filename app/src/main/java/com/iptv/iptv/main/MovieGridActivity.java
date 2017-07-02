@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.iptv.iptv.R;
@@ -32,6 +33,7 @@ public class MovieGridActivity extends LeanbackActivity implements FilterFragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_grid);
         getWindow().setBackgroundDrawableResource(R.drawable.custom_background);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         mMovieText = (TextView) findViewById(R.id.movie);
         mHitText = (TextView) findViewById(R.id.hit);

@@ -10,9 +10,11 @@
     <ImageView
         android:id="@+id/logo"
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_marginLeft="@dimen/margin_padding_small"
+        android:layout_marginTop="@dimen/margin_padding_small"
+        android:layout_marginBottom="@dimen/margin_padding_small"
         android:adjustViewBounds="true"
         android:src="@drawable/test_icon_ch3"/>
 
@@ -20,13 +22,14 @@
         android:id="@+id/txt_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:layout_marginTop="@dimen/margin_padding_small"
-        android:layout_marginBottom="@dimen/margin_padding_small"
-        android:layout_marginLeft="@dimen/margin_padding_xsmall"
+        android:layout_weight="4"
+        android:layout_marginLeft="@dimen/margin_padding_small"
         android:layout_marginRight="@dimen/margin_padding_small"
-        android:textSize="38sp"
+        android:textSize="32sp"
         android:text="CH3 HD"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"/>
 
 </LinearLayout>

@@ -47,12 +47,15 @@ public class LiveChannelAdapter extends RecyclerView.Adapter<LiveChannelAdapter.
             @Override
             public void onFocusChange(View view, boolean isFocused) {
                 if (isFocused) {
+                    holder.mChannelName.setSelected(true);
                     if (previousFocusView != null) {
                         previousFocusView.setBackgroundColor(ContextCompat.getColor(holder.mView.getContext(), android.R.color.transparent));
                     }
                     holder.mView.setBackgroundColor(ContextCompat.getColor(holder.mView.getContext(), R.color.detail_background));
                     previousFocusView = holder.mView;
                     mListener.onChannelSelected(position, false);
+                } else {
+                    holder.mChannelName.setSelected(false);
                 }
             }
         });

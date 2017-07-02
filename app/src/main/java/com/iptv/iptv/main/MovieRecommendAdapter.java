@@ -49,6 +49,8 @@ public class MovieRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 .error(R.drawable.movie_placeholder).override(200, 300).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
             @Override
             public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                vh.mTitle.setText(mValues.get(position).getName());
+                vh.mEngTitle.setText(mValues.get(position).getEngName());
                 return false;
             }
 

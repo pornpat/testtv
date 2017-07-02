@@ -58,6 +58,13 @@ public class SportGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     .error(R.drawable.movie_placeholder).override(200, 300).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
                 @Override
                 public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                    vh.mTitle.setText(mValues.get(position).getName());
+                    if (!mValues.get(position).getEngName().equals("")) {
+                        vh.mEngTitle.setText(mValues.get(position).getEngName());
+                        vh.mEngTitle.setVisibility(View.VISIBLE);
+                    } else {
+                        vh.mEngTitle.setVisibility(View.GONE);
+                    }
                     return false;
                 }
 

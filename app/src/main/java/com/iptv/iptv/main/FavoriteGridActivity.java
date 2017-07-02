@@ -3,6 +3,7 @@ package com.iptv.iptv.main;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.iptv.iptv.R;
@@ -25,6 +26,7 @@ public class FavoriteGridActivity extends LeanbackActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite_grid);
         getWindow().setBackgroundDrawableResource(R.drawable.custom_background);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         mMovieText = (TextView) findViewById(R.id.movie);
         mSeriesText = (TextView) findViewById(R.id.series);

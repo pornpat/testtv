@@ -54,6 +54,7 @@ public class LiveGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     .error(R.drawable.movie_placeholder).override(200, 200).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
                 @Override
                 public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                    vh.mTitle.setText(mValues.get(position).getName());
                     return false;
                 }
 

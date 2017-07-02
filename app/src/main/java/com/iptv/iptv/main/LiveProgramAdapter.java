@@ -62,7 +62,7 @@ public class LiveProgramAdapter extends RecyclerView.Adapter<LiveProgramAdapter.
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if (position == 0) {
-            holder.mName.setText("ขณะนี้:" + mValues.get(position).getProgramName());
+            holder.mName.setText("ขณะนี้: " + mValues.get(position).getProgramName());
         } else {
             holder.mName.setText(mValues.get(position).getProgramName());
         }

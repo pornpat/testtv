@@ -98,18 +98,18 @@ public class SeriesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             vh.mView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View view, boolean isFocused) {
-                    if (isFocused) {
-                        vh.mImage.setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_movie_selected));
-                    } else {
-                        vh.mImage.setBackgroundColor(ContextCompat.getColor(mContext, android.R.color.transparent));
-                    }
+//                    if (isFocused) {
+//                        vh.mImage.setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_movie_selected));
+//                    } else {
+//                        vh.mImage.setBackgroundColor(ContextCompat.getColor(mContext, android.R.color.transparent));
+//                    }
                 }
             });
 
             vh.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    EventBus.getDefault().post(new SelectSeriesEvent(-1));
+//                    EventBus.getDefault().post(new SelectSeriesEvent(-1));
                 }
             });
         }
@@ -155,12 +155,10 @@ public class SeriesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public class LoadmoreViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final RoundedImageView mImage;
 
         public LoadmoreViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
-            mImage = (RoundedImageView) itemView.findViewById(R.id.image);
         }
     }
 

@@ -50,8 +50,8 @@ public class LiveGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (holder instanceof LiveViewHolder) {
             final LiveViewHolder vh = (LiveViewHolder) holder;
             vh.mItem = mValues.get(position);
-            Glide.with(mContext.getApplicationContext()).load(mValues.get(position).getLogoUrl()).placeholder(R.drawable.movie_placeholder)
-                    .error(R.drawable.movie_placeholder).override(200, 200).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
+            Glide.with(mContext.getApplicationContext()).load(mValues.get(position).getLogoUrl()).placeholder(R.drawable.live_placeholder)
+                    .error(R.drawable.live_placeholder).override(200, 200).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
                 @Override
                 public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
                     vh.mTitle.setText(mValues.get(position).getName());
@@ -90,18 +90,18 @@ public class LiveGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             vh.mView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View view, boolean isFocused) {
-                    if (isFocused) {
-                        vh.mImage.setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_movie_selected));
-                    } else {
-                        vh.mImage.setBackgroundColor(ContextCompat.getColor(mContext, android.R.color.transparent));
-                    }
+//                    if (isFocused) {
+//                        vh.mImage.setBackground(ContextCompat.getDrawable(mContext, R.drawable.bg_movie_selected));
+//                    } else {
+//                        vh.mImage.setBackgroundColor(ContextCompat.getColor(mContext, android.R.color.transparent));
+//                    }
                 }
             });
 
             vh.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    EventBus.getDefault().post(new SelectLiveEvent(-1));
+//                    EventBus.getDefault().post(new SelectLiveEvent(-1));
                 }
             });
         }
@@ -146,13 +146,10 @@ public class LiveGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public class LoadmoreViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final RoundedImageView mImage;
 
         public LoadmoreViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
-            mImage = (RoundedImageView) itemView.findViewById(R.id.image);
-            mImage.setImageResource(R.drawable.img_loadmore_square);
         }
     }
 

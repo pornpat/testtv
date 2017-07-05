@@ -7,8 +7,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +49,6 @@ public class LiveGridFragment extends Fragment implements LoaderManager.LoaderCa
     private List<LiveItem> mMovieList = new ArrayList<>();
     private View mLoading;
     private View mEmpty;
-    private ProgressDialog mProgress;
 
     private boolean isNextAvailable = false;
     private boolean isLoadmore = false;
@@ -58,6 +59,7 @@ public class LiveGridFragment extends Fragment implements LoaderManager.LoaderCa
 
     private boolean shouldLoad = false;
     private boolean isNewLoad = false;
+    private boolean isLoading = false;
 
     public LiveGridFragment() {
 
@@ -78,19 +80,37 @@ public class LiveGridFragment extends Fragment implements LoaderManager.LoaderCa
         mAdapter = new LiveGridAdapter(getActivity(), mMovieList);
         mRecyclerView.setAdapter(mAdapter);
 
+        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                int totalItemCount = linearLayoutManager.getItemCount();
+                int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+
+                if (!isLoading && isNextAvailable && totalItemCount <= (lastVisibleItem + 2)) {
+                    isNextAvailable = false;
+                    isLoadmore = true;
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadVideoData(ApiUtils.appendUri(nextPageUrl, ApiUtils.addToken()));
+                        }
+                    }, 2000);
+                }
+            }
+        });
+
         mLoading = view.findViewById(R.id.loading);
         mEmpty = view.findViewById(R.id.empty);
-
-        mProgress = new ProgressDialog(getActivity());
-        mProgress.setMessage("กำลังโหลดข้อมูลเพิ่มเติม");
     }
 
     private void loadVideoData(String url) {
+        isLoading = true;
         shouldLoad = true;
         if (!isLoadmore) {
             updateUI(mLoading);
-        } else {
-            mProgress.show();
         }
 
         LiveProvider.setContext(getActivity());
@@ -127,7 +147,7 @@ public class LiveGridFragment extends Fragment implements LoaderManager.LoaderCa
                     LiveItem item = new LiveItem();
                     item.setId(-1);
                     mMovieList.add(item);
-                    isNextAvailable = false;
+//                    isNextAvailable = false;
                 }
                 mAdapter.notifyDataSetChanged();
 
@@ -151,13 +171,13 @@ public class LiveGridFragment extends Fragment implements LoaderManager.LoaderCa
                     LiveItem item = new LiveItem();
                     item.setId(-1);
                     mMovieList.add(item);
-                    isNextAvailable = false;
+//                    isNextAvailable = false;
                 }
                 mAdapter.notifyItemInserted(mMovieList.size());
-                mProgress.dismiss();
 
                 isLoadmore = false;
             }
+            isLoading = false;
             shouldLoad = false;
         }
     }

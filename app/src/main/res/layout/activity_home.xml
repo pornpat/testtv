@@ -133,19 +133,19 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_marginTop="@dimen/margin_padding_small"
+        android:gravity="center_vertical"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="110dp"
+            android:gravity="center_horizontal"
             android:orientation="horizontal">
 
             <RelativeLayout
                 android:id="@+id/btn_live"
-                android:layout_width="0dp"
+                android:layout_width="110dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -176,9 +176,8 @@
 
             <RelativeLayout
                 android:id="@+id/btn_hit"
-                android:layout_width="0dp"
+                android:layout_width="220dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -244,9 +243,8 @@
 
             <RelativeLayout
                 android:id="@+id/btn_sport"
-                android:layout_width="0dp"
+                android:layout_width="110dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -280,9 +278,8 @@
 
             <RelativeLayout
                 android:id="@+id/btn_favorite"
-                android:layout_width="0dp"
+                android:layout_width="110dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -315,15 +312,14 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="110dp"
+            android:gravity="center_horizontal"
             android:orientation="horizontal">
 
             <RelativeLayout
                 android:id="@+id/btn_movie"
-                android:layout_width="0dp"
+                android:layout_width="110dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -353,9 +349,8 @@
 
             <RelativeLayout
                 android:id="@+id/btn_series"
-                android:layout_width="0dp"
+                android:layout_width="110dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -386,9 +381,8 @@
 
             <RelativeLayout
                 android:id="@+id/btn_advertise"
-                android:layout_width="0dp"
+                android:layout_width="220dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
@@ -426,9 +420,8 @@
 
             <RelativeLayout
                 android:id="@+id/btn_setting"
-                android:layout_width="0dp"
+                android:layout_width="110dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"

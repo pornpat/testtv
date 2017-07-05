@@ -1,10 +1,12 @@
 package com.iptv.iptv.main;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -132,6 +134,7 @@ public class TopupActivity extends LeanbackActivity {
     }
 
     public void applyPincodeTopup(View v) {
+        hideKeyboard();
         if (mPincodeText.getText().length() == 9) {
             final ProgressDialog pDialog = new ProgressDialog(TopupActivity.this);
             pDialog.setMessage("กำลังดำเนินการ..");
@@ -192,6 +195,7 @@ public class TopupActivity extends LeanbackActivity {
     }
 
     public void applyMoneyRefTopup(View v) {
+        hideKeyboard();
         if (mMoneyRefText.getText().length() > 0 && mMoneyPriceText.getText().length() > 0) {
             final ProgressDialog pDialog = new ProgressDialog(TopupActivity.this);
             pDialog.setMessage("กำลังดำเนินการ..");
@@ -279,6 +283,7 @@ public class TopupActivity extends LeanbackActivity {
     }
 
     public void applyWalletRefTopup(View v) {
+        hideKeyboard();
         if (mWalletRefText.getText().length() > 0 && mWalletPriceText.getText().length() > 0) {
             final ProgressDialog pDialog = new ProgressDialog(TopupActivity.this);
             pDialog.setMessage("กำลังดำเนินการ..");
@@ -366,6 +371,7 @@ public class TopupActivity extends LeanbackActivity {
     }
 
     public void applyWalletDateTopup(View v) {
+        hideKeyboard();
         if (mDateText.getText().length() > 0 && mMonthText.getText().length() > 0 && mYearText.getText().length() > 0
                 && mHourText.getText().length() > 0 && mMinuteText.getText().length() > 0 && mPriceText.getText().length() > 0) {
             final ProgressDialog pDialog = new ProgressDialog(TopupActivity.this);
@@ -464,6 +470,14 @@ public class TopupActivity extends LeanbackActivity {
             });
         } else {
             Toast.makeText(this, "กรุณากรอกข้อมูลให้ครบถ้วน", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void hideKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 

@@ -252,18 +252,6 @@
                     android:textColor="@color/text_default"
                     android:textSize="@dimen/text_highlight"
                     android:inputType="number"
-                    android:singleLine="true"/>
-
-                <EditText
-                    android:id="@+id/txt_money_price"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_padding_xsmall"
-                    android:hint="ใส่จำนวนเงิน (ex. 300, 500, ...)"
-                    android:paddingLeft="@dimen/margin_padding_small"
-                    android:textColor="@color/text_default"
-                    android:textSize="@dimen/text_highlight"
-                    android:inputType="number"
                     android:imeOptions="actionDone"
                     android:singleLine="true"/>
 

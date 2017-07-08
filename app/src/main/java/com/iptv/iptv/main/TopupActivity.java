@@ -32,7 +32,6 @@ public class TopupActivity extends LeanbackActivity {
 
     EditText mPincodeText;
     EditText mMoneyRefText;
-    EditText mMoneyPriceText;
     EditText mWalletRefText;
     EditText mWalletPriceText;
     EditText mDateText;
@@ -51,7 +50,6 @@ public class TopupActivity extends LeanbackActivity {
 
         mPincodeText = (EditText) findViewById(R.id.txt_pincode);
         mMoneyRefText = (EditText) findViewById(R.id.txt_money_ref);
-        mMoneyPriceText = (EditText) findViewById(R.id.txt_money_price);
         mWalletRefText = (EditText) findViewById(R.id.txt_wallet_ref);
         mWalletPriceText = (EditText) findViewById(R.id.txt_wallet_price);
         mDateText = (EditText) findViewById(R.id.txt_date);
@@ -196,15 +194,14 @@ public class TopupActivity extends LeanbackActivity {
 
     public void applyMoneyRefTopup(View v) {
         hideKeyboard();
-        if (mMoneyRefText.getText().length() > 0 && mMoneyPriceText.getText().length() > 0) {
+        if (mMoneyRefText.getText().length() > 0) {
             final ProgressDialog pDialog = new ProgressDialog(TopupActivity.this);
             pDialog.setMessage("กำลังดำเนินการ..");
             pDialog.show();
 
             RequestParams params = new RequestParams();
             params.put("type", "truemoney");
-            params.put("price", Integer.parseInt(mMoneyPriceText.getText().toString()));
-            params.put("reference", Integer.parseInt(mMoneyRefText.getText().toString()));
+            params.put("reference", Long.parseLong(mMoneyRefText.getText().toString()));
 
             AsyncHttpClient client = new AsyncHttpClient();
             client.post(ApiUtils.appendUri(ApiUtils.TOPUP_TRUE, ApiUtils.addSession()), params, new TextHttpResponseHandler() {
@@ -292,7 +289,7 @@ public class TopupActivity extends LeanbackActivity {
             RequestParams params = new RequestParams();
             params.put("type", "wallet_ref");
             params.put("price", Integer.parseInt(mWalletPriceText.getText().toString()));
-            params.put("reference", Integer.parseInt(mWalletRefText.getText().toString()));
+            params.put("reference", Long.parseLong(mWalletRefText.getText().toString()));
 
             AsyncHttpClient client = new AsyncHttpClient();
             client.post(ApiUtils.appendUri(ApiUtils.TOPUP_TRUE, ApiUtils.addSession()), params, new TextHttpResponseHandler() {

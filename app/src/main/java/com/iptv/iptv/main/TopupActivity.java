@@ -21,6 +21,8 @@ import com.loopj.android.http.TextHttpResponseHandler;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+
 import cz.msebera.android.httpclient.Header;
 
 public class TopupActivity extends AppCompatActivity {
@@ -41,6 +43,8 @@ public class TopupActivity extends AppCompatActivity {
     EditText mHourText;
     EditText mMinuteText;
     EditText mPriceText;
+
+    Calendar currentTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +134,33 @@ public class TopupActivity extends AppCompatActivity {
                 mMoneyRefBox.setChecked(true);
             }
         });
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(ApiUtils.appendUri(ApiUtils.TIME_URL, ApiUtils.addToken()),
+                new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(responseString);
+
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTimeInMillis(jsonObject.getLong("timestamp") * 1000L);
+
+                            mDateText.setText(String.valueOf(calendar.get(Calendar.DATE)));
+                            mMonthText.setText(String.valueOf(calendar.get(Calendar.MONTH) + 1));
+                            mYearText.setText(String.valueOf(calendar.get(Calendar.YEAR)));
+                            mHourText.setText(String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)));
+                            mMinuteText.setText(String.valueOf(calendar.get(Calendar.MINUTE)));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     public void applyPincodeTopup(View v) {

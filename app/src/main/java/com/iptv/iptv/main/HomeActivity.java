@@ -29,7 +29,7 @@ import org.parceler.Parcels;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
@@ -57,6 +57,8 @@ public class HomeActivity extends AppCompatActivity {
     List<String> mHitList;
     int currentHit = -1;
 
+    long currentTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +77,7 @@ public class HomeActivity extends AppCompatActivity {
 
         mSearchButton = findViewById(R.id.btn_search);
         mDateTimeText = (TextView) findViewById(R.id.datetime);
+        mDateTimeText.setVisibility(View.INVISIBLE);
         mRemainingText = (TextView) findViewById(R.id.txt_remaining);
 
         mHitImage1 = (RoundedImageView) findViewById(R.id.img_hit1);
@@ -88,11 +91,6 @@ public class HomeActivity extends AppCompatActivity {
         Log.v("testkn", PrefUtils.getStringProperty(R.string.pref_token));
 
         mLiveButton.requestFocus();
-
-        Thread myThread;
-        Runnable runnable = new CountDownRunner();
-        myThread= new Thread(runnable);
-        myThread.start();
 
         mLiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,6 +201,32 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(ApiUtils.appendUri(ApiUtils.TIME_URL, ApiUtils.addToken()),
+                new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(responseString);
+                            currentTime = jsonObject.getLong("timestamp") * 1000L;
+
+                            Thread myThread;
+                            Runnable runnable = new CountDownRunner();
+                            myThread= new Thread(runnable);
+                            myThread.start();
+
+                            mDateTimeText.setVisibility(View.VISIBLE);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     private void updateUserProfile() {
@@ -391,10 +415,8 @@ public class HomeActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             public void run() {
                 try{
-                    Calendar c = Calendar.getInstance();
-
                     SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-                    String formattedDate = df.format(c.getTime());
+                    String formattedDate = df.format(new Date(currentTime));
 
                     mDateTimeText.setText(formattedDate);
                 }catch (Exception e) {}
@@ -409,6 +431,7 @@ public class HomeActivity extends AppCompatActivity {
             while(!Thread.currentThread().isInterrupted()){
                 try {
                     doWork();
+                    currentTime += 1000L;
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();

@@ -44,6 +44,7 @@ public class ApiUtils {
     public static final String EXPIRE_CHECK_URL = BASE_URL + "/packages/expired";
     public static final String CHANGE_PASSWORD_URL = BASE_URL + "/auth/password";
     public static final String MEDIA_URL = BASE_URL + "/media";
+    public static final String TIME_URL = BASE_URL + "/currentDateTime";
 
     public static final String TOPUP_BASE_URL = "http://cdnhispeed.com/mock_api/REST/V1/topup";
     public static final String TOPUP_PINCODE = TOPUP_BASE_URL + "/pincode";

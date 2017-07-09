@@ -14,10 +14,10 @@
 
 package com.iptv.iptv.main;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -51,7 +51,7 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 
 
-public class MovieDetailsActivity extends Activity {
+public class MovieDetailsActivity extends AppCompatActivity {
     public static final String SHARED_ELEMENT_NAME = "hero";
     public static final String MOVIE = "Movie";
 

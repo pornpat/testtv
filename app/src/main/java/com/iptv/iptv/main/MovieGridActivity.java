@@ -3,6 +3,7 @@ package com.iptv.iptv.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -16,7 +17,7 @@ import com.iptv.iptv.main.model.CountryItem;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-public class MovieGridActivity extends LeanbackActivity implements FilterFragment.OnCategoryInteractionListener,
+public class MovieGridActivity extends AppCompatActivity implements FilterFragment.OnCategoryInteractionListener,
         FilterFragment.OnCountryInteractionListener, FilterFragment.OnYearInteractionListener {
 
     TextView mMovieText;

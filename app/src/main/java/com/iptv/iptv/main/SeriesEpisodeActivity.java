@@ -1,8 +1,8 @@
 package com.iptv.iptv.main;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.WindowManager;
@@ -21,7 +21,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.parceler.Parcels;
 
-public class SeriesEpisodeActivity extends Activity {
+public class SeriesEpisodeActivity extends AppCompatActivity {
 
     private static SeriesItem mSelectSeries;
     private static int track;

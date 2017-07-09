@@ -3,6 +3,7 @@ package com.iptv.iptv.main;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,7 +20,7 @@ import com.iptv.iptv.main.event.LoadSportEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
-public class SearchActivity extends LeanbackActivity {
+public class SearchActivity extends AppCompatActivity {
 
     EditText mSearchText;
     TextView mMovieText;

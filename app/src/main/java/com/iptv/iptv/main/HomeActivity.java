@@ -3,6 +3,7 @@ package com.iptv.iptv.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -33,7 +34,7 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
-public class HomeActivity extends LeanbackActivity {
+public class HomeActivity extends AppCompatActivity {
 
     RelativeLayout mLiveButton;
     RelativeLayout mHitButton;

@@ -2,6 +2,7 @@ package com.iptv.iptv.main;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -13,7 +14,7 @@ import com.iptv.iptv.main.event.LoadSportEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
-public class HitGridActivity extends LeanbackActivity {
+public class HitGridActivity extends AppCompatActivity {
 
     TextView mMovieText;
     TextView mSeriesText;

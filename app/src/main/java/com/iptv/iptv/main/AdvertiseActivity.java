@@ -1,6 +1,7 @@
 package com.iptv.iptv.main;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -15,7 +16,7 @@ import com.iptv.iptv.main.model.AdsItem;
 
 import org.parceler.Parcels;
 
-public class AdvertiseActivity extends LeanbackActivity {
+public class AdvertiseActivity extends AppCompatActivity {
 
     AdsItem currentAds;
     ImageView mImage;

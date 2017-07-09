@@ -26,11 +26,12 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
@@ -63,6 +64,8 @@ public class LivePlayerActivity extends AppCompatActivity implements OnChannelSe
     private Timer mBackgroundTimer;
     private Thread mTimeThread;
     private OnChannelSelectedListener mListener;
+
+    private long mCurrentTime;
 
     private List<LiveItem> mLiveList = new ArrayList<>();
 //    private List<LiveProgramItem> mProgramList = new ArrayList<>();
@@ -158,10 +161,6 @@ public class LivePlayerActivity extends AppCompatActivity implements OnChannelSe
 //        mProgramList.add(new LiveProgramItem("test7", 18, 0, 21, 0));
 //        mProgramList.add(new LiveProgramItem("test8", 21, 0, 0, 0));
 
-        Runnable runnable = new CountDownRunner();
-        mTimeThread = new Thread(runnable);
-        mTimeThread.start();
-
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
@@ -187,12 +186,35 @@ public class LivePlayerActivity extends AppCompatActivity implements OnChannelSe
             }
         });
 
-        startLive(currentChannel);
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(ApiUtils.appendUri(ApiUtils.TIME_URL, ApiUtils.addToken()),
+                new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(responseString);
+                            mCurrentTime = jsonObject.getLong("timestamp") * 1000L;
+
+                            Runnable runnable = new CountDownRunner();
+                            mTimeThread = new Thread(runnable);
+                            mTimeThread.start();
+
+                            startLive(currentChannel);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     private void startLive(int position) {
         initChannelList();
-        updateProgram(Calendar.getInstance().getTime());
+        updateProgram(new Date(mCurrentTime));
         if (Utils.isInternetConnectionAvailable(LivePlayerActivity.this)) {
             if (mLiveList.size() > 0) {
                 mNameText.setText(mLiveList.get(position).getName());
@@ -355,8 +377,8 @@ public class LivePlayerActivity extends AppCompatActivity implements OnChannelSe
             currentTime.setSeconds(1);
             Log.v("testkn", "update by current " + df.format(currentTime));
 
-            Date startTime = Calendar.getInstance().getTime();
-            Date endTime = Calendar.getInstance().getTime();
+            Date startTime = new Date(mCurrentTime);
+            Date endTime = new Date(mCurrentTime);
 
             List<LiveProgramItem> programs = mLiveList.get(currentChannel).getPrograms();
             if (programs.size() > 0) {
@@ -438,11 +460,11 @@ public class LivePlayerActivity extends AppCompatActivity implements OnChannelSe
         runOnUiThread(new Runnable() {
             public void run() {
                 try{
-                    Date currentTime = Calendar.getInstance().getTime();
+                    Date currentTime = new Date(mCurrentTime);
 
                     SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-
                     String formattedCurrentTime = df.format(currentTime);
+
                     mTimeText.setText(formattedCurrentTime);
 
 //                    Log.v("testkn", "current " + df.format(currentTime));
@@ -462,6 +484,7 @@ public class LivePlayerActivity extends AppCompatActivity implements OnChannelSe
             while(!Thread.currentThread().isInterrupted()){
                 try {
                     doWork();
+                    mCurrentTime += 1000L;
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();

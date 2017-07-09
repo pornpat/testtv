@@ -60,16 +60,10 @@
             android:name=".main.SeriesDetailsActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".main.SeriesEpisodeActivity"
-            android:screenOrientation="landscape" />
-        <activity
             android:name=".main.MoviePlayerActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|screenSize"
             android:screenOrientation="landscape"
             android:theme="@style/PlayerTheme" />
-        <activity
-            android:name=".main.MovieEpisodeActivity"
-            android:screenOrientation="landscape" />
         <activity
             android:name=".main.SearchActivity"
             android:screenOrientation="landscape" />
@@ -91,7 +85,13 @@
         <activity
             android:name=".main.TopupActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".main.SettingActivity"
+        <activity
+            android:name=".main.SettingActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".main.SeriesEpisodeActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".main.MovieEpisodeActivity"
             android:screenOrientation="landscape" />
     </application>
 

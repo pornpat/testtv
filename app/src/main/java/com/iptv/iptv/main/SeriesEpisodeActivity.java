@@ -1,75 +1,99 @@
 package com.iptv.iptv.main;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v17.leanback.app.GuidedStepFragment;
-import android.support.v17.leanback.widget.GuidanceStylist;
-import android.support.v17.leanback.widget.GuidedAction;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.event.SelectEpisodeEvent;
 import com.iptv.iptv.main.model.SeriesItem;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.parceler.Parcels;
 
-import java.util.List;
-
-public class SeriesEpisodeActivity extends LeanbackActivity {
+public class SeriesEpisodeActivity extends Activity {
 
     private static SeriesItem mSelectSeries;
     private static int track;
 
+    RecyclerView mRecyclerView;
+    ImageView mImage;
+    TextView mTitleText;
+    TextView mEngTitleText;
+    TextView mAudioText;
+    TextView mSubtitleText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_episode);
+        getWindow().setBackgroundDrawableResource(R.drawable.custom_background);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         mSelectSeries = Parcels.unwrap(getIntent().getParcelableExtra(SeriesDetailsActivity.SERIES));
         track = getIntent().getExtras().getInt("track");
 
-        if (null == savedInstanceState) {
-            GuidedStepFragment.addAsRoot(this, new FirstStepFragment(), android.R.id.content);
-        }
+        mImage = (ImageView) findViewById(R.id.img);
+        mTitleText = (TextView) findViewById(R.id.txt_title);
+        mEngTitleText = (TextView) findViewById(R.id.txt_eng_title);
+        mAudioText = (TextView) findViewById(R.id.txt_audio);
+        mSubtitleText = (TextView) findViewById(R.id.txt_subtitle);
 
-    }
+        mRecyclerView = (RecyclerView) findViewById(R.id.list);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.setAdapter(new SeriesEpisodeAdapter(mSelectSeries.getTracks().get(track).getEpisodes()));
+        mRecyclerView.requestFocus();
 
-    private static void addAction(List<GuidedAction> actions, long id, String title) {
-        actions.add(new GuidedAction.Builder()
-                .id(id)
-                .title(title)
-                .build());
-    }
-
-    public static class FirstStepFragment extends GuidedStepFragment {
-
-        @Override
-        @NonNull
-        public GuidanceStylist.Guidance onCreateGuidance(@NonNull Bundle savedInstanceState) {
-            final String title = mSelectSeries.getName();
-            final String breadcrumb = "Select episode";
-            final String description = "Audio: " + mSelectSeries.getTracks().get(track).getAudio() + " / Subtitle: " + mSelectSeries.getTracks().get(track).getSubtitle();
-            final Drawable icon = ContextCompat.getDrawable(getActivity(), R.drawable.icon_series);
-
-            return new GuidanceStylist.Guidance(title, description, breadcrumb, icon);
-        }
-
-        @Override
-        public void onCreateActions(@NonNull List<GuidedAction> actions, Bundle savedInstanceState) {
-            for (int i = 0; i < mSelectSeries.getTracks().get(track).getEpisodes().size(); i++) {
-                addAction(actions, i, "Episode " + (i + 1));
+        Glide.with(getApplicationContext()).load(mSelectSeries.getImageUrl()).placeholder(R.drawable.movie_placeholder)
+                .error(R.drawable.movie_placeholder).override(300, 450).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
+            @Override
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                mImage.setImageResource(R.drawable.movie_placeholder);
+                return true;
             }
-        }
 
-        @Override
-        public void onGuidedActionClicked(GuidedAction action) {
-            Intent intent = new Intent(getActivity(), MoviePlayerActivity.class);
-            intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(mSelectSeries));
-            intent.putExtra("url", mSelectSeries.getTracks().get(track).getEpisodes().get((int) action.getId()).getUrl());
-            intent.putExtra("extra_id", mSelectSeries.getTracks().get(track).getEpisodes().get((int) action.getId()).getEpisodeId());
-            startActivity(intent);
-        }
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                mImage.setImageDrawable(resource);
+                return true;
+            }
+        }).into(mImage);
+        mTitleText.setText(mSelectSeries.getName());
+        mEngTitleText.setText(mSelectSeries.getEngName());
+        mAudioText.setText(mSelectSeries.getTracks().get(track).getAudio());
+        mSubtitleText.setText(mSelectSeries.getTracks().get(track).getSubtitle());
+
+
+    }
+
+    @Subscribe
+    public void onSelectEpisodeEvent(SelectEpisodeEvent event) {
+        Intent intent = new Intent(this, MoviePlayerActivity.class);
+        intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(mSelectSeries));
+        intent.putExtra("url", mSelectSeries.getTracks().get(track).getEpisodes().get(event.position).getUrl());
+        intent.putExtra("extra_id", mSelectSeries.getTracks().get(track).getEpisodes().get(event.position).getEpisodeId());
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 }

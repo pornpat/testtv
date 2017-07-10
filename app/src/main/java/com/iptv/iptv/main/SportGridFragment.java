@@ -6,7 +6,6 @@ import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -84,12 +83,7 @@ public class SportGridFragment extends Fragment implements LoaderManager.LoaderC
                 if (!isLoading && isNextAvailable && totalItemCount <= (lastVisibleItem + 2)) {
                     isNextAvailable = false;
                     isLoadmore = true;
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadVideoData(ApiUtils.appendUri(nextPageUrl, ApiUtils.addToken()));
-                        }
-                    }, 2000);
+                    loadVideoData(ApiUtils.appendUri(nextPageUrl, ApiUtils.addToken()));
                 }
             }
         });
@@ -183,6 +177,7 @@ public class SportGridFragment extends Fragment implements LoaderManager.LoaderC
 
     @Subscribe
     public void onLoadMovieData(LoadSportEvent event) {
+        isNextAvailable = false;
         isNewLoad = true;
         loadVideoData(event.url);
     }

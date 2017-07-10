@@ -7,7 +7,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -92,12 +91,7 @@ public class LiveGridFragment extends Fragment implements LoaderManager.LoaderCa
                 if (!isLoading && isNextAvailable && totalItemCount <= (lastVisibleItem + 2)) {
                     isNextAvailable = false;
                     isLoadmore = true;
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadVideoData(ApiUtils.appendUri(nextPageUrl, ApiUtils.addToken()));
-                        }
-                    }, 2000);
+                    loadVideoData(ApiUtils.appendUri(nextPageUrl, ApiUtils.addToken()));
                 }
             }
         });
@@ -191,6 +185,7 @@ public class LiveGridFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Subscribe
     public void onLoadMovieData(LoadLiveEvent event) {
+        isNextAvailable = false;
         isNewLoad = true;
         loadVideoData(event.url);
     }

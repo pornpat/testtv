@@ -61,6 +61,7 @@ public class MovieGridActivity extends AppCompatActivity implements FilterFragme
                         category.add(new CategoryItem(-1, "รับชมล่าสุด", -1));
                         category.add(new CategoryItem(-1, "รายการโปรด", -1));
 
+                        findViewById(R.id.menu_loading).setVisibility(View.GONE);
                         mAdapter = new MovieMenuAdapter(category);
                         mRecyclerView.setAdapter(mAdapter);
                         mRecyclerView.requestFocus();
@@ -85,6 +86,7 @@ public class MovieGridActivity extends AppCompatActivity implements FilterFragme
                         category.add(new CategoryItem(-1, "รับชมล่าสุด", -1));
                         category.add(new CategoryItem(-1, "รายการโปรด", -1));
 
+                        findViewById(R.id.menu_loading).setVisibility(View.GONE);
                         mAdapter = new MovieMenuAdapter(category);
                         mRecyclerView.setAdapter(mAdapter);
                         mRecyclerView.requestFocus();

@@ -16,8 +16,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -26,7 +24,7 @@ import java.util.List;
 
 public class FilterProvider {
 
-    private static final String TAG_CATEGORIES = "categories";
+//    private static final String TAG_CATEGORIES = "categories";
     private static final String TAG_COUNTRIES = "countries";
     private static final String TAG_YEARS = "years";
 
@@ -58,47 +56,45 @@ public class FilterProvider {
             return sFilter;
         }
 
-        List<CategoryItem> categoryList = new ArrayList<>();
-
-        JSONArray categoryArray = jsonObject.getJSONArray(TAG_CATEGORIES);
-        for (int i = 0; i < categoryArray.length(); i++) {
-            JSONObject jsonObj = categoryArray.getJSONObject(i);
-            int id = jsonObj.getInt(TAG_ID);
-            String name = jsonObj.getString(TAG_NAME);
-            int order = jsonObj.getInt(TAG_ORDER);
-
-            categoryList.add(buildCategoryInfo(id, name, order));
-        }
+//        List<CategoryItem> categoryList = new ArrayList<>();
+//
+//        JSONArray categoryArray = jsonObject.getJSONArray(TAG_CATEGORIES);
+//        for (int i = 0; i < categoryArray.length(); i++) {
+//            JSONObject jsonObj = categoryArray.getJSONObject(i);
+//            int id = jsonObj.getInt(TAG_ID);
+//            String name = jsonObj.getString(TAG_NAME);
+//            int order = jsonObj.getInt(TAG_ORDER);
+//
+//            categoryList.add(buildCategoryInfo(id, name, order));
+//        }
 
         List<CountryItem> countryList = new ArrayList<>();
         List<Integer> yearList = new ArrayList<>();
 
-        if (!url.contains("lives")) {
-            JSONArray countryArray = jsonObject.getJSONArray(TAG_COUNTRIES);
-            for (int i = 0; i < countryArray.length(); i++) {
-                JSONObject jsonObj = countryArray.getJSONObject(i);
-                int id = jsonObj.getInt(TAG_ID);
-                String country = jsonObj.getString(TAG_COUNTRY);
+        JSONArray countryArray = jsonObject.getJSONArray(TAG_COUNTRIES);
+        for (int i = 0; i < countryArray.length(); i++) {
+            JSONObject jsonObj = countryArray.getJSONObject(i);
+            int id = jsonObj.getInt(TAG_ID);
+            String country = jsonObj.getString(TAG_COUNTRY);
 
-                countryList.add(buildCountryInfo(id, country));
-            }
-
-            JSONArray yearArray = jsonObject.getJSONArray(TAG_YEARS);
-            for (int i = 0; i < yearArray.length(); i++) {
-                yearList.add(yearArray.getInt(i));
-            }
-
-            if (categoryList.size() > 0) {
-                Collections.sort(categoryList, new Comparator<CategoryItem>() {
-                    @Override
-                    public int compare(CategoryItem obj1, CategoryItem obj2) {
-                        return obj1.getOrder() - obj2.getOrder();
-                    }
-                });
-            }
+            countryList.add(buildCountryInfo(id, country));
         }
 
-        sFilter.setCategoryList(categoryList);
+        JSONArray yearArray = jsonObject.getJSONArray(TAG_YEARS);
+        for (int i = 0; i < yearArray.length(); i++) {
+            yearList.add(yearArray.optInt(i));
+        }
+
+//        if (categoryList.size() > 0) {
+//            Collections.sort(categoryList, new Comparator<CategoryItem>() {
+//                @Override
+//                public int compare(CategoryItem obj1, CategoryItem obj2) {
+//                    return obj1.getOrder() - obj2.getOrder();
+//                }
+//            });
+//        }
+
+//        sFilter.setCategoryList(categoryList);
         sFilter.setCountryList(countryList);
         sFilter.setYearList(yearList);
 

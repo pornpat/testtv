@@ -11,21 +11,19 @@ import android.widget.TextView;
 import com.iptv.iptv.R;
 import com.iptv.iptv.main.event.ApplyFilterEvent;
 import com.iptv.iptv.main.event.LoadSeriesEvent;
-import com.iptv.iptv.main.model.CategoryItem;
 import com.iptv.iptv.main.model.CountryItem;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-public class SeriesGridActivity extends AppCompatActivity implements FilterFragment.OnCategoryInteractionListener,
-        FilterFragment.OnCountryInteractionListener, FilterFragment.OnYearInteractionListener {
+public class SeriesGridActivity extends AppCompatActivity implements FilterFragment.OnCountryInteractionListener,
+        FilterFragment.OnYearInteractionListener {
 
     TextView mSeriesText;
     TextView mHitText;
     TextView mRecentText;
     TextView mFavoriteText;
 
-    private int mCurrentCategory = -1;
     private int mCurrentCountry = -1;
     private int mCurrentYear = -1;
 
@@ -67,7 +65,7 @@ public class SeriesGridActivity extends AppCompatActivity implements FilterFragm
                 getFragmentManager().beginTransaction().replace(R.id.layout_filter,
                         FilterFragment.newInstance(
                                 ApiUtils.appendUri(ApiUtils.SERIES_FILTER_URL, ApiUtils.addToken()),
-                                mCurrentCategory, mCurrentCountry, mCurrentYear)).commit();
+                                mCurrentCountry, mCurrentYear)).commit();
                 findViewById(R.id.layout_filter).setVisibility(View.VISIBLE);
                 findViewById(R.id.grid_fragment).setVisibility(View.GONE);
             }
@@ -130,14 +128,8 @@ public class SeriesGridActivity extends AppCompatActivity implements FilterFragm
     }
 
     private void clearFilter() {
-        mCurrentCategory = -1;
         mCurrentCountry = -1;
         mCurrentYear = -1;
-    }
-
-    @Override
-    public void onCategoryInteraction(CategoryItem item) {
-        mCurrentCategory = item.getId();
     }
 
     @Override
@@ -154,9 +146,6 @@ public class SeriesGridActivity extends AppCompatActivity implements FilterFragm
     public void onFilterEvent(ApplyFilterEvent event) {
         if (event.isApplied) {
             String url = ApiUtils.SERIES_URL;
-            if (mCurrentCategory != -1) {
-                url = ApiUtils.appendUri(url, "categories_id=" + mCurrentCategory);
-            }
             if (mCurrentCountry != -1) {
                 url = ApiUtils.appendUri(url, "countries_id=" + mCurrentCountry);
             }
@@ -169,7 +158,6 @@ public class SeriesGridActivity extends AppCompatActivity implements FilterFragm
         } else {
             EventBus.getDefault().post(new LoadSeriesEvent(
                     ApiUtils.appendUri(ApiUtils.SERIES_URL, ApiUtils.addToken())));
-            mCurrentCategory = -1;
             mCurrentCountry = -1;
             mCurrentYear = -1;
         }

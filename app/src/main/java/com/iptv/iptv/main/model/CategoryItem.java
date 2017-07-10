@@ -10,6 +10,16 @@ public class CategoryItem {
     private String name;
     private int order;
 
+    public CategoryItem() {
+
+    }
+
+    public CategoryItem(int id, String name, int order) {
+        this.id = id;
+        this.name = name;
+        this.order = order;
+    }
+
     public int getId() {
         return id;
     }

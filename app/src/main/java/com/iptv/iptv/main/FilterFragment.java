@@ -17,7 +17,6 @@ import com.iptv.iptv.R;
 import com.iptv.iptv.main.data.FilterLoader;
 import com.iptv.iptv.main.data.MovieProvider;
 import com.iptv.iptv.main.event.ApplyFilterEvent;
-import com.iptv.iptv.main.model.CategoryItem;
 import com.iptv.iptv.main.model.CountryItem;
 import com.iptv.iptv.main.model.FilterItem;
 
@@ -31,28 +30,23 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
 
     private String mFilterUrl;
 
-    private FilterCategoryAdapter mCategoryAdapter;
-    private List<CategoryItem> mCategoryList;
     private FilterCountryAdapter mCountryAdapter;
     private List<CountryItem> mCountryList;
     private FilterYearAdapter mYearAdapter;
     private List<Integer> mYearList;
 
-    private int currentCategory = -1;
     private int currentCountry = -1;
     private int currentYear = -1;
 
-    private OnCategoryInteractionListener mCategoryListener;
     private OnCountryInteractionListener mCountryListener;
     private OnYearInteractionListener mYearListener;
 
     private View mView;
 
-    public static FilterFragment newInstance(String url, int currentCategory, int currentCountry, int currentYear) {
+    public static FilterFragment newInstance(String url, int currentCountry, int currentYear) {
         FilterFragment fragment = new FilterFragment();
         Bundle bundle = new Bundle();
         bundle.putString("url", url);
-        bundle.putInt("currentCategory", currentCategory);
         bundle.putInt("currentCountry", currentCountry);
         bundle.putInt("currentYear", currentYear);
         fragment.setArguments(bundle);
@@ -66,7 +60,6 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mFilterUrl = getArguments().getString("url");
-            currentCategory = getArguments().getInt("currentCategory");
             currentCountry = getArguments().getInt("currentCountry");
             currentYear = getArguments().getInt("currentYear");
         }
@@ -84,34 +77,20 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
 
         mView = view;
 
-        mCategoryList = new ArrayList<>();
-        mCategoryAdapter = new FilterCategoryAdapter(mCategoryList, currentCategory, mCategoryListener);
-
         mCountryList = new ArrayList<>();
         mCountryAdapter = new FilterCountryAdapter(mCountryList, currentCountry, mCountryListener);
 
         mYearList = new ArrayList<>();
         mYearAdapter = new FilterYearAdapter(mYearList, currentYear, mYearListener);
 
-        RecyclerView categoryList = (RecyclerView) view.findViewById(R.id.list_category);
-        categoryList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        categoryList.setAdapter(mCategoryAdapter);
-        categoryList.requestFocus();
-
         RecyclerView countryList = (RecyclerView) view.findViewById(R.id.list_country);
         countryList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         countryList.setAdapter(mCountryAdapter);
+        countryList.requestFocus();
 
         RecyclerView yearList = (RecyclerView) view.findViewById(R.id.list_year);
         yearList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         yearList.setAdapter(mYearAdapter);
-
-        if (mFilterUrl.contains("lives")) {
-            countryList.setVisibility(View.GONE);
-            view.findViewById(R.id.country).setVisibility(View.GONE);
-            yearList.setVisibility(View.GONE);
-            view.findViewById(R.id.year).setVisibility(View.GONE);
-        }
 
         view.findViewById(R.id.btn_apply).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,40 +121,21 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onLoadFinished(Loader<FilterItem> loader, FilterItem data) {
-        if (!mFilterUrl.contains("lives")) {
-            if (data.getCategoryList().size() > 0 && data.getCountryList().size() > 0
-                    && data.getYearList().size() > 0) {
-                mCategoryList.clear();
-                mCountryList.clear();
-                mYearList.clear();
-                for (int i = 0; i < data.getCategoryList().size(); i++) {
-                    mCategoryList.add(data.getCategoryList().get(i));
-                }
-                for (int i = 0; i < data.getCountryList().size(); i++) {
-                    mCountryList.add(data.getCountryList().get(i));
-                }
-                for (int i = 0; i < data.getYearList().size(); i++) {
-                    mYearList.add(data.getYearList().get(i));
-                }
-            } else {
-                Toast.makeText(getActivity(), "Failed to load.", Toast.LENGTH_LONG).show();
+        if (data.getCountryList().size() > 0 && data.getYearList().size() > 0) {
+            mCountryList.clear();
+            mYearList.clear();
+            for (int i = 0; i < data.getCountryList().size(); i++) {
+                mCountryList.add(data.getCountryList().get(i));
             }
-
-            mCategoryAdapter.notifyDataSetChanged();
-            mCountryAdapter.notifyDataSetChanged();
-            mYearAdapter.notifyDataSetChanged();
+            for (int i = 0; i < data.getYearList().size(); i++) {
+                mYearList.add(data.getYearList().get(i));
+            }
         } else {
-            if (data.getCategoryList().size() > 0) {
-                mCategoryList.clear();
-                for (int i = 0; i < data.getCategoryList().size(); i++) {
-                    mCategoryList.add(data.getCategoryList().get(i));
-                }
-            } else {
-                Toast.makeText(getActivity(), "Failed to load.", Toast.LENGTH_LONG).show();
-            }
-
-            mCategoryAdapter.notifyDataSetChanged();
+            Toast.makeText(getActivity(), "Failed to load.", Toast.LENGTH_LONG).show();
         }
+
+        mCountryAdapter.notifyDataSetChanged();
+        mYearAdapter.notifyDataSetChanged();
 
         mView.findViewById(R.id.loading).setVisibility(View.GONE);
         mView.findViewById(R.id.content).setVisibility(View.VISIBLE);
@@ -183,11 +143,9 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onLoaderReset(Loader<FilterItem> loader) {
-        mCategoryList.clear();
         mCountryList.clear();
         mYearList.clear();
 
-        mCategoryAdapter.notifyDataSetChanged();
         mCountryAdapter.notifyDataSetChanged();
         mYearAdapter.notifyDataSetChanged();
     }
@@ -195,8 +153,7 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if (activity instanceof OnCategoryInteractionListener && activity instanceof OnCountryInteractionListener) {
-            mCategoryListener = (OnCategoryInteractionListener) activity;
+        if (activity instanceof OnCountryInteractionListener && activity instanceof OnYearInteractionListener) {
             mCountryListener = (OnCountryInteractionListener) activity;
             mYearListener = (OnYearInteractionListener) activity;
         } else {
@@ -208,13 +165,8 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onDetach() {
         super.onDetach();
-        mCategoryListener = null;
         mCountryListener = null;
         mYearListener = null;
-    }
-
-    public interface OnCategoryInteractionListener {
-        void onCategoryInteraction(CategoryItem item);
     }
 
     public interface OnCountryInteractionListener {

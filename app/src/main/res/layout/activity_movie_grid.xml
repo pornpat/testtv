@@ -83,62 +83,11 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/movie"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_padding_normal"
-                android:background="@drawable/bg_menu_button"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:nextFocusUp="@+id/search"
-                android:padding="@dimen/touch_padding"
-                android:text="หนังมาใหม่"
-                android:textColor="@color/bg_movie_text"
-                android:textSize="@dimen/text_normal"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/hit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_padding_small"
-                android:background="@drawable/bg_menu_button"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:padding="@dimen/touch_padding"
-                android:text="หนังยอดนิยม"
-                android:textColor="@color/bg_movie_text"
-                android:textSize="@dimen/text_normal"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/recent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_padding_small"
-                android:background="@drawable/bg_menu_button"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:padding="@dimen/touch_padding"
-                android:text="รับชมล่าสุด"
-                android:textColor="@color/bg_movie_text"
-                android:textSize="@dimen/text_normal"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/favorite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_padding_small"
-                android:background="@drawable/bg_menu_button"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:padding="@dimen/touch_padding"
-                android:text="รายการโปรด"
-                android:textColor="@color/bg_movie_text"
-                android:textSize="@dimen/text_normal"
-                android:textStyle="bold" />
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/margin_padding_normal"/>
 
         </LinearLayout>
 

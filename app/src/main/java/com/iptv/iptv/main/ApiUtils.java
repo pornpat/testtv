@@ -46,6 +46,7 @@ public class ApiUtils {
     public static final String MEDIA_URL = BASE_URL + "/media";
     public static final String TIME_URL = BASE_URL + "/currentDateTime";
 
+    public static final String SCHEDULE_URL = "http://service.iptvhero.com/moviecp/REST/v1/sport";
     public static final String TOPUP_BASE_URL = "http://cdnhispeed.com/mock_api/REST/V1/topup";
     public static final String TOPUP_PINCODE = TOPUP_BASE_URL + "/pincode";
     public static final String TOPUP_TRUE = TOPUP_BASE_URL + "/new";

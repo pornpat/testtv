@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -27,7 +28,8 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
-public class LiveGridActivity extends AppCompatActivity {
+public class LiveGridActivity extends AppCompatActivity implements
+        LiveScheduleFragment.OnListFragmentInteractionListener {
 
     RecyclerView mRecyclerView;
     MovieMenuAdapter mAdapter;
@@ -101,6 +103,16 @@ public class LiveGridActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        findViewById(R.id.table).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().beginTransaction().replace(R.id.layout_table,
+                        LiveScheduleFragment.newInstance()).commit();
+                findViewById(R.id.layout_table).setVisibility(View.VISIBLE);
+                findViewById(R.id.grid_fragment).setVisibility(View.GONE);
+            }
+        });
     }
 
     @Subscribe
@@ -141,4 +153,8 @@ public class LiveGridActivity extends AppCompatActivity {
         super.onStop();
     }
 
+    @Override
+    public void onListFragmentInteraction(String streamKey) {
+        Log.v("testkn", streamKey);
+    }
 }

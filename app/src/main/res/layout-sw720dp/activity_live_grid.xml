@@ -34,7 +34,7 @@
             android:layout_weight="1"/>
 
         <FrameLayout
-            android:id="@+id/layout_filter"
+            android:id="@+id/layout_table"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
@@ -58,26 +58,33 @@
             android:paddingRight="@dimen/margin_padding_mid"
             android:paddingTop="@dimen/activity_margin">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/search"
+                android:layout_width="@dimen/icon_menu"
+                android:layout_height="@dimen/icon_menu"
                 android:layout_marginLeft="@dimen/touch_padding"
-                android:orientation="horizontal">
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:src="@drawable/search_selected" />
 
-                <ImageView
-                    android:id="@+id/search"
-                    android:layout_width="@dimen/icon_menu"
-                    android:layout_height="@dimen/icon_menu"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:src="@drawable/search_selected" />
-
-            </LinearLayout>
+            <TextView
+                android:id="@+id/table"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_normal"
+                android:background="@drawable/bg_menu_button"
+                android:padding="@dimen/margin_padding_small"
+                android:nextFocusUp="@+id/search"
+                android:text="ตารางแข่งขัน"
+                android:textSize="@dimen/text_highlight"
+                android:textColor="@color/bg_movie_text"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:singleLine="true"/>
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/margin_padding_normal">
+                android:layout_height="match_parent">
 
                 <ProgressBar
                     android:id="@+id/menu_loading"

@@ -1,7 +1,7 @@
 package com.iptv.iptv.main;
 
+import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
@@ -175,7 +175,6 @@ public class LiveScheduleFragment extends Fragment {
                     types.add(scheduleList.get(i).getName());
                 }
                 typeRecyclerView.setAdapter(new LiveScheduleTypeAdapter(types));
-//                typeRecyclerView.requestFocus();
 
                 if (scheduleList.size() > 0) {
                     recyclerView.setAdapter(new LiveScheduleAdapter(scheduleList.get(0).getList(), currentTime, mListener));
@@ -204,12 +203,12 @@ public class LiveScheduleFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof OnListFragmentInteractionListener) {
+            mListener = (OnListFragmentInteractionListener) activity;
         } else {
-            throw new RuntimeException(context.toString()
+            throw new RuntimeException(activity.toString()
                     + " must implement OnListFragmentInteractionListener");
         }
     }

@@ -36,6 +36,8 @@ public class LiveGridActivity extends AppCompatActivity implements
 
     List<CategoryItem> category = new ArrayList<>();
 
+    private int currentPosition = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +55,7 @@ public class LiveGridActivity extends AppCompatActivity implements
                     public void onFailure(int statusCode, Header[] headers, String responseString,
                             Throwable throwable) {
                         category.add(new CategoryItem(-1, "ทั้งหมด", -1));
+                        category.add(new CategoryItem(-1, "ตารางแข่งขัน", -1));
                         category.add(new CategoryItem(-1, "รับชมล่าสุด", -1));
                         category.add(new CategoryItem(-1, "รายการโปรด", -1));
 
@@ -65,6 +68,7 @@ public class LiveGridActivity extends AppCompatActivity implements
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
                         category.add(new CategoryItem(-1, "ทั้งหมด", -1));
+                        category.add(new CategoryItem(-1, "ตารางแข่งขัน", -1));
                         try {
                             JSONObject jsonObject = new JSONObject(responseString);
                             JSONArray categoryArray = jsonObject.getJSONArray("categories");
@@ -103,21 +107,11 @@ public class LiveGridActivity extends AppCompatActivity implements
                 startActivity(intent);
             }
         });
-
-        findViewById(R.id.table).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getFragmentManager().beginTransaction().replace(R.id.layout_table,
-                        LiveScheduleFragment.newInstance()).commit();
-                findViewById(R.id.layout_table).setVisibility(View.VISIBLE);
-                findViewById(R.id.grid_fragment).setVisibility(View.GONE);
-            }
-        });
     }
 
     @Subscribe
     public void onSelectMenuEvent(SelectMenuEvent event) {
-        if (event.position > 0 && event.position < category.size() - 2) {
+        if (event.position > 1 && event.position < category.size() - 2) {
             PrefUtils.setBooleanProperty(R.string.pref_current_favorite, false);
 
             String url = ApiUtils.LIVE_URL;
@@ -129,6 +123,11 @@ public class LiveGridActivity extends AppCompatActivity implements
                 PrefUtils.setBooleanProperty(R.string.pref_current_favorite, false);
                 EventBus.getDefault().post(new LoadLiveEvent(
                         ApiUtils.appendUri(ApiUtils.LIVE_URL, ApiUtils.addToken())));
+            } else if (event.position == 1) {
+                getFragmentManager().beginTransaction().replace(R.id.layout_table,
+                        LiveScheduleFragment.newInstance()).commit();
+                findViewById(R.id.layout_table).setVisibility(View.VISIBLE);
+                findViewById(R.id.grid_fragment).setVisibility(View.GONE);
             } else if (event.position == category.size() - 2) {
                 PrefUtils.setBooleanProperty(R.string.pref_current_favorite, false);
                 EventBus.getDefault().post(new LoadLiveEvent(
@@ -139,6 +138,12 @@ public class LiveGridActivity extends AppCompatActivity implements
                         ApiUtils.appendUri(ApiUtils.LIVE_FAVORITE_URL, ApiUtils.addToken())));
             }
         }
+        if (currentPosition == 1 && event.position != 1) {
+            getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.layout_table)).commit();
+            findViewById(R.id.layout_table).setVisibility(View.GONE);
+            findViewById(R.id.grid_fragment).setVisibility(View.VISIBLE);
+        }
+        currentPosition = event.position;
     }
 
     @Override

@@ -175,7 +175,7 @@ public class LiveScheduleFragment extends Fragment {
                     types.add(scheduleList.get(i).getName());
                 }
                 typeRecyclerView.setAdapter(new LiveScheduleTypeAdapter(types));
-                typeRecyclerView.requestFocus();
+//                typeRecyclerView.requestFocus();
 
                 if (scheduleList.size() > 0) {
                     recyclerView.setAdapter(new LiveScheduleAdapter(scheduleList.get(0).getList(), currentTime, mListener));

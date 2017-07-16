@@ -227,6 +227,27 @@ public class HomeActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+        AsyncHttpClient client2 = new AsyncHttpClient();
+        client2.get(ApiUtils.appendUri(ApiUtils.NOTICE_URL, ApiUtils.addToken()),
+                new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString,
+                            Throwable throwable) {}
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(responseString);
+                            if (jsonObject.has("message")) {
+                                ((TextView) findViewById(R.id.notice)).setText(jsonObject.getString("message"));
+                                findViewById(R.id.notice).setVisibility(View.VISIBLE);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     private void updateUserProfile() {

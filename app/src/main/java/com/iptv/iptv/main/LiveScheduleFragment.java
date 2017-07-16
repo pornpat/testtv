@@ -33,6 +33,8 @@ public class LiveScheduleFragment extends Fragment {
     List<ScheduleItem> scheduleList = new ArrayList<>();
     long currentTime;
 
+    View loading;
+
     private OnListFragmentInteractionListener mListener;
 
     public LiveScheduleFragment() {
@@ -65,6 +67,7 @@ public class LiveScheduleFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        loading = view.findViewById(R.id.loading);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -78,7 +81,7 @@ public class LiveScheduleFragment extends Fragment {
                 new TextHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-
+                        loading.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -104,6 +107,8 @@ public class LiveScheduleFragment extends Fragment {
                     Throwable throwable) {
 //                recyclerView.setAdapter(new LiveScheduleAdapter(DummyContent.ITEMS, mListener));
 //                recyclerView.requestFocus();
+
+                loading.setVisibility(View.GONE);
             }
 
             @Override
@@ -158,6 +163,8 @@ public class LiveScheduleFragment extends Fragment {
 
                 recyclerView.setAdapter(new LiveScheduleAdapter(scheduleList.get(0).getList(), currentTime, mListener));
                 recyclerView.requestFocus();
+
+                loading.setVisibility(View.GONE);
             }
         });
     }

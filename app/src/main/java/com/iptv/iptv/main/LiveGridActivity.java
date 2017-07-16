@@ -1,19 +1,22 @@
 package com.iptv.iptv.main;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.iptv.iptv.R;
 import com.iptv.iptv.main.event.LoadLiveEvent;
 import com.iptv.iptv.main.event.SelectMenuEvent;
 import com.iptv.iptv.main.model.CategoryItem;
+import com.iptv.iptv.main.model.LiveItem;
+import com.iptv.iptv.main.model.LiveProgramItem;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.TextHttpResponseHandler;
 
@@ -22,6 +25,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -160,6 +164,74 @@ public class LiveGridActivity extends AppCompatActivity implements
 
     @Override
     public void onListFragmentInteraction(String streamKey) {
-        Log.v("testkn", streamKey);
+        final ProgressDialog pDialog = new ProgressDialog(LiveGridActivity.this);
+        pDialog.setMessage("โปรดรอ...");
+        pDialog.show();
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(ApiUtils.appendUri(ApiUtils.getLiveUrlByKey(streamKey), ApiUtils.addToken()),
+                new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString,
+                            Throwable throwable) {
+                        Toast.makeText(LiveGridActivity.this, "เกิดความผิดพลาด กรุณาลองใหม่ในภายหลัง", Toast.LENGTH_SHORT).show();
+                        pDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(responseString);
+                            if (jsonObject.has("live")) {
+                                final List<LiveItem> list = new ArrayList<>();
+                                LiveItem item = new LiveItem();
+
+                                JSONObject liveObj = jsonObject.getJSONObject("live");
+                                item.setId(liveObj.getInt("id"));
+                                item.setName(liveObj.getString("name"));
+                                item.setLogoUrl(liveObj.getString("logo_url"));
+                                item.setUrl(liveObj.getString("url"));
+                                item.setFav(jsonObject.getBoolean("is_favorite"));
+                                item.setPrograms(new ArrayList<LiveProgramItem>());
+
+                                list.add(item);
+
+                                AsyncHttpClient client = new AsyncHttpClient();
+                                client.get(ApiUtils.appendUri(ApiUtils.EXPIRE_CHECK_URL, ApiUtils.addToken()), new TextHttpResponseHandler() {
+                                    @Override
+                                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                        Toast.makeText(LiveGridActivity.this, "กรุณาลองใหม่ในภายหลัง", Toast.LENGTH_SHORT).show();
+                                        pDialog.dismiss();
+                                    }
+
+                                    @Override
+                                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                                        try {
+                                            JSONObject jsonObject = new JSONObject(responseString);
+                                            boolean isExpired = jsonObject.getBoolean("expired");
+                                            if (!isExpired) {
+                                                Intent intent = new Intent(LiveGridActivity.this, LivePlayerActivity.class);
+                                                intent.putExtra("position", 0);
+                                                intent.putExtra("list", Parcels.wrap(list));
+                                                startActivity(intent);
+                                            } else {
+                                                Toast.makeText(LiveGridActivity.this, "วันใช้งานของคุณหมด กรุณาเติมเวันใช้งานเพื่อรับชม", Toast.LENGTH_SHORT).show();
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        pDialog.dismiss();
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(LiveGridActivity.this, "ขออภัย ช่องดังกล่าวยังไม่พร้อมใช้งาน", Toast.LENGTH_SHORT).show();
+                                pDialog.dismiss();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            pDialog.dismiss();
+                        }
+                    }
+                });
     }
 }

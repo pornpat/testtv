@@ -179,7 +179,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
-                    android:text="รายการทดสอบ"
                     android:textSize="24sp"
                     android:textColor="@color/white"
                     android:singleLine="true"/>
@@ -190,7 +189,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
                     android:layout_marginLeft="@dimen/margin_padding_normal"
-                    android:text="18:00 - 18:30"
                     android:textSize="22sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"/>
@@ -220,7 +218,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
-                    android:text="รายการทดสอบ"
                     android:textSize="24sp"
                     android:textColor="@color/white"
                     android:singleLine="true"/>
@@ -231,7 +228,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
                     android:layout_marginLeft="@dimen/margin_padding_normal"
-                    android:text="18:00 - 18:30"
                     android:textSize="22sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"/>

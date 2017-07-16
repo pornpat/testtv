@@ -187,12 +187,26 @@ public class LiveGridActivity extends AppCompatActivity implements
                                 LiveItem item = new LiveItem();
 
                                 JSONObject liveObj = jsonObject.getJSONObject("live");
-                                item.setId(liveObj.getInt("id"));
+                                item.setId(jsonObject.getInt("id"));
                                 item.setName(liveObj.getString("name"));
                                 item.setLogoUrl(liveObj.getString("logo_url"));
                                 item.setUrl(liveObj.getString("url"));
                                 item.setFav(jsonObject.getBoolean("is_favorite"));
-                                item.setPrograms(new ArrayList<LiveProgramItem>());
+
+                                List<LiveProgramItem> programs = new ArrayList<>();
+                                JSONArray programArray = liveObj.getJSONArray("programs");
+                                for (int j = 0; j < programArray.length(); j++) {
+                                    JSONObject program = programArray.getJSONObject(j);
+                                    String p_name = program.getString("name");
+                                    JSONObject start = program.getJSONObject("start_time");
+                                    int startHour = Integer.parseInt(start.getString("hour"));
+                                    int startMin = Integer.parseInt(start.getString("minute"));
+                                    JSONObject end = program.getJSONObject("end_time");
+                                    int endHour = Integer.parseInt(end.getString("hour"));
+                                    int endMin = Integer.parseInt(end.getString("minute"));
+                                    programs.add(new LiveProgramItem(p_name, startHour, startMin, endHour, endMin));
+                                }
+                                item.setPrograms(programs);
 
                                 list.add(item);
 

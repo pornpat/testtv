@@ -12,11 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.event.SelectScheduleEvent;
 import com.iptv.iptv.main.model.ScheduleItem;
 import com.iptv.iptv.main.model.ScheduleSubItem;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.TextHttpResponseHandler;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +33,8 @@ import cz.msebera.android.httpclient.Header;
 public class LiveScheduleFragment extends Fragment {
 
     RecyclerView recyclerView;
+    RecyclerView typeRecyclerView;
+
     List<ScheduleItem> scheduleList = new ArrayList<>();
     long currentTime;
 
@@ -67,10 +72,14 @@ public class LiveScheduleFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        typeRecyclerView = (RecyclerView) view.findViewById(R.id.type_list);
         loading = view.findViewById(R.id.loading);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setNestedScrollingEnabled(false);
+        typeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        typeRecyclerView.setNestedScrollingEnabled(false);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 layoutManager.getOrientation());
@@ -161,12 +170,37 @@ public class LiveScheduleFragment extends Fragment {
                     e.printStackTrace();
                 }
 
-                recyclerView.setAdapter(new LiveScheduleAdapter(scheduleList.get(0).getList(), currentTime, mListener));
-                recyclerView.requestFocus();
+                List<String> types = new ArrayList<>();
+                for (int i = 0; i < scheduleList.size(); i++) {
+                    types.add(scheduleList.get(i).getName());
+                }
+                typeRecyclerView.setAdapter(new LiveScheduleTypeAdapter(types));
+                typeRecyclerView.requestFocus();
+
+                if (scheduleList.size() > 0) {
+                    recyclerView.setAdapter(new LiveScheduleAdapter(scheduleList.get(0).getList(), currentTime, mListener));
+                }
 
                 loading.setVisibility(View.GONE);
             }
         });
+    }
+
+    @Subscribe
+    public void onSelectMenuEvent(SelectScheduleEvent event) {
+        recyclerView.setAdapter(new LiveScheduleAdapter(scheduleList.get(event.position).getList(), currentTime, mListener));
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     @Override

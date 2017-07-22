@@ -18,7 +18,7 @@
     <string name="menu_movie">MOVIE</string>
     <string name="menu_series">SERIES</string>
     <string name="menu_advertise">ADVERTISE</string>
-    <string name="menu_setting">TOP-UP</string>
+    <string name="menu_vip">VIP</string>
 
     <string name="mobile_welcome_title">Welcome to IPTV APP</string>
     <string name="mobile_welcome_description">Try opening this application on an Android TV for a great movie experience.</string>

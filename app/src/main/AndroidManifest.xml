@@ -21,15 +21,7 @@
         <activity
             android:name=".main.HomeActivity"
             android:label="@string/app_name"
-            android:screenOrientation="landscape">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
+            android:screenOrientation="landscape" />
         <activity
             android:name=".main.LoginActivity"
             android:label="@string/app_name"
@@ -86,7 +78,10 @@
         <activity
             android:name=".main.SeriesEpisodeActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".main.MovieEpisodeActivity"
+        <activity
+            android:name=".main.MovieEpisodeActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".main.VipPasswordActivity"
             android:screenOrientation="landscape" />
     </application>
 

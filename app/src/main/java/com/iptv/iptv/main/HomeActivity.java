@@ -43,7 +43,7 @@ public class HomeActivity extends AppCompatActivity {
     RelativeLayout mMovieButton;
     RelativeLayout mSeriesButton;
     RelativeLayout mAdvertiseButton;
-    RelativeLayout mSettingButton;
+    RelativeLayout mVipButton;
 
     View mSearchButton;
     TextView mDateTimeText;
@@ -73,7 +73,7 @@ public class HomeActivity extends AppCompatActivity {
         mMovieButton = (RelativeLayout) findViewById(R.id.btn_movie);
         mSeriesButton = (RelativeLayout) findViewById(R.id.btn_series);
         mAdvertiseButton = (RelativeLayout) findViewById(R.id.btn_advertise);
-        mSettingButton = (RelativeLayout) findViewById(R.id.btn_setting);
+        mVipButton = (RelativeLayout) findViewById(R.id.btn_vip);
 
         mSearchButton = findViewById(R.id.btn_search);
         mDateTimeText = (TextView) findViewById(R.id.datetime);
@@ -178,10 +178,10 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        mSettingButton.setOnClickListener(new View.OnClickListener() {
+        mVipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, TopupActivity.class);
+                Intent intent = new Intent(HomeActivity.this, VipPasswordActivity.class);
                 startActivity(intent);
             }
         });

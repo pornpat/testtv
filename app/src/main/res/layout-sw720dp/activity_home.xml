@@ -169,7 +169,7 @@
                     android:layout_centerHorizontal="true"
                     android:paddingBottom="@dimen/margin_padding_normal"
                     android:text="@string/menu_live"
-                    android:textSize="22sp"
+                    android:textSize="26sp"
                     android:textStyle="bold"
                     android:textColor="@color/white" />
 
@@ -235,7 +235,7 @@
                     android:layout_alignParentRight="true"
                     android:padding="@dimen/margin_padding_small"
                     android:text="@string/menu_recommend"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     android:background="@drawable/bg_banner_text"/>
@@ -271,7 +271,7 @@
                     android:layout_centerHorizontal="true"
                     android:paddingBottom="@dimen/margin_padding_normal"
                     android:text="@string/menu_sport"
-                    android:textSize="22sp"
+                    android:textSize="26sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"/>
 
@@ -303,7 +303,7 @@
                     android:layout_centerHorizontal="true"
                     android:paddingBottom="@dimen/margin_padding_normal"
                     android:text="@string/menu_favorite"
-                    android:textSize="22sp"
+                    android:textSize="26sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"/>
 
@@ -340,7 +340,7 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="@dimen/margin_padding_normal"
                     android:text="@string/menu_movie"
-                    android:textSize="22sp"
+                    android:textSize="26sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     android:layout_alignParentBottom="true"
@@ -374,7 +374,7 @@
                     android:layout_centerHorizontal="true"
                     android:paddingBottom="@dimen/margin_padding_normal"
                     android:text="@string/menu_series"
-                    android:textSize="22sp"
+                    android:textSize="26sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"/>
 
@@ -410,7 +410,7 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/margin_padding_small"
                     android:text="@string/menu_advertise"
-                    android:textSize="20sp"
+                    android:textSize="22sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     android:background="@drawable/bg_banner_text"
@@ -420,7 +420,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/btn_setting"
+                android:id="@+id/btn_vip"
                 android:layout_width="230dp"
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_home_button"
@@ -434,7 +434,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/icon_topup"
+                    android:src="@drawable/icon_vip"
                     app:riv_corner_radius="@dimen/margin_padding_small"/>
 
                 <TextView
@@ -443,8 +443,8 @@
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:paddingBottom="@dimen/margin_padding_normal"
-                    android:text="@string/menu_setting"
-                    android:textSize="22sp"
+                    android:text="@string/menu_vip"
+                    android:textSize="26sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"/>
 

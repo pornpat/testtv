@@ -168,7 +168,7 @@
                     android:layout_centerHorizontal="true"
                     android:paddingBottom="@dimen/margin_padding_normal"
                     android:text="@string/menu_live"
-                    android:textSize="@dimen/text_highlight"
+                    android:textSize="@dimen/text_normal"
                     android:textStyle="bold"
                     android:textColor="@color/white" />
 
@@ -270,7 +270,7 @@
                     android:layout_centerHorizontal="true"
                     android:paddingBottom="@dimen/margin_padding_normal"
                     android:text="@string/menu_sport"
-                    android:textSize="@dimen/text_highlight"
+                    android:textSize="@dimen/text_normal"
                     android:textStyle="bold"
                     android:textColor="@color/white"/>
 
@@ -302,7 +302,7 @@
                     android:layout_centerHorizontal="true"
                     android:paddingBottom="@dimen/margin_padding_normal"
                     android:text="@string/menu_favorite"
-                    android:textSize="@dimen/text_highlight"
+                    android:textSize="@dimen/text_normal"
                     android:textStyle="bold"
                     android:textColor="@color/white"/>
 
@@ -339,7 +339,7 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="@dimen/margin_padding_normal"
                     android:text="@string/menu_movie"
-                    android:textSize="@dimen/text_highlight"
+                    android:textSize="@dimen/text_normal"
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     android:layout_alignParentBottom="true"
@@ -373,7 +373,7 @@
                     android:layout_centerHorizontal="true"
                     android:paddingBottom="@dimen/margin_padding_normal"
                     android:text="@string/menu_series"
-                    android:textSize="@dimen/text_highlight"
+                    android:textSize="@dimen/text_normal"
                     android:textStyle="bold"
                     android:textColor="@color/white"/>
 
@@ -419,7 +419,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/btn_setting"
+                android:id="@+id/btn_vip"
                 android:layout_width="110dp"
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_home_button"
@@ -433,7 +433,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/icon_topup"
+                    android:src="@drawable/icon_vip"
                     app:riv_corner_radius="@dimen/margin_padding_small"/>
 
                 <TextView
@@ -442,8 +442,8 @@
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:paddingBottom="@dimen/margin_padding_normal"
-                    android:text="@string/menu_setting"
-                    android:textSize="@dimen/text_highlight"
+                    android:text="@string/menu_vip"
+                    android:textSize="@dimen/text_normal"
                     android:textStyle="bold"
                     android:textColor="@color/white"/>
 

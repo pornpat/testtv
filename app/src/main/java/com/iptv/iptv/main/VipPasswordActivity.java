@@ -27,8 +27,9 @@ public class VipPasswordActivity extends AppCompatActivity {
     public void confirmPassword(View view) {
         if (mPasswordText.getText().toString().length() > 0) {
             if (mPasswordText.getText().toString().equals("2016")) {
-                Intent intent = new Intent(VipPasswordActivity.this, TopupActivity.class);
+                Intent intent = new Intent(VipPasswordActivity.this, VipGridActivity.class);
                 startActivity(intent);
+                finish();
             } else {
                 Toast.makeText(this, "ขออภัย รหัสยืนยันไม่ถูกต้อง", Toast.LENGTH_SHORT).show();
             }

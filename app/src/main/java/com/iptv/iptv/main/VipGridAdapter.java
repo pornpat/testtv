@@ -13,7 +13,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.iptv.iptv.R;
-import com.iptv.iptv.main.event.SelectMovieEvent;
+import com.iptv.iptv.main.event.SelectVipEvent;
 import com.iptv.iptv.main.model.MovieItem;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -25,7 +25,7 @@ import java.util.List;
  * Created by Karn on 7/5/2560.
  */
 
-public class MovieGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class VipGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_NORMAL = 0;
     private static final int TYPE_LOADMORE = 1;
@@ -33,7 +33,7 @@ public class MovieGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private final Context mContext;
     private final List<MovieItem> mValues;
 
-    public MovieGridAdapter(Context context, List<MovieItem> items) {
+    public VipGridAdapter(Context context, List<MovieItem> items) {
         mContext = context;
         mValues = items;
     }
@@ -45,14 +45,14 @@ public class MovieGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             return new LoadmoreViewHolder(view);
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_movie, parent, false);
-            return new MovieViewHolder(view);
+            return new VipViewHolder(view);
         }
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        if (holder instanceof MovieViewHolder) {
-            final MovieViewHolder vh = (MovieViewHolder) holder;
+        if (holder instanceof VipViewHolder) {
+            final VipViewHolder vh = (VipViewHolder) holder;
             vh.mItem = mValues.get(position);
             Glide.with(mContext.getApplicationContext()).load(mValues.get(position).getImageUrl()).placeholder(R.drawable.movie_placeholder)
                     .error(R.drawable.movie_placeholder).override(200, 300).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
@@ -100,7 +100,7 @@ public class MovieGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             vh.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    EventBus.getDefault().post(new SelectMovieEvent(position));
+                    EventBus.getDefault().post(new SelectVipEvent(position));
                 }
             });
         } else if (holder instanceof LoadmoreViewHolder) {
@@ -146,14 +146,14 @@ public class MovieGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    public class MovieViewHolder extends RecyclerView.ViewHolder {
+    public class VipViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final RoundedImageView mImage;
         public final TextView mTitle;
         public final TextView mEngTitle;
         public MovieItem mItem;
 
-        public MovieViewHolder(View itemView) {
+        public VipViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
             mImage = (RoundedImageView) itemView.findViewById(R.id.image);

@@ -17,10 +17,12 @@ public class ApiUtils {
     public static final String SERIES_URL = BASE_URL + "/series";
     public static final String LIVE_URL = BASE_URL + "/lives";
     public static final String SPORT_URL = BASE_URL + "/sports";
+    public static final String VIP_URL = BASE_URL + "/vips";
     public static final String MOVIE_FILTER_URL = MOVIE_URL + "/filters";
     public static final String SERIES_FILTER_URL = SERIES_URL + "/filters";
     public static final String LIVE_FILTER_URL = LIVE_URL + "/filters";
     public static final String SPORT_FILTER_URL = SPORT_URL + "/filters";
+    public static final String VIP_FILTER_URL = VIP_URL + "/filters";
     public static final String HISTORY_URL = BASE_URL + "/users/histories";
     public static final String MOVIE_HISTORY_URL = BASE_URL + "/users/histories/movies";
     public static final String SERIES_HISTORY_URL = BASE_URL + "/users/histories/series";
@@ -38,6 +40,7 @@ public class ApiUtils {
     public static final String MOVIE_HIT_URL = MOVIE_URL + "?hit=VIEW&hit_days=7";
     public static final String SERIES_HIT_URL = SERIES_URL + "?hit=VIEW&hit_days=7";
     public static final String SPORT_HIT_URL = SPORT_URL + "?hit=VIEW&hit_days=7";
+    public static final String VIP_HIT_URL = VIP_URL + "?hit=VIEW&hit_days=7";
     public static final String TOP_10_HIT_URL = MOVIE_URL + "/tops?days=7&limit=10";
     public static final String ALL_PACKAGE_URL = BASE_URL + "/packages/mypackages?noExpired=true";
     public static final String PACKAGE_URL = BASE_URL + "/packages";

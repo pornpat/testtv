@@ -81,7 +81,10 @@
         <activity
             android:name=".main.MovieEpisodeActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".main.VipPasswordActivity"
+        <activity
+            android:name=".main.VipPasswordActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".main.VipGridActivity"
             android:screenOrientation="landscape" />
     </application>
 

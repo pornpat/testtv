@@ -3,6 +3,7 @@ package com.iptv.iptv.main;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.iptv.iptv.R;
 import com.iptv.iptv.main.data.VipLoader;
@@ -22,15 +24,21 @@ import com.iptv.iptv.main.event.PageVipEvent;
 import com.iptv.iptv.main.event.SelectVipEvent;
 import com.iptv.iptv.main.event.TokenErrorEvent;
 import com.iptv.iptv.main.model.MovieItem;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import cz.msebera.android.httpclient.Header;
 
 public class VipGridFragment extends Fragment implements LoaderManager.LoaderCallbacks<HashMap<String, List<MovieItem>>> {
 
@@ -185,10 +193,42 @@ public class VipGridFragment extends Fragment implements LoaderManager.LoaderCal
     @Subscribe
     public void onSelectVip(SelectVipEvent event) {
         if (event.position != -1) {
-            MovieItem movie = mMovieList.get(event.position);
-            Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
-            intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(movie));
-            getActivity().startActivity(intent);
+            final MovieItem movie = mMovieList.get(event.position);
+
+            final ProgressDialog progress = new ProgressDialog(getActivity());
+            progress.setMessage("โปรดรอ...");
+            progress.show();
+
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.get(ApiUtils.appendUri(ApiUtils.EXPIRE_CHECK_URL, ApiUtils.addToken()), new TextHttpResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Toast.makeText(getActivity(), "กรุณาลองใหม่ในภายหลัง", Toast.LENGTH_SHORT).show();
+                    progress.dismiss();
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(responseString);
+                        boolean isExpired = jsonObject.getBoolean("expired");
+                        if (!isExpired) {
+                            Intent intent = new Intent(getActivity(), MoviePlayerActivity.class);
+                            intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(movie));
+                            intent.putExtra("url", movie.getTracks().get(0).getDiscs().get(0).getVideoUrl());
+                            intent.putExtra("extra_id", movie.getTracks().get(0).getDiscs().get(0).getDiscId());
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(getActivity(), "วันใช้งานของคุณหมด กรุณาเติมเวันใช้งานเพื่อรับชม", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    progress.dismiss();
+                }
+            });
+
+
         } else {
             isLoadmore = true;
             loadVideoData(ApiUtils.appendUri(nextPageUrl, ApiUtils.addToken()));

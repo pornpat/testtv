@@ -1,6 +1,5 @@
 package com.iptv.iptv.main;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -90,15 +89,6 @@ public class VipGridActivity extends AppCompatActivity {
                         ApiUtils.appendUri(ApiUtils.VIP_URL, ApiUtils.addToken())));
             }
         }, 500);
-
-        findViewById(R.id.search).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(VipGridActivity.this, SearchActivity.class);
-                intent.putExtra("origin", "vip");
-                startActivity(intent);
-            }
-        });
     }
 
     @Subscribe

@@ -90,16 +90,32 @@ public class HomeActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.txt_username)).setText(PrefUtils.getStringProperty(R.string.pref_username));
         Log.v("testkn", PrefUtils.getStringProperty(R.string.pref_token));
 
+        // FOR ENABLED RUN ON BOOT
+//        if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
+//            Toast.makeText(this, "has tele", Toast.LENGTH_SHORT).show();
+//        } else {
+//            Toast.makeText(this, "no tele", Toast.LENGTH_SHORT).show();
+//        }
+
         mLiveButton.requestFocus();
+
+        // FOR TOUCH ON MOBILE, TABLET
+//        mLiveButton.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View view, MotionEvent motionEvent) {
+//                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+//                    Intent intent = new Intent(HomeActivity.this, LiveGridActivity.class);
+//                    startActivity(intent);
+//                }
+//                return false;
+//            }
+//        });
 
         mLiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, LiveGridActivity.class);
-                Bundle bundle =
-                        ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this)
-                                .toBundle();
-                startActivity(intent, bundle);
+                startActivity(intent);
             }
         });
 

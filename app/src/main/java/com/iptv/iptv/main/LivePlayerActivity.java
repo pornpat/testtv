@@ -114,8 +114,10 @@ public class LivePlayerActivity extends AppCompatActivity implements OnChannelSe
 
         mChannelList = (RecyclerView) findViewById(R.id.list_channel);
         mChannelList.setLayoutManager(new LinearLayoutManager(this));
+        mChannelList.setNestedScrollingEnabled(false);
         mProgramList = (RecyclerView) findViewById(R.id.list_program);
         mProgramList.setLayoutManager(new LinearLayoutManager(this));
+        mProgramList.setNestedScrollingEnabled(false);
 
         mListener = this;
 
@@ -127,24 +129,24 @@ public class LivePlayerActivity extends AppCompatActivity implements OnChannelSe
                     AsyncHttpClient client = new AsyncHttpClient();
                     client.post(
                             ApiUtils.appendUri(ApiUtils.addMediaId(ApiUtils.FAVORITE_URL, mLiveList.get(currentFocusChannel).getId()), ApiUtils.addToken()), new TextHttpResponseHandler() {
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {}
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {}
 
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, String responseString) {}
-                    });
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, String responseString) {}
+                            });
                     mLiveList.get(currentFocusChannel).setFav(true);
                     mFavText.setText("ลบรายการโปรด");
                 } else {
                     AsyncHttpClient client = new AsyncHttpClient();
                     client.delete(
                             ApiUtils.appendUri(ApiUtils.addMediaId(ApiUtils.FAVORITE_URL, mLiveList.get(currentFocusChannel).getId()), ApiUtils.addToken()), new TextHttpResponseHandler() {
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {}
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {}
 
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, String responseString) {}
-                    });
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, String responseString) {}
+                            });
                     mLiveList.get(currentFocusChannel).setFav(false);
                     mFavText.setText("เพิ่มรายการโปรด");
                 }
@@ -309,14 +311,14 @@ public class LivePlayerActivity extends AppCompatActivity implements OnChannelSe
 
     private void hideDetail() {
         mDetailView.animate()
-            .alpha(0f)
-            .setDuration(300)
-            .setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mDetailView.setVisibility(View.GONE);
-                }
-            });
+                .alpha(0f)
+                .setDuration(300)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mDetailView.setVisibility(View.GONE);
+                    }
+                });
     }
 
     private void showDetail() {

@@ -215,6 +215,13 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.btn_setting).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(ApiUtils.appendUri(ApiUtils.TIME_URL, ApiUtils.addToken()),
                 new TextHttpResponseHandler() {

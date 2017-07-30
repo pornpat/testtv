@@ -34,7 +34,7 @@
             android:padding="@dimen/touch_padding"
             android:nextFocusDown="@+id/btn_recommend"
             android:nextFocusLeft="@+id/btn_recommend"
-            android:nextFocusRight="@+id/btn_recommend"
+            android:nextFocusRight="@+id/btn_setting"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:focusable="true"
@@ -59,13 +59,44 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:gravity="right|center_vertical"
             android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/btn_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_padding_xlarge"
+                android:padding="@dimen/touch_padding"
+                android:nextFocusDown="@+id/btn_recommend"
+                android:nextFocusLeft="@+id/btn_search"
+                android:nextFocusRight="@+id/btn_account"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:background="@drawable/bg_search_button">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_search"
+                    android:layout_height="@dimen/icon_search"
+                    android:src="@drawable/icon_setting"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_padding_xsmall"
+                    android:text="ตั้งค่า"
+                    android:textColor="@color/light_purple"
+                    android:textSize="@dimen/text_highlight"/>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/btn_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_padding_large"
                 android:padding="@dimen/touch_padding"
                 android:nextFocusDown="@+id/btn_sport"
                 android:nextFocusLeft="@+id/btn_search"

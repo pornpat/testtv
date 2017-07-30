@@ -290,7 +290,7 @@ public class LivePlayerActivity extends AppCompatActivity implements OnChannelSe
                 mFavText.setText("เพิ่มรายการโปรด");
             }
             currentFocusChannel = position;
-            mProgramList.setAdapter(new LiveProgramAdapter(mLiveList.get(position).getPrograms()));
+            mProgramList.setAdapter(new LiveProgramAdapter(mLiveList.get(position).getPrograms(), mCurrentTime));
         }
     }
 

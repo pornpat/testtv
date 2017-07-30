@@ -11,7 +11,6 @@ import com.iptv.iptv.R;
 import com.iptv.iptv.main.model.LiveProgramItem;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -23,12 +22,12 @@ public class LiveProgramAdapter extends RecyclerView.Adapter<LiveProgramAdapter.
 
     private List<LiveProgramItem> mValues = new ArrayList<>();
 
-    public LiveProgramAdapter(List<LiveProgramItem> items) {
-        Date currentTime = Calendar.getInstance().getTime();
+    public LiveProgramAdapter(List<LiveProgramItem> items, long current) {
+        Date currentTime = new Date(current);
         currentTime.setSeconds(1);
 
-        Date startTime = Calendar.getInstance().getTime();
-        Date endTime = Calendar.getInstance().getTime();
+        Date startTime = new Date(current);
+        Date endTime = new Date(current);
 
         boolean isFound = false;
         for (int i = 0; i < items.size(); i++) {
@@ -50,6 +49,10 @@ public class LiveProgramAdapter extends RecyclerView.Adapter<LiveProgramAdapter.
             if (items.size() > 0) {
                 mValues.add(items.get(items.size() - 1));
             }
+        }
+
+        if (mValues.size() == 0) {
+            mValues.add(new LiveProgramItem("ไม่มีข้อมูลรายการ", 0, 0, 23, 59));
         }
     }
 

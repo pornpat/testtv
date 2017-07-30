@@ -84,8 +84,17 @@
         <activity
             android:name=".main.VipPasswordActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".main.VipGridActivity"
+        <activity
+            android:name=".main.VipGridActivity"
             android:screenOrientation="landscape" />
+        <activity android:name=".main.StartupActivity"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

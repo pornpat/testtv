@@ -123,10 +123,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, MovieGridActivity.class);
-                Bundle bundle =
-                        ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this)
-                                .toBundle();
-                startActivity(intent, bundle);
+                startActivity(intent);
             }
         });
 

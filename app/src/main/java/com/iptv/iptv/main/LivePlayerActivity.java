@@ -213,7 +213,6 @@ public class LivePlayerActivity extends AppCompatActivity implements OnChannelSe
     }
 
     private void startLive(int position) {
-        initChannelList();
         updateProgram(new Date(mCurrentTime));
         if (Utils.isInternetConnectionAvailable(LivePlayerActivity.this)) {
             if (mLiveList.size() > 0) {
@@ -294,6 +293,7 @@ public class LivePlayerActivity extends AppCompatActivity implements OnChannelSe
     }
 
     private void showChannelList() {
+        initChannelList();
         isChannelShowing = true;
         if (mDetailView.getVisibility() == View.VISIBLE) {
             mDetailView.setVisibility(View.GONE);

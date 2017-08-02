@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context="com.iptv.iptv.main.LoginActivity">
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2.5"
+        android:layout_marginTop="@dimen/activity_margin"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_mid"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal|center_vertical">
+
+            <ImageView
+                android:layout_width="@dimen/login_logo_size"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:src="@drawable/logo_sample"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_padding_normal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="IPTV"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_login_title"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_small_reverse"
+                    android:text="SETTING"
+                    android:textColor="@color/text_default"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_xlarge"
+            android:layout_marginLeft="@dimen/margin_padding_normal"
+            android:layout_marginRight="@dimen/margin_padding_normal"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_update"
+                android:layout_width="200dp"
+                android:layout_height="42dp"
+                android:paddingTop="@dimen/margin_padding_small"
+                android:paddingBottom="@dimen/margin_padding_small"
+                android:text="Manual Update"
+                android:textStyle="normal"
+                android:textAllCaps="false"
+                android:textSize="@dimen/text_highlight"
+                android:background="@drawable/bg_topup_button"/>
+
+            <Button
+                android:id="@+id/btn_network"
+                android:layout_width="200dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="@dimen/margin_padding_mid"
+                android:paddingTop="@dimen/margin_padding_small"
+                android:paddingBottom="@dimen/margin_padding_small"
+                android:text="Network Setting"
+                android:textStyle="normal"
+                android:textAllCaps="false"
+                android:textSize="@dimen/text_highlight"
+                android:background="@drawable/bg_topup_button"/>
+
+            <Button
+                android:id="@+id/btn_default"
+                android:layout_width="200dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="@dimen/margin_padding_mid"
+                android:paddingTop="@dimen/margin_padding_small"
+                android:paddingBottom="@dimen/margin_padding_small"
+                android:text="App Default"
+                android:textStyle="normal"
+                android:textAllCaps="false"
+                android:textSize="@dimen/text_highlight"
+                android:background="@drawable/bg_topup_button"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+</LinearLayout>

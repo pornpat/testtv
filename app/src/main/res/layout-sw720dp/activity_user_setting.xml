@@ -27,8 +27,8 @@
             android:gravity="center_horizontal|center_vertical">
 
             <ImageView
-                android:layout_width="@dimen/login_logo_size"
-                android:layout_height="wrap_content"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
                 android:adjustViewBounds="true"
                 android:src="@drawable/logo_sample"/>
 
@@ -50,9 +50,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_small_reverse"
-                    android:text="SETTING"
+                    android:text="USER SETTING"
                     android:textColor="@color/text_default"
-                    android:textSize="24sp"
+                    android:textSize="48sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -70,7 +70,7 @@
             <Button
                 android:id="@+id/btn_change_password"
                 android:layout_width="0dp"
-                android:layout_height="42dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingTop="@dimen/margin_padding_small"
                 android:paddingBottom="@dimen/margin_padding_small"
@@ -83,7 +83,7 @@
             <Button
                 android:id="@+id/btn_logout"
                 android:layout_width="0dp"
-                android:layout_height="42dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginLeft="@dimen/margin_padding_small"
                 android:paddingTop="@dimen/margin_padding_small"
@@ -100,7 +100,7 @@
             android:id="@+id/layout_change_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_normal"
+            android:layout_marginTop="@dimen/margin_padding_large"
             android:layout_marginLeft="@dimen/margin_padding_large"
             android:layout_marginRight="@dimen/margin_padding_large"
             android:orientation="vertical"
@@ -133,7 +133,7 @@
 
             <Button
                 android:layout_width="match_parent"
-                android:layout_height="42dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_padding_normal"
                 android:paddingTop="@dimen/margin_padding_small"
                 android:paddingBottom="@dimen/margin_padding_small"

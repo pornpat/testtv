@@ -21,7 +21,7 @@ import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
-public class SettingActivity extends AppCompatActivity {
+public class UserSettingActivity extends AppCompatActivity {
 
     Button mChangePasswordButton;
     Button mLogoutButton;
@@ -32,7 +32,7 @@ public class SettingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting);
+        setContentView(R.layout.activity_user_setting);
         getWindow().setBackgroundDrawableResource(R.drawable.custom_background);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -45,8 +45,8 @@ public class SettingActivity extends AppCompatActivity {
         mChangePasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mChangePasswordButton.setBackground(ContextCompat.getDrawable(SettingActivity.this, R.drawable.bg_topup_activated_button));
-                mLogoutButton.setBackground(ContextCompat.getDrawable(SettingActivity.this, R.drawable.bg_topup_button));
+                mChangePasswordButton.setBackground(ContextCompat.getDrawable(UserSettingActivity.this, R.drawable.bg_topup_activated_button));
+                mLogoutButton.setBackground(ContextCompat.getDrawable(UserSettingActivity.this, R.drawable.bg_topup_button));
 
                 findViewById(R.id.layout_change_password).setVisibility(View.VISIBLE);
 
@@ -58,7 +58,7 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 PrefUtils.setStringProperty(R.string.pref_token, "");
-                Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
+                Intent intent = new Intent(UserSettingActivity.this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
@@ -78,7 +78,7 @@ public class SettingActivity extends AppCompatActivity {
             client.put(ApiUtils.appendUri(ApiUtils.CHANGE_PASSWORD_URL, ApiUtils.addToken()), params, new TextHttpResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    Toast.makeText(SettingActivity.this, "เกิดข้อผิดพลาด กรุณาลองใหม่ในภายหลัง", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserSettingActivity.this, "เกิดข้อผิดพลาด กรุณาลองใหม่ในภายหลัง", Toast.LENGTH_SHORT).show();
                     progress.dismiss();
                 }
 
@@ -89,8 +89,8 @@ public class SettingActivity extends AppCompatActivity {
                         String token = jsonObject.getString("token");
                         PrefUtils.setStringProperty(R.string.pref_token, token);
 
-                        Toast.makeText(SettingActivity.this, "เปลี่ยนรหัสผ่านสำเร็จ", Toast.LENGTH_SHORT).show();
-                        SettingActivity.this.finish();
+                        Toast.makeText(UserSettingActivity.this, "เปลี่ยนรหัสผ่านสำเร็จ", Toast.LENGTH_SHORT).show();
+                        UserSettingActivity.this.finish();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -98,7 +98,7 @@ public class SettingActivity extends AppCompatActivity {
                 }
             });
         } else {
-            Toast.makeText(SettingActivity.this, "กรุณาใส่ password ใหม่ให้ตรงกัน", Toast.LENGTH_SHORT).show();
+            Toast.makeText(UserSettingActivity.this, "กรุณาใส่ password ใหม่ให้ตรงกัน", Toast.LENGTH_SHORT).show();
         }
     }
 

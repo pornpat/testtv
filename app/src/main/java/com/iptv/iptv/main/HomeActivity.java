@@ -210,7 +210,7 @@ public class HomeActivity extends AppCompatActivity {
         findViewById(R.id.btn_account).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, SettingActivity.class);
+                Intent intent = new Intent(HomeActivity.this, UserSettingActivity.class);
                 startActivity(intent);
             }
         });

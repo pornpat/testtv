@@ -2,6 +2,7 @@ package com.iptv.iptv.main;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -36,7 +37,7 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements NetworkStateReceiver.NetworkStateReceiverListener {
 
     RelativeLayout mLiveButton;
     RelativeLayout mHitButton;
@@ -60,6 +61,8 @@ public class HomeActivity extends AppCompatActivity {
     int currentHit = -1;
 
     long currentTime;
+
+    private NetworkStateReceiver networkStateReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,10 +98,13 @@ public class HomeActivity extends AppCompatActivity {
         mLiveButton.requestFocus();
 
         // FOR ENABLED RUN ON BOOT
-        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
-            getPackageManager().setComponentEnabledSetting(new ComponentName("com.iptv.iptv", "com.iptv.iptv.main.StartupActivity"),
-                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-            PrefUtils.setBooleanProperty(R.string.pref_default_on, true);
+        if (!PrefUtils.getBooleanProperty(R.string.pref_default_is_set)) {
+            if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
+                getPackageManager().setComponentEnabledSetting(new ComponentName("com.iptv.iptv", "com.iptv.iptv.main.StartupActivity"),
+                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+                PrefUtils.setBooleanProperty(R.string.pref_default_on, true);
+            }
+            PrefUtils.setBooleanProperty(R.string.pref_default_is_set, true);
         }
 
         // FOR TOUCH ON MOBILE, TABLET
@@ -112,6 +118,10 @@ public class HomeActivity extends AppCompatActivity {
 //                return false;
 //            }
 //        });
+
+        networkStateReceiver = new NetworkStateReceiver();
+        networkStateReceiver.addListener(this);
+        this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
 
         mLiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -455,6 +465,16 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void networkAvailable() {
+        Log.v("testkn", "avai");
+    }
+
+    @Override
+    public void networkUnavailable() {
+        Toast.makeText(this, "Network unavailable.. Please check your wifi-connection", Toast.LENGTH_LONG).show();
+    }
+
     public void doWork() {
         runOnUiThread(new Runnable() {
             public void run() {
@@ -467,7 +487,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
-
 
     class CountDownRunner implements Runnable{
         // @Override
@@ -495,5 +514,12 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             fetchHitMovie();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        networkStateReceiver.removeListener(this);
+        this.unregisterReceiver(networkStateReceiver);
     }
 }

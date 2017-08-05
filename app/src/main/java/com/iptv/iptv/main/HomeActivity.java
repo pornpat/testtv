@@ -234,53 +234,6 @@ public class HomeActivity extends AppCompatActivity implements NetworkStateRecei
                 startActivity(intent);
             }
         });
-
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get(ApiUtils.appendUri(ApiUtils.TIME_URL, ApiUtils.addToken()),
-                new TextHttpResponseHandler() {
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(responseString);
-                            currentTime = jsonObject.getLong("timestamp") * 1000L;
-
-                            Thread myThread;
-                            Runnable runnable = new CountDownRunner();
-                            myThread= new Thread(runnable);
-                            myThread.start();
-
-                            mDateTimeText.setVisibility(View.VISIBLE);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
-        AsyncHttpClient client2 = new AsyncHttpClient();
-        client2.get(ApiUtils.appendUri(ApiUtils.NOTICE_URL, ApiUtils.addToken()),
-                new TextHttpResponseHandler() {
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, String responseString,
-                            Throwable throwable) {}
-
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(responseString);
-                            if (jsonObject.has("message")) {
-                                ((TextView) findViewById(R.id.notice)).setText(jsonObject.getString("message"));
-                                findViewById(R.id.notice).setVisibility(View.VISIBLE);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
     }
 
     private void updateUserProfile() {
@@ -380,6 +333,57 @@ public class HomeActivity extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
+    private void fetchTime() {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(ApiUtils.appendUri(ApiUtils.TIME_URL, ApiUtils.addToken()),
+                new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(responseString);
+                            currentTime = jsonObject.getLong("timestamp") * 1000L;
+
+                            Thread myThread;
+                            Runnable runnable = new CountDownRunner();
+                            myThread= new Thread(runnable);
+                            myThread.start();
+
+                            mDateTimeText.setVisibility(View.VISIBLE);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
+
+    private void fetchNotice() {
+        AsyncHttpClient client2 = new AsyncHttpClient();
+        client2.get(ApiUtils.appendUri(ApiUtils.NOTICE_URL, ApiUtils.addToken()),
+                new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString,
+                                          Throwable throwable) {}
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(responseString);
+                            if (jsonObject.has("message")) {
+                                ((TextView) findViewById(R.id.notice)).setText(jsonObject.getString("message"));
+                                findViewById(R.id.notice).setVisibility(View.VISIBLE);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
+
     private void fetchHitMovie() {
         if (Utils.isInternetConnectionAvailable(this)) {
             AsyncHttpClient client = new AsyncHttpClient();
@@ -465,9 +469,21 @@ public class HomeActivity extends AppCompatActivity implements NetworkStateRecei
         }
     }
 
+    private void fetchAllComponents() {
+        updateUserProfile();
+        updateAdvertise();
+        fetchTime();
+        fetchNotice();
+        if (mHitList.size() > 0) {
+            updateHitMovie();
+        } else {
+            fetchHitMovie();
+        }
+    }
+
     @Override
     public void networkAvailable() {
-        Log.v("testkn", "avai");
+        fetchAllComponents();
     }
 
     @Override
@@ -507,12 +523,8 @@ public class HomeActivity extends AppCompatActivity implements NetworkStateRecei
     @Override
     protected void onResume() {
         super.onResume();
-        updateUserProfile();
-        updateAdvertise();
-        if (mHitList.size() > 0) {
-            updateHitMovie();
-        } else {
-            fetchHitMovie();
+        if (Utils.isInternetConnectionAvailable(this)) {
+            fetchAllComponents();
         }
     }
 

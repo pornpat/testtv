@@ -39,6 +39,8 @@ public class UserSettingActivity extends AppCompatActivity {
         mChangePasswordButton = (Button) findViewById(R.id.btn_change_password);
         mLogoutButton = (Button) findViewById(R.id.btn_logout);
 
+        mChangePasswordButton.requestFocus();
+
         mNewPasswordText = (EditText) findViewById(R.id.txt_new_password);
         mConfirmPasswordText = (EditText) findViewById(R.id.txt_confirm_password);
 

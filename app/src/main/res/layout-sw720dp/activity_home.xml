@@ -100,7 +100,7 @@
                 android:layout_marginLeft="@dimen/margin_padding_xlarge"
                 android:padding="@dimen/touch_padding"
                 android:nextFocusDown="@+id/btn_sport"
-                android:nextFocusLeft="@+id/btn_search"
+                android:nextFocusLeft="@+id/btn_setting"
                 android:nextFocusRight="@+id/btn_remaining"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"

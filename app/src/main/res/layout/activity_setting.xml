@@ -78,7 +78,7 @@
                 android:textStyle="normal"
                 android:textAllCaps="false"
                 android:textSize="@dimen/text_highlight"
-                android:background="@drawable/bg_topup_button"/>
+                android:background="@drawable/bg_setting_button"/>
 
             <Button
                 android:id="@+id/btn_network"
@@ -91,7 +91,7 @@
                 android:textStyle="normal"
                 android:textAllCaps="false"
                 android:textSize="@dimen/text_highlight"
-                android:background="@drawable/bg_topup_button"/>
+                android:background="@drawable/bg_setting_button"/>
 
             <Button
                 android:id="@+id/btn_default"
@@ -104,7 +104,7 @@
                 android:textStyle="normal"
                 android:textAllCaps="false"
                 android:textSize="@dimen/text_highlight"
-                android:background="@drawable/bg_topup_button"/>
+                android:background="@drawable/bg_setting_button"/>
 
         </LinearLayout>
 

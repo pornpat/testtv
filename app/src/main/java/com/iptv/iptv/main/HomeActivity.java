@@ -1,6 +1,8 @@
 package com.iptv.iptv.main;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -90,14 +92,14 @@ public class HomeActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.txt_username)).setText(PrefUtils.getStringProperty(R.string.pref_username));
         Log.v("testkn", PrefUtils.getStringProperty(R.string.pref_token));
 
-        // FOR ENABLED RUN ON BOOT
-//        if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
-//            Toast.makeText(this, "has tele", Toast.LENGTH_SHORT).show();
-//        } else {
-//            Toast.makeText(this, "no tele", Toast.LENGTH_SHORT).show();
-//        }
-
         mLiveButton.requestFocus();
+
+        // FOR ENABLED RUN ON BOOT
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
+            getPackageManager().setComponentEnabledSetting(new ComponentName("com.iptv.iptv", "com.iptv.iptv.main.StartupActivity"),
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+            PrefUtils.setBooleanProperty(R.string.pref_default_on, true);
+        }
 
         // FOR TOUCH ON MOBILE, TABLET
 //        mLiveButton.setOnTouchListener(new View.OnTouchListener() {

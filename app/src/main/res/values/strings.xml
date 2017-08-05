@@ -10,6 +10,7 @@
     <string name="pref_update_live">pref_update_live</string>
     <string name="pref_update_sport">pref_update_sport</string>
     <string name="pref_current_favorite">pref_current_favorite</string>
+    <string name="pref_default_on">pref_default_on</string>
 
     <string name="menu_live">LIVE</string>
     <string name="menu_recommend">HIT MOVIES</string>

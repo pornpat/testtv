@@ -1,7 +1,8 @@
-package com.iptv.iptv.main;
+package com.iptv.iptv.main.activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.ApiUtils;
+import com.iptv.iptv.main.NetworkStateReceiver;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -25,7 +28,8 @@ import java.util.Calendar;
 
 import cz.msebera.android.httpclient.Header;
 
-public class TopupActivity extends AppCompatActivity {
+public class TopupActivity extends AppCompatActivity implements
+        NetworkStateReceiver.NetworkStateReceiverListener {
 
     Button mPincodeButton;
     Button mTrueButton;
@@ -44,7 +48,7 @@ public class TopupActivity extends AppCompatActivity {
     EditText mMinuteText;
     EditText mPriceText;
 
-    Calendar currentTime;
+    private NetworkStateReceiver networkStateReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,6 +165,10 @@ public class TopupActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+        networkStateReceiver = new NetworkStateReceiver();
+        networkStateReceiver.addListener(this);
+        this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     public void applyPincodeTopup(View v) {
@@ -510,4 +518,19 @@ public class TopupActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void networkAvailable() {
+
+    }
+
+    @Override
+    public void networkUnavailable() {
+        Toast.makeText(this, "Network unavailable.. Please check your wifi-connection", Toast.LENGTH_LONG).show();
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        networkStateReceiver.removeListener(this);
+        this.unregisterReceiver(networkStateReceiver);
+    }
 }

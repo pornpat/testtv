@@ -12,10 +12,11 @@
  * the License.
  */
 
-package com.iptv.iptv.main;
+package com.iptv.iptv.main.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,6 +32,11 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.ApiUtils;
+import com.iptv.iptv.main.MovieChoiceAdapter;
+import com.iptv.iptv.main.MovieRecommendAdapter;
+import com.iptv.iptv.main.NetworkStateReceiver;
+import com.iptv.iptv.main.PrefUtils;
 import com.iptv.iptv.main.data.MovieDataUtil;
 import com.iptv.iptv.main.event.ChoiceEvent;
 import com.iptv.iptv.main.event.RecommendEvent;
@@ -51,8 +57,9 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 
 
-public class MovieDetailsActivity extends AppCompatActivity {
-    public static final String SHARED_ELEMENT_NAME = "hero";
+public class MovieDetailsActivity extends AppCompatActivity implements
+        NetworkStateReceiver.NetworkStateReceiverListener {
+
     public static final String MOVIE = "Movie";
 
     private MovieItem mSelectedMovie;
@@ -69,6 +76,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     private boolean isFav = false;
     private List<MovieItem> mRecommend;
+
+    private NetworkStateReceiver networkStateReceiver;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -164,6 +173,10 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 }
             });
         }
+
+        networkStateReceiver = new NetworkStateReceiver();
+        networkStateReceiver.addListener(this);
+        this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     private void showChoice() {
@@ -327,4 +340,19 @@ public class MovieDetailsActivity extends AppCompatActivity {
         super.onStop();
     }
 
+    @Override
+    public void networkAvailable() {
+
+    }
+
+    @Override
+    public void networkUnavailable() {
+        Toast.makeText(this, "Network unavailable.. Please check your wifi-connection", Toast.LENGTH_LONG).show();
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        networkStateReceiver.removeListener(this);
+        this.unregisterReceiver(networkStateReceiver);
+    }
 }

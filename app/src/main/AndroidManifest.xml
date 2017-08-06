@@ -16,14 +16,14 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".main.MovieDetailsActivity"
+            android:name=".main.activity.MovieDetailsActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".main.HomeActivity"
+            android:name=".main.activity.HomeActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".main.LoginActivity"
+            android:name=".main.activity.LoginActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape">
             <intent-filter>
@@ -33,62 +33,62 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".main.LivePlayerActivity"
+            android:name=".main.activity.LivePlayerActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".main.MovieGridActivity"
-            android:parentActivityName=".main.HomeActivity"
+            android:name=".main.activity.MovieGridActivity"
+            android:parentActivityName=".main.activity.HomeActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".main.SeriesGridActivity"
-            android:parentActivityName=".main.HomeActivity"
+            android:name=".main.activity.SeriesGridActivity"
+            android:parentActivityName=".main.activity.HomeActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".main.SeriesDetailsActivity"
+            android:name=".main.activity.SeriesDetailsActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".main.MoviePlayerActivity"
+            android:name=".main.activity.MoviePlayerActivity"
             android:configChanges="orientation|keyboardHidden|screenLayout|screenSize"
             android:screenOrientation="landscape"
             android:theme="@style/PlayerTheme" />
         <activity
-            android:name=".main.SearchActivity"
+            android:name=".main.activity.SearchActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".main.LiveGridActivity"
+            android:name=".main.activity.LiveGridActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".main.FavoriteGridActivity"
+            android:name=".main.activity.FavoriteGridActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".main.SportGridActivity"
+            android:name=".main.activity.SportGridActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".main.AdvertiseActivity"
+            android:name=".main.activity.AdvertiseActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".main.HitGridActivity"
+            android:name=".main.activity.HitGridActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".main.TopupActivity"
+            android:name=".main.activity.TopupActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".main.UserSettingActivity"
+            android:name=".main.activity.UserSettingActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".main.SeriesEpisodeActivity"
+            android:name=".main.activity.SeriesEpisodeActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".main.MovieEpisodeActivity"
+            android:name=".main.activity.MovieEpisodeActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".main.VipPasswordActivity"
+            android:name=".main.activity.VipPasswordActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".main.VipGridActivity"
+            android:name=".main.activity.VipGridActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".main.StartupActivity"
+            android:name=".main.activity.StartupActivity"
             android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -97,7 +97,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".main.SettingActivity"
+        <activity android:name=".main.activity.SettingActivity"
             android:screenOrientation="landscape" />
     </application>
 

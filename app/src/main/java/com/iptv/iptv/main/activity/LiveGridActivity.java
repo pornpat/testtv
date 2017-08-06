@@ -1,7 +1,8 @@
-package com.iptv.iptv.main;
+package com.iptv.iptv.main.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,11 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.ApiUtils;
+import com.iptv.iptv.main.LiveScheduleFragment;
+import com.iptv.iptv.main.MovieMenuAdapter;
+import com.iptv.iptv.main.NetworkStateReceiver;
+import com.iptv.iptv.main.PrefUtils;
 import com.iptv.iptv.main.event.LoadLiveEvent;
 import com.iptv.iptv.main.event.SelectMenuEvent;
 import com.iptv.iptv.main.model.CategoryItem;
@@ -33,7 +39,8 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 
 public class LiveGridActivity extends AppCompatActivity implements
-        LiveScheduleFragment.OnListFragmentInteractionListener {
+        LiveScheduleFragment.OnListFragmentInteractionListener,
+        NetworkStateReceiver.NetworkStateReceiverListener {
 
     RecyclerView mRecyclerView;
     MovieMenuAdapter mAdapter;
@@ -41,6 +48,8 @@ public class LiveGridActivity extends AppCompatActivity implements
     List<CategoryItem> category = new ArrayList<>();
 
     private int currentPosition = 0;
+
+    private NetworkStateReceiver networkStateReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +120,10 @@ public class LiveGridActivity extends AppCompatActivity implements
                 startActivity(intent);
             }
         });
+
+        networkStateReceiver = new NetworkStateReceiver();
+        networkStateReceiver.addListener(this);
+        this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     @Subscribe
@@ -247,5 +260,21 @@ public class LiveGridActivity extends AppCompatActivity implements
                         }
                     }
                 });
+    }
+
+    @Override
+    public void networkAvailable() {
+
+    }
+
+    @Override
+    public void networkUnavailable() {
+        Toast.makeText(this, "Network unavailable.. Please check your wifi-connection", Toast.LENGTH_LONG).show();
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        networkStateReceiver.removeListener(this);
+        this.unregisterReceiver(networkStateReceiver);
     }
 }

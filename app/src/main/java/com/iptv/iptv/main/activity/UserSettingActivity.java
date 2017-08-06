@@ -1,7 +1,8 @@
-package com.iptv.iptv.main;
+package com.iptv.iptv.main.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.ApiUtils;
+import com.iptv.iptv.main.NetworkStateReceiver;
+import com.iptv.iptv.main.PrefUtils;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -21,13 +25,16 @@ import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
-public class UserSettingActivity extends AppCompatActivity {
+public class UserSettingActivity extends AppCompatActivity implements
+        NetworkStateReceiver.NetworkStateReceiverListener {
 
     Button mChangePasswordButton;
     Button mLogoutButton;
 
     EditText mNewPasswordText;
     EditText mConfirmPasswordText;
+
+    private NetworkStateReceiver networkStateReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +72,10 @@ public class UserSettingActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        networkStateReceiver = new NetworkStateReceiver();
+        networkStateReceiver.addListener(this);
+        this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     public void changePassword(View v) {
@@ -104,4 +115,19 @@ public class UserSettingActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void networkAvailable() {
+
+    }
+
+    @Override
+    public void networkUnavailable() {
+        Toast.makeText(this, "Network unavailable.. Please check your wifi-connection", Toast.LENGTH_LONG).show();
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        networkStateReceiver.removeListener(this);
+        this.unregisterReceiver(networkStateReceiver);
+    }
 }

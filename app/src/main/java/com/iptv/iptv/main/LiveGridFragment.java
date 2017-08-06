@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.activity.LivePlayerActivity;
+import com.iptv.iptv.main.activity.LoginActivity;
 import com.iptv.iptv.main.data.LiveLoader;
 import com.iptv.iptv.main.data.LiveProvider;
 import com.iptv.iptv.main.event.LoadLiveEvent;

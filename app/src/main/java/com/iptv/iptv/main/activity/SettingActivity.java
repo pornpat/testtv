@@ -1,7 +1,8 @@
-package com.iptv.iptv.main;
+package com.iptv.iptv.main.activity;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -9,12 +10,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.NetworkStateReceiver;
+import com.iptv.iptv.main.PrefUtils;
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends AppCompatActivity implements
+        NetworkStateReceiver.NetworkStateReceiverListener {
 
     Button mDefaultButton;
+
+    private NetworkStateReceiver networkStateReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,23 +46,50 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.btn_update).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(SettingActivity.this, "In development..", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         mDefaultButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (PrefUtils.getBooleanProperty(R.string.pref_default_on)) {
-                    getPackageManager().setComponentEnabledSetting(new ComponentName("com.iptv.iptv", "com.iptv.iptv.main.StartupActivity"),
+                    getPackageManager().setComponentEnabledSetting(new ComponentName("com.iptv.iptv", "com.iptv.iptv.main.activity.StartupActivity"),
                             PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
                     PrefUtils.setBooleanProperty(R.string.pref_default_on, false);
                     mDefaultButton.setText("App Default: OFF");
                     // clear default
 //                getPackageManager().clearPackagePreferredActivities("com.iptv.iptv");
                 } else {
-                    getPackageManager().setComponentEnabledSetting(new ComponentName("com.iptv.iptv", "com.iptv.iptv.main.StartupActivity"),
+                    getPackageManager().setComponentEnabledSetting(new ComponentName("com.iptv.iptv", "com.iptv.iptv.main.activity.StartupActivity"),
                             PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
                     PrefUtils.setBooleanProperty(R.string.pref_default_on, true);
                     mDefaultButton.setText("App Default: ON");
                 }
             }
         });
+
+        networkStateReceiver = new NetworkStateReceiver();
+        networkStateReceiver.addListener(this);
+        this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    @Override
+    public void networkAvailable() {
+
+    }
+
+    @Override
+    public void networkUnavailable() {
+        Toast.makeText(this, "Network unavailable.. Please check your wifi-connection", Toast.LENGTH_LONG).show();
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        networkStateReceiver.removeListener(this);
+        this.unregisterReceiver(networkStateReceiver);
     }
 }

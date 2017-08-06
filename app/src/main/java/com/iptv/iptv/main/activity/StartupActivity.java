@@ -1,4 +1,4 @@
-package com.iptv.iptv.main;
+package com.iptv.iptv.main.activity;
 
 import android.content.Intent;
 import android.os.Bundle;

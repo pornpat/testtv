@@ -1,5 +1,6 @@
-package com.iptv.iptv.main;
+package com.iptv.iptv.main.activity;
 
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -7,8 +8,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.ApiUtils;
+import com.iptv.iptv.main.MovieMenuAdapter;
+import com.iptv.iptv.main.NetworkStateReceiver;
+import com.iptv.iptv.main.PrefUtils;
 import com.iptv.iptv.main.event.LoadVipEvent;
 import com.iptv.iptv.main.event.SelectMenuEvent;
 import com.iptv.iptv.main.model.CategoryItem;
@@ -26,12 +32,15 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
-public class VipGridActivity extends AppCompatActivity {
+public class VipGridActivity extends AppCompatActivity implements
+        NetworkStateReceiver.NetworkStateReceiverListener {
 
     RecyclerView mRecyclerView;
     MovieMenuAdapter mAdapter;
 
     List<CategoryItem> category = new ArrayList<>();
+
+    private NetworkStateReceiver networkStateReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +98,10 @@ public class VipGridActivity extends AppCompatActivity {
                         ApiUtils.appendUri(ApiUtils.VIP_URL, ApiUtils.addToken())));
             }
         }, 500);
+
+        networkStateReceiver = new NetworkStateReceiver();
+        networkStateReceiver.addListener(this);
+        this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     @Subscribe
@@ -123,5 +136,21 @@ public class VipGridActivity extends AppCompatActivity {
     protected void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
+    }
+
+    @Override
+    public void networkAvailable() {
+
+    }
+
+    @Override
+    public void networkUnavailable() {
+        Toast.makeText(this, "Network unavailable.. Please check your wifi-connection", Toast.LENGTH_LONG).show();
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        networkStateReceiver.removeListener(this);
+        this.unregisterReceiver(networkStateReceiver);
     }
 }

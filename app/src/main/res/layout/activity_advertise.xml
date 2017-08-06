@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/margin_padding_large"
     android:paddingRight="@dimen/margin_padding_large"
     android:paddingTop="@dimen/margin_padding_normal"
-    tools:context="com.iptv.iptv.main.AdvertiseActivity">
+    tools:context="com.iptv.iptv.main.activity.AdvertiseActivity">
 
     <ProgressBar
         android:id="@+id/loading"

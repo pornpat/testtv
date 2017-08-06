@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.iptv.iptv.main.MoviePlayerActivity"
+    tools:context="com.iptv.iptv.main.activity.MoviePlayerActivity"
     android:background="@color/black"
     android:keepScreenOn="true">
 

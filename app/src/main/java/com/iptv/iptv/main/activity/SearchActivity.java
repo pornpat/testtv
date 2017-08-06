@@ -1,6 +1,7 @@
-package com.iptv.iptv.main;
+package com.iptv.iptv.main.activity;
 
 import android.content.Context;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -11,8 +12,12 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.ApiUtils;
+import com.iptv.iptv.main.NetworkStateReceiver;
+import com.iptv.iptv.main.PrefUtils;
 import com.iptv.iptv.main.event.LoadLiveEvent;
 import com.iptv.iptv.main.event.LoadMovieEvent;
 import com.iptv.iptv.main.event.LoadSeriesEvent;
@@ -20,7 +25,8 @@ import com.iptv.iptv.main.event.LoadSportEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity implements
+        NetworkStateReceiver.NetworkStateReceiverListener {
 
     EditText mSearchText;
     TextView mMovieText;
@@ -29,6 +35,8 @@ public class SearchActivity extends AppCompatActivity {
     TextView mSportText;
 
     String mOrigin;
+
+    private NetworkStateReceiver networkStateReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +101,10 @@ public class SearchActivity extends AppCompatActivity {
                 setContainerSelected(findViewById(R.id.sport_container));
             }
         });
+
+        networkStateReceiver = new NetworkStateReceiver();
+        networkStateReceiver.addListener(this);
+        this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     private void performSearch() {
@@ -199,4 +211,19 @@ public class SearchActivity extends AppCompatActivity {
         view.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void networkAvailable() {
+
+    }
+
+    @Override
+    public void networkUnavailable() {
+        Toast.makeText(this, "Network unavailable.. Please check your wifi-connection", Toast.LENGTH_LONG).show();
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        networkStateReceiver.removeListener(this);
+        this.unregisterReceiver(networkStateReceiver);
+    }
 }

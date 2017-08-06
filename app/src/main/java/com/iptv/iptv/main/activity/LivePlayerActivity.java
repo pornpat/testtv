@@ -1,7 +1,8 @@
-package com.iptv.iptv.main;
+package com.iptv.iptv.main.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +21,13 @@ import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.ApiUtils;
+import com.iptv.iptv.main.LiveChannelAdapter;
+import com.iptv.iptv.main.LiveProgramAdapter;
+import com.iptv.iptv.main.NetworkStateReceiver;
+import com.iptv.iptv.main.OnChannelSelectedListener;
+import com.iptv.iptv.main.PrefUtils;
+import com.iptv.iptv.main.Utils;
 import com.iptv.iptv.main.model.LiveItem;
 import com.iptv.iptv.main.model.LiveProgramItem;
 import com.loopj.android.http.AsyncHttpClient;
@@ -39,7 +47,8 @@ import java.util.TimerTask;
 
 import cz.msebera.android.httpclient.Header;
 
-public class LivePlayerActivity extends AppCompatActivity implements OnChannelSelectedListener {
+public class LivePlayerActivity extends AppCompatActivity implements OnChannelSelectedListener,
+        NetworkStateReceiver.NetworkStateReceiverListener {
 
     private VideoView mVideoView;
     private View mDetailView;
@@ -77,6 +86,8 @@ public class LivePlayerActivity extends AppCompatActivity implements OnChannelSe
     private boolean isMidnightContinue = false;
 
     private boolean isChannelShowing = false;
+
+    private NetworkStateReceiver networkStateReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -212,6 +223,10 @@ public class LivePlayerActivity extends AppCompatActivity implements OnChannelSe
                         }
                     }
                 });
+
+        networkStateReceiver = new NetworkStateReceiver();
+        networkStateReceiver.addListener(this);
+        this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     private void startLive(int position) {
@@ -260,6 +275,16 @@ public class LivePlayerActivity extends AppCompatActivity implements OnChannelSe
         }
         mBackgroundTimer = new Timer();
         mBackgroundTimer.schedule(new displayDetailTask(), BACKGROUND_UPDATE_DELAY);
+    }
+
+    @Override
+    public void networkAvailable() {
+
+    }
+
+    @Override
+    public void networkUnavailable() {
+        Toast.makeText(this, "Network unavailable.. Please check your wifi-connection", Toast.LENGTH_LONG).show();
     }
 
     private class displayDetailTask extends TimerTask {
@@ -370,6 +395,9 @@ public class LivePlayerActivity extends AppCompatActivity implements OnChannelSe
         }
         mTimeThread.interrupt();
         super.onDestroy();
+
+        networkStateReceiver.removeListener(this);
+        this.unregisterReceiver(networkStateReceiver);
     }
 
     private void updateProgram(Date currentTime) {

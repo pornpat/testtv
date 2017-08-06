@@ -1,5 +1,6 @@
-package com.iptv.iptv.main;
+package com.iptv.iptv.main.activity;
 
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +13,9 @@ import android.widget.Toast;
 import com.afollestad.easyvideoplayer.EasyVideoCallback;
 import com.afollestad.easyvideoplayer.EasyVideoPlayer;
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.ApiUtils;
+import com.iptv.iptv.main.NetworkStateReceiver;
+import com.iptv.iptv.main.Utils;
 import com.iptv.iptv.main.model.MovieItem;
 import com.iptv.iptv.main.model.SeriesItem;
 import com.loopj.android.http.AsyncHttpClient;
@@ -27,7 +31,8 @@ import java.util.TimerTask;
 
 import cz.msebera.android.httpclient.Header;
 
-public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoCallback{
+public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoCallback,
+        NetworkStateReceiver.NetworkStateReceiverListener {
 
     // language select
 
@@ -46,6 +51,8 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
 
     int startMin = 0;
     int startSec = 0;
+
+    private NetworkStateReceiver networkStateReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +156,9 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
 //            }
 //        });
 
+        networkStateReceiver = new NetworkStateReceiver();
+        networkStateReceiver.addListener(this);
+        this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     private void addRecentWatch() {
@@ -183,6 +193,16 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
         }
         mBackgroundTimer = new Timer();
         mBackgroundTimer.schedule(new MoviePlayerActivity.hideDetailTask(), BACKGROUND_UPDATE_DELAY);
+    }
+
+    @Override
+    public void networkAvailable() {
+
+    }
+
+    @Override
+    public void networkUnavailable() {
+        Toast.makeText(this, "Network unavailable.. Please check your wifi-connection", Toast.LENGTH_LONG).show();
     }
 
     private class hideDetailTask extends TimerTask {
@@ -225,6 +245,8 @@ public class MoviePlayerActivity extends AppCompatActivity implements EasyVideoC
             mBackgroundTimer.cancel();
             mBackgroundTimer = null;
         }
+        networkStateReceiver.removeListener(this);
+        this.unregisterReceiver(networkStateReceiver);
         super.onDestroy();
     }
 

@@ -1,4 +1,4 @@
-package com.iptv.iptv.main;
+package com.iptv.iptv.main.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,16 +14,17 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.MovieEpisodeAdapter;
 import com.iptv.iptv.main.event.SelectEpisodeEvent;
-import com.iptv.iptv.main.model.SeriesItem;
+import com.iptv.iptv.main.model.MovieItem;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.parceler.Parcels;
 
-public class SeriesEpisodeActivity extends AppCompatActivity {
+public class MovieEpisodeActivity extends AppCompatActivity {
 
-    private static SeriesItem mSelectSeries;
+    private static MovieItem mSelectMovie;
     private static int track;
 
     RecyclerView mRecyclerView;
@@ -40,7 +41,7 @@ public class SeriesEpisodeActivity extends AppCompatActivity {
         getWindow().setBackgroundDrawableResource(R.drawable.custom_background);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        mSelectSeries = Parcels.unwrap(getIntent().getParcelableExtra(SeriesDetailsActivity.SERIES));
+        mSelectMovie = Parcels.unwrap(getIntent().getParcelableExtra(MovieDetailsActivity.MOVIE));
         track = getIntent().getExtras().getInt("track");
 
         mImage = (ImageView) findViewById(R.id.img);
@@ -51,10 +52,10 @@ public class SeriesEpisodeActivity extends AppCompatActivity {
 
         mRecyclerView = (RecyclerView) findViewById(R.id.list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.setAdapter(new SeriesEpisodeAdapter(mSelectSeries.getTracks().get(track).getEpisodes()));
+        mRecyclerView.setAdapter(new MovieEpisodeAdapter(mSelectMovie.getTracks().get(track).getDiscs()));
         mRecyclerView.requestFocus();
 
-        Glide.with(getApplicationContext()).load(mSelectSeries.getImageUrl()).placeholder(R.drawable.movie_placeholder)
+        Glide.with(getApplicationContext()).load(mSelectMovie.getImageUrl()).placeholder(R.drawable.movie_placeholder)
                 .error(R.drawable.movie_placeholder).override(300, 450).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
             @Override
             public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -68,10 +69,10 @@ public class SeriesEpisodeActivity extends AppCompatActivity {
                 return true;
             }
         }).into(mImage);
-        mTitleText.setText(mSelectSeries.getName());
-        mEngTitleText.setText(mSelectSeries.getEngName());
-        mAudioText.setText(mSelectSeries.getTracks().get(track).getAudio());
-        mSubtitleText.setText(mSelectSeries.getTracks().get(track).getSubtitle());
+        mTitleText.setText(mSelectMovie.getName());
+        mEngTitleText.setText(mSelectMovie.getEngName());
+        mAudioText.setText(mSelectMovie.getTracks().get(track).getAudio());
+        mSubtitleText.setText(mSelectMovie.getTracks().get(track).getSubtitle());
 
 
     }
@@ -79,9 +80,9 @@ public class SeriesEpisodeActivity extends AppCompatActivity {
     @Subscribe
     public void onSelectEpisodeEvent(SelectEpisodeEvent event) {
         Intent intent = new Intent(this, MoviePlayerActivity.class);
-        intent.putExtra(SeriesDetailsActivity.SERIES, Parcels.wrap(mSelectSeries));
-        intent.putExtra("url", mSelectSeries.getTracks().get(track).getEpisodes().get(event.position).getUrl());
-        intent.putExtra("extra_id", mSelectSeries.getTracks().get(track).getEpisodes().get(event.position).getEpisodeId());
+        intent.putExtra(MovieDetailsActivity.MOVIE, Parcels.wrap(mSelectMovie));
+        intent.putExtra("url", mSelectMovie.getTracks().get(track).getDiscs().get(event.position).getVideoUrl());
+        intent.putExtra("extra_id", mSelectMovie.getTracks().get(track).getDiscs().get(event.position).getDiscId());
         startActivity(intent);
     }
 

@@ -1,4 +1,4 @@
-package com.iptv.iptv.main;
+package com.iptv.iptv.main.activity;
 
 import android.content.ComponentName;
 import android.content.Intent;
@@ -19,6 +19,10 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.ApiUtils;
+import com.iptv.iptv.main.NetworkStateReceiver;
+import com.iptv.iptv.main.PrefUtils;
+import com.iptv.iptv.main.Utils;
 import com.iptv.iptv.main.model.AdsItem;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -37,7 +41,8 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
-public class HomeActivity extends AppCompatActivity implements NetworkStateReceiver.NetworkStateReceiverListener {
+public class HomeActivity extends AppCompatActivity implements
+        NetworkStateReceiver.NetworkStateReceiverListener {
 
     RelativeLayout mLiveButton;
     RelativeLayout mHitButton;
@@ -100,7 +105,7 @@ public class HomeActivity extends AppCompatActivity implements NetworkStateRecei
         // FOR ENABLED RUN ON BOOT
         if (!PrefUtils.getBooleanProperty(R.string.pref_default_is_set)) {
             if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) {
-                getPackageManager().setComponentEnabledSetting(new ComponentName("com.iptv.iptv", "com.iptv.iptv.main.StartupActivity"),
+                getPackageManager().setComponentEnabledSetting(new ComponentName("com.iptv.iptv", "com.iptv.iptv.main.activity.StartupActivity"),
                         PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
                 PrefUtils.setBooleanProperty(R.string.pref_default_on, true);
             }

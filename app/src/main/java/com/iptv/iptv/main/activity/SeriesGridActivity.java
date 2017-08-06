@@ -1,6 +1,7 @@
-package com.iptv.iptv.main;
+package com.iptv.iptv.main.activity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -8,8 +9,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.iptv.iptv.R;
+import com.iptv.iptv.main.ApiUtils;
+import com.iptv.iptv.main.FilterFragment;
+import com.iptv.iptv.main.MovieMenuAdapter;
+import com.iptv.iptv.main.NetworkStateReceiver;
+import com.iptv.iptv.main.PrefUtils;
 import com.iptv.iptv.main.event.ApplyFilterEvent;
 import com.iptv.iptv.main.event.LoadSeriesEvent;
 import com.iptv.iptv.main.event.SelectMenuEvent;
@@ -29,8 +36,10 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
-public class SeriesGridActivity extends AppCompatActivity implements FilterFragment.OnCountryInteractionListener,
-        FilterFragment.OnYearInteractionListener {
+public class SeriesGridActivity extends AppCompatActivity implements
+        FilterFragment.OnCountryInteractionListener,
+        FilterFragment.OnYearInteractionListener,
+        NetworkStateReceiver.NetworkStateReceiverListener {
 
     RecyclerView mRecyclerView;
     MovieMenuAdapter mAdapter;
@@ -39,6 +48,8 @@ public class SeriesGridActivity extends AppCompatActivity implements FilterFragm
 
     private int mCurrentCountry = -1;
     private int mCurrentYear = -1;
+
+    private NetworkStateReceiver networkStateReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +132,10 @@ public class SeriesGridActivity extends AppCompatActivity implements FilterFragm
                 findViewById(R.id.grid_fragment).setVisibility(View.GONE);
             }
         });
+
+        networkStateReceiver = new NetworkStateReceiver();
+        networkStateReceiver.addListener(this);
+        this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     private void clearFilter() {
@@ -213,5 +228,21 @@ public class SeriesGridActivity extends AppCompatActivity implements FilterFragm
     protected void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        networkStateReceiver.removeListener(this);
+        this.unregisterReceiver(networkStateReceiver);
+    }
+
+    @Override
+    public void networkAvailable() {
+
+    }
+
+    @Override
+    public void networkUnavailable() {
+        Toast.makeText(this, "Network unavailable.. Please check your wifi-connection", Toast.LENGTH_LONG).show();
     }
 }

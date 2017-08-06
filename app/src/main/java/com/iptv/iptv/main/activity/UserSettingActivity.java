@@ -6,6 +6,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -62,6 +63,20 @@ public class UserSettingActivity extends AppCompatActivity implements
                 mNewPasswordText.requestFocus();
             }
         });
+        mChangePasswordButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    mChangePasswordButton.setBackground(ContextCompat.getDrawable(UserSettingActivity.this, R.drawable.bg_topup_activated_button));
+                    mLogoutButton.setBackground(ContextCompat.getDrawable(UserSettingActivity.this, R.drawable.bg_topup_button));
+
+                    findViewById(R.id.layout_change_password).setVisibility(View.VISIBLE);
+
+                    mNewPasswordText.requestFocus();
+                }
+                return false;
+            }
+        });
 
         mLogoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +85,18 @@ public class UserSettingActivity extends AppCompatActivity implements
                 Intent intent = new Intent(UserSettingActivity.this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
+            }
+        });
+        mLogoutButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    PrefUtils.setStringProperty(R.string.pref_token, "");
+                    Intent intent = new Intent(UserSettingActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }
+                return false;
             }
         });
 

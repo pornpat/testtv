@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -118,6 +119,18 @@ public class LiveGridActivity extends AppCompatActivity implements
                 Intent intent = new Intent(LiveGridActivity.this, SearchActivity.class);
                 intent.putExtra("origin", "live");
                 startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.search).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    Intent intent = new Intent(LiveGridActivity.this, SearchActivity.class);
+                    intent.putExtra("origin", "live");
+                    startActivity(intent);
+                }
+                return false;
             }
         });
 

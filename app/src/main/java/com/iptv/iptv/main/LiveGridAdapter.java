@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -85,6 +86,16 @@ public class LiveGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     EventBus.getDefault().post(new SelectLiveEvent(position));
                 }
             });
+            vh.mView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                        EventBus.getDefault().post(new SelectLiveEvent(position));
+                    }
+                    return false;
+                }
+            });
+
         } else if (holder instanceof LoadmoreViewHolder) {
             final LoadmoreViewHolder vh = (LoadmoreViewHolder) holder;
             vh.mView.setOnFocusChangeListener(new View.OnFocusChangeListener() {

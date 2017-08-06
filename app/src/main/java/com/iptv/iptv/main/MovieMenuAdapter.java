@@ -2,6 +2,7 @@ package com.iptv.iptv.main;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -63,6 +64,25 @@ public class MovieMenuAdapter extends RecyclerView.Adapter<MovieMenuAdapter.View
 
                     EventBus.getDefault().post(new SelectMenuEvent(position));
                 }
+            }
+        });
+        holder.mView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    if (lastCheckedPosition != position) {
+                        holder.mView.setSelected(true);
+                        if (lastCheckedView != null) {
+                            lastCheckedView.setSelected(false);
+                        }
+
+                        lastCheckedView = holder.mView;
+                        lastCheckedPosition = position;
+
+                        EventBus.getDefault().post(new SelectMenuEvent(position));
+                    }
+                }
+                return false;
             }
         });
 

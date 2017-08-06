@@ -3,6 +3,7 @@ package com.iptv.iptv.main;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -42,6 +43,15 @@ public class MovieEpisodeAdapter extends RecyclerView.Adapter<MovieEpisodeAdapte
             @Override
             public void onClick(View view) {
                 EventBus.getDefault().post(new SelectEpisodeEvent(position));
+            }
+        });
+        holder.mView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    EventBus.getDefault().post(new SelectEpisodeEvent(position));
+                }
+                return false;
             }
         });
 

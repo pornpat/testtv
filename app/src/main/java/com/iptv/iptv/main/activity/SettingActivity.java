@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -46,10 +47,30 @@ public class SettingActivity extends AppCompatActivity implements
             }
         });
 
+        findViewById(R.id.btn_network).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK));
+                }
+                return false;
+            }
+        });
+
         findViewById(R.id.btn_update).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(SettingActivity.this, "In development..", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        findViewById(R.id.btn_update).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    Toast.makeText(SettingActivity.this, "In development..", Toast.LENGTH_SHORT).show();
+                }
+                return false;
             }
         });
 
@@ -69,6 +90,28 @@ public class SettingActivity extends AppCompatActivity implements
                     PrefUtils.setBooleanProperty(R.string.pref_default_on, true);
                     mDefaultButton.setText("App Default: ON");
                 }
+            }
+        });
+
+        mDefaultButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    if (PrefUtils.getBooleanProperty(R.string.pref_default_on)) {
+                        getPackageManager().setComponentEnabledSetting(new ComponentName("com.iptv.iptv", "com.iptv.iptv.main.activity.StartupActivity"),
+                                PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+                        PrefUtils.setBooleanProperty(R.string.pref_default_on, false);
+                        mDefaultButton.setText("App Default: OFF");
+                        // clear default
+//                getPackageManager().clearPackagePreferredActivities("com.iptv.iptv");
+                    } else {
+                        getPackageManager().setComponentEnabledSetting(new ComponentName("com.iptv.iptv", "com.iptv.iptv.main.activity.StartupActivity"),
+                                PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+                        PrefUtils.setBooleanProperty(R.string.pref_default_on, true);
+                        mDefaultButton.setText("App Default: ON");
+                    }
+                }
+                return false;
             }
         });
 

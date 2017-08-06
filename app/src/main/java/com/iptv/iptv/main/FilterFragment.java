@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -98,11 +99,29 @@ public class FilterFragment extends Fragment implements LoaderManager.LoaderCall
                 EventBus.getDefault().post(new ApplyFilterEvent(true));
             }
         });
+        view.findViewById(R.id.btn_apply).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    EventBus.getDefault().post(new ApplyFilterEvent(true));
+                }
+                return false;
+            }
+        });
 
         view.findViewById(R.id.btn_clear).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EventBus.getDefault().post(new ApplyFilterEvent(false));
+            }
+        });
+        view.findViewById(R.id.btn_clear).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    EventBus.getDefault().post(new ApplyFilterEvent(false));
+                }
+                return false;
             }
         });
 

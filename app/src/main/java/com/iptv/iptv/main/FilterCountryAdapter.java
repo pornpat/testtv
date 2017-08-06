@@ -3,6 +3,7 @@ package com.iptv.iptv.main;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -64,6 +65,27 @@ public class FilterCountryAdapter extends RecyclerView.Adapter<FilterCountryAdap
                         lastCheckedPosition = position;
                     }
                 }
+            }
+        });
+        holder.mView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    if (null != mListener) {
+                        mListener.onCountryInteraction(holder.mItem);
+
+                        if (lastCheckedPosition != position) {
+                            holder.mView.setBackgroundColor(ContextCompat.getColor(holder.mView.getContext(), R.color.selected_background));
+                            if (lastCheckedView != null) {
+                                lastCheckedView.setBackgroundColor(ContextCompat.getColor(lastCheckedView.getContext(), R.color.black));
+                            }
+
+                            lastCheckedView = holder.mView;
+                            lastCheckedPosition = position;
+                        }
+                    }
+                }
+                return false;
             }
         });
 

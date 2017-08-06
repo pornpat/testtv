@@ -3,6 +3,7 @@ package com.iptv.iptv.main;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -66,6 +67,17 @@ public class LiveChannelAdapter extends RecyclerView.Adapter<LiveChannelAdapter.
                 if (null != mListener) {
                     mListener.onChannelSelected(position, true);
                 }
+            }
+        });
+        holder.mView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    if (null != mListener) {
+                        mListener.onChannelSelected(position, true);
+                    }
+                }
+                return false;
             }
         });
 

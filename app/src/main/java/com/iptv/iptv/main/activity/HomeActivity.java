@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
@@ -136,6 +136,17 @@ public class HomeActivity extends AppCompatActivity implements
             }
         });
 
+        mLiveButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    Intent intent = new Intent(HomeActivity.this, LiveGridActivity.class);
+                    startActivity(intent);
+                }
+                return false;
+            }
+        });
+
         mMovieButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,14 +155,33 @@ public class HomeActivity extends AppCompatActivity implements
             }
         });
 
+        mMovieButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    Intent intent = new Intent(HomeActivity.this, SeriesGridActivity.class);
+                    startActivity(intent);
+                }
+                return false;
+            }
+        });
+
         mSeriesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, SeriesGridActivity.class);
-                Bundle bundle =
-                        ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this)
-                                .toBundle();
-                startActivity(intent, bundle);
+                startActivity(intent);
+            }
+        });
+
+        mSeriesButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    Intent intent = new Intent(HomeActivity.this, SeriesGridActivity.class);
+                    startActivity(intent);
+                }
+                return false;
             }
         });
 
@@ -159,10 +189,18 @@ public class HomeActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, SportGridActivity.class);
-                Bundle bundle =
-                        ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this)
-                                .toBundle();
-                startActivity(intent, bundle);
+                startActivity(intent);
+            }
+        });
+
+        mSportButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    Intent intent = new Intent(HomeActivity.this, SportGridActivity.class);
+                    startActivity(intent);
+                }
+                return false;
             }
         });
 
@@ -170,10 +208,18 @@ public class HomeActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, FavoriteGridActivity.class);
-                Bundle bundle =
-                        ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this)
-                                .toBundle();
-                startActivity(intent, bundle);
+                startActivity(intent);
+            }
+        });
+
+        mFavoriteButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    Intent intent = new Intent(HomeActivity.this, FavoriteGridActivity.class);
+                    startActivity(intent);
+                }
+                return false;
             }
         });
 
@@ -181,10 +227,18 @@ public class HomeActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, HitGridActivity.class);
-                Bundle bundle =
-                        ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this)
-                                .toBundle();
-                startActivity(intent, bundle);
+                startActivity(intent);
+            }
+        });
+
+        mHitButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    Intent intent = new Intent(HomeActivity.this, HitGridActivity.class);
+                    startActivity(intent);
+                }
+                return false;
             }
         });
 
@@ -197,14 +251,34 @@ public class HomeActivity extends AppCompatActivity implements
             }
         });
 
+        mAdvertiseButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    Intent intent = new Intent(HomeActivity.this, AdvertiseActivity.class);
+                    intent.putExtra("ads", Parcels.wrap(mAdsItem));
+                    startActivity(intent);
+                }
+                return false;
+            }
+        });
+
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
-                Bundle bundle =
-                        ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this)
-                                .toBundle();
-                startActivity(intent, bundle);
+                startActivity(intent);
+            }
+        });
+
+        mSearchButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
+                    startActivity(intent);
+                }
+                return false;
             }
         });
 
@@ -216,11 +290,33 @@ public class HomeActivity extends AppCompatActivity implements
             }
         });
 
+        mVipButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    Intent intent = new Intent(HomeActivity.this, VipPasswordActivity.class);
+                    startActivity(intent);
+                }
+                return false;
+            }
+        });
+
         findViewById(R.id.btn_remaining).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, TopupActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.btn_remaining).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    Intent intent = new Intent(HomeActivity.this, TopupActivity.class);
+                    startActivity(intent);
+                }
+                return false;
             }
         });
 
@@ -232,11 +328,33 @@ public class HomeActivity extends AppCompatActivity implements
             }
         });
 
+        findViewById(R.id.btn_account).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    Intent intent = new Intent(HomeActivity.this, UserSettingActivity.class);
+                    startActivity(intent);
+                }
+                return false;
+            }
+        });
+
         findViewById(R.id.btn_setting).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, SettingActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.btn_setting).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    Intent intent = new Intent(HomeActivity.this, SettingActivity.class);
+                    startActivity(intent);
+                }
+                return false;
             }
         });
     }

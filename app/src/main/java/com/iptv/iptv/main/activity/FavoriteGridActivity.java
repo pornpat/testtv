@@ -4,6 +4,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -51,11 +52,33 @@ public class FavoriteGridActivity extends AppCompatActivity implements NetworkSt
             }
         });
 
+        mMovieText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    setTextSelected(mMovieText);
+                    setContainerSelected(findViewById(R.id.movie_container));
+                }
+                return false;
+            }
+        });
+
         mSeriesText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setTextSelected(mSeriesText);
                 setContainerSelected(findViewById(R.id.series_container));
+            }
+        });
+
+        mSeriesText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    setTextSelected(mSeriesText);
+                    setContainerSelected(findViewById(R.id.series_container));
+                }
+                return false;
             }
         });
 
@@ -67,6 +90,17 @@ public class FavoriteGridActivity extends AppCompatActivity implements NetworkSt
             }
         });
 
+        mLiveText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    setTextSelected(mLiveText);
+                    setContainerSelected(findViewById(R.id.live_container));
+                }
+                return false;
+            }
+        });
+
         mSportText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,8 +109,18 @@ public class FavoriteGridActivity extends AppCompatActivity implements NetworkSt
             }
         });
 
-        loadFavorites();
+        mSportText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    setTextSelected(mSportText);
+                    setContainerSelected(findViewById(R.id.sport_container));
+                }
+                return false;
+            }
+        });
 
+        loadFavorites();
 
         networkStateReceiver = new NetworkStateReceiver();
         networkStateReceiver.addListener(this);

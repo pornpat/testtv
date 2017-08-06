@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -82,6 +83,15 @@ public class MovieRecommendAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             @Override
             public void onClick(View view) {
                 EventBus.getDefault().post(new RecommendEvent(position));
+            }
+        });
+        vh.mView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    EventBus.getDefault().post(new RecommendEvent(position));
+                }
+                return false;
             }
         });
     }

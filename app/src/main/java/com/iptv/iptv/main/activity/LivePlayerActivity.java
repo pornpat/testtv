@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -161,6 +162,41 @@ public class LivePlayerActivity extends AppCompatActivity implements OnChannelSe
                     mLiveList.get(currentFocusChannel).setFav(false);
                     mFavText.setText("เพิ่มรายการโปรด");
                 }
+            }
+        });
+
+        mFavText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    PrefUtils.setBooleanProperty(R.string.pref_update_live, true);
+                    if (!mLiveList.get(currentFocusChannel).isFav()) {
+                        AsyncHttpClient client = new AsyncHttpClient();
+                        client.post(
+                                ApiUtils.appendUri(ApiUtils.addMediaId(ApiUtils.FAVORITE_URL, mLiveList.get(currentFocusChannel).getId()), ApiUtils.addToken()), new TextHttpResponseHandler() {
+                                    @Override
+                                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {}
+
+                                    @Override
+                                    public void onSuccess(int statusCode, Header[] headers, String responseString) {}
+                                });
+                        mLiveList.get(currentFocusChannel).setFav(true);
+                        mFavText.setText("ลบรายการโปรด");
+                    } else {
+                        AsyncHttpClient client = new AsyncHttpClient();
+                        client.delete(
+                                ApiUtils.appendUri(ApiUtils.addMediaId(ApiUtils.FAVORITE_URL, mLiveList.get(currentFocusChannel).getId()), ApiUtils.addToken()), new TextHttpResponseHandler() {
+                                    @Override
+                                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {}
+
+                                    @Override
+                                    public void onSuccess(int statusCode, Header[] headers, String responseString) {}
+                                });
+                        mLiveList.get(currentFocusChannel).setFav(false);
+                        mFavText.setText("เพิ่มรายการโปรด");
+                    }
+                }
+                return false;
             }
         });
 

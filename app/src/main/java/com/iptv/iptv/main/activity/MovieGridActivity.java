@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -121,6 +122,18 @@ public class MovieGridActivity extends AppCompatActivity implements
             }
         });
 
+        findViewById(R.id.search).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    Intent intent = new Intent(MovieGridActivity.this, SearchActivity.class);
+                    intent.putExtra("origin", "movie");
+                    startActivity(intent);
+                }
+                return false;
+            }
+        });
+
         findViewById(R.id.filter).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,6 +143,21 @@ public class MovieGridActivity extends AppCompatActivity implements
                                 mCurrentCountry, mCurrentYear)).commit();
                 findViewById(R.id.layout_filter).setVisibility(View.VISIBLE);
                 findViewById(R.id.grid_fragment).setVisibility(View.GONE);
+            }
+        });
+
+        findViewById(R.id.filter).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    getFragmentManager().beginTransaction().replace(R.id.layout_filter,
+                            FilterFragment.newInstance(
+                                    ApiUtils.appendUri(ApiUtils.MOVIE_FILTER_URL, ApiUtils.addToken()),
+                                    mCurrentCountry, mCurrentYear)).commit();
+                    findViewById(R.id.layout_filter).setVisibility(View.VISIBLE);
+                    findViewById(R.id.grid_fragment).setVisibility(View.GONE);
+                }
+                return false;
             }
         });
 

@@ -6,6 +6,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -81,6 +82,21 @@ public class TopupActivity extends AppCompatActivity implements
                 mPincodeText.requestFocus();
             }
         });
+        mPincodeButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    mPincodeButton.setBackground(ContextCompat.getDrawable(TopupActivity.this, R.drawable.bg_topup_activated_button));
+                    mTrueButton.setBackground(ContextCompat.getDrawable(TopupActivity.this, R.drawable.bg_topup_button));
+
+                    findViewById(R.id.layout_pincode).setVisibility(View.VISIBLE);
+                    findViewById(R.id.layout_true).setVisibility(View.GONE);
+
+                    mPincodeText.requestFocus();
+                }
+                return false;
+            }
+        });
 
         mTrueButton = (Button) findViewById(R.id.btn_true);
         mTrueButton.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +109,21 @@ public class TopupActivity extends AppCompatActivity implements
                 findViewById(R.id.layout_pincode).setVisibility(View.GONE);
 
                 findViewById(R.id.btn_wallet_date).requestFocus();
+            }
+        });
+        mTrueButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    mTrueButton.setBackground(ContextCompat.getDrawable(TopupActivity.this, R.drawable.bg_topup_activated_button));
+                    mPincodeButton.setBackground(ContextCompat.getDrawable(TopupActivity.this, R.drawable.bg_topup_button));
+
+                    findViewById(R.id.layout_true).setVisibility(View.VISIBLE);
+                    findViewById(R.id.layout_pincode).setVisibility(View.GONE);
+
+                    findViewById(R.id.btn_wallet_date).requestFocus();
+                }
+                return false;
             }
         });
 
@@ -112,6 +143,21 @@ public class TopupActivity extends AppCompatActivity implements
                 mMoneyRefBox.setChecked(false);
             }
         });
+        findViewById(R.id.btn_wallet_date).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    findViewById(R.id.layout_wallet_date).setVisibility(View.VISIBLE);
+                    findViewById(R.id.layout_wallet_ref).setVisibility(View.GONE);
+                    findViewById(R.id.layout_money_ref).setVisibility(View.GONE);
+
+                    mWalletDateBox.setChecked(true);
+                    mWalletRefBox.setChecked(false);
+                    mMoneyRefBox.setChecked(false);
+                }
+                return false;
+            }
+        });
 
         findViewById(R.id.btn_wallet_ref).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,6 +171,21 @@ public class TopupActivity extends AppCompatActivity implements
                 mMoneyRefBox.setChecked(false);
             }
         });
+        findViewById(R.id.btn_wallet_ref).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    findViewById(R.id.layout_wallet_date).setVisibility(View.GONE);
+                    findViewById(R.id.layout_wallet_ref).setVisibility(View.VISIBLE);
+                    findViewById(R.id.layout_money_ref).setVisibility(View.GONE);
+
+                    mWalletDateBox.setChecked(false);
+                    mWalletRefBox.setChecked(true);
+                    mMoneyRefBox.setChecked(false);
+                }
+                return false;
+            }
+        });
 
         findViewById(R.id.btn_money_ref).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,6 +197,21 @@ public class TopupActivity extends AppCompatActivity implements
                 mWalletDateBox.setChecked(false);
                 mWalletRefBox.setChecked(false);
                 mMoneyRefBox.setChecked(true);
+            }
+        });
+        findViewById(R.id.btn_money_ref).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    findViewById(R.id.layout_wallet_date).setVisibility(View.GONE);
+                    findViewById(R.id.layout_wallet_ref).setVisibility(View.GONE);
+                    findViewById(R.id.layout_money_ref).setVisibility(View.VISIBLE);
+
+                    mWalletDateBox.setChecked(false);
+                    mWalletRefBox.setChecked(false);
+                    mMoneyRefBox.setChecked(true);
+                }
+                return false;
             }
         });
 

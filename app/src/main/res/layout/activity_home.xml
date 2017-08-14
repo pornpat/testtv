@@ -316,7 +316,7 @@
                 android:focusableInTouchMode="true"
                 android:nextFocusUp="@+id/btn_remaining"
                 android:nextFocusLeft="@+id/btn_sport"
-                android:nextFocusDown="@+id/btn_setting"
+                android:nextFocusDown="@+id/btn_vip"
                 android:padding="@dimen/margin_padding_xxsmall">
 
                 <com.makeramen.roundedimageview.RoundedImageView
@@ -419,7 +419,7 @@
                 android:focusableInTouchMode="true"
                 android:nextFocusLeft="@+id/btn_series"
                 android:nextFocusUp="@+id/btn_sport"
-                android:nextFocusRight="@+id/btn_setting"
+                android:nextFocusRight="@+id/btn_vip"
                 android:padding="@dimen/margin_padding_xxsmall">
 
                 <ProgressBar

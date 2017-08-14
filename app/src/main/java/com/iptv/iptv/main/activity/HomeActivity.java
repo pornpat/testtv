@@ -29,6 +29,9 @@ import com.loopj.android.http.TextHttpResponseHandler;
 import com.makeramen.roundedimageview.Corner;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import net.hockeyapp.android.CrashManager;
+import net.hockeyapp.android.UpdateManager;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -123,6 +126,8 @@ public class HomeActivity extends AppCompatActivity implements
 //                return false;
 //            }
 //        });
+
+        checkForUpdates();
 
         networkStateReceiver = new NetworkStateReceiver();
         networkStateReceiver.addListener(this);
@@ -649,6 +654,13 @@ public class HomeActivity extends AppCompatActivity implements
         if (Utils.isInternetConnectionAvailable(this)) {
             fetchAllComponents();
         }
+        checkForCrashes();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterManagers();
     }
 
     @Override
@@ -656,5 +668,18 @@ public class HomeActivity extends AppCompatActivity implements
         super.onDestroy();
         networkStateReceiver.removeListener(this);
         this.unregisterReceiver(networkStateReceiver);
+        unregisterManagers();
+    }
+
+    private void checkForCrashes() {
+        CrashManager.register(this);
+    }
+
+    private void checkForUpdates() {
+        UpdateManager.register(this);
+    }
+
+    private void unregisterManagers() {
+        UpdateManager.unregister();
     }
 }

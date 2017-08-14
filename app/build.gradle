@@ -7,8 +7,9 @@ android {
         applicationId "com.iptv.iptv"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.2"
+        manifestPlaceholders = [HOCKEYAPP_APP_ID: "1f94e29f831a4d199ddd98835c3ebec4"]
     }
     buildTypes {
         release {
@@ -31,5 +32,6 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:recyclerview-v7:25.2.0'
     compile 'com.loopj.android:android-async-http:1.4.9'
+    compile 'net.hockeyapp.android:HockeySDK:4.1.5'
     annotationProcessor 'org.parceler:parceler:1.1.6'
 }

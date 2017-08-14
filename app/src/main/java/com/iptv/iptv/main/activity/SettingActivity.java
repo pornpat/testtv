@@ -17,6 +17,9 @@ import com.iptv.iptv.R;
 import com.iptv.iptv.main.NetworkStateReceiver;
 import com.iptv.iptv.main.PrefUtils;
 
+import net.hockeyapp.android.UpdateManager;
+import net.hockeyapp.android.UpdateManagerListener;
+
 public class SettingActivity extends AppCompatActivity implements
         NetworkStateReceiver.NetworkStateReceiverListener {
 
@@ -60,7 +63,19 @@ public class SettingActivity extends AppCompatActivity implements
         findViewById(R.id.btn_update).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(SettingActivity.this, "In development..", Toast.LENGTH_SHORT).show();
+                UpdateManager.register(SettingActivity.this, "1f94e29f831a4d199ddd98835c3ebec4",
+                        new UpdateManagerListener() {
+                            @Override
+                            public void onNoUpdateAvailable() {
+                                super.onNoUpdateAvailable();
+                                Toast.makeText(SettingActivity.this, "No updates found", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onUpdateAvailable() {
+                                super.onUpdateAvailable();
+                            }
+                        });
             }
         });
 
@@ -68,7 +83,19 @@ public class SettingActivity extends AppCompatActivity implements
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    Toast.makeText(SettingActivity.this, "In development..", Toast.LENGTH_SHORT).show();
+                    UpdateManager.register(SettingActivity.this, "1f94e29f831a4d199ddd98835c3ebec4",
+                            new UpdateManagerListener() {
+                                @Override
+                                public void onNoUpdateAvailable() {
+                                    super.onNoUpdateAvailable();
+                                    Toast.makeText(SettingActivity.this, "No updates found", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onUpdateAvailable() {
+                                    super.onUpdateAvailable();
+                                }
+                            });
                 }
                 return false;
             }

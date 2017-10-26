@@ -136,8 +136,10 @@ public class HomeActivity extends AppCompatActivity implements
         mLiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, LiveGridActivity.class);
-                startActivity(intent);
+                if (mLiveButton.isFocused()) {
+                    Intent intent = new Intent(HomeActivity.this, LiveGridActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -155,8 +157,10 @@ public class HomeActivity extends AppCompatActivity implements
         mMovieButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, MovieGridActivity.class);
-                startActivity(intent);
+                if (!mMovieButton.isFocused()) {
+                    Intent intent = new Intent(HomeActivity.this, MovieGridActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -174,8 +178,10 @@ public class HomeActivity extends AppCompatActivity implements
         mSeriesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, SeriesGridActivity.class);
-                startActivity(intent);
+                if (!mSeriesButton.isFocused()) {
+                    Intent intent = new Intent(HomeActivity.this, SeriesGridActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -193,8 +199,10 @@ public class HomeActivity extends AppCompatActivity implements
         mSportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, SportGridActivity.class);
-                startActivity(intent);
+                if (!mSportButton.isFocused()) {
+                    Intent intent = new Intent(HomeActivity.this, SportGridActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -212,8 +220,10 @@ public class HomeActivity extends AppCompatActivity implements
         mFavoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, FavoriteGridActivity.class);
-                startActivity(intent);
+                if (!mFavoriteButton.isFocused()) {
+                    Intent intent = new Intent(HomeActivity.this, FavoriteGridActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -231,8 +241,10 @@ public class HomeActivity extends AppCompatActivity implements
         mHitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, HitGridActivity.class);
-                startActivity(intent);
+                if (!mHitButton.isFocused()) {
+                    Intent intent = new Intent(HomeActivity.this, HitGridActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -250,9 +262,11 @@ public class HomeActivity extends AppCompatActivity implements
         mAdvertiseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, AdvertiseActivity.class);
-                intent.putExtra("ads", Parcels.wrap(mAdsItem));
-                startActivity(intent);
+                if (!mAdvertiseButton.isFocused()) {
+                    Intent intent = new Intent(HomeActivity.this, AdvertiseActivity.class);
+                    intent.putExtra("ads", Parcels.wrap(mAdsItem));
+                    startActivity(intent);
+                }
             }
         });
 
@@ -271,8 +285,10 @@ public class HomeActivity extends AppCompatActivity implements
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
-                startActivity(intent);
+                if (!mSearchButton.isFocused()) {
+                    Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -290,8 +306,10 @@ public class HomeActivity extends AppCompatActivity implements
         mVipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, VipPasswordActivity.class);
-                startActivity(intent);
+                if (!mVipButton.isFocused()) {
+                    Intent intent = new Intent(HomeActivity.this, VipPasswordActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -309,8 +327,10 @@ public class HomeActivity extends AppCompatActivity implements
         findViewById(R.id.btn_remaining).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, TopupActivity.class);
-                startActivity(intent);
+                if (!findViewById(R.id.btn_remaining).isFocused()) {
+                    Intent intent = new Intent(HomeActivity.this, TopupActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -328,8 +348,10 @@ public class HomeActivity extends AppCompatActivity implements
         findViewById(R.id.btn_account).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, UserSettingActivity.class);
-                startActivity(intent);
+                if (!findViewById(R.id.btn_account).isFocused()) {
+                    Intent intent = new Intent(HomeActivity.this, UserSettingActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -347,8 +369,10 @@ public class HomeActivity extends AppCompatActivity implements
         findViewById(R.id.btn_setting).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, SettingActivity.class);
-                startActivity(intent);
+                if (!findViewById(R.id.btn_setting).isFocused()) {
+                    Intent intent = new Intent(HomeActivity.this, SettingActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 

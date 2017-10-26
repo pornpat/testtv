@@ -106,39 +106,43 @@ public class UserSettingActivity extends AppCompatActivity implements
     }
 
     public void changePassword(View v) {
-        if (mNewPasswordText.getText().toString().equals(mConfirmPasswordText.getText().toString())) {
-            final ProgressDialog progress = new ProgressDialog(this);
-            progress.setMessage("โปรดรอ...");
-            progress.show();
+        if (mNewPasswordText.getText().toString().length() > 0 && mConfirmPasswordText.getText().toString().length() > 0) {
+            if (mNewPasswordText.getText().toString().equals(mConfirmPasswordText.getText().toString())) {
+                final ProgressDialog progress = new ProgressDialog(this);
+                progress.setMessage("โปรดรอ...");
+                progress.show();
 
-            RequestParams params = new RequestParams();
-            params.put("new_password", mNewPasswordText.getText().toString());
+                RequestParams params = new RequestParams();
+                params.put("new_password", mNewPasswordText.getText().toString());
 
-            AsyncHttpClient client = new AsyncHttpClient();
-            client.put(ApiUtils.appendUri(ApiUtils.CHANGE_PASSWORD_URL, ApiUtils.addToken()), params, new TextHttpResponseHandler() {
-                @Override
-                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    Toast.makeText(UserSettingActivity.this, "เกิดข้อผิดพลาด กรุณาลองใหม่ในภายหลัง", Toast.LENGTH_SHORT).show();
-                    progress.dismiss();
-                }
-
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(responseString);
-                        String token = jsonObject.getString("token");
-                        PrefUtils.setStringProperty(R.string.pref_token, token);
-
-                        Toast.makeText(UserSettingActivity.this, "เปลี่ยนรหัสผ่านสำเร็จ", Toast.LENGTH_SHORT).show();
-                        UserSettingActivity.this.finish();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                AsyncHttpClient client = new AsyncHttpClient();
+                client.put(ApiUtils.appendUri(ApiUtils.CHANGE_PASSWORD_URL, ApiUtils.addToken()), params, new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        Toast.makeText(UserSettingActivity.this, "เกิดข้อผิดพลาด กรุณาลองใหม่ในภายหลัง", Toast.LENGTH_SHORT).show();
+                        progress.dismiss();
                     }
-                    progress.dismiss();
-                }
-            });
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(responseString);
+                            String token = jsonObject.getString("token");
+                            PrefUtils.setStringProperty(R.string.pref_token, token);
+
+                            Toast.makeText(UserSettingActivity.this, "เปลี่ยนรหัสผ่านสำเร็จ", Toast.LENGTH_SHORT).show();
+                            UserSettingActivity.this.finish();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        progress.dismiss();
+                    }
+                });
+            } else {
+                Toast.makeText(UserSettingActivity.this, "กรุณาใส่ password ใหม่ให้ตรงกัน", Toast.LENGTH_SHORT).show();
+            }
         } else {
-            Toast.makeText(UserSettingActivity.this, "กรุณาใส่ password ใหม่ให้ตรงกัน", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "กรุณาใส่รหัสผ่านใหม่", Toast.LENGTH_SHORT).show();
         }
     }
 

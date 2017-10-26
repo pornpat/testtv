@@ -271,32 +271,35 @@ public class TopupActivity extends AppCompatActivity implements
                         JSONObject jsonObject = new JSONObject(responseString);
                         JSONObject payment = jsonObject.getJSONObject("payment");
                         Toast.makeText(TopupActivity.this, payment.getString("message"), Toast.LENGTH_LONG).show();
-                        boolean status = payment.getBoolean("status");
-                        if (status) {
-                            int day = payment.getInt("day");
 
-                            // add day to PACKAGE API
-                            RequestParams params = new RequestParams();
-                            params.put("package", "ALL");
-                            params.put("days", day);
-
-                            AsyncHttpClient client = new AsyncHttpClient();
-                            client.post(ApiUtils.appendUri(ApiUtils.PACKAGE_URL, ApiUtils.addToken()), params, new TextHttpResponseHandler() {
-                                @Override
-                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                                    pDialog.dismiss();
-                                    Toast.makeText(TopupActivity.this, "ขออภัย มีความผิดพลาดในการเติมเงิน", Toast.LENGTH_SHORT).show();
-                                }
-
-                                @Override
-                                public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                                    pDialog.dismiss();
-                                    finish();
-                                }
-                            });
-                        } else {
-                            pDialog.dismiss();
-                        }
+                        pDialog.dismiss();
+                        finish();
+//                        boolean status = payment.getBoolean("status");
+//                        if (status) {
+//                            int day = payment.getInt("day");
+//
+//                            // add day to PACKAGE API
+//                            RequestParams params = new RequestParams();
+//                            params.put("package", "ALL");
+//                            params.put("days", day);
+//
+//                            AsyncHttpClient client = new AsyncHttpClient();
+//                            client.post(ApiUtils.appendUri(ApiUtils.PACKAGE_URL, ApiUtils.addToken()), params, new TextHttpResponseHandler() {
+//                                @Override
+//                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+//                                    pDialog.dismiss();
+//                                    Toast.makeText(TopupActivity.this, "ขออภัย มีความผิดพลาดในการเติมเงิน", Toast.LENGTH_SHORT).show();
+//                                }
+//
+//                                @Override
+//                                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+//                                    pDialog.dismiss();
+//                                    finish();
+//                                }
+//                            });
+//                        } else {
+//                            pDialog.dismiss();
+//                        }
                     } catch (JSONException e) {
                         pDialog.dismiss();
                         e.printStackTrace();
@@ -332,6 +335,7 @@ public class TopupActivity extends AppCompatActivity implements
                     try {
                         JSONObject jsonObject = new JSONObject(responseString);
                         JSONObject payment = jsonObject.getJSONObject("payment");
+
                         boolean status = payment.getBoolean("status");
                         if (status) {
                             int transaction = payment.getInt("transaction");
@@ -350,30 +354,36 @@ public class TopupActivity extends AppCompatActivity implements
                                         JSONObject jsonObject = new JSONObject(responseString);
                                         JSONObject payment = jsonObject.getJSONObject("payment");
                                         Toast.makeText(TopupActivity.this, payment.getString("message"), Toast.LENGTH_LONG).show();
-                                        boolean status = payment.getBoolean("status");
-                                        if (status) {
-                                            int day = payment.getInt("day");
 
-                                            // add day to PACKAGE API
-                                            RequestParams params = new RequestParams();
-                                            params.put("package", "ALL");
-                                            params.put("days", day);
+                                        pDialog.dismiss();
+                                        finish();
 
-                                            AsyncHttpClient client = new AsyncHttpClient();
-                                            client.post(ApiUtils.appendUri(ApiUtils.PACKAGE_URL, ApiUtils.addToken()), params, new TextHttpResponseHandler() {
-                                                @Override
-                                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                                                    pDialog.dismiss();
-                                                    Toast.makeText(TopupActivity.this, "ขออภัย มีความผิดพลาดในการเติมเงิน", Toast.LENGTH_SHORT).show();
-                                                }
-
-                                                @Override
-                                                public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                                                    pDialog.dismiss();
-                                                    finish();
-                                                }
-                                            });
-                                        }
+//                                        boolean status = payment.getBoolean("status");
+//                                        if (status) {
+//                                            int day = payment.getInt("day");
+//
+//                                            // add day to PACKAGE API
+//                                            RequestParams params = new RequestParams();
+//                                            params.put("package", "ALL");
+//                                            params.put("days", day);
+//
+//                                            AsyncHttpClient client = new AsyncHttpClient();
+//                                            client.post(ApiUtils.appendUri(ApiUtils.PACKAGE_URL, ApiUtils.addToken()), params, new TextHttpResponseHandler() {
+//                                                @Override
+//                                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+//                                                    pDialog.dismiss();
+//                                                    Toast.makeText(TopupActivity.this, "ขออภัย มีความผิดพลาดในการเติมเงิน", Toast.LENGTH_SHORT).show();
+//                                                }
+//
+//                                                @Override
+//                                                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+//                                                    pDialog.dismiss();
+//                                                    finish();
+//                                                }
+//                                            });
+//                                        } else{
+//                                              pDialog.dismiss();
+//                                        }
                                     } catch (JSONException e) {
                                         pDialog.dismiss();
                                         e.printStackTrace();
@@ -438,30 +448,36 @@ public class TopupActivity extends AppCompatActivity implements
                                         JSONObject jsonObject = new JSONObject(responseString);
                                         JSONObject payment = jsonObject.getJSONObject("payment");
                                         Toast.makeText(TopupActivity.this, payment.getString("message"), Toast.LENGTH_LONG).show();
-                                        boolean status = payment.getBoolean("status");
-                                        if (status) {
-                                            int day = payment.getInt("day");
 
-                                            // add day to PACKAGE API
-                                            RequestParams params = new RequestParams();
-                                            params.put("package", "ALL");
-                                            params.put("days", day);
+                                        pDialog.dismiss();
+                                        finish();
 
-                                            AsyncHttpClient client = new AsyncHttpClient();
-                                            client.post(ApiUtils.appendUri(ApiUtils.PACKAGE_URL, ApiUtils.addToken()), params, new TextHttpResponseHandler() {
-                                                @Override
-                                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                                                    pDialog.dismiss();
-                                                    Toast.makeText(TopupActivity.this, "ขออภัย มีความผิดพลาดในการเติมเงิน", Toast.LENGTH_SHORT).show();
-                                                }
-
-                                                @Override
-                                                public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                                                    pDialog.dismiss();
-                                                    finish();
-                                                }
-                                            });
-                                        }
+//                                        boolean status = payment.getBoolean("status");
+//                                        if (status) {
+//                                            int day = payment.getInt("day");
+//
+//                                            // add day to PACKAGE API
+//                                            RequestParams params = new RequestParams();
+//                                            params.put("package", "ALL");
+//                                            params.put("days", day);
+//
+//                                            AsyncHttpClient client = new AsyncHttpClient();
+//                                            client.post(ApiUtils.appendUri(ApiUtils.PACKAGE_URL, ApiUtils.addToken()), params, new TextHttpResponseHandler() {
+//                                                @Override
+//                                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+//                                                    pDialog.dismiss();
+//                                                    Toast.makeText(TopupActivity.this, "ขออภัย มีความผิดพลาดในการเติมเงิน", Toast.LENGTH_SHORT).show();
+//                                                }
+//
+//                                                @Override
+//                                                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+//                                                    pDialog.dismiss();
+//                                                    finish();
+//                                                }
+//                                            });
+//                                        } else {
+//                                            pDialog.dismiss();
+//                                        }
                                     } catch (JSONException e) {
                                         pDialog.dismiss();
                                         e.printStackTrace();
@@ -541,30 +557,36 @@ public class TopupActivity extends AppCompatActivity implements
                                         JSONObject jsonObject = new JSONObject(responseString);
                                         JSONObject payment = jsonObject.getJSONObject("payment");
                                         Toast.makeText(TopupActivity.this, payment.getString("message"), Toast.LENGTH_LONG).show();
-                                        boolean status = payment.getBoolean("status");
-                                        if (status) {
-                                            int day = payment.getInt("day");
 
-                                            // add day to PACKAGE API
-                                            RequestParams params = new RequestParams();
-                                            params.put("package", "ALL");
-                                            params.put("days", day);
+                                        pDialog.dismiss();
+                                        finish();
 
-                                            AsyncHttpClient client = new AsyncHttpClient();
-                                            client.post(ApiUtils.appendUri(ApiUtils.PACKAGE_URL, ApiUtils.addToken()), params, new TextHttpResponseHandler() {
-                                                @Override
-                                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                                                    pDialog.dismiss();
-                                                    Toast.makeText(TopupActivity.this, "ขออภัย มีความผิดพลาดในการเติมเงิน", Toast.LENGTH_SHORT).show();
-                                                }
-
-                                                @Override
-                                                public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                                                    pDialog.dismiss();
-                                                    finish();
-                                                }
-                                            });
-                                        }
+//                                        boolean status = payment.getBoolean("status");
+//                                        if (status) {
+//                                            int day = payment.getInt("day");
+//
+//                                            // add day to PACKAGE API
+//                                            RequestParams params = new RequestParams();
+//                                            params.put("package", "ALL");
+//                                            params.put("days", day);
+//
+//                                            AsyncHttpClient client = new AsyncHttpClient();
+//                                            client.post(ApiUtils.appendUri(ApiUtils.PACKAGE_URL, ApiUtils.addToken()), params, new TextHttpResponseHandler() {
+//                                                @Override
+//                                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+//                                                    pDialog.dismiss();
+//                                                    Toast.makeText(TopupActivity.this, "ขออภัย มีความผิดพลาดในการเติมเงิน", Toast.LENGTH_SHORT).show();
+//                                                }
+//
+//                                                @Override
+//                                                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+//                                                    pDialog.dismiss();
+//                                                    finish();
+//                                                }
+//                                            });
+//                                        } else {
+//                                            pDialog.dismiss();
+//                                        }
                                     } catch (JSONException e) {
                                         pDialog.dismiss();
                                         e.printStackTrace();

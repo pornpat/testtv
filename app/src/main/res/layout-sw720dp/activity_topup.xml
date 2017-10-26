@@ -115,7 +115,6 @@
                 android:paddingLeft="@dimen/margin_padding_small"
                 android:textColor="@color/text_default"
                 android:textSize="@dimen/text_highlight"
-                android:inputType="textPassword"
                 android:imeOptions="actionDone"
                 android:singleLine="true"/>
 

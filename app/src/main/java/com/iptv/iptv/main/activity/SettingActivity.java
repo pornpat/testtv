@@ -46,7 +46,9 @@ public class SettingActivity extends AppCompatActivity implements
         findViewById(R.id.btn_network).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK));
+                if (!findViewById(R.id.btn_network).isFocused()) {
+                    startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK));
+                }
             }
         });
 
@@ -63,19 +65,21 @@ public class SettingActivity extends AppCompatActivity implements
         findViewById(R.id.btn_update).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UpdateManager.register(SettingActivity.this, "1f94e29f831a4d199ddd98835c3ebec4",
-                        new UpdateManagerListener() {
-                            @Override
-                            public void onNoUpdateAvailable() {
-                                super.onNoUpdateAvailable();
-                                Toast.makeText(SettingActivity.this, "No updates found", Toast.LENGTH_SHORT).show();
-                            }
+                if (!findViewById(R.id.btn_update).isFocused()) {
+                    UpdateManager.register(SettingActivity.this, "1f94e29f831a4d199ddd98835c3ebec4",
+                            new UpdateManagerListener() {
+                                @Override
+                                public void onNoUpdateAvailable() {
+                                    super.onNoUpdateAvailable();
+                                    Toast.makeText(SettingActivity.this, "No updates found", Toast.LENGTH_SHORT).show();
+                                }
 
-                            @Override
-                            public void onUpdateAvailable() {
-                                super.onUpdateAvailable();
-                            }
-                        });
+                                @Override
+                                public void onUpdateAvailable() {
+                                    super.onUpdateAvailable();
+                                }
+                            });
+                }
             }
         });
 
@@ -104,18 +108,20 @@ public class SettingActivity extends AppCompatActivity implements
         mDefaultButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (PrefUtils.getBooleanProperty(R.string.pref_default_on)) {
-                    getPackageManager().setComponentEnabledSetting(new ComponentName("com.iptv.iptv", "com.iptv.iptv.main.activity.StartupActivity"),
-                            PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-                    PrefUtils.setBooleanProperty(R.string.pref_default_on, false);
-                    mDefaultButton.setText("App Default: OFF");
-                    // clear default
+                if (!mDefaultButton.isFocused()) {
+                    if (PrefUtils.getBooleanProperty(R.string.pref_default_on)) {
+                        getPackageManager().setComponentEnabledSetting(new ComponentName("com.iptv.iptv", "com.iptv.iptv.main.activity.StartupActivity"),
+                                PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+                        PrefUtils.setBooleanProperty(R.string.pref_default_on, false);
+                        mDefaultButton.setText("App Default: OFF");
+                        // clear default
 //                getPackageManager().clearPackagePreferredActivities("com.iptv.iptv");
-                } else {
-                    getPackageManager().setComponentEnabledSetting(new ComponentName("com.iptv.iptv", "com.iptv.iptv.main.activity.StartupActivity"),
-                            PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-                    PrefUtils.setBooleanProperty(R.string.pref_default_on, true);
-                    mDefaultButton.setText("App Default: ON");
+                    } else {
+                        getPackageManager().setComponentEnabledSetting(new ComponentName("com.iptv.iptv", "com.iptv.iptv.main.activity.StartupActivity"),
+                                PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+                        PrefUtils.setBooleanProperty(R.string.pref_default_on, true);
+                        mDefaultButton.setText("App Default: ON");
+                    }
                 }
             }
         });

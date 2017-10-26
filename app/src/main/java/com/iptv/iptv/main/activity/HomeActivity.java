@@ -164,7 +164,7 @@ public class HomeActivity extends AppCompatActivity implements
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    Intent intent = new Intent(HomeActivity.this, SeriesGridActivity.class);
+                    Intent intent = new Intent(HomeActivity.this, MovieGridActivity.class);
                     startActivity(intent);
                 }
                 return false;

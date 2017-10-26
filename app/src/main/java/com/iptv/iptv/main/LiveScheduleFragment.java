@@ -139,7 +139,11 @@ public class LiveScheduleFragment extends Fragment {
                             item.setLeague(obj.getString("leauge"));
                             item.setTime(obj.getString("time"));
                             item.setDate(obj.getString("date"));
-                            item.setDuration(Integer.parseInt(obj.getString("match_end")));
+                            if (!obj.isNull("match_end")) {
+                                item.setDuration(Integer.parseInt(obj.getString("match_end")));
+                            } else {
+                                item.setDuration(120);
+                            }
                             JSONArray jsonTeam = obj.getJSONArray("team");
                             if (jsonTeam.length() > 1) {
                                 JSONObject jsonTeam1 = jsonTeam.getJSONObject(0);

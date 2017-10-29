@@ -69,6 +69,7 @@ public class HomeActivity extends AppCompatActivity implements
     List<String> mHitList;
     int currentHit = -1;
 
+    boolean isTimeFetched = false;
     long currentTime;
 
     private NetworkStateReceiver networkStateReceiver;
@@ -524,9 +525,8 @@ public class HomeActivity extends AppCompatActivity implements
                             JSONObject jsonObject = new JSONObject(responseString);
                             currentTime = jsonObject.getLong("timestamp") * 1000L;
 
-                            Thread myThread;
                             Runnable runnable = new CountDownRunner();
-                            myThread= new Thread(runnable);
+                            Thread myThread = new Thread(runnable);
                             myThread.start();
 
                             mDateTimeText.setVisibility(View.VISIBLE);
@@ -648,7 +648,10 @@ public class HomeActivity extends AppCompatActivity implements
     private void fetchAllComponents() {
         updateUserProfile();
         updateAdvertise();
-        fetchTime();
+        if (!isTimeFetched) {
+            fetchTime();
+            isTimeFetched = true;
+        }
         fetchNotice();
         if (mHitList.size() > 0) {
             updateHitMovie();

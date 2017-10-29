@@ -40,6 +40,7 @@
             android:gravity="center_vertical"
             android:focusable="true"
             android:focusableInTouchMode="true"
+            android:clickable="true"
             android:background="@drawable/bg_search_button">
 
             <ImageView
@@ -76,6 +77,7 @@
                 android:gravity="center_vertical"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
+                android:clickable="true"
                 android:background="@drawable/bg_search_button">
 
                 <ImageView
@@ -106,6 +108,7 @@
                 android:gravity="center_vertical"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
+                android:clickable="true"
                 android:background="@drawable/bg_search_button">
 
                 <TextView
@@ -137,6 +140,7 @@
                 android:gravity="center_vertical"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
+                android:clickable="true"
                 android:background="@drawable/bg_search_button">
 
                 <TextView
@@ -180,6 +184,7 @@
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
+                android:clickable="true"
                 android:nextFocusUp="@+id/btn_search"
                 android:nextFocusDown="@+id/btn_movie"
                 android:nextFocusRight="@+id/btn_recommend"
@@ -212,6 +217,7 @@
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
+                android:clickable="true"
                 android:nextFocusUp="@+id/btn_search"
                 android:nextFocusLeft="@+id/btn_live"
                 android:nextFocusDown="@+id/btn_series"
@@ -279,6 +285,7 @@
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
+                android:clickable="true"
                 android:nextFocusUp="@+id/btn_account"
                 android:nextFocusLeft="@+id/btn_recommend"
                 android:nextFocusDown="@+id/btn_advertise"
@@ -314,6 +321,7 @@
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
+                android:clickable="true"
                 android:nextFocusUp="@+id/btn_remaining"
                 android:nextFocusLeft="@+id/btn_sport"
                 android:nextFocusDown="@+id/btn_vip"
@@ -354,6 +362,7 @@
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
+                android:clickable="true"
                 android:nextFocusUp="@+id/btn_live"
                 android:nextFocusRight="@+id/btn_series"
                 android:padding="@dimen/margin_padding_xxsmall">
@@ -385,6 +394,7 @@
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
+                android:clickable="true"
                 android:nextFocusLeft="@+id/btn_movie"
                 android:nextFocusUp="@+id/btn_recommend"
                 android:nextFocusRight="@+id/btn_advertise"
@@ -417,6 +427,7 @@
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
+                android:clickable="true"
                 android:nextFocusLeft="@+id/btn_series"
                 android:nextFocusUp="@+id/btn_sport"
                 android:nextFocusRight="@+id/btn_vip"
@@ -456,6 +467,7 @@
                 android:background="@drawable/bg_home_button"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
+                android:clickable="true"
                 android:nextFocusLeft="@+id/btn_advertise"
                 android:nextFocusUp="@+id/btn_favourite"
                 android:padding="@dimen/margin_padding_xxsmall">

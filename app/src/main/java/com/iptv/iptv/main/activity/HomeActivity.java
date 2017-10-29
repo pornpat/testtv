@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -133,13 +134,15 @@ public class HomeActivity extends AppCompatActivity implements
         networkStateReceiver.addListener(this);
         this.registerReceiver(networkStateReceiver, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
 
-        mLiveButton.setOnClickListener(new View.OnClickListener() {
+        mLiveButton.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View view) {
-                if (mLiveButton.isFocused()) {
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_DPAD_CENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
                     Intent intent = new Intent(HomeActivity.this, LiveGridActivity.class);
                     startActivity(intent);
+                    return true;
                 }
+                return false;
             }
         });
 
@@ -154,13 +157,15 @@ public class HomeActivity extends AppCompatActivity implements
             }
         });
 
-        mMovieButton.setOnClickListener(new View.OnClickListener() {
+        mMovieButton.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View view) {
-                if (!mMovieButton.isFocused()) {
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_DPAD_CENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
                     Intent intent = new Intent(HomeActivity.this, MovieGridActivity.class);
                     startActivity(intent);
+                    return true;
                 }
+                return false;
             }
         });
 
@@ -175,13 +180,15 @@ public class HomeActivity extends AppCompatActivity implements
             }
         });
 
-        mSeriesButton.setOnClickListener(new View.OnClickListener() {
+        mSeriesButton.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View view) {
-                if (!mSeriesButton.isFocused()) {
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_DPAD_CENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
                     Intent intent = new Intent(HomeActivity.this, SeriesGridActivity.class);
                     startActivity(intent);
+                    return true;
                 }
+                return false;
             }
         });
 
@@ -196,13 +203,15 @@ public class HomeActivity extends AppCompatActivity implements
             }
         });
 
-        mSportButton.setOnClickListener(new View.OnClickListener() {
+        mSportButton.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View view) {
-                if (!mSportButton.isFocused()) {
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_DPAD_CENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
                     Intent intent = new Intent(HomeActivity.this, SportGridActivity.class);
                     startActivity(intent);
+                    return true;
                 }
+                return false;
             }
         });
 
@@ -217,13 +226,15 @@ public class HomeActivity extends AppCompatActivity implements
             }
         });
 
-        mFavoriteButton.setOnClickListener(new View.OnClickListener() {
+        mFavoriteButton.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View view) {
-                if (!mFavoriteButton.isFocused()) {
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_DPAD_CENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
                     Intent intent = new Intent(HomeActivity.this, FavoriteGridActivity.class);
                     startActivity(intent);
+                    return true;
                 }
+                return false;
             }
         });
 
@@ -238,13 +249,15 @@ public class HomeActivity extends AppCompatActivity implements
             }
         });
 
-        mHitButton.setOnClickListener(new View.OnClickListener() {
+        mHitButton.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View view) {
-                if (!mHitButton.isFocused()) {
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_DPAD_CENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
                     Intent intent = new Intent(HomeActivity.this, HitGridActivity.class);
                     startActivity(intent);
+                    return true;
                 }
+                return false;
             }
         });
 
@@ -259,14 +272,15 @@ public class HomeActivity extends AppCompatActivity implements
             }
         });
 
-        mAdvertiseButton.setOnClickListener(new View.OnClickListener() {
+        mAdvertiseButton.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View view) {
-                if (!mAdvertiseButton.isFocused()) {
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_DPAD_CENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
                     Intent intent = new Intent(HomeActivity.this, AdvertiseActivity.class);
-                    intent.putExtra("ads", Parcels.wrap(mAdsItem));
                     startActivity(intent);
+                    return true;
                 }
+                return false;
             }
         });
 
@@ -282,13 +296,15 @@ public class HomeActivity extends AppCompatActivity implements
             }
         });
 
-        mSearchButton.setOnClickListener(new View.OnClickListener() {
+        mSearchButton.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View view) {
-                if (!mSearchButton.isFocused()) {
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_DPAD_CENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
                     Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
                     startActivity(intent);
+                    return true;
                 }
+                return false;
             }
         });
 
@@ -303,13 +319,15 @@ public class HomeActivity extends AppCompatActivity implements
             }
         });
 
-        mVipButton.setOnClickListener(new View.OnClickListener() {
+        mVipButton.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View view) {
-                if (!mVipButton.isFocused()) {
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_DPAD_CENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
                     Intent intent = new Intent(HomeActivity.this, VipPasswordActivity.class);
                     startActivity(intent);
+                    return true;
                 }
+                return false;
             }
         });
 
@@ -324,13 +342,15 @@ public class HomeActivity extends AppCompatActivity implements
             }
         });
 
-        findViewById(R.id.btn_remaining).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_remaining).setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View view) {
-                if (!findViewById(R.id.btn_remaining).isFocused()) {
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_DPAD_CENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
                     Intent intent = new Intent(HomeActivity.this, TopupActivity.class);
                     startActivity(intent);
+                    return true;
                 }
+                return false;
             }
         });
 
@@ -345,13 +365,15 @@ public class HomeActivity extends AppCompatActivity implements
             }
         });
 
-        findViewById(R.id.btn_account).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_account).setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View view) {
-                if (!findViewById(R.id.btn_account).isFocused()) {
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_DPAD_CENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
                     Intent intent = new Intent(HomeActivity.this, UserSettingActivity.class);
                     startActivity(intent);
+                    return true;
                 }
+                return false;
             }
         });
 
@@ -366,13 +388,15 @@ public class HomeActivity extends AppCompatActivity implements
             }
         });
 
-        findViewById(R.id.btn_setting).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_setting).setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View view) {
-                if (!findViewById(R.id.btn_setting).isFocused()) {
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_DPAD_CENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
                     Intent intent = new Intent(HomeActivity.this, SettingActivity.class);
                     startActivity(intent);
+                    return true;
                 }
+                return false;
             }
         });
 

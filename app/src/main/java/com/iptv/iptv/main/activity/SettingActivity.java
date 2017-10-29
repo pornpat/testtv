@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -43,12 +44,14 @@ public class SettingActivity extends AppCompatActivity implements
             mDefaultButton.setText("App Default: OFF");
         }
 
-        findViewById(R.id.btn_network).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_network).setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View view) {
-                if (!findViewById(R.id.btn_network).isFocused()) {
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_DPAD_CENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
                     startActivity(new Intent(WifiManager.ACTION_PICK_WIFI_NETWORK));
+                    return true;
                 }
+                return false;
             }
         });
 
@@ -62,10 +65,10 @@ public class SettingActivity extends AppCompatActivity implements
             }
         });
 
-        findViewById(R.id.btn_update).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_update).setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View view) {
-                if (!findViewById(R.id.btn_update).isFocused()) {
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_DPAD_CENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
                     UpdateManager.register(SettingActivity.this, "1f94e29f831a4d199ddd98835c3ebec4",
                             new UpdateManagerListener() {
                                 @Override
@@ -79,7 +82,9 @@ public class SettingActivity extends AppCompatActivity implements
                                     super.onUpdateAvailable();
                                 }
                             });
+                    return true;
                 }
+                return false;
             }
         });
 
@@ -105,10 +110,10 @@ public class SettingActivity extends AppCompatActivity implements
             }
         });
 
-        mDefaultButton.setOnClickListener(new View.OnClickListener() {
+        mDefaultButton.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View view) {
-                if (!mDefaultButton.isFocused()) {
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_DPAD_CENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
                     if (PrefUtils.getBooleanProperty(R.string.pref_default_on)) {
                         getPackageManager().setComponentEnabledSetting(new ComponentName("com.iptv.iptv", "com.iptv.iptv.main.activity.StartupActivity"),
                                 PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
@@ -122,7 +127,9 @@ public class SettingActivity extends AppCompatActivity implements
                         PrefUtils.setBooleanProperty(R.string.pref_default_on, true);
                         mDefaultButton.setText("App Default: ON");
                     }
+                    return true;
                 }
+                return false;
             }
         });
 

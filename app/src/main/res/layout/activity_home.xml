@@ -11,104 +11,117 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_padding_small"
         android:layout_marginTop="@dimen/margin_padding_normal"
         android:gravity="bottom"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_padding_large"
-            android:layout_marginRight="@dimen/margin_padding_small"
+            android:layout_weight="2"
             android:layout_gravity="center_vertical"
             android:text="@string/app_name"
             android:textColor="@color/white"
             android:textSize="@dimen/text_home_title"
             android:textStyle="bold" />
 
-        <LinearLayout
+        <FrameLayout
             android:id="@+id/btn_search"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_padding_xlarge"
-            android:padding="@dimen/touch_padding"
+            android:layout_weight="1.5"
+            android:background="@drawable/bg_search_button"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center_vertical"
             android:nextFocusDown="@+id/btn_recommend"
             android:nextFocusLeft="@+id/btn_recommend"
             android:nextFocusRight="@+id/btn_setting"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:clickable="true"
-            android:background="@drawable/bg_search_button">
-
-            <ImageView
-                android:layout_width="@dimen/icon_search"
-                android:layout_height="@dimen/icon_search"
-                android:src="@drawable/search_selected"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_padding_xsmall"
-                android:text="ค้นหา"
-                android:textColor="@color/bg_movie_text"
-                android:textSize="@dimen/text_highlight"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="right|center_vertical"
-            android:orientation="horizontal">
+            android:padding="@dimen/touch_padding">
 
             <LinearLayout
-                android:id="@+id/btn_setting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_padding_xlarge"
-                android:padding="@dimen/touch_padding"
-                android:nextFocusDown="@+id/btn_recommend"
-                android:nextFocusLeft="@+id/btn_search"
-                android:nextFocusRight="@+id/btn_account"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:clickable="true"
-                android:background="@drawable/bg_search_button">
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="@dimen/icon_search"
                     android:layout_height="@dimen/icon_search"
-                    android:src="@drawable/icon_setting"/>
+                    android:src="@drawable/search_selected" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_padding_xsmall"
+                    android:text="ค้นหา"
+                    android:textColor="@color/bg_movie_text"
+                    android:textSize="@dimen/text_highlight" />
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/btn_setting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.2"
+            android:background="@drawable/bg_search_button"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center_vertical"
+            android:nextFocusDown="@+id/btn_recommend"
+            android:nextFocusLeft="@+id/btn_search"
+            android:nextFocusRight="@+id/btn_account"
+            android:padding="@dimen/touch_padding">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/icon_search"
+                    android:layout_height="@dimen/icon_search"
+                    android:src="@drawable/icon_setting" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin_padding_xsmall"
                     android:text="ตั้งค่า"
+                    android:singleLine="true"
                     android:textColor="@color/light_purple"
-                    android:textSize="@dimen/text_highlight"/>
+                    android:textSize="@dimen/text_highlight" />
 
             </LinearLayout>
 
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/btn_account"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:background="@drawable/bg_search_button"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center_vertical"
+            android:nextFocusDown="@+id/btn_sport"
+            android:nextFocusLeft="@+id/btn_setting"
+            android:nextFocusRight="@+id/btn_remaining"
+            android:padding="@dimen/touch_padding">
+
             <LinearLayout
-                android:id="@+id/btn_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_padding_large"
-                android:padding="@dimen/touch_padding"
-                android:nextFocusDown="@+id/btn_sport"
-                android:nextFocusLeft="@+id/btn_setting"
-                android:nextFocusRight="@+id/btn_remaining"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:clickable="true"
-                android:background="@drawable/bg_search_button">
+                android:layout_gravity="center_horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -122,30 +135,38 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Test123"
+                    android:singleLine="true"
                     android:textColor="@color/light_purple"
                     android:textSize="@dimen/text_highlight" />
 
             </LinearLayout>
 
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/btn_remaining"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:background="@drawable/bg_search_button"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center_vertical"
+            android:nextFocusDown="@+id/btn_favorite"
+            android:nextFocusLeft="@+id/btn_account"
+            android:padding="@dimen/touch_padding">
+
             <LinearLayout
-                android:id="@+id/btn_remaining"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_padding_normal"
-                android:padding="@dimen/touch_padding"
-                android:nextFocusDown="@+id/btn_favorite"
-                android:nextFocusLeft="@+id/btn_account"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:clickable="true"
-                android:background="@drawable/bg_search_button">
+                android:layout_gravity="center_horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="จำนวนวันคงเหลือ "
+                    android:text="วันคงเหลือ "
                     android:textColor="@color/light_purple"
                     android:textSize="@dimen/text_highlight" />
 
@@ -154,12 +175,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="- วัน"
+                    android:singleLine="true"
                     android:textColor="@color/light_purple"
                     android:textSize="@dimen/text_highlight" />
 
             </LinearLayout>
 
-        </LinearLayout>
+        </FrameLayout>
 
     </LinearLayout>
 

@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -113,12 +114,16 @@ public class SportGridActivity extends AppCompatActivity implements
             }
         }, 500);
 
-        findViewById(R.id.search).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.search).setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(SportGridActivity.this, SearchActivity.class);
-                intent.putExtra("origin", "sport");
-                startActivity(intent);
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_DPAD_CENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                    Intent intent = new Intent(SportGridActivity.this, SearchActivity.class);
+                    intent.putExtra("origin", "sport");
+                    startActivity(intent);
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -134,15 +139,19 @@ public class SportGridActivity extends AppCompatActivity implements
             }
         });
 
-        findViewById(R.id.filter).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.filter).setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View view) {
-                getFragmentManager().beginTransaction().replace(R.id.layout_filter,
-                        FilterFragment.newInstance(
-                                ApiUtils.appendUri(ApiUtils.SPORT_FILTER_URL, ApiUtils.addToken()),
-                                mCurrentCountry, mCurrentYear)).commit();
-                findViewById(R.id.layout_filter).setVisibility(View.VISIBLE);
-                findViewById(R.id.grid_fragment).setVisibility(View.GONE);
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_DPAD_CENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                    getFragmentManager().beginTransaction().replace(R.id.layout_filter,
+                            FilterFragment.newInstance(
+                                    ApiUtils.appendUri(ApiUtils.SPORT_FILTER_URL, ApiUtils.addToken()),
+                                    mCurrentCountry, mCurrentYear)).commit();
+                    findViewById(R.id.layout_filter).setVisibility(View.VISIBLE);
+                    findViewById(R.id.grid_fragment).setVisibility(View.GONE);
+                    return true;
+                }
+                return false;
             }
         });
 

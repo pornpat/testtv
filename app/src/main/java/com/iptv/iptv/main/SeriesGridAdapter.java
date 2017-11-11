@@ -3,6 +3,7 @@ package com.iptv.iptv.main;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -88,10 +89,14 @@ public class SeriesGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 }
             });
 
-            vh.mView.setOnClickListener(new View.OnClickListener() {
+            vh.mView.setOnKeyListener(new View.OnKeyListener() {
                 @Override
-                public void onClick(View view) {
-                    EventBus.getDefault().post(new SelectSeriesEvent(position));
+                public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                    if (i == KeyEvent.KEYCODE_DPAD_CENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                        EventBus.getDefault().post(new SelectSeriesEvent(position));
+                        return true;
+                    }
+                    return false;
                 }
             });
             vh.mView.setOnTouchListener(new View.OnTouchListener() {

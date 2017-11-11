@@ -70,6 +70,7 @@
                     android:layout_height="@dimen/icon_menu"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
+                    android:clickable="true"
                     android:src="@drawable/search_selected" />
 
             </LinearLayout>

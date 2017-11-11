@@ -133,35 +133,39 @@ public class LivePlayerActivity extends AppCompatActivity implements OnChannelSe
 
         mListener = this;
 
-        mFavText.setOnClickListener(new View.OnClickListener() {
+        mFavText.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View view) {
-                PrefUtils.setBooleanProperty(R.string.pref_update_live, true);
-                if (!mLiveList.get(currentFocusChannel).isFav()) {
-                    AsyncHttpClient client = new AsyncHttpClient();
-                    client.post(
-                            ApiUtils.appendUri(ApiUtils.addMediaId(ApiUtils.FAVORITE_URL, mLiveList.get(currentFocusChannel).getId()), ApiUtils.addToken()), new TextHttpResponseHandler() {
-                                @Override
-                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {}
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_DPAD_CENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                    PrefUtils.setBooleanProperty(R.string.pref_update_live, true);
+                    if (!mLiveList.get(currentFocusChannel).isFav()) {
+                        AsyncHttpClient client = new AsyncHttpClient();
+                        client.post(
+                                ApiUtils.appendUri(ApiUtils.addMediaId(ApiUtils.FAVORITE_URL, mLiveList.get(currentFocusChannel).getId()), ApiUtils.addToken()), new TextHttpResponseHandler() {
+                                    @Override
+                                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {}
 
-                                @Override
-                                public void onSuccess(int statusCode, Header[] headers, String responseString) {}
-                            });
-                    mLiveList.get(currentFocusChannel).setFav(true);
-                    mFavText.setText("ลบรายการโปรด");
-                } else {
-                    AsyncHttpClient client = new AsyncHttpClient();
-                    client.delete(
-                            ApiUtils.appendUri(ApiUtils.addMediaId(ApiUtils.FAVORITE_URL, mLiveList.get(currentFocusChannel).getId()), ApiUtils.addToken()), new TextHttpResponseHandler() {
-                                @Override
-                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {}
+                                    @Override
+                                    public void onSuccess(int statusCode, Header[] headers, String responseString) {}
+                                });
+                        mLiveList.get(currentFocusChannel).setFav(true);
+                        mFavText.setText("ลบรายการโปรด");
+                    } else {
+                        AsyncHttpClient client = new AsyncHttpClient();
+                        client.delete(
+                                ApiUtils.appendUri(ApiUtils.addMediaId(ApiUtils.FAVORITE_URL, mLiveList.get(currentFocusChannel).getId()), ApiUtils.addToken()), new TextHttpResponseHandler() {
+                                    @Override
+                                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {}
 
-                                @Override
-                                public void onSuccess(int statusCode, Header[] headers, String responseString) {}
-                            });
-                    mLiveList.get(currentFocusChannel).setFav(false);
-                    mFavText.setText("เพิ่มรายการโปรด");
+                                    @Override
+                                    public void onSuccess(int statusCode, Header[] headers, String responseString) {}
+                                });
+                        mLiveList.get(currentFocusChannel).setFav(false);
+                        mFavText.setText("เพิ่มรายการโปรด");
+                    }
+                    return true;
                 }
+                return false;
             }
         });
 

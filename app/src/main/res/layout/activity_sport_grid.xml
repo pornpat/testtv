@@ -70,6 +70,7 @@
                     android:layout_height="@dimen/icon_menu"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
+                    android:clickable="true"
                     android:src="@drawable/search_selected" />
 
                 <ImageView
@@ -79,6 +80,7 @@
                     android:layout_marginLeft="@dimen/margin_padding_normal"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
+                    android:clickable="true"
                     android:src="@drawable/filter_selected" />
 
             </LinearLayout>

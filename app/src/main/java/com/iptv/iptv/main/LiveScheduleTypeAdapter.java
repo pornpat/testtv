@@ -1,6 +1,7 @@
 package com.iptv.iptv.main;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -49,20 +50,24 @@ public class LiveScheduleTypeAdapter extends RecyclerView.Adapter<LiveScheduleTy
             holder.mView.setSelected(false);
         }
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
+        holder.mView.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View view) {
-                if (lastCheckedPosition != position) {
-                    holder.mView.setSelected(true);
-                    if (lastCheckedView != null) {
-                        lastCheckedView.setSelected(false);
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_DPAD_CENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                    if (lastCheckedPosition != position) {
+                        holder.mView.setSelected(true);
+                        if (lastCheckedView != null) {
+                            lastCheckedView.setSelected(false);
+                        }
+
+                        lastCheckedView = holder.mView;
+                        lastCheckedPosition = position;
+
+                        EventBus.getDefault().post(new SelectScheduleEvent(position));
                     }
-
-                    lastCheckedView = holder.mView;
-                    lastCheckedPosition = position;
-
-                    EventBus.getDefault().post(new SelectScheduleEvent(position));
+                    return true;
                 }
+                return false;
             }
         });
         holder.mView.setOnTouchListener(new View.OnTouchListener() {

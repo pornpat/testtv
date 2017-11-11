@@ -4,6 +4,7 @@
     android:layout_height="80dp"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:clickable="true"
     android:paddingTop="@dimen/margin_padding_xsmall"
     android:paddingBottom="@dimen/margin_padding_xsmall"
     android:orientation="horizontal">

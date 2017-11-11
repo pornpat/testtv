@@ -1,89 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
     tools:context="com.iptv.iptv.main.activity.LoginActivity">
 
-    <Space
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1.25"/>
-
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="2"
-        android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.25"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal|center_vertical"
-            android:orientation="horizontal">
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="@dimen/login_logo_size"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@drawable/logo_sample" />
+                android:gravity="center_horizontal|center_vertical"
+                android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
+                <ImageView
+                    android:layout_width="@dimen/login_logo_size"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/logo_sample" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_padding_normal"
+                    android:text="IPTV"
+                    android:textColor="@color/text_default"
+                    android:textSize="@dimen/text_login_title"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/text_username"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_padding_normal"
-                android:text="IPTV"
+                android:layout_marginTop="@dimen/margin_padding_small"
+                android:hint="Username"
+                android:paddingLeft="@dimen/margin_padding_small"
+                android:singleLine="true"
                 android:textColor="@color/text_default"
-                android:textSize="@dimen/text_login_title"
-                android:textStyle="bold" />
+                android:textSize="@dimen/text_editfield" />
+
+            <EditText
+                android:id="@+id/text_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_small"
+                android:hint="Password"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:paddingLeft="@dimen/margin_padding_small"
+                android:singleLine="true"
+                android:textColor="@color/text_default"
+                android:textSize="@dimen/text_editfield" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_small"
+                android:background="@drawable/bg_login_button"
+                android:onClick="signIn"
+                android:paddingBottom="@dimen/margin_padding_small"
+                android:paddingTop="@dimen/margin_padding_small"
+                android:text="Sign in"
+                android:textAllCaps="false"
+                android:textSize="@dimen/text_editfield"
+                android:textStyle="normal" />
 
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/text_username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_small"
-            android:hint="Username"
-            android:paddingLeft="@dimen/margin_padding_small"
-            android:singleLine="true"
-            android:textColor="@color/text_default"
-            android:textSize="@dimen/text_editfield" />
-
-        <EditText
-            android:id="@+id/text_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_small"
-            android:hint="Password"
-            android:imeOptions="actionDone"
-            android:inputType="textPassword"
-            android:paddingLeft="@dimen/margin_padding_small"
-            android:singleLine="true"
-            android:textColor="@color/text_default"
-            android:textSize="@dimen/text_editfield" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_small"
-            android:background="@drawable/bg_login_button"
-            android:onClick="signIn"
-            android:paddingBottom="@dimen/margin_padding_small"
-            android:paddingTop="@dimen/margin_padding_small"
-            android:text="Sign in"
-            android:textAllCaps="false"
-            android:textSize="@dimen/text_editfield"
-            android:textStyle="normal" />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.25"/>
 
     </LinearLayout>
 
-    <Space
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1.25"/>
+    <TextView
+        android:id="@+id/txt_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/margin_padding_small"
+        android:layout_marginBottom="@dimen/margin_padding_small"
+        android:layout_gravity="bottom|right"
+        android:textSize="@dimen/text_normal"
+        android:textColor="@color/white"/>
 
-</LinearLayout>
+</FrameLayout>

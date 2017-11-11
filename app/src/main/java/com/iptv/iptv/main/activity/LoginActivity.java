@@ -50,8 +50,12 @@ public class LoginActivity extends AppCompatActivity implements
         mProgressDialog.setMessage("Loading...");
         mProgressDialog.setCancelable(false);
 
-        mUsernameText.setText("user");
-        mPasswordText.setText("123456");
+        if (!PrefUtils.getStringProperty(R.string.pref_username).equals("")) {
+            mUsernameText.setText(PrefUtils.getStringProperty(R.string.pref_username));
+        }
+        if (!PrefUtils.getStringProperty(R.string.pref_password).equals("")) {
+            mPasswordText.setText(PrefUtils.getStringProperty(R.string.pref_password));
+        }
 
         if (getIntent().hasExtra("toast")) {
             Toast.makeText(LoginActivity.this, "Token หมดอายุ กรุณาล็อกอินใหม่อีกครั้ง", Toast.LENGTH_SHORT).show();
@@ -103,6 +107,7 @@ public class LoginActivity extends AppCompatActivity implements
                         String token = jsonObject.getString("token");
                         PrefUtils.setStringProperty(R.string.pref_token, token);
                         PrefUtils.setStringProperty(R.string.pref_username, mUsernameText.getText().toString());
+                        PrefUtils.setStringProperty(R.string.pref_password, mPasswordText.getText().toString());
 
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);

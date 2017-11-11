@@ -133,7 +133,13 @@ public class LiveScheduleFragment extends Fragment {
 
                         List<ScheduleSubItem> list = new ArrayList<>();
                         JSONArray jsonList = jsonSchedule.getJSONArray("list");
-                        for (int j = 0; j < jsonList.length(); j++) {
+                        int listSize = 0;
+                        if (jsonList.length() < 20) {
+                            listSize = jsonList.length();
+                        } else {
+                            listSize = 20;
+                        }
+                        for (int j = 0; j < listSize; j++) {
                             ScheduleSubItem item = new ScheduleSubItem();
                             JSONObject obj = jsonList.getJSONObject(j);
                             item.setLeague(obj.getString("leauge"));

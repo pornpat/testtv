@@ -13,6 +13,7 @@ public class ApiUtils {
 
     public static final String BASE_URL = "http://139.59.231.135/uplay/public/api/v1";
     public static final String AUTH_URL = BASE_URL + "/auth";
+    public static final String AUTH_LOGOUT_URL = BASE_URL + "/auth/logout";
     public static final String MOVIE_URL = BASE_URL + "/movies";
     public static final String SERIES_URL = BASE_URL + "/series";
     public static final String LIVE_URL = BASE_URL + "/lives";

@@ -6,6 +6,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -35,6 +36,8 @@ public class UserSettingActivity extends AppCompatActivity implements
     EditText mNewPasswordText;
     EditText mConfirmPasswordText;
 
+    private ProgressDialog mProgressDialog;
+
     private NetworkStateReceiver networkStateReceiver;
 
     @Override
@@ -52,15 +55,23 @@ public class UserSettingActivity extends AppCompatActivity implements
         mNewPasswordText = (EditText) findViewById(R.id.txt_new_password);
         mConfirmPasswordText = (EditText) findViewById(R.id.txt_confirm_password);
 
-        mChangePasswordButton.setOnClickListener(new View.OnClickListener() {
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage("Loading...");
+        mProgressDialog.setCancelable(false);
+
+        mChangePasswordButton.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View view) {
-                mChangePasswordButton.setBackground(ContextCompat.getDrawable(UserSettingActivity.this, R.drawable.bg_topup_activated_button));
-                mLogoutButton.setBackground(ContextCompat.getDrawable(UserSettingActivity.this, R.drawable.bg_topup_button));
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_DPAD_CENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                    mChangePasswordButton.setBackground(ContextCompat.getDrawable(UserSettingActivity.this, R.drawable.bg_topup_activated_button));
+                    mLogoutButton.setBackground(ContextCompat.getDrawable(UserSettingActivity.this, R.drawable.bg_topup_button));
 
-                findViewById(R.id.layout_change_password).setVisibility(View.VISIBLE);
+                    findViewById(R.id.layout_change_password).setVisibility(View.VISIBLE);
 
-                mNewPasswordText.requestFocus();
+                    mNewPasswordText.requestFocus();
+                    return true;
+                }
+                return false;
             }
         });
         mChangePasswordButton.setOnTouchListener(new View.OnTouchListener() {
@@ -78,23 +89,57 @@ public class UserSettingActivity extends AppCompatActivity implements
             }
         });
 
-        mLogoutButton.setOnClickListener(new View.OnClickListener() {
+        mLogoutButton.setOnKeyListener(new View.OnKeyListener() {
             @Override
-            public void onClick(View view) {
-                PrefUtils.setStringProperty(R.string.pref_token, "");
-                Intent intent = new Intent(UserSettingActivity.this, LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_DPAD_CENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                    mProgressDialog.show();
+
+                    AsyncHttpClient client = new AsyncHttpClient();
+                    client.post(ApiUtils.appendUri(ApiUtils.AUTH_LOGOUT_URL, ApiUtils.addToken()), new TextHttpResponseHandler() {
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                            mProgressDialog.dismiss();
+                            Toast.makeText(UserSettingActivity.this, responseString, Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                            mProgressDialog.dismiss();
+                            PrefUtils.setStringProperty(R.string.pref_token, "");
+                            Intent intent = new Intent(UserSettingActivity.this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        }
+                    });
+                    return true;
+                }
+                return false;
             }
         });
         mLogoutButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    PrefUtils.setStringProperty(R.string.pref_token, "");
-                    Intent intent = new Intent(UserSettingActivity.this, LoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
+                    mProgressDialog.show();
+
+                    AsyncHttpClient client = new AsyncHttpClient();
+                    client.post(ApiUtils.appendUri(ApiUtils.AUTH_LOGOUT_URL, ApiUtils.addToken()), new TextHttpResponseHandler() {
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                            mProgressDialog.dismiss();
+                            Toast.makeText(UserSettingActivity.this, responseString, Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                            mProgressDialog.dismiss();
+                            PrefUtils.setStringProperty(R.string.pref_token, "");
+                            Intent intent = new Intent(UserSettingActivity.this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        }
+                    });
                 }
                 return false;
             }

@@ -35,8 +35,6 @@ public class LiveProvider {
     private static final String TAG_PROGRAM = "programs";
     private static final String TAG_START_TIME = "start_time";
     private static final String TAG_END_TIME = "end_time";
-    private static final String TAG_HOUR = "hour";
-    private static final String TAG_MINUTE = "minute";
     // for history
     private static final String TAG_MEDIA = "media";
     private static final String TAG_MEDIA_TYPE = "media_type";
@@ -121,14 +119,10 @@ public class LiveProvider {
                 for (int j = 0; j < programArray.length(); j++) {
                     JSONObject program = programArray.getJSONObject(j);
                     String p_name = program.getString(TAG_NAME);
-                    JSONObject start = program.getJSONObject(TAG_START_TIME);
-                    int startHour = Integer.parseInt(start.getString(TAG_HOUR));
-                    int startMin = Integer.parseInt(start.getString(TAG_MINUTE));
-                    JSONObject end = program.getJSONObject(TAG_END_TIME);
-                    int endHour = Integer.parseInt(end.getString(TAG_HOUR));
-                    int endMin = Integer.parseInt(end.getString(TAG_MINUTE));
+                    String startTime = program.getString(TAG_START_TIME);
+                    String endTime = program.getString(TAG_END_TIME);
 
-                    programs.add(new LiveProgramItem(p_name, startHour, startMin, endHour, endMin));
+                    programs.add(new LiveProgramItem(p_name, startTime, endTime));
                 }
 
                 sLiveListById.put(id, buildLiveInfo(id, name, logoUrl, streamUrl, programs, isFav));
@@ -168,14 +162,10 @@ public class LiveProvider {
                 for (int j = 0; j < programArray.length(); j++) {
                     JSONObject program = programArray.getJSONObject(j);
                     String p_name = program.getString(TAG_NAME);
-                    JSONObject start = program.getJSONObject(TAG_START_TIME);
-                    int startHour = Integer.parseInt(start.getString(TAG_HOUR));
-                    int startMin = Integer.parseInt(start.getString(TAG_MINUTE));
-                    JSONObject end = program.getJSONObject(TAG_END_TIME);
-                    int endHour = Integer.parseInt(end.getString(TAG_HOUR));
-                    int endMin = Integer.parseInt(end.getString(TAG_MINUTE));
+                    String startTime = program.getString(TAG_START_TIME);
+                    String endTime = program.getString(TAG_END_TIME);
 
-                    programs.add(new LiveProgramItem(p_name, startHour, startMin, endHour, endMin));
+                    programs.add(new LiveProgramItem(p_name, startTime, endTime));
                 }
 
                 sLiveListById.put(id, buildLiveInfo(id, name, logoUrl, streamUrl, programs, isFav));

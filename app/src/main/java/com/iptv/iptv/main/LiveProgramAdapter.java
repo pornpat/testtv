@@ -10,6 +10,9 @@ import android.widget.TextView;
 import com.iptv.iptv.R;
 import com.iptv.iptv.main.model.LiveProgramItem;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,36 +26,28 @@ public class LiveProgramAdapter extends RecyclerView.Adapter<LiveProgramAdapter.
     private List<LiveProgramItem> mValues = new ArrayList<>();
 
     public LiveProgramAdapter(List<LiveProgramItem> items, long current) {
-        Date currentTime = new Date(current);
-        currentTime.setSeconds(1);
 
-        Date startTime = new Date(current);
-        Date endTime = new Date(current);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         boolean isFound = false;
         for (int i = 0; i < items.size(); i++) {
-            startTime.setHours(items.get(i).getStartHour());
-            startTime.setMinutes(items.get(i).getStartMin());
-            startTime.setSeconds(0);
-            endTime.setHours(items.get(i).getEndHour());
-            endTime.setMinutes(items.get(i).getEndMin());
-            endTime.setSeconds(0);
+            try {
+                long startTime = dateFormat.parse(items.get(i).getStartTime()).getTime();
+                long endTime = dateFormat.parse(items.get(i).getEndTime()).getTime();
 
-            if (currentTime.compareTo(startTime) > 0 && currentTime.compareTo(endTime) < 0) {
-                isFound = true;
-            }
-            if (isFound) {
-                mValues.add(items.get(i));
-            }
-        }
-        if (!isFound) {
-            if (items.size() > 0) {
-                mValues.add(items.get(items.size() - 1));
+                if (current >= startTime && current < endTime) {
+                    isFound = true;
+                }
+                if (isFound) {
+                    mValues.add(items.get(i));
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
         }
 
         if (mValues.size() == 0) {
-            mValues.add(new LiveProgramItem("ไม่มีข้อมูลรายการ", 0, 0, 23, 59));
+            mValues.add(new LiveProgramItem("ไม่มีข้อมูลรายการ", "", ""));
         }
     }
 
@@ -70,10 +65,7 @@ public class LiveProgramAdapter extends RecyclerView.Adapter<LiveProgramAdapter.
             holder.mName.setText(mValues.get(position).getProgramName());
         }
         holder.mName.setSelected(true);
-        holder.mPeriod.setText(String.format("%02d", mValues.get(position).getStartHour()) + ":" +
-                String.format("%02d", mValues.get(position).getStartMin()) + " - " +
-                String.format("%02d", mValues.get(position).getEndHour()) + ":" +
-                String.format("%02d", mValues.get(position).getEndMin()));
+        holder.mPeriod.setText(mValues.get(position).getStartTime() + " - " + mValues.get(position).getEndTime());
 
         holder.mView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

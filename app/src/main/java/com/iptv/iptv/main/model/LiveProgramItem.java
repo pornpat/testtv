@@ -11,18 +11,14 @@ import org.parceler.ParcelConstructor;
 public class LiveProgramItem {
 
     private String programName;
-    private int startHour;
-    private int startMin;
-    private int endHour;
-    private int endMin;
+    private String startTime;
+    private String endTime;
 
     @ParcelConstructor
-    public LiveProgramItem(String programName, int startHour, int startMin, int endHour, int endMin) {
+    public LiveProgramItem(String programName, String startTime, String endTime) {
         this.programName = programName;
-        this.startHour = startHour;
-        this.startMin = startMin;
-        this.endHour = endHour;
-        this.endMin = endMin;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     public String getProgramName() {
@@ -33,35 +29,19 @@ public class LiveProgramItem {
         this.programName = programName;
     }
 
-    public int getStartHour() {
-        return startHour;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setStartHour(int startHour) {
-        this.startHour = startHour;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
-    public int getStartMin() {
-        return startMin;
+    public String getEndTime() {
+        return endTime;
     }
 
-    public void setStartMin(int startMin) {
-        this.startMin = startMin;
-    }
-
-    public int getEndHour() {
-        return endHour;
-    }
-
-    public void setEndHour(int endHour) {
-        this.endHour = endHour;
-    }
-
-    public int getEndMin() {
-        return endMin;
-    }
-
-    public void setEndMin(int endMin) {
-        this.endMin = endMin;
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 }

@@ -39,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -80,11 +81,9 @@ public class LivePlayerActivity extends AppCompatActivity implements OnChannelSe
     private List<LiveItem> mLiveList = new ArrayList<>();
 //    private List<LiveProgramItem> mProgramList = new ArrayList<>();
 
-    private Date dueTime;
+    private long dueTime = 0;
     private int currentChannel = -1;
     private int currentFocusChannel = -1;
-
-    private boolean isMidnightContinue = false;
 
     private boolean isChannelShowing = false;
 
@@ -270,7 +269,7 @@ public class LivePlayerActivity extends AppCompatActivity implements OnChannelSe
     }
 
     private void startLive(int position) {
-        updateProgram(new Date(mCurrentTime));
+        updateProgram(mCurrentTime);
         if (Utils.isInternetConnectionAvailable(LivePlayerActivity.this)) {
             if (mLiveList.size() > 0) {
                 mNameText.setText(mLiveList.get(position).getName());
@@ -440,114 +439,74 @@ public class LivePlayerActivity extends AppCompatActivity implements OnChannelSe
         this.unregisterReceiver(networkStateReceiver);
     }
 
-    private void updateProgram(Date currentTime) {
+    private void updateProgram(long currentTime) {
         try {
-            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-            currentTime.setSeconds(1);
-            Log.v("testkn", "update by current " + df.format(currentTime));
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-            Date startTime = new Date(mCurrentTime);
-            Date endTime = new Date(mCurrentTime);
+            Log.v("testkn", "update by current " + dateFormat.format(currentTime));
 
             List<LiveProgramItem> programs = mLiveList.get(currentChannel).getPrograms();
             if (programs.size() > 0) {
                 boolean isFound = false;
                 for (int i = 0; i < programs.size(); i++) {
-                    startTime.setHours(programs.get(i).getStartHour());
-                    startTime.setMinutes(programs.get(i).getStartMin());
-                    startTime.setSeconds(0);
-                    endTime.setHours(programs.get(i).getEndHour());
-                    endTime.setMinutes(programs.get(i).getEndMin());
-                    endTime.setSeconds(0);
 
-//                Log.v("testkn", df.format(currentTime));
-//                Log.v("testkn", df.format(startTime));
-//                Log.v("testkn", df.format(endTime));
+                    long startTime = dateFormat.parse(programs.get(i).getStartTime()).getTime();
+                    long endTime = dateFormat.parse(programs.get(i).getEndTime()).getTime();
 
-                    if (currentTime.compareTo(startTime) > 0 && currentTime.compareTo(endTime)
-                            < 0) {
+                    if (currentTime >= startTime && currentTime < endTime) {
                         isFound = true;
                         dueTime = endTime;
-                        Log.v("testkn", "set" + df.format(dueTime));
+
+                        Log.v("testkn", "set" + dateFormat.format(dueTime));
+
                         mProgramText.setText(programs.get(i).getProgramName());
-                        mPeriodText.setText(
-                                String.format("%02d", programs.get(i).getStartHour()) + ":" +
-                                        String.format("%02d", programs.get(i).getStartMin()) + " - "
-                                        +
-                                        String.format("%02d", programs.get(i).getEndHour()) + ":" +
-                                        String.format("%02d", programs.get(i).getEndMin()));
+                        mPeriodText.setText(programs.get(i).getStartTime() + " - " + programs.get(i).getEndTime());
+
                         if (i < programs.size() - 1) {
                             mNextProgramText.setText(programs.get(i + 1).getProgramName());
-                            mNextPeriodText.setText(
-                                    String.format("%02d", programs.get(i + 1).getStartHour()) + ":" +
-                                            String.format("%02d", programs.get(i + 1).getStartMin()) + " - "
-                                            +
-                                            String.format("%02d", programs.get(i + 1).getEndHour()) + ":" +
-                                            String.format("%02d", programs.get(i + 1).getEndMin()));
+                            mNextPeriodText.setText(programs.get(i + 1).getStartTime() + " - " + programs.get(i + 1).getEndTime());
                             mNextProgramView.setVisibility(View.VISIBLE);
                         } else {
                             mNextProgramView.setVisibility(View.INVISIBLE);
                         }
-                        isMidnightContinue = false;
+                        mProgramView.setVisibility(View.VISIBLE);
+
                         break;
                     }
                 }
+
                 if (!isFound) {
-                    // or find the biggest start hour
-                    LiveProgramItem program = programs.get(programs.size() - 1);
-                    if (!isMidnightContinue) {
-                        endTime.setHours(24);
-                        endTime.setMinutes(0);
-                        endTime.setSeconds(0);
+                    Log.v("testkn", "not found");
 
-                        isMidnightContinue = true;
-                    } else {
-                        endTime.setHours(program.getEndHour());
-                        endTime.setMinutes(program.getEndMin());
-                        endTime.setSeconds(0);
-
-                        isMidnightContinue = false;
-                    }
-                    dueTime = endTime;
-                    Log.v("testkn", "not found set" + df.format(dueTime));
-                    mProgramText.setText(program.getProgramName());
-                    mPeriodText.setText(String.format("%02d", program.getStartHour()) + ":" +
-                            String.format("%02d", program.getStartMin()) + " - " +
-                            String.format("%02d", program.getEndHour()) + ":" +
-                            String.format("%02d", program.getEndMin()));
+                    mProgramView.setVisibility(View.INVISIBLE);
                     mNextProgramView.setVisibility(View.INVISIBLE);
                 }
-                mProgramView.setVisibility(View.VISIBLE);
             } else {
                 mProgramView.setVisibility(View.INVISIBLE);
                 mNextProgramView.setVisibility(View.INVISIBLE);
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void doWork() {
         runOnUiThread(new Runnable() {
             public void run() {
-                try{
-                    Date currentTime = new Date(mCurrentTime);
+                try {
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    mTimeText.setText(dateFormat.format(new Date(mCurrentTime)));
 
-                    SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-                    String formattedCurrentTime = df.format(currentTime);
-
-                    mTimeText.setText(formattedCurrentTime);
-
-//                    Log.v("testkn", "current " + df.format(currentTime));
-//                    Log.v("testkn", "due " + df.format(dueTime));
-//                    Log.v("testkn", String.valueOf(currentTime.compareTo(dueTime)));
-                    if (currentTime.compareTo(dueTime) > 0) {
-                        updateProgram(currentTime);
+                    if (dueTime > 0 && mCurrentTime > dueTime) {
+                        updateProgram(mCurrentTime);
                     }
-                }catch (Exception e) {}
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
-
 
     class CountDownRunner implements Runnable{
         public void run() {
